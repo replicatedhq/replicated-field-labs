@@ -1,0 +1,20 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: config-sample
+spec:
+  groups:
+    - name: example_settings
+      title: My Example Config
+      description: Configuration to serve as an example for creating your own. See [https://kots.io/reference/v1beta1/config/](https://kots.io/reference/v1beta1/config/) for configuration docs. In this case, we provide example fields for configuring an Ingress object.
+      items:
+        - name: use_ingress
+          title: Use Ingress?
+          help_text: An example field to toggle inclusion of an Ingress Object
+          type: bool
+          default: "0"
+        - name: ingress_hostname
+          title: Ingress Hostname
+          help_text: If desired, enter the hostname for ingress to this application. You can enter the IP of this instance, or a DNS hostname.
+          type: text
+          when: repl{{ ConfigOptionEquals "use_ingress" "1" }}
