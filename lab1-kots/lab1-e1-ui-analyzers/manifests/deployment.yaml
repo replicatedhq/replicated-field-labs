@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+}}}
+metadata:
+  name: example-nginx
+  labels:
+    app: example
+    component: nginx
+spec:
+  selector:
+    matchLabels:
+      app: example
+      component: nginx
+  template:
+    metadata:
+      labels:
+        app: example
+        component: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          envFrom:
+          - configMapRef:
+              name: example-config
+          resources:
+            limits:
+              memory: '256Mi'
+              cpu: '500m'
+            requests:
+              memory: '32Mi'
+              cpu: '100m'
+
