@@ -7,14 +7,12 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 
 ### Get started
 
-This repo is a [GitHub Template Repository](https://help.github.com/en/articles/creating-a-repository-from-a-template). You can create a private copy by using the "Use this Template" link in the repo:
+To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
 
-![Template Repo](https://help.github.com/assets/images/help/repository/use-this-template-button.png)
-
-You should use the template to create a new **private** repo in your org, for example `mycompany/kots-app` or `mycompany/replicated-starter-kots`.
-
-Once you've created a repository from the template, you'll want to `git clone` your new repo and `cd` into it locally.
-
+```shell script
+git clone git@github.com:replicatedhq/kots-field-labs
+cd kots-field-labs/lab1-kots/lab1-e0-hello-world
+```
 
 #### Install CLI
 
@@ -111,31 +109,27 @@ replicated release lint --yaml-dir=manifests
 You can push a new release to a channel with
 
 ```
-replicated release create --auto
+make release
 ```
 
-By default the `Unstable` channel will be used. You can override this with the `--promote` flag:
-
-```
-replicated release create --auto --promote=Beta
-```
-
-
-### Integrating with CI
-
-This repo contains a [GitHub Actions](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-github-actions) workflow for ci at [./.github/workflows/main.yml](./.github/workflows/main.yml). You'll need to [configure secrets](https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#creating-and-using-secrets-encrypted-variables) for `REPLICATED_APP` and `REPLICATED_API_TOKEN`. On every push this will:
-
-- Ensure a channel exists for the branch that was pushed to
-- Create a release based on the contents of `./manifests`
+By default the `Unstable` channel will be used. 
+The remaining Lab Exercises use a unique channel per exercise.
 
 ## Advanced Usage
 
 ### Integrating kurl installer yaml
 
-There is a file `kurl-installer.yaml` that can be used to manage [kurl.sh](https://kurl.sh) installer versions for an embedded Kubernetes cluster. This will be automatically released in CI. You can create a release manually with
+There is a file `kurl-installer.yaml` that can be used to manage [kurl.sh](https://kurl.sh) installer versions for an embedded Kubernetes cluster. 
+You can create a new installer release with
 
 ```
 replicated installer create --auto
+```
+
+Again, `Unstable` will be used by default. The `--promote` flag can be used to override this.
+
+```
+replicated installer create --auto --promote=Beta
 ```
 
 ### Tools reference

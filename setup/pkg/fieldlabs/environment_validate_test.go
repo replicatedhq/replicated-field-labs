@@ -33,7 +33,6 @@ func TestValidateEnv(t *testing.T) {
 			},
 			wantErr: "slugified form of env.Slug \"dex\" didn't match provided slug \"Dex\"",
 		},
-
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

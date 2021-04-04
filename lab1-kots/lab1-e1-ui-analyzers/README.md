@@ -21,12 +21,16 @@ Once the bundle is collected, you should see an informative error message in the
 
 ### Correcting
 
-In order to correct this issue, let's ssh our node and add this file:
+In order to correct this issue, you'll need to SSH your node and add this file. Assuming your environment is called `gmiller`.
+
+<details>
+  <summary>Expand for shell commands</summary>
 
 ```
 sudo touch /etc/lab1-e1/config.txt
 sudo chmod 400 /etc/lab1-e1/config.txt
 ```
+</details>
 
 ### Validating
 

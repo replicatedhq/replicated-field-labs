@@ -1,4 +1,4 @@
-CHANNEL=$(shell basename $(shell pwd))
+CHANNEL=Unstable
 
 release: 
 	@replicated release create \
