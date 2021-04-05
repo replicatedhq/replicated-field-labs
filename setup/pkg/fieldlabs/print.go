@@ -24,26 +24,19 @@ var appsTmplSrc = `ID	NAME	SLUG	SCHEDULER
 {{ .ID }}	{{ .Name }}	{{ .Slug}}	{{ .Scheduler }}
 {{ end }}`
 
-
-func (e *EnvironmentManager) PrintApps(apps []types.AppAndChannels) error {
+func (e *EnvironmentManager) PrintApps(apps []types.App) error {
 	if len(apps) == 0 {
 		return nil
 	}
 
 	w := tabWriter(e.Writer)
-	var as []*types.App
 
-	for _, a := range apps {
-		as = append(as, a.App)
-	}
-
-	if err := appsTmpl.Execute(w, as); err != nil {
+	if err := appsTmpl.Execute(w, apps); err != nil {
 		return err
 	}
 
 	return w.Flush()
 }
-
 
 var channelAttrsTmpl = template.Must(template.New("ChannelAttributes").Parse(channelAttrsTmplSrc))
 var channelAttrsTmplSrc = `ID:	{{ .ID }}
@@ -73,4 +66,3 @@ func (e *EnvironmentManager) PrintChannel(appChan types.Channel) error {
 	}
 	return w.Flush()
 }
-
