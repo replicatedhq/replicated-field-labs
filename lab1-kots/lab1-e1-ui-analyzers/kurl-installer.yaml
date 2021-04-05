@@ -20,3 +20,5 @@ spec:
     version: latest
   kotsadm:
     version: latest
+  prometheus:
+    version: latest
