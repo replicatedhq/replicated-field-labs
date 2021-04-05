@@ -1,8 +1,8 @@
-CHANNEL=lab1-e1-ui-analyzers
+CHANNEL=$(shell basename $(shell pwd))
 
 release: 
 	@replicated release create \
 		--app ${REPLICATED_APP} \
 		--token ${REPLICATED_API_TOKEN} \
-		--auto \
+		--auto -y \
 		--promote $(CHANNEL)
