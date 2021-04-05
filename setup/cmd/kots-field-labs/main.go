@@ -34,6 +34,7 @@ var testLabs = []fieldlabs.LabSpec{
 		Customer:             "Dev Customer",
 		YAMLDir:              "lab1-kots/lab1-e0-hello-world/manifests",
 		K8sInstallerYAMLPath: "lab1-kots/lab1-e0-hello-world/kurl-installer.yaml",
+		SkipInstallKots:      true,
 	},
 	{
 		Name:                 "Lab 1.1: Using Support Analyzers",

@@ -33,14 +33,29 @@ type Environment struct {
 }
 
 type LabSpec struct {
-	Name                 string
-	Slug                 string
-	Channel              string
-	ChannelSlug          string
-	Customer             string
-	YAMLDir              string
+	// Name of the lab
+	Name string
+	// Slug of the lab
+	Slug string
+	// Channel name to create
+	Channel string
+	// Slug of channel name
+	ChannelSlug string
+	// Customer Name to Create
+	Customer string
+	// Dir of YAML sources to promote to channel
+	YAMLDir string
+	// Path to Installer YAML to promote to channel
 	K8sInstallerYAMLPath string
-	ConfigValues         string
+
+	// whether to include a license file and install KOTS
+	SkipInstallKots bool
+	// kots config values to pass during install
+	ConfigValues string
+	// bash source to run before installing KOTS
+	PreInstallSH string
+	// bash source to run after installing KOTS
+	PostInstallSH string
 }
 
 type Token struct {
@@ -52,8 +67,12 @@ type Instance struct {
 	InstallScript string
 }
 
+type Lab struct {
+	Spec   LabSpec
+	Status LabStatus
+}
+
 type LabStatus struct {
-	Spec           LabSpec
 	InstanceToMake Instance
 
 	App       types.App
@@ -92,25 +111,36 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 		if env.KotsadmPassword == "" {
 			return errors.Errorf("no kotsadm password set for env %s", env.Name)
 		}
+	}
 
+	for _, lab := range labs {
+		slugifiedChannel := slug.Make(lab.Channel)
+
+		if lab.ChannelSlug == "" {
+			lab.ChannelSlug = slugifiedChannel
+		}
+
+		if slugifiedChannel != lab.ChannelSlug {
+			return errors.Errorf("slugified form of Channel name %q was %q, did not match specified slug %q", lab.Channel, slugifiedChannel, lab.ChannelSlug)
+		}
 	}
 
 	return nil
 }
-func (e *EnvironmentManager) Ensure(envs []Environment, labs []LabSpec) error {
+func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
 	envs, err := e.createApps(envs)
 	if err != nil {
 		return errors.Wrap(err, "create apps")
 	}
 
-	labStatuses, err := e.createVendorLabs(envs, labs)
+	labStatuses, err := e.createVendorLabs(envs, labSpecs)
 	if err != nil {
 		return errors.Wrap(err, "create vendor labs")
 	}
 
 	gcpInstances := map[string]string{}
 	for _, labInstance := range labStatuses {
-		gcpInstances[labInstance.InstanceToMake.Name] = labInstance.InstanceToMake.InstallScript
+		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake.InstallScript
 	}
 	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
 	if err != nil {
@@ -125,20 +155,21 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labs []LabSpec) error {
 	return nil
 }
 
-func (e *EnvironmentManager) createVendorLabs(envs []Environment, labs []LabSpec) ([]LabStatus, error) {
-	var labStatuses []LabStatus
+func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []LabSpec) ([]Lab, error) {
+	var labs []Lab
 
 	for _, env := range envs {
 		app := env.App
-		for _, labSpec := range labs {
-			var lab LabStatus
+		for _, labSpec := range labSpecs {
+			var lab Lab
 			lab.Spec = labSpec
-			lab.App = app
+			lab.Status.App = app
 
 			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
 			if err != nil {
 				return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
 			}
+
 			kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
 			if err != nil {
 				return nil, errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
@@ -148,20 +179,20 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labs []LabSpec
 			if err != nil {
 				return nil, errors.Wrapf(err, "get or create channel %q", lab.Spec.Channel)
 			}
-			lab.Channel = channel
+			lab.Status.Channel = channel
 
 			customer, err := e.Client.CreateCustomer(labSpec.Customer, app.ID, channel.ID, OneWeek)
 			if err != nil {
 				return nil, errors.Wrapf(err, "create customer for lab %q app %q", labSpec.Slug, app.Slug)
 			}
-			lab.Customer = customer
+			lab.Status.Customer = customer
 
 			release, err := e.GClient.CreateRelease(app.ID, kotsYAML)
 			if err != nil {
 				return nil, errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
 			}
 
-			lab.Release = release
+			lab.Status.Release = release
 
 			err = e.GClient.PromoteRelease(app.ID, release.Sequence, labSpec.Slug, labSpec.Name, channel.ID)
 			if err != nil {
@@ -172,7 +203,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labs []LabSpec
 			if err != nil {
 				return nil, errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
 			}
-			lab.Installer = installer
+			lab.Status.Installer = installer
 
 			err = e.GClient.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
 			if err != nil {
@@ -184,9 +215,26 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labs []LabSpec
 				return nil, errors.Wrap(err, "download license")
 			}
 
-			lab.InstanceToMake = Instance{
-				Name: fmt.Sprintf("%s-%s", lab.App.Slug, lab.Spec.Slug),
+			kotsProvisionScript := fmt.Sprintf(`
+curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
+
+KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
+  --license-file ./license.yaml \
+  --namespace default \
+  --shared-password %s
+`, lab.Status.App.Slug, lab.Spec.ChannelSlug, lab.Status.App.Slug, lab.Spec.ChannelSlug, env.KotsadmPassword)
+
+			if lab.Spec.SkipInstallKots {
+				kotsProvisionScript = ""
+			}
+
+			lab.Status.InstanceToMake = Instance{
+				Name: fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug),
 				InstallScript: fmt.Sprintf(`
+#!/bin/bash 
+
+%s
+
 cat <<EOF > ./license.yaml
 %s
 EOF
@@ -196,25 +244,22 @@ cat <<EOF >>~/.ssh/authorized_keys
 %s
 EOF
 
-curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
+%s
 
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
-  --license-file ./license.yaml \
-  --namespace default \
-  --shared-password %s
-`, licenseContents, env.PubKey, lab.App.Slug, lab.Spec.ChannelSlug, lab.App.Slug, lab.Spec.ChannelSlug, env.KotsadmPassword),
+%s
+`, lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, lab.Spec.PostInstallSH),
 			}
-			labStatuses = append(labStatuses, lab)
+			labs = append(labs, lab)
 		}
 	}
 
-	return labStatuses, nil
+	return labs, nil
 }
 
-func (e *EnvironmentManager) getOrCreateChannel(lab LabStatus) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(lab.App.ID, lab.App.Slug, lab.Spec.Channel)
+func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error) {
+	channels, err := e.Client.ListChannels(lab.Status.App.ID, lab.Status.App.Slug, lab.Spec.Channel)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel %q for app %q", lab.Spec.Channel, lab.App.Slug)
+		return nil, errors.Wrapf(err, "list channel %q for app %q", lab.Spec.Channel, lab.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
@@ -232,9 +277,9 @@ func (e *EnvironmentManager) getOrCreateChannel(lab LabStatus) (*types.Channel, 
 		return nil, errors.New("expected at most one channel to match %q, found %d")
 	}
 
-	channel, err := e.GClient.CreateChannel(lab.App.ID, lab.Spec.Slug, lab.Spec.Name)
+	channel, err := e.GClient.CreateChannel(lab.Status.App.ID, lab.Spec.Slug, lab.Spec.Name)
 	if err != nil {
-		return nil, errors.Wrapf(err, "create channel for lab %q app %q", lab.Spec.Slug, lab.App.Slug)
+		return nil, errors.Wrapf(err, "create channel for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
 	}
 	return channel, nil
 }
