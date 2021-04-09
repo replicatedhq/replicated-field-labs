@@ -79,13 +79,14 @@ export REPLICATED_APP=...
 export REPLICATED_API_TOKEN=...
 ```
 
-`REPLICATED_APP` should be set to the app slug from the Settings page:
+`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
+ahead of time.
 
-<p align="center"><img src="./doc/REPLICATED_APP.png" width=600></img></p>
+<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
 
 Next, create an API token from the [Teams and Tokens](https://vendor.replicated.com/team/tokens) page:
 
-<p align="center"><img src="./doc/REPLICATED_API_TOKEN.png" width=600></img></p>
+<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-api-token.png" width=600></img></p>
 
 Ensure the token has "Write" access or you'll be unable create new releases. Once you have the values,
 set them in your environment.
@@ -304,39 +305,35 @@ To complete the installation, visit the URL that the installation script display
 Once you've bypassed the insecure certificate warning, you have the option of uploading a trusted cert and key.
 For production installations we recommend using a trusted cert, but for this tutorial we'll click the "skip this step" button to proceed with the self-signed cert.
 
-![Console TLS](/images/guides/kots/admin-console-tls.png)
+![Console TLS](https://kots.io/images/guides/kots/admin-console-tls.png)
 
 Next, you'll be asked for a password -- you'll want to grab the password from the CLI output above and use it to log in to the console.
 
-![Log In](/images/guides/kots/admin-console-login.png)
+![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
 
 Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
 
-![Upload License](/images/guides/kots/upload-license.png)
+![Upload License](https://kots.io/images/guides/kots/upload-license.png)
 
 Preflight checks are designed to ensure this server has the minimum system and software requirements to run the application.
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
 If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](/images/guides/kots/preflight.png)
+![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
 
-You should now be on the version history page, which will show the initial version that was deployed.
-Later, we'll come back to this page to deploy an update to the application.
 
-![Dashboard](/images/guides/kots/dashboard.png)
-
-Click the Application link on the top to see the status of the application and some basic monitoring stats (CPU, memory, disk space).
+You should see the app Deployed and Ready.
 If you are still connected to this server over ssh, `kubectl get pods` will now show the example nginx service we just deployed.
 
-![Cluster](/images/guides/kots/application.png)
+![Cluster](https://kots.io/images/guides/kots/application.png)
 
 ### View the application
 
 Since we used the default nginx application and enabled the ingress object, we can view the application at `http://${INSTANCE_IP}/` with no port, and you should see a basic (perhaps familiar) nginx server running:
 
-![Cluster](/images/guides/kots/example-nginx.png)
+![Cluster](https://kots.io/images/guides/kots/example-nginx.png)
 
 Next, we'll walk through creating and delivering an update to the application we just installed.
 
@@ -384,7 +381,7 @@ The Admin Console can be configured to check for new updates at regular interval
 You should see a new release in the history now.
 You can click the +/- diff numbers to review the diff, but for now let's click "Deploy" to roll out this new version.
 
-![View Update](/images/guides/kots/view-update.png)
+![View Update](https://kots.io/images/guides/kots/view-update.png)
 
 Clicking the Deploy button will apply the new YAML which will change the number of nginx replicas, this should only take a few seconds.
 You can verify this on the server by running

@@ -101,6 +101,12 @@ var Stragglers = []fieldlabs.Environment{
 		KotsadmPassword: "password",
 		PubKey:          "",
 	},
+	{
+		Name:            "Marc",
+		Slug:            "marc",
+		KotsadmPassword: "password",
+		PubKey:          "",
+	},
 }
 
 var testLabs = []fieldlabs.LabSpec{
