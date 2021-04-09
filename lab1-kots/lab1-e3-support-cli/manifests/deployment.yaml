@@ -14,15 +14,39 @@ spec:
         app: nginx
     spec:
       initContainers:
+        - name: check-file
+          image: busybox
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              perms=$(stat -c "%a" /etc/lab1-e3/config.txt)
+              if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
+              echo "found config.txt"
+          volumeMounts:
+            - mountPath: /etc/lab1-e3
+              name: lab1-config
         - name: check-secret-file
+          image: busybox
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              perms=$(stat -c "%a" /etc/lab1-e3/secretkey.txt)
+              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab1-e3/secretkey.txt"; exit 1; fi
+              echo "found secretkey.txt"
+          volumeMounts:
+            - mountPath: /etc/lab1-e3
+              name: lab1-config
+        - name: check-restraining-bolt
           image: kotsadm/kotsadm-operator:v1.33.1
           command:
             - /bin/sh
             - -ec
             - |
               sleep 90 # trying to combat backoff
-              perms=$(stat -c "%a" /etc/lab1-e3/more-secret-key.txt)
-              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab1-e3/more-secret-key.txt, better delete kotsadm"; kubectl delete pod -lapp=kotsadm; exit 1; fi
+              perms=$(stat -c "%a" /etc/lab1-e3/restraining-bolt.txt)
+              if [ "$perms" -eq "400" ]; then echo "restraining bolt found at , better delete kotsadm"; kubectl delete pod -lapp=kotsadm; exit 1; fi
           volumeMounts:
             - mountPath: /etc/lab1-e3
               name: lab1-config
