@@ -4,7 +4,6 @@ provider "google" {
 }
 
 variable "user" {
-  default     = "dex"
   description = "ssh user for provisioning instances"
 }
 
