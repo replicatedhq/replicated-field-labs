@@ -56,6 +56,11 @@ type LabSpec struct {
 	PreInstallSH string
 	// bash source to run after installing KOTS
 	PostInstallSH string
+
+	// add a public ip?
+	PublicIP bool
+	// add a jump box?
+	JumpBox bool
 }
 
 type Token struct {
@@ -63,8 +68,13 @@ type Token struct {
 }
 
 type Instance struct {
-	Name          string
-	InstallScript string
+	Name          string `json:"name"`
+	InstallScript string `json:"provision_sh"`
+	MachineType   string `json:"machine_type"`
+	BookDiskGB    string `json:"boot_disk_gb"`
+
+	// used in a tf for_each, just put nils in both, the keys and values are ignored
+	PublicIps map[string]interface{} `json:"public_ips"`
 }
 
 type Lab struct {
@@ -138,9 +148,31 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 		return errors.Wrap(err, "create vendor labs")
 	}
 
-	gcpInstances := map[string]string{}
+	err = e.writeTFInstancesJSON(labStatuses)
+	if err != nil {
+		return errors.Wrap(err, "write tf instances json")
+	}
+
+	return nil
+}
+
+// write TF json for the instances
+func (e *EnvironmentManager) writeTFInstancesJSON(labStatuses []Lab) error {
+	gcpInstances := map[string]Instance{}
 	for _, labInstance := range labStatuses {
-		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake.InstallScript
+		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
+		if labInstance.Spec.JumpBox {
+			jumpBoxName := fmt.Sprintf("jump-%s", labInstance.Status.InstanceToMake.Name)
+			gcpInstances[jumpBoxName] = Instance{
+				Name:          jumpBoxName,
+				InstallScript: "",
+				MachineType:   "n1-standard-1",
+				BookDiskGB:    "10",
+				PublicIps: map[string]interface{}{
+					"_": nil,
+				},
+			}
+		}
 	}
 	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
 	if err != nil {
@@ -151,7 +183,6 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 	if err != nil {
 		return errors.Wrapf(err, "write file %q", e.Params.InstanceJSONOutput)
 	}
-
 	return nil
 }
 
@@ -228,10 +259,21 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 				kotsProvisionScript = ""
 			}
 
+			publicIPs := map[string]interface{}{}
+			if lab.Spec.PublicIP {
+				// hack: used in a tf for_each loop, just need something here
+				publicIPs["_"] = nil
+			}
+
 			lab.Status.InstanceToMake = Instance{
-				Name: fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug),
+				Name:        fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug),
+				MachineType: "n1-standard-4",
+				BookDiskGB: "200",
+				PublicIps: publicIPs,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
+
+set -euo pipefail
 
 %s
 

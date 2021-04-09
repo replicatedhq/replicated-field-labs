@@ -52,7 +52,7 @@ func GetParams() (*fieldlabs.Params, error) {
 	}
 
 	if params.InstanceJSONOutput == "" {
-		params.InstanceJSONOutput = "./terraform-example/provisioner_pairs.json"
+		params.InstanceJSONOutput = "./terraform/provisioner_pairs.json"
 	}
 
 	actionString := os.Getenv("REPLICATED_ACTION")

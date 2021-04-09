@@ -1,4 +1,4 @@
-Lab 1 Exercise 0: Hello World
+Lab 1.0: Hello World
 =========================================
 
 This exercise is designed to give you a sandbox to ensure you have the basic CLI tools set up and are prepared to proceed 
@@ -70,7 +70,9 @@ $ replicated version
 
 #### Configure environment
 
-You'll need to set up two environment variables to interact with vendor.replicated.com:
+You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
+
+Once you're logged in, you'll need to set up two environment variables to interact with vendor.replicated.com:
 
 ```
 export REPLICATED_APP=...
@@ -101,7 +103,7 @@ replicated release ls
 
 #### Verifying manifests
 
-You should now have a few YAML files in `manifests`:
+You should have a few YAML files in `manifests`:
 
 
 ```text
@@ -128,54 +130,18 @@ If there are no errors, you'll an empty list and a zero exit code.
 RULE    TYPE    FILENAME    LINE    MESSAGE
 ```
 
-#### Initializing repo
-
-If you haven't already, you'll want to initialize this project as a git repo so you can track your history.
-Additionally, the Replicated CLI will read git metadata to help with generation of release metadata like version labels -- more on that later.
-
-```shell script
-git init
-git add .
-git commit -m "Initial Commit: CLI Quickstart"
-```
-
 * * *
 
-### 4. Creating our first release
+### Creating our first release
 
 
 Now that we have some YAML, let's create a release and promote it to the `Unstable` channel so we can test it internally.
-We'll use the `--auto` flag to tell the CLI to generate release notes and metadata based on the git status.
+You can inspect the `Makefile` to get a sense of what is happening under the hood, but for now, for simplicity we'll use the Makefile command,
+for this and all future labs in this program.
 
 
 ```shell script
-replicated release create --auto
-```
-
-You'll see output similar to the following:
-
-```text
-    • Reading Environment ✓
-
-  Prepared to create release with defaults:
-
-      yaml-dir        "./manifests"
-      promote         "Unstable"
-      version         "Unstable-ba710e5"
-      release-notes   "CLI release of master triggered by dex [SHA: ba710e5] [28 Sep 20 09:15 CDT]"
-      ensure-channel  true
-
-  Create with these properties? [Y/n]
-```
-
-you can confirm the prompt by pressing Enter/Return. You'll see the release created and promoted:
-
-```text
-  • Reading manifests from ./manifests ✓
-  • Creating Release ✓
-    • SEQUENCE: 1
-  • Promoting ✓
-    • Channel VEr0nhJBBUdaWpPvOIK-SOryKZEwa3Mg successfully set to release 1
+make release
 ```
 
 You can verify the release was created with `release ls`:
@@ -188,12 +154,12 @@ SEQUENCE    CREATED                      EDITED                  ACTIVE_CHANNELS
 
 * * *
 
-### 5. Creating a Customer License
+### Creating a Customer License
 
-Now that we've created a release, we need to create a "customer" object.
+Now that we've created a release, we can create a "customer" object.
 A customer represents a single licensed end user of your application.
 
-In this example, we'll create a customer named `Some Big Bank` with an expiration in 10 days.
+In this example, we'll create a customer named `Some-Big-Bank` with an expiration in 10 days.
 Since we created our release on the `Unstable` channel, we'll assign the customer to this channel.
 
 ```shell script
@@ -226,7 +192,7 @@ replicated customer download-license \
 You'll notice this just dumps the license to stdout, so you'll probably want to redirect the output to a file:
 
 ```shell script
-export LICENSE_FILE=~/Desktop/Some-Big-Bank-${REPLICATED_APP}-license.yaml
+export LICENSE_FILE=~/Some-Big-Bank-${REPLICATED_APP}-license.yaml
 replicated customer download-license --customer "Some-Big-Bank" > "${LICENSE_FILE}"
 ```
 
@@ -279,24 +245,15 @@ AIRGAP:
 
 ### 7. Installing KOTS
 
-From here you can choose whether you'd like to do an [Embedded cluster install](/kotsadm/installing/installing-embedded-cluster/) or an [Existing Cluster install](/kotsadm/installing/online-install/).
-We'll skip Airgap for now, as it is covered in great depth in [other guides](/vendor/guides).
-For the sake of simplicity, we'll run with an "embedded cluster" install on a single VM, since those are usually easier to come by than a full Kubernetes cluster.
-
-First we will need a server. We'll use Google Cloud for this example but any cloud provider or [local virtual machine](https://github.com/replicatedhq/replicated-automation/tree/master/vendor/vagrant-boxes) will suffice. For this guide, let's create a server with:
-
-- Ubuntu 18.04
-- at least 8 GB of RAM
-- 4 CPU cores
-- at least 100GB of disk space
-
+A server has already been provisioned for this exercise, you'll want to find the one with the name matching `lab1-e0-hello-world`. 
+KOTS has not yet been installed on this server, to give you an opportunity to experiment with the install process.
 
 ###### On the Server
 
 Next, ssh into the server we just created, and run the install script from above, using the `EMBEDDED` version:
 
 ```shell
-curl -sSL https://kurl.sh/<your-app-name-and-channel> | sudo bash
+curl -sSL https://k8s.kurl.sh/<your-app-name-and-channel> | sudo bash
 ```
 
 This script will install Docker, Kubernetes, and the KOTS admin console containers (kotsadm).
@@ -343,29 +300,21 @@ user@kots-guide:~$
 
 At this point, Kubernetes and the Admin Console are running, but the application isn't deployed yet.
 To complete the installation, visit the URL that the installation script displays when completed.
-You'll notice that the [kurl.sh](https://kurl.sh) KOTS cluster has provisioned a self-signed certificate, and that it provides
 
 Once you've bypassed the insecure certificate warning, you have the option of uploading a trusted cert and key.
 For production installations we recommend using a trusted cert, but for this tutorial we'll click the "skip this step" button to proceed with the self-signed cert.
 
 ![Console TLS](/images/guides/kots/admin-console-tls.png)
 
-Next, you'll be asked for a password -- you'll want to grab the password from the CLI output and use it to log in to the console.
+Next, you'll be asked for a password -- you'll want to grab the password from the CLI output above and use it to log in to the console.
 
 ![Log In](/images/guides/kots/admin-console-login.png)
 
 Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application.
-Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from your desktop.
+Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
 
 ![Upload License](/images/guides/kots/upload-license.png)
-
-The settings page is here with default configuration items.
-For now, if you're using the defaults you'll want to check the "Enable Ingress" box.
-You can leave the "Ingress Hostname" field blank.
-Later you'll customize what appears on this screen to collect the configuration your application needs from the customer.
-
-![Settings Page](/images/guides/kots/configuration.png)
 
 Preflight checks are designed to ensure this server has the minimum system and software requirements to run the application.
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
@@ -373,7 +322,7 @@ If you have failing checks, you can click continue -- the UI will show a warning
 
 ![Preflight Checks](/images/guides/kots/preflight.png)
 
-You should now be on the version history page, which will show the initial version that was check deployed.
+You should now be on the version history page, which will show the initial version that was deployed.
 Later, we'll come back to this page to deploy an update to the application.
 
 ![Dashboard](/images/guides/kots/dashboard.png)
@@ -424,7 +373,7 @@ spec:
 Once you've added the `replicas` line, you can create a new release:
 
 ```shell script
-replicated release create --auto
+make release
 ```
 
 ### Update the Test Server
@@ -441,7 +390,7 @@ Clicking the Deploy button will apply the new YAML which will change the number 
 You can verify this on the server by running
 
 ```shell script
-kubectl get pod -l component=nginx
+kubectl get pod -l app=nginx
 ```
 
 You should see two pods running.
@@ -451,8 +400,7 @@ You should see two pods running.
 ### Next Steps
 
 From here, it's time to start iterating on your application.
-Continue making changes and using `replicated release create --auto` to publish them.
-You can add `-y` to the command to skip the prompt.
+Continue making changes and using `make release` to publish them.
 
 
 If you want to learn more about KOTS features, you can explore some of the [intermediate and advanced guides](/vendor/guides), some good next steps might be

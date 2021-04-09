@@ -5,5 +5,5 @@ metadata:
 spec:
   descriptor:
     links:
-      - description: Open Lab 1 Exercise 0
+      - description: Open Lab 1.0
         url: "http://nginx"
