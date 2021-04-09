@@ -41,22 +41,7 @@ var testLabs = []fieldlabs.LabSpec{
 	},
 }
 
-func writeLabs() error {
-	labs := testLabs
-
-	jsonLabs, err := json.MarshalIndent(labs, "", "  ")
-	if err != nil {
-		return errors.Wrap(err, "marshal labs")
-	}
-
-	_ = ioutil.WriteFile("labs.json", jsonLabs, 0644)
-	return errors.New("thats all folks")
-}
-
 func Run() error {
-	if err := writeLabs(); err != nil {
-		return err
-	}
 
 	params, err := GetParams()
 	if err != nil {
