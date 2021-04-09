@@ -19,17 +19,17 @@ const (
 
 type Environment struct {
 	// name of the environment
-	Name string
+	Name string `json:"name,omitempty"`
 	// slug of the environment
-	Slug string
+	Slug string `json:"slug,omitempty"`
 	// public key of the user who will access this environment
-	PubKey string
+	PubKey string `json:"pub_key,omitempty"`
 	// email to invite to vendor.replicated.com if Params.InviteUsers is set
-	Email string
+	Email string `json:"email,omitempty"`
 	// password to be set on kotsadm instances
-	KotsadmPassword string
+	KotsadmPassword string `json:"password,omitempty"`
 
-	App types.App
+	App types.App `json:"-"`
 }
 
 type LabSpec struct {
@@ -84,6 +84,7 @@ type Lab struct {
 
 type LabStatus struct {
 	InstanceToMake Instance
+	Env            Environment
 
 	App       types.App
 	Channel   *types.Channel
@@ -164,10 +165,19 @@ func (e *EnvironmentManager) writeTFInstancesJSON(labStatuses []Lab) error {
 		if labInstance.Spec.JumpBox {
 			jumpBoxName := fmt.Sprintf("jump-%s", labInstance.Status.InstanceToMake.Name)
 			gcpInstances[jumpBoxName] = Instance{
-				Name:          jumpBoxName,
-				InstallScript: "",
-				MachineType:   "n1-standard-1",
-				BookDiskGB:    "10",
+				Name: jumpBoxName,
+				InstallScript: fmt.Sprintf(`
+#!/bin/bash 
+
+set -euo pipefail
+
+mkdir -p ~/.ssh
+cat <<EOF >>~/.ssh/authorized_keys
+%s
+EOF
+`, labInstance.Status.Env.PubKey),
+				MachineType: "n1-standard-1",
+				BookDiskGB:  "10",
 				PublicIps: map[string]interface{}{
 					"_": nil,
 				},
@@ -195,6 +205,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			var lab Lab
 			lab.Spec = labSpec
 			lab.Status.App = app
+			lab.Status.Env = env
 
 			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
 			if err != nil {
@@ -268,8 +279,8 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 			lab.Status.InstanceToMake = Instance{
 				Name:        fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug),
 				MachineType: "n1-standard-4",
-				BookDiskGB: "200",
-				PublicIps: publicIPs,
+				BookDiskGB:  "200",
+				PublicIps:   publicIPs,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
 

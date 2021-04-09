@@ -44,9 +44,15 @@ spec:
             - /bin/sh
             - -ec
             - |
-              sleep 90 # trying to combat backoff
-              perms=$(stat -c "%a" /etc/lab1-e3/restraining-bolt.txt)
-              if [ "$perms" -eq "400" ]; then echo "restraining bolt found at , better delete kotsadm"; kubectl delete pod -lapp=kotsadm; exit 1; fi
+              while :; do
+                if [ -f /etc/lab1-e3/restrainging-bolt.txt ]; then
+                  echo "restraining bolt found at /etc/lab1-e3/restrainging-bolt.txt, better delete kotsadm"
+                  kubectl delete pod -lapp=kotsadm
+                else
+                  echo "all clear!"
+                  exit 0
+                fi
+              done
           volumeMounts:
             - mountPath: /etc/lab1-e3
               name: lab1-config

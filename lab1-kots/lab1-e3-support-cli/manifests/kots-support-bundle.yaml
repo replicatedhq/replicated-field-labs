@@ -12,7 +12,7 @@ spec:
           maxAge: 30d
           maxLines: 10000
     - exec:
-        name: check-config
+        name: file-checks
         collectorName: check-config
         selector:
           - app=file-check-pod
@@ -23,7 +23,7 @@ spec:
           - "%a"
           - /etc/lab1-e2/config.txt
     - exec:
-        name: check-secret
+        name: file-checks
         collectorName: check-secret
         selector:
           - app=file-check-pod
@@ -33,10 +33,26 @@ spec:
           - -c
           - "%a"
           - /etc/lab1-e2/secretkey.txt
+    - exec:
+        name: file-checks
+        collectorName: check-rb
+        selector:
+          - app=file-check-pod
+        namespace: '{{repl Namespace}}'
+        args:
+          - /bin/sh
+          - -c
+          - |
+            if [ -f /etc/lab1-e3/restraining-bolt.txt ]; then
+              echo failed
+            else
+              echo success
+            fi
+
   analyzers:
     - textAnalyze:
         checkName: Config Check
-        fileName: check-config/{{repl Namespace}}/*/check-config-*.txt
+        fileName: file-checks/{{repl Namespace}}/*/check-config-*.txt
         regex: '400'
         outcomes:
           - pass:
@@ -45,12 +61,20 @@ spec:
               message: Could not find a file at /etc/lab1-e2/config.txt with 400 permissions -- please ensure this file exists with any content
     - textAnalyze:
         checkName: Secret Check
-        fileName: check-secret/{{repl Namespace}}/*/check-secret-*.txt
+        fileName: file-checks/{{repl Namespace}}/*/check-secret-*.txt
         regex: '400'
         outcomes:
           - pass:
               message: Found properly-restricted file at /etc/lab1-e2/secretkey.txt
           - fail:
               message: Could not find a file at /etc/lab1-e2/secretkey.txt with 400 permissions -- please ensure this file exists with any content
-
+    - textAnalyze:
+        checkName: Restraint Check
+        fileName: file-checks/{{repl Namespace}}/*/check-rb-*.txt
+        regex: 'success'
+        outcomes:
+          - pass:
+              message: No restrictions in place!
+          - fail:
+              message: Restraing bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to lauch the application.
 

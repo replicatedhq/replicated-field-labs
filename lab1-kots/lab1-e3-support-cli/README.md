@@ -1,4 +1,4 @@
-Lab 1.2: Support Analyzers
+Lab 1.3: Support LI
 =========================================
 
 
@@ -7,3 +7,18 @@ Lab 1.2: Support Analyzers
 - kotsadm crashing, collect CLI support bundle 
 - understand new file needed, fix issue
 - add preflight check and analyzer  
+  
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+

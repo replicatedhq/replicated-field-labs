@@ -24,7 +24,7 @@ Once the bundle is collected, you should see an informative error message in the
 
 ### Correcting
 
-In order to correct this issue, you'll need to SSH your node and add this file. Assuming your environment is called `gmiller`.
+In order to correct this issue, you'll need to SSH your node and add this file. Assuming your environment is called `train-gmiller`, you'll want to ssh the IP for `train-gmiller-lab1-e1-ui-analyzers`.
 
 <details>
   <summary>Expand for shell commands</summary>
