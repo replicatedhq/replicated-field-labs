@@ -35,6 +35,8 @@ var testLabs = []fieldlabs.LabSpec{
 		YAMLDir:              "lab1-kots/lab1-e0-hello-world/manifests",
 		K8sInstallerYAMLPath: "lab1-kots/lab1-e0-hello-world/kurl-installer.yaml",
 		SkipInstallKots:      true,
+		PublicIP:             true,
+		JumpBox:              false,
 	},
 	{
 		Name:                 "Lab 1.1: Using Support Analyzers",
@@ -44,7 +46,37 @@ var testLabs = []fieldlabs.LabSpec{
 		Customer:             "lab1-e1-ui-analyzers",
 		YAMLDir:              "lab1-kots/lab1-e1-ui-analyzers/manifests",
 		K8sInstallerYAMLPath: "lab1-kots/lab1-e1-ui-analyzers/kurl-installer.yaml",
+		PublicIP:             true,
+		JumpBox:              false,
 	},
+	{
+		Name:                 "Lab 1.2: Adding Analyzers",
+		Slug:                 "lab1-e2-adding-analyzers",
+		Channel:              "lab1-e2-adding-analyzers",
+		ChannelSlug:          "lab1-e2-adding-analyzers",
+		Customer:             "lab1-e2-adding-analyzers",
+		YAMLDir:              "lab1-kots/lab1-e2-adding-analyzers/manifests",
+		K8sInstallerYAMLPath: "lab1-kots/lab1-e2-adding-analyzers/kurl-installer.yaml",
+		PublicIP:             true,
+		JumpBox:              false,
+		PreInstallSH: `
+sudo mkdir -p /etc/lab1-e2/
+sudo touch /etc/lab1-e2/config.txt
+sudo chmod 400 /etc/lab1-e2/config.txt
+`,
+	},
+	//{
+	//	Name:                 "Lab 1.5: Airgapped Install",
+	//	Slug:                 "lab1-e5-airgap",
+	//	Channel:              "lab1-e5-airgap",
+	//	ChannelSlug:          "lab1-e5-airgap",
+	//	Customer:             "lab1-e5-airgap",
+	//	YAMLDir:              "lab1-kots/lab1-e5-airgap/manifests",
+	//	K8sInstallerYAMLPath: "lab1-kots/lab1-e5-airgap/kurl-installer.yaml",
+	//	SkipInstallKots:      true,
+	//	PublicIP:             false,
+	//	JumpBox:              true,
+	//},
 }
 
 func Run() error {
