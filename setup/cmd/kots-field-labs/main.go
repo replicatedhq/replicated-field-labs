@@ -18,29 +18,6 @@ func main() {
 	}
 }
 
-var testEnvs = []fieldlabs.Environment{
-	{
-		Name:            "Dex",
-		Slug:            "dextest",
-		KotsadmPassword: "password",
-		PubKey:          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDFK52oX9POpHodnsx0XT4ltw37VYUfulr4z62ZDLOFXl0wztjuo+19DHnVuD70tY8fB1UcyCBkKRy09vQZwOSmV5U4kpVIC9fH9toAZte4Rb7a8wWXyNujBrtKhSMpdNxiNKouf6OjZvRWmoIOXfiEo7oekaERt4dilIkefSK4AT3ccWMWs/pt0GbhyNbCorWW7HHKfeJ+gMkOMV70uQO76Lwhu/7e/Ll72aALpq9RPt7xaOllBTq4iIz7x/E7k9/w2h9D5/xHiKIOBhJJw8Vd9yS0Tj+u1jg1a68CF2YQhdakTpqDhISsKKVtkb31MPqrdZpqNKu37J29Q6fxNN3KpaZkt19BMG+L28uOXon9+782AIUJqTGnqKcJhziyCOZpKaBiu2S1cbDSRJpyaqHZi3vMy5eleblWgQn/tbUQMtWh1UR5KANGhvBVS84hxFWkPuCwWORnewQCpz8jPXMpaOnLK2n7ZZSBmSXOYOozQh/MfNamtRajiUhBfHxuh5jD3FcXsAVy2yYmCZVAXJB/XzJMeNKGz6mmWH+9xBufa8oFYedQAUiyyVgW6QODNO5uu3YVQtySjuwsenxp2guBfiteSUtMJeclQjSbglCLtvrDXkF6AKiYkx/+5Bz2RpoitgXvL92EAEPiAOLxOVKRtbkMjG4xLM8gYQXkncpy+Q== dex",
-	},
-}
-
-var testLabs = []fieldlabs.LabSpec{
-	{
-		Name:                 "Lab 1.0: Hello World",
-		Slug:                 "lab1-e0-hello-world",
-		Channel:              "Unstable",
-		ChannelSlug:          "unstable",
-		Customer:             "Dev Customer",
-		YAMLDir:              "lab1-kots/lab1-e0-hello-world/manifests",
-		K8sInstallerYAMLPath: "lab1-kots/lab1-e0-hello-world/kurl-installer.yaml",
-		SkipInstallKots:      true,
-		PublicIP:             true,
-	},
-}
-
 func Run() error {
 
 	params, err := GetParams()
@@ -77,30 +54,24 @@ func Run() error {
 }
 
 func loadConfig(params *fieldlabs.Params) ([]fieldlabs.Environment, []fieldlabs.LabSpec, error) {
-	environments := testEnvs
-	if params.EnvironmentsJSON != "" {
-		environments = []fieldlabs.Environment{}
-		contents, err := ioutil.ReadFile(params.EnvironmentsJSON)
-		if err != nil {
-			return nil, nil, errors.Wrapf(err, "read environments json from %q", params.EnvironmentsJSON)
-		}
-		err = json.Unmarshal(contents, &environments)
-		if err != nil {
-			return nil, nil, errors.Wrapf(err, "read labs json from %q", params.EnvironmentsJSON)
-		}
+	environments := []fieldlabs.Environment{}
+	envJSON, err := ioutil.ReadFile(params.EnvironmentsJSON)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "read environments json from %q", params.EnvironmentsJSON)
+	}
+	err = json.Unmarshal(envJSON, &environments)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "read labs json from %q", params.EnvironmentsJSON)
 	}
 
-	labs := testLabs
-	if params.LabsJSON != "" {
-		labs = []fieldlabs.LabSpec{}
-		contents, err := ioutil.ReadFile(params.LabsJSON)
-		if err != nil {
-			return nil, nil, errors.Wrapf(err, "read labs json from %q", params.LabsJSON)
-		}
-		err = json.Unmarshal(contents, &environments)
-		if err != nil {
-			return nil, nil, errors.Wrapf(err, "unmarshal labs json from %q", params.LabsJSON)
-		}
+	labs := []fieldlabs.LabSpec{}
+	labJSON, err := ioutil.ReadFile(params.LabsJSON)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "read labs json from %q", params.LabsJSON)
+	}
+	err = json.Unmarshal(labJSON, &labs)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "unmarshal labs json from %q", params.LabsJSON)
 	}
 
 	return environments, labs, nil

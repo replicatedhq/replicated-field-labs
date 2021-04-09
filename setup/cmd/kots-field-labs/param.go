@@ -38,6 +38,15 @@ func GetParams() (*fieldlabs.Params, error) {
 		return nil, missingParam("REPLICATED_NAME_PREFIX")
 	}
 
+	if params.EnvironmentsJSON == "" {
+		params.EnvironmentsJSON = "./environments_test.json"
+	}
+
+	if params.LabsJSON == "" {
+		params.LabsJSON = "./labs_test.json"
+	}
+
+
 	if params.APIToken == "" {
 		return nil, missingParam("REPLICATED_API_TOKEN")
 	}
