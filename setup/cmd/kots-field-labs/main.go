@@ -64,6 +64,26 @@ var InternalEnvs =[]fieldlabs.Environment{
 	},
 }
 
+var Round2 = []fieldlabs.Environment{
+	{
+		Name:            "Josh",
+		Slug:            "josh",
+		KotsadmPassword: "password",
+		PubKey:          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCXOoUe9MxWrJ/07IN0YZB9KUKwx1wAoHMn6eAfoT3cy28+s+8G3coWSQJgowfmkrTNn1yvx9LvyXIhjyHIwBaPsyXZiQC++N9pIfpLXCn+X3Bja9V6JD1o2lckJyavJtjaa2MyvE7NctS6uXcIXbT0LEPbnFkMKlA1F7B167IhKs2TjFrL6Tt0CVef8+SWQRc8f909KjU0zkeiUqnaJCD9lHLcFgURomHuik+mUbo5gGZtZbvFPKUr2m2yWnZRhdrvx5E2ne53y4hsS/t2GXDyuXYycI9sUGJJzikJ2Hj89ON5XS6FMujGCJvN7P/g/bpDGk8mkRwmgKgv0Vqn1sQoP610X0OWVehgudNTJ5RLU0pL85G1N1e4d3c/nQt3AGptR9U2QN0FqmjDzRS00p8+rjWz2kI84gPSdo+cOlibZonnW3vt4Hb/478QCY90auyJm5LzBCzA7MTAsBcETpWbJeC7oWceuNLywujNCZu4pLad4ZQWfZRcoPr3WZ2S7got6lGO5nJ3Jz9NuD6W5azL5QDH4u06EhygL4HYUG/NWhwqaQkZSXcYv7uHetU11cb6nr9ELZbT4BLchBtmMjQiVfwogWIs2oI+juXlQdlwuihfJG2rPReLC+d3/q2BUf3VxuqSdjwSeRkqMZnEe1pS6ymOybMnE2S9SoZdZd5uRQ== joris.dewinne@gmail.com",
+	},
+	{
+		Name:            "Javier",
+		Slug:            "javier",
+		KotsadmPassword: "password",
+		PubKey:          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDI+Fe1u8Xd0PgN9PzMh1KP5rnqbw4yM/97ykvshCQqcwQUVOk9UNCR+mKNfCJ6QMjyhPjY6WdwPbFx8LSblHkV5G1YA1VJTqnESSyImSppBj22mVX1qiQeUPl2EBCHl86yswMfmI3HbQTOEk4h0W2CiNIpTirYmldk6kRzgShO7CGb9neRr9q4Fq+syCAYzyGwmbuofA2wa9Z9PH+fhbuiHPAX7EotsxMF+UfEUERuQYDy4AhJrwwjHNxIp8LTMIjzYn33Dy/P35jzcct3Nar3YFGCKcDPRApKMcEKODsYn/7naDagvBfQIoGpPYv6wTA5wprfRpmkpF5AHsajvFKExnm7Sf1ncKDNxG+0mzM+pRgnuK3unsvWLHPTS3Um6VITomlNbja+FuHhgiXtz3NElZgZuVJkxVtYtV77g/LACpHnLvDp1K2d38TQPh9bvYbsAdBrEm1GXTXvwqVluUep2ee5u4WmrIiKW7O/3LGg/GXf8V+rX0vHk26eHTzakAM= javiersoria@javiers-mbp",
+	},
+	{
+		Name:            "AJ",
+		Slug:            "aj",
+		KotsadmPassword: "password",
+		PubKey:          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO5c3fdzZR8W3TWz+TOln1RFug+VZ5QJe9D8D3gf4aA1g3x2BWC00+tFOgf4Ij3pPRI/VNf6AHynJ2K4oJGjKBK+jNtD5X1JoR3WMaPOakXfoB3IolufkACRvV+ta+PAnZ7w4ByL4lrxbR3FsNFyT4UwgloxqjZ3QcCpfbXq3pgOIdTcapfrWfOKpzieqoOyMp92u//mAvJ2G1yYSC/kYktxgx8LF0TRGwokpaoZnuz0FnkdqJGZDwut7M7GLmRSln+WA+Ws24akpVKPdmkXXbS8HBUVvGyZHDxt2bX1HJUIgWj9ll8tKIeuclGtOqqm4QdycBM+RaNtlPJAxnzwIUWiD43xgrJ79u7OiyvUUYNGA7RHocgLqSJC2KCsbw2xRjwq4OQYRaOBtNkPiSQB7Aswia3AA2ZDvA/oPCevAWZjTS6y94It1Gl9IRNXBTFxOTog1lhOTTeadT839rW/lXfQV+p+X3BiL3hHkbIpBp9JlmX0KaEHbactb9Nxuw180d0lUx7QY96qXgNMkGuJzO55OOw7aMuf5YZAjxnTPeR0iQHnzRW0CMjp3glvP2zHgfIkCgi2cCNmg437AxqWKF1Fk+q5Fw8JnRXpxbcLs2nNiczplcDkDTEgrv2Eu3f3/VZUblQMm2UeCBA+KJLWOyJyeVZBXAYhLcXCxmWcyyGw==",
+	},
+}
 var Stragglers = []fieldlabs.Environment{
 	{
 		Name:            "Max",
@@ -78,26 +98,8 @@ var Stragglers = []fieldlabs.Environment{
 		PubKey:          "",
 	},
 	{
-		Name:            "Josh",
-		Slug:            "josh",
-		KotsadmPassword: "password",
-		PubKey:          "",
-	},
-	{
-		Name:            "Javier",
-		Slug:            "javier",
-		KotsadmPassword: "password",
-		PubKey:          "",
-	},
-	{
 		Name:            "Fernando",
 		Slug:            "fernando",
-		KotsadmPassword: "password",
-		PubKey:          "",
-	},
-	{
-		Name:            "AJ",
-		Slug:            "aj",
 		KotsadmPassword: "password",
 		PubKey:          "",
 	},
@@ -169,7 +171,7 @@ func Run() error {
 		return errors.Wrap(err, "get params")
 	}
 
-	environments := InternalEnvs
+	environments := Stragglers
 	if params.EnvironmentsJSON != "" {
 		// load from file
 		//

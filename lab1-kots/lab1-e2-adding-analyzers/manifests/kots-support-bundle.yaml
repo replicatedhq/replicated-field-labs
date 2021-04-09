@@ -22,17 +22,6 @@ spec:
         - -c
         - "%a"
         - /etc/lab1-e2/config.txt
-    - exec:
-        name: check-secret
-        collectorName: check-secret
-        selector:
-          - app=file-check-pod
-        namespace: '{{repl Namespace}}'
-        args:
-          - stat
-          - -c
-          - "%a"
-          - /etc/lab1-e2/secretkey.txt
   analyzers:
     - textAnalyze:
         checkName: Config Check
@@ -43,14 +32,3 @@ spec:
               message: Found properly-restricted file at /etc/lab1-e2/config.txt
           - fail:
               message: Could not find a file at /etc/lab1-e2/config.txt with 400 permissions -- please ensure this file exists with any content
-    - textAnalyze:
-        checkName: Secret Check
-        fileName: check-secret/{{repl Namespace}}/*/check-secret-*.txt
-        regex: '400'
-        outcomes:
-          - pass:
-              message: Found properly-restricted file at /etc/lab1-e2/secretkey.txt
-          - fail:
-              message: Could not find a file at /etc/lab1-e2/secretkey.txt with 400 permissions -- please ensure this file exists with any content
-
-
