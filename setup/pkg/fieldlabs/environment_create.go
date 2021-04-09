@@ -34,33 +34,33 @@ type Environment struct {
 
 type LabSpec struct {
 	// Name of the lab
-	Name string
+	Name string `json:"name"`
 	// Slug of the lab
-	Slug string
+	Slug string `json:"slug"`
 	// Channel name to create
-	Channel string
+	Channel string `json:"channel"`
 	// Slug of channel name
-	ChannelSlug string
+	ChannelSlug string `json:"channel_slug"`
 	// Customer Name to Create
-	Customer string
+	Customer string `json:"customer"`
 	// Dir of YAML sources to promote to channel
-	YAMLDir string
+	YAMLDir string `json:"yaml_dir"`
 	// Path to Installer YAML to promote to channel
-	K8sInstallerYAMLPath string
+	K8sInstallerYAMLPath string `json:"k8s_installer_yaml_path"`
 
 	// whether to include a license file and install KOTS
-	SkipInstallKots bool
+	SkipInstallKots bool `json:"skip_install_kots"`
 	// kots config values to pass during install
-	ConfigValues string
+	ConfigValues string `json:"config_values"`
 	// bash source to run before installing KOTS
-	PreInstallSH string
+	PreInstallSH string `json:"pre_install_sh"`
 	// bash source to run after installing KOTS
-	PostInstallSH string
+	PostInstallSH string `json:"post_install_sh"`
 
 	// add a public ip?
-	PublicIP bool
+	PublicIP bool `json:"public_ip"`
 	// add a jump box?
-	JumpBox bool
+	JumpBox bool `json:"jump_box"`
 }
 
 type Token struct {
@@ -259,6 +259,8 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 
 			kotsProvisionScript := fmt.Sprintf(`
 curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
+
+kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"allowAnonymousUploads": "0"}}}'
 
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
   --license-file ./license.yaml \

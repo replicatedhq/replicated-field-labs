@@ -39,66 +39,25 @@ var testLabs = []fieldlabs.LabSpec{
 		SkipInstallKots:      true,
 		PublicIP:             true,
 	},
-	{
-		Name:                 "Lab 1.1: Using Support Analyzers",
-		Slug:                 "lab1-e1-ui-analyzers",
-		Channel:              "lab1-e1-ui-analyzers",
-		ChannelSlug:          "lab1-e1-ui-analyzers",
-		Customer:             "lab1-e1-ui-analyzers",
-		YAMLDir:              "lab1-kots/lab1-e1-ui-analyzers/manifests",
-		K8sInstallerYAMLPath: "lab1-kots/lab1-e1-ui-analyzers/kurl-installer.yaml",
-		PublicIP:             true,
-	},
-	{
-		Name:                 "Lab 1.2: Adding Analyzers",
-		Slug:                 "lab1-e2-adding-analyzers",
-		Channel:              "lab1-e2-adding-analyzers",
-		ChannelSlug:          "lab1-e2-adding-analyzers",
-		Customer:             "lab1-e2-adding-analyzers",
-		YAMLDir:              "lab1-kots/lab1-e2-adding-analyzers/manifests",
-		K8sInstallerYAMLPath: "lab1-kots/lab1-e2-adding-analyzers/kurl-installer.yaml",
-		PublicIP:             true,
-		PreInstallSH: `
-sudo mkdir -p /etc/lab1-e2/
-sudo touch /etc/lab1-e2/config.txt
-sudo chmod 400 /etc/lab1-e2/config.txt
-`,
-	},
-//	{
-//		Name:                 "Lab 1.3: Support Bundle CLI",
-//		Slug:                 "lab1-e3-support-cli",
-//		Channel:              "lab1-e3-support-cli",
-//		ChannelSlug:          "lab1-e3-support-cli",
-//		Customer:             "lab1-e3-support-cli",
-//		YAMLDir:              "lab1-kots/lab1-e3-support-cli/manifests",
-//		K8sInstallerYAMLPath: "lab1-kots/lab1-e3-support-cli/kurl-installer.yaml",
-//		PublicIP:             true,
-//		PreInstallSH: `
-//sudo mkdir -p /etc/lab1-e3/
-//sudo touch /etc/lab1-e3/config.txt
-//sudo chmod 400 /etc/lab1-e3/config.txt
-//sudo touch /etc/lab1-e3/secretkey.txt
-//sudo chmod 400 /etc/lab1-e3/secretkey.txt
-//sudo touch /etc/lab1-e3/restraining-bolt.txt
-//sudo chmod 400 /etc/lab1-e3/restraining-bolt.txt
-//`,
-//	},
-	//{
-	//	Name:                 "Lab 1.5: Airgapped Install",
-	//	Slug:                 "lab1-e5-airgap",
-	//	Channel:              "lab1-e5-airgap",
-	//	ChannelSlug:          "lab1-e5-airgap",
-	//	Customer:             "lab1-e5-airgap",
-	//	YAMLDir:              "lab1-kots/lab1-e5-airgap/manifests",
-	//	K8sInstallerYAMLPath: "lab1-kots/lab1-e5-airgap/kurl-installer.yaml",
-	//	SkipInstallKots:      true,
-	//	PublicIP:             false,
-	//	JumpBox:              true,
-	//},
 }
 
+func writeLabs() error {
+	labs := testLabs
+
+	jsonLabs, err := json.MarshalIndent(labs, "", "  ")
+	if err != nil {
+		return errors.Wrap(err, "marshal labs")
+	}
+
+	_ = ioutil.WriteFile("labs.json", jsonLabs, 0644)
+	return errors.New("thats all folks")
+}
 
 func Run() error {
+	if err := writeLabs(); err != nil {
+		return err
+	}
+
 	params, err := GetParams()
 	if err != nil {
 		return errors.Wrap(err, "get params")

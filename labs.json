@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Lab 1.0: Hello World",
+    "slug": "lab1-e0-hello-world",
+    "channel": "Unstable",
+    "channel_slug": "unstable",
+    "customer": "Dev Customer",
+    "yaml_dir": "lab1-kots/lab1-e0-hello-world/manifests",
+    "k8s_installer_yaml_path": "lab1-kots/lab1-e0-hello-world/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "public_ip": true,
+    "jump_box": false
+  },
+  {
+    "name": "Lab 1.1: Using Support Analyzers",
+    "slug": "lab1-e1-ui-analyzers",
+    "channel": "lab1-e1-ui-analyzers",
+    "channel_slug": "lab1-e1-ui-analyzers",
+    "customer": "lab1-e1-ui-analyzers",
+    "yaml_dir": "lab1-kots/lab1-e1-ui-analyzers/manifests",
+    "k8s_installer_yaml_path": "lab1-kots/lab1-e1-ui-analyzers/kurl-installer.yaml",
+    "skip_install_kots": false,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "public_ip": true,
+    "jump_box": false
+  },
+  {
+    "name": "Lab 1.2: Adding Analyzers",
+    "slug": "lab1-e2-adding-analyzers",
+    "channel": "lab1-e2-adding-analyzers",
+    "channel_slug": "lab1-e2-adding-analyzers",
+    "customer": "lab1-e2-adding-analyzers",
+    "yaml_dir": "lab1-kots/lab1-e2-adding-analyzers/manifests",
+    "k8s_installer_yaml_path": "lab1-kots/lab1-e2-adding-analyzers/kurl-installer.yaml",
+    "skip_install_kots": false,
+    "config_values": "",
+    "pre_install_sh": "\nsudo mkdir -p /etc/lab1-e2/\nsudo touch /etc/lab1-e2/config.txt\nsudo chmod 400 /etc/lab1-e2/config.txt\n",
+    "post_install_sh": "",
+    "public_ip": true,
+    "jump_box": false
+  }
+]
