@@ -1,6 +1,7 @@
 package fieldlabs
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/gosimple/slug"
@@ -10,6 +11,7 @@ import (
 	"github.com/replicatedhq/replicated/pkg/types"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"time"
 )
 
@@ -139,10 +141,23 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 	return nil
 }
 func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
+	// for apps that exist, skip everything, filter them out
+
+
+
+	if e.Params.InviteUsers {
+		err := e.inviteUsers(envs)
+		if err != nil {
+			return errors.Wrap(err, "invite users")
+		}
+	}
+
 	envs, err := e.createApps(envs)
 	if err != nil {
 		return errors.Wrap(err, "create apps")
 	}
+
+
 
 	labStatuses, err := e.createVendorLabs(envs, labSpecs)
 	if err != nil {
@@ -366,4 +381,42 @@ func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, erro
 	}
 	_ = e.PrintApps(appsCreated)
 	return outEnvs, nil
+}
+
+func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
+	for _, env := range envs {
+		if env.Email == "" {
+			continue
+		}
+		inviteBody := map[string]string{
+			"email": env.Email,
+			"policy_id": e.Params.RBACPolicyID,
+		}
+		inviteBodyBytes, err := json.Marshal(inviteBody)
+		if err != nil {
+			return errors.Wrap(err, "marshal invite body")
+		}
+		req, err := http.NewRequest(
+			"POST",
+			fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
+			bytes.NewReader(inviteBodyBytes),
+		)
+		if err != nil {
+			return errors.Wrap(err, "build invite request")
+		}
+		req.Header.Set("Authorization", e.Params.SessionToken)
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return errors.Wrap(err, "send invite request")
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode != 204 {
+			body, _ := ioutil.ReadAll(resp.Body)
+			return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
+		}
+	}
+	return nil
 }
