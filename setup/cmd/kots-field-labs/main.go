@@ -1,13 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/kots-field-labs/setup/pkg/fieldlabs"
 	"github.com/replicatedhq/replicated/cli/print"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
 	"github.com/replicatedhq/replicated/pkg/platformclient"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -51,28 +49,4 @@ func Run() error {
 	}
 
 	return nil
-}
-
-func loadConfig(params *fieldlabs.Params) ([]fieldlabs.Environment, []fieldlabs.LabSpec, error) {
-	environments := []fieldlabs.Environment{}
-	envJSON, err := ioutil.ReadFile(params.EnvironmentsJSON)
-	if err != nil {
-		return nil, nil, errors.Wrapf(err, "read environments json from %q", params.EnvironmentsJSON)
-	}
-	err = json.Unmarshal(envJSON, &environments)
-	if err != nil {
-		return nil, nil, errors.Wrapf(err, "read labs json from %q", params.EnvironmentsJSON)
-	}
-
-	labs := []fieldlabs.LabSpec{}
-	labJSON, err := ioutil.ReadFile(params.LabsJSON)
-	if err != nil {
-		return nil, nil, errors.Wrapf(err, "read labs json from %q", params.LabsJSON)
-	}
-	err = json.Unmarshal(labJSON, &labs)
-	if err != nil {
-		return nil, nil, errors.Wrapf(err, "unmarshal labs json from %q", params.LabsJSON)
-	}
-
-	return environments, labs, nil
 }

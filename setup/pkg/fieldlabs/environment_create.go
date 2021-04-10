@@ -19,17 +19,17 @@ const (
 
 type Environment struct {
 	// name of the environment
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" csv:"name"`
 	// slug of the environment
-	Slug string `json:"slug,omitempty"`
+	Slug string `json:"slug,omitempty" csv:"slug"`
 	// public key of the user who will access this environment
-	PubKey string `json:"pub_key,omitempty"`
+	PubKey string `json:"pub_key,omitempty" csv:"pub_key"`
 	// email to invite to vendor.replicated.com if Params.InviteUsers is set
-	Email string `json:"email,omitempty"`
+	Email string `json:"email,omitempty" csv:"email"`
 	// password to be set on kotsadm instances
-	KotsadmPassword string `json:"password,omitempty"`
+	KotsadmPassword string `json:"password,omitempty" csv:"password"`
 
-	App types.App `json:"-"`
+	App types.App `json:"-" csv:"-"`
 }
 
 type LabSpec struct {

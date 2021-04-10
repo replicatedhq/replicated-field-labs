@@ -24,6 +24,7 @@ func GetParams() (*fieldlabs.Params, error) {
 	params := &fieldlabs.Params{
 		NamePrefix:         os.Getenv("REPLICATED_NAME_PREFIX"),
 		EnvironmentsJSON:   os.Getenv("REPLICATED_ENVIRONMENTS_JSON"),
+		EnvironmentsCSV:    os.Getenv("REPLICATED_ENVIRONMENTS_CSV"),
 		LabsJSON:           os.Getenv("REPLICATED_LABS_JSON"),
 		InstanceJSONOutput: os.Getenv("REPLICATED_INSTANCE_JSON_OUT"),
 		InviteUsers:        os.Getenv("REPLICATED_INVITE_USERS") != "",
@@ -38,14 +39,17 @@ func GetParams() (*fieldlabs.Params, error) {
 		return nil, missingParam("REPLICATED_NAME_PREFIX")
 	}
 
-	if params.EnvironmentsJSON == "" {
+	if params.EnvironmentsJSON == "" && params.EnvironmentsCSV == "" {
 		params.EnvironmentsJSON = "./environments_test.json"
+	}
+
+	if params.EnvironmentsJSON != "" && params.EnvironmentsCSV != "" {
+		return nil, missingParam("exactly one of REPLICATED_ENVIRONMENTS_JSON or REPLICATED_ENVIRONMENTS_CSV")
 	}
 
 	if params.LabsJSON == "" {
 		params.LabsJSON = "./labs_test.json"
 	}
-
 
 	if params.APIToken == "" {
 		return nil, missingParam("REPLICATED_API_TOKEN")
