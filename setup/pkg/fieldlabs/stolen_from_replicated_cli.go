@@ -43,7 +43,6 @@ func readYAMLDir(yamlDir string) (string, error) {
 	return string(jsonAllYamls), nil
 }
 
-
 // this function is non-public in the Replicated CLI or I'd just import it
 func encodeKotsFile(prefix, path string, info os.FileInfo, err error) (*kotsSingleSpec, error) {
 	if err != nil {

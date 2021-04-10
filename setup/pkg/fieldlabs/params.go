@@ -11,7 +11,9 @@ type Params struct {
 	NamePrefix       string
 	Action           Action
 	EnvironmentsJSON string
-	LabsJSON         string
+	// alternative to JSON, handy for exports from sheets / google forms
+	EnvironmentsCSV string
+	LabsJSON        string
 
 	InstanceJSONOutput string
 
