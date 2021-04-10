@@ -1,4 +1,4 @@
-Lab 1.0: Hello World
+Lab 0: Hello World
 =========================================
 
 This exercise is designed to give you a sandbox to ensure you have the basic CLI tools set up and are prepared to proceed 
@@ -84,11 +84,12 @@ ahead of time.
 
 <p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
 
-Next, create an API token from the [Teams and Tokens](https://vendor.replicated.com/team/tokens) page:
+Next, create a `read/write` API token from the [Teams and Tokens](https://vendor.replicated.com/team/tokens) page:
+> Note: Ensure the token has "Write" access or you'll be unable create new releases.
 
 <p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-api-token.png" width=600></img></p>
 
-Ensure the token has "Write" access or you'll be unable create new releases. Once you have the values,
+Once you have the values,
 set them in your environment.
 
 ```
@@ -125,10 +126,12 @@ You can verify this yaml with `replicated release lint`:
 replicated release lint --yaml-dir=manifests
 ```
 
-If there are no errors, you'll get an empty list and a zero exit code.
+You should get a list that returns no errors, and exits with a 0 exit code. Output should look something like this:
 
 ```text
-RULE    TYPE    FILENAME    LINE    MESSAGE
+RULE                   TYPE    FILENAME                     LINE    MESSAGE
+config-spec            warn                                                                        Missing config spec
+container-resources    info    manifests/deployment.yaml    17      Missing container resources
 ```
 
 * * *
@@ -183,21 +186,14 @@ You can also verify this with `replicated customer ls`.
 replicated customer ls
 ```
 
-Now that we have a customer, we can download a license file
-
-```shell script
-replicated customer download-license \
-  --customer "Some-Big-Bank"
-```
-
-You'll notice this just dumps the license to stdout, so you'll probably want to redirect the output to a file:
+Now that we have a customer, we can download the license and save it to a file
 
 ```shell script
 export LICENSE_FILE=~/Some-Big-Bank-${REPLICATED_APP}-license.yaml
 replicated customer download-license --customer "Some-Big-Bank" > "${LICENSE_FILE}"
 ```
 
-You can verify the license was written properly with `cat` or `head`:
+View the license file with `cat` or `head`:
 
 ```text
 $ head ${LICENSE_FILE}
@@ -218,8 +214,13 @@ spec:
 
 Next, let's get the install commands for the Unstable channel with `channel inspect`:
 
-```text
-$ replicated channel inspect Unstable
+```shell script
+replicated channel inspect Unstable
+```
+
+Output should look something like this:
+
+```
 ID:             VEr0nhJBBUdaWpPaOIK-SOryKZEwa3Mg
 NAME:           Unstable
 DESCRIPTION:
@@ -254,14 +255,14 @@ KOTS has not yet been installed on this server, to give you an opportunity to ex
 Next, ssh into the server we just created, and run the install script from above, using the `EMBEDDED` version:
 
 ```shell
-curl -sSL https://k8s.kurl.sh/<your-app-name-and-channel> | sudo bash
+curl -sSL https://k8s.kurl.sh/<app-slug-name>-<channel name> | sudo bash
 ```
 
 This script will install Docker, Kubernetes, and the KOTS admin console containers (kotsadm).
 
 Installation should take about 5-10 minutes.
 
-Once the installation script is completed, it will show the URL you can connect to in order to continue the installation:
+You should expect output like this:
 
 ```text
 
@@ -282,10 +283,22 @@ To add worker nodes to this installation, run the following script on your other
 
 ```
 
-Following the instructions on the screen, you can reload the shell and `kubectl` will now work:
+Please note the Kotsadm URL and Password in the above output. We will use this later to complete the install of the application.
+
+Per the instructions, run the following to reload your shell so that you can run `kubectl`
+
+```shell script
+bash -l
+```
+
+Test `kubectl` with the following command:
+```shell script
+kubectl get pods
+```
+
+Expect output like this:
 
 ```bash
-user@kots-guide:~$ kubectl get pods
 NAME                                  READY   STATUS      RESTARTS   AGE
 kotsadm-585579b884-v4s8m              1/1     Running     0          4m47s
 kotsadm-migrations                    0/1     Completed   2          4m47s
@@ -300,20 +313,31 @@ user@kots-guide:~$
 ### 8. Install the Application
 
 At this point, Kubernetes and the Admin Console are running, but the application isn't deployed yet.
-To complete the installation, visit the URL that the installation script displays when completed.
+To complete the installation, visit the URL noted previously in your browser.  The URL is shown in the output from the installation script.
 
-Once you've bypassed the insecure certificate warning, you have the option of uploading a trusted cert and key.
-For production installations we recommend using a trusted cert, but for this tutorial we'll click the "skip this step" button to proceed with the self-signed cert.
+Click "Continute and Setup" in the browser to continue to the secure Admin Console.
+
+TODO: insert picture of insecure landing page.
+
+Accept the insecure certificate.
+In Chrome, click "Advanced" and then "Proceed"
+
+TODO: Insert screenshot of certificate warning
+
+Click the "skip this step" button in the admin console.
+> Note, For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
 ![Console TLS](https://kots.io/images/guides/kots/admin-console-tls.png)
 
-Next, you'll be asked for a password -- you'll want to grab the password from the CLI output above and use it to log in to the console.
+Paste in the password noted previously on the password screen. The password is shown in the output from the installation script.
 
 ![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
 
 Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
+
+TODO: add instructions on how to download this from the instance, save as a file, and then upload the file. Perhaps adding the option to paste your license would make this smoother.
 
 ![Upload License](https://kots.io/images/guides/kots/upload-license.png)
 
@@ -324,14 +348,22 @@ If you have failing checks, you can click continue -- the UI will show a warning
 ![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
 
 
-You should see the app Deployed and Ready.
-If you are still connected to this server over ssh, `kubectl get pods` will now show the example nginx service we just deployed.
+You will be presented with the application dashboard where you can see various information and metrics.
 
 ![Cluster](https://kots.io/images/guides/kots/application.png)
 
+Run the following in the console to show the nginx application we just deployed:
+```shell script
+kubectl get pods
+```
+
 ### View the application
 
-Since we used the default nginx application and enabled the ingress object, we can view the application at `http://${INSTANCE_IP}/` with no port, and you should see a basic (perhaps familiar) nginx server running:
+Run the following command to get the IP address of the instance running your application.
+
+TODO: Add a command to show the IP address. Also to get the port of the Nginx service
+
+Since we used the default nginx application and enabled the ingress object, we can view the application at `http://${INSTANCE_IP}:${PORT}/` and you should see a basic (perhaps familiar) nginx server running:
 
 ![Cluster](https://kots.io/images/guides/kots/example-nginx.png)
 
