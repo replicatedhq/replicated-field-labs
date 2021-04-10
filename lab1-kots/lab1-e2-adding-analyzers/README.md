@@ -24,7 +24,11 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 ### The Problem
 
-Open the KOTS admin console by navigating to `https://$INSTANCE_IP:8800`
+You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
+
+```shell
+kubectl kots reset-password -n default
+```
 
 Unfortunately, even though `config.txt` is present, the app is still not healthy:
 
@@ -62,15 +66,15 @@ Once its uploaded, you should see a similar view of the analyzers.
 Again, nothing here is all the useful to us, but next we'll dig into the logs by navigating to the file inspector tab. 
 We can use the line-level deep linking in the UI to highlight and share specific errors and log lines.
 
+**Exercise** navigate to `cluster-info/cluster_version.json`, and determine the version of Kubernetes that is running on the server side.
+Test the line-level linking by copying the URL into a new tab.
+Then, in chat, to send the same link to another lab participant and ensure they can access the line in your bundle.
+
 ![bundle-line-links](./img/bundle-line-links.png)
 
 Note that as you click line numbers in the gutter, the URL changes.
 
 <div align="center"><blockquote><h3>Once a bundle has been uploaded to the vendor console, use deep-linking to collaborate on the diagnosis with your team.</h3></blockquote></div>
-
-**Exercise** navigate to `cluster-info/cluster_version.json`, and determine the version of Kubernetes that is running on the server side.
-Test the line-level linking by copying the URL into a new tab.
-Then, send the same link to another lab participant and ensure they can access the line in your bundle.
 
 These links can be attached to a support ticket, shared in slack, etc.
 
@@ -168,7 +172,7 @@ cd lab1-kots/lab1-e2-adding-analyzers
 ```
 
 The files we care about are in the `manifests` directory, most importantly, `kots-support-bundle.yaml`.
-You'll want to review what's there, and the documentation on https://toubleshoot.sh is worth checking out too
+You'll want to review what's there, and the documentation on https://troubleshoot.sh is worth checking out too
 For example, the check-file analyzer makes use of the [exec collector](https://troubleshoot.sh/docs/collect/exec/) 
 and the [regex analyzer](https://troubleshoot.sh/docs/analyze/regex/).
 

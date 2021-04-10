@@ -1,7 +1,7 @@
 apiVersion: kots.io/v1beta1
 kind: Application
 metadata:
-  name: app-slug
+  name: app
 spec:
   title: "Lab 0: Hello World"
   statusInformers:

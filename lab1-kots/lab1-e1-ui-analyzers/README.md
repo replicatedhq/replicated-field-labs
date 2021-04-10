@@ -3,7 +3,14 @@ Lab 1.1: Using Support Analyzers
 
 In this lab, we'll use the Support Bundle analyzers feature to debug an application, modifying the host in order to create the correct conditions for the application to start. In this case, the app is already deployed, but something is not quite right. The Status Informers show "Unavailable".
 
+
 ![lab1-e1-kots-ui-unavailable](img/lab1-e1-kots-ui-unavailable.png)
+
+You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
+
+```shell
+kubectl kots reset-password -n default
+```
 
 ### Investigating
 
