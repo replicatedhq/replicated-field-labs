@@ -68,7 +68,7 @@ $ replicated version
 ```
 
 
-#### Configure environment
+#### 2. Configure environment
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
@@ -103,7 +103,7 @@ You can ensure this is working with
 replicated release ls
 ```
 
-#### Verifying manifests
+#### 3. Verifying manifests
 
 You should have a few YAML files in `manifests`:
 
@@ -136,7 +136,7 @@ container-resources    info    manifests/deployment.yaml    17      Missing cont
 
 * * *
 
-### Creating our first release
+### 4. Creating our first release
 
 
 Now that we have some YAML, let's create a release and promote it to the `Unstable` channel so we can test it internally.
@@ -158,45 +158,36 @@ SEQUENCE    CREATED                      EDITED                  ACTIVE_CHANNELS
 
 * * *
 
-### Creating a Customer License
+### 5. Download a Customer License
 
-Now that we've created a release, we can create a "customer" object.
-A customer represents a single licensed end user of your application.
+A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
+To create a customer license, log in to the [Vendor Portal](https://vendor.replicated.com) and select the "Customers" link on the left. A customer has already been created for you
 
-In this example, we'll create a customer named `Some-Big-Bank` with an expiration in 10 days.
-Since we created our release on the `Unstable` channel, we'll assign the customer to this channel.
+![Customers](./img/dev-customer.png)
 
-```shell script
-replicated customer create \
-  --name "Some-Big-Bank" \
-  --expires-in "240h" \
-  --channel "Unstable"
-```
+You can view the customer details by clicking the row. You'll notice that the customer is assigned to the the "Unstable" channel on the right hand side, and the Customer Type is set to "Development".
+When you've reviewed these, you can click the "Download License" link in the top right corner.
 
-Your output should look something like this:
+![Create Customer](./img/view-customer.png)
 
-```text
-ID                             NAME             CHANNELS     EXPIRES                          TYPE
-1h0yojS7MmpAUcZk8ekt7gn0M4q    Some-Big-Bank     Unstable    2020-09-13 19:48:00 +0000 UTC    dev
-```
+This will download the file with your customer name and a `.yaml` extension.
+This is the license file a customer would need to install your application.
 
-You can also verify this with `replicated customer ls`.
+
+Alternatively, you can also use the CLI to review customers and download license files:
 
 ```text
 replicated customer ls
 ```
 
-Now that we have a customer, we can download the license and save it to a file
 
 ```shell script
-export LICENSE_FILE=~/Some-Big-Bank-${REPLICATED_APP}-license.yaml
-replicated customer download-license --customer "Some-Big-Bank" > "${LICENSE_FILE}"
+replicated customer download-license --customer "Dev Customer" > dev-customer.yaml
 ```
-
-View the license file with `cat` or `head`:
+Whether you used the UI or CLI, you can verify the license file you downloaded with `cat` or at the very least `head`:
 
 ```text
-$ head ${LICENSE_FILE}
+$ head dev-customer.yaml
 
 apiVersion: kots.io/v1beta1
 kind: License
@@ -428,17 +419,5 @@ You should see two pods running.
 
 ### Next Steps
 
-From here, it's time to start iterating on your application.
+From here, you can continue iterating on your application to explore KOTS features.
 Continue making changes and using `make release` to publish them.
-
-
-If you want to learn more about KOTS features, you can explore some of the [intermediate and advanced guides](/vendor/guides), some good next steps might be
-
-- [Integrating your release workflow with CI](/vendor/guides/ci-cd-integration)
-- [Integrating a Helm Chart](/vendor/guides/helm-chart)
-
-If you already have a release published in https://vendor.replicated.com you'd like to use as a starting point, check out the help docs for `replicated release download`:
-
-```shell script
-replicated release download --help
-```

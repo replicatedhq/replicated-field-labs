@@ -32,6 +32,13 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/nginx/html
               name: html
+          resources:
+            limits:
+              memory: '256Mi'
+              cpu: '500m'
+            requests:
+              memory: '32Mi'
+              cpu: '100m'
       volumes:
         - name: lab1-config
           hostPath:
