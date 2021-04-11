@@ -4,37 +4,31 @@ Field Lab Setup Tools
 
 ### Parameters
 
-There are no CLI flags because folks were in a hurry -- review the supported env vars in [setup/cmd/kots-field-labs/param.go](./setup/cmd/kots-field-labs/param.go)
+There are no CLI flags on the binary itself, Makefile wraps env vars:
 
+    $ head Makefile
+    user := ${USER}
+    labs_json := "labs_e0.json"
+    env_json := ""
+    env_csv := ""
+    action := "create"
+    prefix := ""
+    provisioner_json_out := "terraform/provisioner_pairs.json"
+    
+You'll also need to set an API token
 
     # Token for provisioning new apps and users
     export REPLICATED_API_TOKEN=...
-    # JSON containing environment (session attendee) specs
-    export REPLICATED_ENVIRONMENTS_JSON=./environments_test.json
-    # JSON containing lab exercise specs
-    export REPLICATED_LABS_JSON=./labs_test.json
-    # unique prefix to avoid app slug collisions
-    export REPLICATED_NAME_PREFIX=abcd
 
 
 ### Usage
 
-    cd setup
-    go install ./cmd/kots-field-labs
-    cd ../
-    REPLICATED_ACTION=create  kots-field-labs
+Prefix should be set to a short unique string to prevent name collisions
 
-this will create apps, save the list and share w/ participants
-
-Review ./terraform/provisioner_pairs.json
-
-    cd terraform
-    terraform init 
-    terraform apply -var user=$GCP_NAME
+	make apps prefix=abcd env_json=... labs_json=...
+	make tf
 
 ### Cleanup
 
-    cd terraform
-    terraform destroy
-    cd ..
-    REPLICATED_ACTION=destroy kots-field-labs
+    make -C terraform destroy
+    make apps action=destroy prefix=abcd env_json=... labs_json=...

@@ -13,6 +13,10 @@ spec:
       labels:
         app: file-check-pod
     spec:
+      volumes:
+        - name: lab1-config
+          hostPath:
+            path: /etc/lab1-e1/
       containers:
         - name: busybox
           image: busybox
@@ -20,9 +24,12 @@ spec:
             - sleep
             - infinity
           volumeMounts:
-            - mountPath: /etc/lab1-e2
+            - mountPath: /etc/lab1-e1
               name: lab1-config
-      volumes:
-        - name: lab1-config
-          hostPath:
-            path: /etc/lab1-e2/
+          resources:
+            limits:
+              memory: '256Mi'
+              cpu: '500m'
+            requests:
+              memory: '32Mi'
+              cpu: '100m'

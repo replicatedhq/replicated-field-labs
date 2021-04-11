@@ -13,7 +13,7 @@ variable "provisioner_pairs_json" {
 locals {
   // load the json file produced by the go program, with a list of pairs of instance-name + provision-script,
   // one instance per participant per exercise
-  provisioner_pairs = jsondecode(file("${path.module}/%{var.provisioner_pairs_json}"))
+  provisioner_pairs = jsondecode(file("${path.module}/../${var.provisioner_pairs_json}"))
 }
 
 // create an instance

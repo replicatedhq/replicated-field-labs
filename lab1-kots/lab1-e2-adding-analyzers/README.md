@@ -6,6 +6,12 @@ Lab 1.2: Support Analyzers
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 
+### Ground Rules
+
+In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
+It is very possible to reverse-engineer the solution by reading the Kubernetes YAML rather instead of following the lab steps.
+If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
+
 ### Before you start
 
 Before you start, it's worth noting that this server already has the `config.txt` file in place. You can SSH the
@@ -254,6 +260,8 @@ spec:
 </details>
 
 
+To validate your analyzer works, you'll want to collect two support bundles, one when the secretkey.txt file is present and another when it is absent. 
+You should confirm that in the "absent" case, your bundle analyis presents an error with helpful remediation info.
 
 ### Going deeper (optional)
 

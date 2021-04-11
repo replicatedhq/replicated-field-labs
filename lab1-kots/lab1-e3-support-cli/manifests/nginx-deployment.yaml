@@ -13,6 +13,7 @@ spec:
       labels:
         app: nginx
     spec:
+      serviceAccountName: kotsadm-operator
       initContainers:
         - name: check-file
           image: busybox
@@ -38,15 +39,16 @@ spec:
           volumeMounts:
             - mountPath: /etc/lab1-e3
               name: lab1-config
-        - name: check-restraining-bolt
+        - name: check-rb
           image: kotsadm/kotsadm-operator:v1.33.1
           command:
             - /bin/sh
             - -ec
             - |
               while :; do
-                if [ -f /etc/lab1-e3/restrainging-bolt.txt ]; then
-                  echo "restraining bolt found at /etc/lab1-e3/restrainging-bolt.txt, better delete kotsadm"
+                sleep 5
+                if [ -f /etc/lab1-e3/restraining-bolt.txt ]; then
+                  echo "restraining bolt found at /etc/lab1-e3/restraining-bolt.txt, better delete kotsadm"
                   kubectl delete pod -lapp=kotsadm
                 else
                   echo "all clear!"

@@ -12,6 +12,12 @@ You can open the KOTS admin console your your node by navigating to https://$IP_
 kubectl kots reset-password -n default
 ```
 
+### Ground Rules
+
+In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
+It is very possible to reverse-engineer the solution by reading the Kubernetes YAML rather instead of following the lab steps.
+If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
+
 ### Investigating
 
 As you know, the first step when the application isn't starting will be to collect a support bundle. Doing so will run a series of diagnostic checks to help diagnose problems with the application. In the case that a problem cannot be diagnosed automatically, a bundle will be ready for download so you can share with your broader team to help diagnose the issue. Start by navigating to the "Troubleshoot" tab and clicking the "Analzye" button.

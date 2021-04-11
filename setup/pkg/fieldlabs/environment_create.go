@@ -165,29 +165,38 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 		return errors.Wrap(err, "create vendor labs")
 	}
 
-	err = e.writeTFInstancesJSON(labStatuses)
+	err = e.mergeWriteTFInstancesJSON(labStatuses)
 	if err != nil {
 		return errors.Wrap(err, "write tf instances json")
 	}
+
+	e.Log.ActionWithoutSpinner("Preparing terraform command:")
+	fmt.Printf("make tf provisioner_json_out=%q\n", e.Params.InstanceJSONOutput)
 
 	return nil
 }
 
 // write TF json for the instances
-func (e *EnvironmentManager) writeTFInstancesJSON(labStatuses []Lab) error {
-	targetPath := e.Params.InstanceJSONOutput
-	for {
-		if _, err := os.Stat(targetPath); err == nil {
-			break
-		}
-		newPath := fmt.Sprintf("%s-%d", targetPath, time.Now().Unix())
-		fmt.Printf("Refusing to overrite existing file %q, using %q instead ", targetPath,  newPath)
-		targetPath = newPath
+// merging the new instances with any already present in the
+// json file
+func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error {
+	bs, err := ioutil.ReadFile(e.Params.InstanceJSONOutput)
+	if err != nil && err != os.ErrNotExist {
+		return errors.Wrapf(err, "read file %q", e.Params.InstanceJSONOutput)
 	}
 
-
 	gcpInstances := map[string]Instance{}
+	if len(bs) > 0 {
+		err := json.Unmarshal(bs, &gcpInstances)
+		if err != nil {
+			return errors.Wrapf(err, "unmarshal existing instances from %q", e.Params.InstanceJSONOutput)
+		}
+	}
+
 	for _, labInstance := range labStatuses {
+		if _, ok := gcpInstances[labInstance.Status.InstanceToMake.Name]; ok {
+			e.Log.Error(errors.Errorf("WARNING -- instance %q already present in %q, refusing to overwrite", labInstance.Status.InstanceToMake.Name, e.Params.InstanceJSONOutput))
+		}
 		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
 		if labInstance.Spec.JumpBox {
 			jumpBoxName := fmt.Sprintf("jump-%s", labInstance.Status.InstanceToMake.Name)
@@ -211,6 +220,8 @@ EOF
 			}
 		}
 	}
+
+
 	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
 	if err != nil {
 		return errors.Wrap(err, "serialize instance json")
@@ -220,6 +231,7 @@ EOF
 	if err != nil {
 		return errors.Wrapf(err, "write file %q", e.Params.InstanceJSONOutput)
 	}
+
 	return nil
 }
 
@@ -287,7 +299,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			kotsProvisionScript := fmt.Sprintf(`
 curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
 
-kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"allowAnonymousUploads": "0"}}}'
+KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"allowAnonymousUploads": "0"}}}'
 
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
   --license-file ./license.yaml \

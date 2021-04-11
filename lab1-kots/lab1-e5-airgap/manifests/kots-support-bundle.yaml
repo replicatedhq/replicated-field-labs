@@ -8,8 +8,5 @@ spec:
         selector:
           - app=nginx
         namespace: '{{repl Namespace }}'
-        limits:
-          maxAge: 30d
-          maxLines: 10000
   analyzers: [] # dex add answer from l1e2
 

@@ -8,9 +8,6 @@ spec:
         selector:
           - app=nginx
         namespace: '{{repl Namespace }}'
-        limits:
-          maxAge: 30d
-          maxLines: 10000
     - exec:
         name: check-config
         collectorName: check-config

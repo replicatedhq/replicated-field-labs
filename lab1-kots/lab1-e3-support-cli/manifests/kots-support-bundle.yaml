@@ -8,9 +8,6 @@ spec:
         selector:
           - app=nginx
         namespace: '{{repl Namespace }}'
-        limits:
-          maxAge: 30d
-          maxLines: 10000
     - exec:
         name: file-checks
         collectorName: check-config
@@ -21,7 +18,7 @@ spec:
           - stat
           - -c
           - "%a"
-          - /etc/lab1-e2/config.txt
+          - /etc/lab1-e3/config.txt
     - exec:
         name: file-checks
         collectorName: check-secret
@@ -32,7 +29,7 @@ spec:
           - stat
           - -c
           - "%a"
-          - /etc/lab1-e2/secretkey.txt
+          - /etc/lab1-e3/secretkey.txt
     - exec:
         name: file-checks
         collectorName: check-rb
@@ -56,18 +53,18 @@ spec:
         regex: '400'
         outcomes:
           - pass:
-              message: Found properly-restricted file at /etc/lab1-e2/config.txt
+              message: Found properly-restricted file at /etc/lab1-e3/config.txt
           - fail:
-              message: Could not find a file at /etc/lab1-e2/config.txt with 400 permissions -- please ensure this file exists with any content
+              message: Could not find a file at /etc/lab1-e3/config.txt with 400 permissions -- please ensure this file exists with any content
     - textAnalyze:
         checkName: Secret Check
         fileName: file-checks/{{repl Namespace}}/*/check-secret-*.txt
         regex: '400'
         outcomes:
           - pass:
-              message: Found properly-restricted file at /etc/lab1-e2/secretkey.txt
+              message: Found properly-restricted file at /etc/lab1-e3/secretkey.txt
           - fail:
-              message: Could not find a file at /etc/lab1-e2/secretkey.txt with 400 permissions -- please ensure this file exists with any content
+              message: Could not find a file at /etc/lab1-e3/secretkey.txt with 400 permissions -- please ensure this file exists with any content
     - textAnalyze:
         checkName: Restraint Check
         fileName: file-checks/{{repl Namespace}}/*/check-rb-*.txt
