@@ -12,6 +12,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -174,6 +175,17 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 
 // write TF json for the instances
 func (e *EnvironmentManager) writeTFInstancesJSON(labStatuses []Lab) error {
+	targetPath := e.Params.InstanceJSONOutput
+	for {
+		if _, err := os.Stat(targetPath); err == nil {
+			break
+		}
+		newPath := fmt.Sprintf("%s-%d", targetPath, time.Now().Unix())
+		fmt.Printf("Refusing to overrite existing file %q, using %q instead ", targetPath,  newPath)
+		targetPath = newPath
+	}
+
+
 	gcpInstances := map[string]Instance{}
 	for _, labInstance := range labStatuses {
 		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake

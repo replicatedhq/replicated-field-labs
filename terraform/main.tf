@@ -6,48 +6,15 @@ provider "google" {
 variable "user" {
   description = "ssh user for provisioning instances"
 }
+variable "provisioner_pairs_json" {
+  description = "path to json file containing instance details"
+}
 
 locals {
   // load the json file produced by the go program, with a list of pairs of instance-name + provision-script,
   // one instance per participant per exercise
-  provisioner_pairs = jsondecode(file("${path.module}/provisioner_pairs.json"))
+  provisioner_pairs = jsondecode(file("${path.module}/%{var.provisioner_pairs_json}"))
 }
-
-//// shared postgres instance for labs 2, 3, and 4
-//resource "google_sql_database_instance" "shared_postgres" {
-//  name             = "shared_postgres"
-//  database_version = "POSTGRES_11"
-//  region           = "us-central1"
-//
-//  settings {
-//    # Second-generation instance tiers are based on the machine
-//    # type. See argument reference below.
-//    tier = "db-f1-micro"
-//    ip_configuration {
-//
-//      dynamic "authorized_networks" {
-//        for_each = {
-//        for instance in google_compute_instance.kots-field-labs:
-//        instance.name => instance
-//        if length(instance.network_interface) > 0
-//        }
-//        iterator = instance
-//
-//        content {
-//          name  = instance.value.name
-//          value = instance.value.network_interface.0.access_config.0.nat_ip
-//        }
-//      }
-//    }
-//  }
-//}
-//
-//
-//resource "google_sql_user" "pg_user" {
-//  instance = google_sql_database_instance.shared_postgres.name
-//  name     = "pg_user"
-//  password = "pg_password"
-//}
 
 // create an instance
 resource "google_compute_instance" "kots-field-labs" {
