@@ -263,7 +263,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			}
 			lab.Status.Channel = channel
 
-			customer, err := e.Client.CreateCustomer(labSpec.Customer, app.ID, channel.ID, OneWeek)
+			customer, err := e.getOrCreateCustomer(lab)
 			if err != nil {
 				return nil, errors.Wrapf(err, "create customer for lab %q app %q", labSpec.Slug, app.Slug)
 			}
@@ -377,6 +377,25 @@ func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error)
 		return nil, errors.Wrapf(err, "create channel for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
 	}
 	return channel, nil
+}
+
+func (e *EnvironmentManager) getOrCreateCustomer(lab Lab) (*types.Customer, error) {
+	customers, err := e.Client.ListCustomers(lab.Status.App.ID)
+	if err != nil {
+		return nil, errors.Wrapf(err, "list customer %q for app %q", lab.Spec.Channel, lab.Status.App.Slug)
+	}
+
+	for _, customer := range customers {
+		if customer.Name == lab.Spec.Customer {
+			return &customer, nil
+		}
+	}
+
+	customer, err := e.Client.CreateCustomer(lab.Spec.Customer, lab.Status.App.ID, lab.Status.Channel.ID, OneWeek)
+	if err != nil {
+		return nil, errors.Wrapf(err, "create customer for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
+	}
+	return customer, nil
 }
 
 func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, error) {
