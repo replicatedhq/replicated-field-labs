@@ -72,7 +72,12 @@ $ replicated version
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-Once you're logged in, you'll need to set up two environment variables to interact with vendor.replicated.com:
+You will be in a shared account with all other lab participants -- once you log in, you'll want to select your specific app for the lab:
+
+<img width="1470" alt="Screen Shot 2021-04-12 at 6 47 08 AM" src="https://user-images.githubusercontent.com/3730605/114389802-144f4280-9b5b-11eb-99c1-53d631a58947.png">
+
+
+Now, you'll need to set up two environment variables to interact with vendor.replicated.com:
 
 ```
 export REPLICATED_APP=...
