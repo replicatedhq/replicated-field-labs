@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -383,28 +384,52 @@ func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, erro
 	var appsCreated []types.App
 	for _, env := range envs {
 		appName := fmt.Sprintf("%s-%s", e.Params.NamePrefix, env.Slug)
-		e.Log.ActionWithSpinner(fmt.Sprintf("Creating App %s", appName))
-		app, err := e.Client.CreateKOTSApp(appName)
+		app, err := e.getOrCreateApp(appName)
 		if err != nil {
-			e.Log.FinishSpinnerWithError()
-			return nil, errors.Wrapf(err, "create app %s", appName)
+			return nil, errors.Wrapf(err, "get or create app %q", appName)
 		}
-		e.Log.FinishSpinner()
-
-		outApp := types.App{
-			ID:        app.ID,
-			Name:      app.Name,
-			Scheduler: "kots",
-			Slug:      app.Slug,
-		}
-		env.App = outApp
-
+		env.App = *app
 		outEnvs = append(outEnvs, env)
-		appsCreated = append(appsCreated, outApp)
+		appsCreated = append(appsCreated, *app)
 
 	}
 	_ = e.PrintApps(appsCreated)
 	return outEnvs, nil
+}
+
+func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) {
+	existingApp, err := e.GClient.GetApp(appName)
+	if err != nil && !e.isNotFound(err) {
+		return nil, errors.Wrapf(err, "check for existing app")
+	}
+	if existingApp != nil {
+		e.Log.ActionWithoutSpinner(fmt.Sprintf("Found Existing app %s", appName))
+		return &types.App{
+			ID:        existingApp.ID,
+			Name:      existingApp.Name,
+			Scheduler: "kots",
+			Slug:      existingApp.Slug,
+		}, nil
+	}
+
+	e.Log.ActionWithSpinner(fmt.Sprintf("Creating App %s", appName))
+	app, err := e.Client.CreateKOTSApp(appName)
+	if err != nil {
+		e.Log.FinishSpinnerWithError()
+		return nil, errors.Wrapf(err, "create app %s", appName)
+	}
+	e.Log.FinishSpinner()
+
+	return &types.App{
+		ID:        app.ID,
+		Name:      app.Name,
+		Scheduler: "kots",
+		Slug:      app.Slug,
+	}, nil
+}
+
+func (e *EnvironmentManager) isNotFound(err error) bool {
+	return strings.Contains(err.Error(), "App not found")
 }
 
 func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
