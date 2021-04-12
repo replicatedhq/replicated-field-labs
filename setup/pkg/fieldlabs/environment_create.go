@@ -143,10 +143,6 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 	return nil
 }
 func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
-	// for apps that exist, skip everything, filter them out
-
-
-
 	if e.Params.InviteUsers {
 		err := e.inviteUsers(envs)
 		if err != nil {
@@ -246,6 +242,8 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			lab.Spec = labSpec
 			lab.Status.App = app
 			lab.Status.Env = env
+			appLabSlug := fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug)
+			e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
 
 			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
 			if err != nil {
@@ -319,7 +317,7 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 			}
 
 			lab.Status.InstanceToMake = Instance{
-				Name:        fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug),
+				Name:        appLabSlug,
 				MachineType: "n1-standard-4",
 				BookDiskGB:  "200",
 				PublicIps:   publicIPs,
@@ -344,6 +342,7 @@ EOF
 %s
 `, lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, lab.Spec.PostInstallSH),
 			}
+			e.Log.FinishSpinner()
 			labs = append(labs, lab)
 		}
 	}
@@ -369,7 +368,7 @@ func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error)
 	}
 
 	if len(matchedChannels) > 1 {
-		return nil, errors.New("expected at most one channel to match %q, found %d")
+		return nil, errors.Errorf("expected at most one channel to match %q, found %d", lab.Spec.Channel, len(matchedChannels))
 	}
 
 	channel, err := e.GClient.CreateChannel(lab.Status.App.ID, lab.Spec.Slug, lab.Spec.Name)
