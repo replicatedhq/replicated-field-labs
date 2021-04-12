@@ -365,7 +365,7 @@ Next, we'll walk through creating and delivering an update to the application we
 ### 9. Iterating
 
 From our local repo, we can update the nginx deployment to test a simple update to the application.
-We'll add a line to `deployment.yaml`, right after `spec:`. The line to add is
+We'll add a line to `nginx-deployment.yaml`, right after `spec:`. The line to add is
 
 ```yaml
   replicas: 2
@@ -374,20 +374,20 @@ We'll add a line to `deployment.yaml`, right after `spec:`. The line to add is
 Using `head` to view the first 10 lines of the file should give the output below
 
 ```shell script
-head manifests/deployment.yaml
+head manifests/nginx-deployment.yaml
 ```
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-nginx
+  name: nginx
   labels:
-    app: example
-    component: nginx
+    app: nginx
 spec:
   replicas: 2
   selector:
+    matchLabels:
 ```
 
 Once you've added the `replicas` line, you can create a new release:
