@@ -312,12 +312,12 @@ To complete the installation, visit the URL noted previously in your browser.  T
 
 Click "Continute and Setup" in the browser to continue to the secure Admin Console.
 
-TODO: insert picture of insecure landing page.
+<!-- TODO: insert picture of insecure landing page. -->
 
 Accept the insecure certificate.
-In Chrome, click "Advanced" and then "Proceed"
 
-TODO: Insert screenshot of certificate warning
+
+<!-- TODO: Insert screenshot of certificate warning -->
 
 Click the "skip this step" button in the admin console.
 > Note, For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
@@ -329,10 +329,8 @@ Paste in the password noted previously on the password screen. The password is s
 ![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
 
 Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
-The next step is to upload a license file so KOTS can pull containers and run your application.
+The next step is to upload a license file so KOTS can pull containers and run your application. Use the license file we downloaded in step 5.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
-
-TODO: add instructions on how to download this from the instance, save as a file, and then upload the file. Perhaps adding the option to paste your license would make this smoother.
 
 ![Upload License](https://kots.io/images/guides/kots/upload-license.png)
 
@@ -354,11 +352,9 @@ kubectl get pods
 
 ### View the application
 
-Run the following command to get the IP address of the instance running your application.
+Use the "Open Lab 0" button in the dashboard to open the NGINX server. 
 
-TODO: Add a command to show the IP address. Also to get the port of the Nginx service
-
-Since we used the default nginx application and enabled the ingress object, we can view the application at `http://${INSTANCE_IP}:${PORT}/` and you should see a basic (perhaps familiar) nginx server running:
+Since this example uses the default nginx application, you should see a basic (perhaps familiar) nginx server running:
 
 ![Cluster](https://kots.io/images/guides/kots/example-nginx.png)
 
