@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: app-slug
 spec:
-  title: "Lab 1.2: Adding Analyzers"
+  title: "Lab 2"
   statusInformers:
     - deployment/nginx
   ports:
