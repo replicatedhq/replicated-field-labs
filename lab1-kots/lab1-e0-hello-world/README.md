@@ -114,14 +114,15 @@ You should have a few YAML files in `manifests`:
 
 ```text
 $ ls -la manifests
-.rw-r--r--  114 dex 16 Aug  7:59 config-map.yaml
-.rw-r--r--  906 dex 16 Aug  7:59 config.yaml
-.rw-r--r--  608 dex 16 Aug  7:59 deployment.yaml
-.rw-r--r--  296 dex 16 Aug  7:59 ingress.yaml
-.rw-r--r-- 2.5k dex 16 Aug  7:59 preflight.yaml
-.rw-r--r--  399 dex 16 Aug  7:59 replicated-app.yaml
-.rw-r--r--  205 dex 16 Aug  7:59 service.yaml
-.rw-r--r--  355 dex 16 Aug  7:59 support-bundle.yaml
+total 28
+drwxr-xr-x. 2 root root  161 Apr 12 18:27 .
+drwxr-xr-x. 4 root root   94 Apr 12 18:27 ..
+-rw-r--r--. 1 root root  179 Apr 12 18:27 k8s-app.yaml
+-rw-r--r--. 1 root root 4186 Apr 12 18:27 kots-app.yaml
+-rw-r--r--. 1 root root  990 Apr 12 18:27 kots-preflight.yaml
+-rw-r--r--. 1 root root  347 Apr 12 18:27 kots-support-bundle.yaml
+-rw-r--r--. 1 root root  447 Apr 12 18:27 nginx-deployment.yaml
+-rw-r--r--. 1 root root  438 Apr 12 18:27 nginx-service.yaml
 ```
 
 You can verify this yaml with `replicated release lint`:
