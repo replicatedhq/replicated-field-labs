@@ -43,5 +43,20 @@
     "post_install_sh": "",
     "public_ip": true,
     "jump_box": false
+  },
+  {
+    "name": "Lab 1.3: Support CLI",
+    "slug": "lab1-e3-support-cli",
+    "channel": "lab1-e3-support-cli",
+    "channel_slug": "lab1-e3-support-cli",
+    "customer": "lab1-e3-support-cli",
+    "yaml_dir": "lab1-kots/lab1-e3-support-cli/manifests",
+    "k8s_installer_yaml_path": "lab1-kots/lab1-e3-support-cli/kurl-installer.yaml",
+    "skip_install_kots": false,
+    "config_values": "",
+    "pre_install_sh": "\nsudo mkdir -p /etc/lab1-e3/\nsudo touch /etc/lab1-e3/config.txt\nsudo chmod 400 /etc/lab1-e3/config.txt\nsudo touch /etc/lab1-e3/secretkey.txt && sudo chmod 400 /etc/lab1-e3/secretkey.txt\nsudo touch /etc/lab1-e3/restraining-bolt.txt && sudo chmod 400 /etc/lab1-e3/restraining-bolt.txt\n",
+    "post_install_sh": "",
+    "public_ip": true,
+    "jump_box": false
   }
 ]

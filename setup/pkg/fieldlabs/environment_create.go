@@ -334,6 +334,7 @@ EOF
 
 mkdir -p ~/.ssh
 cat <<EOF >>~/.ssh/authorized_keys
+# added by kots-field-labs
 %s
 EOF
 
