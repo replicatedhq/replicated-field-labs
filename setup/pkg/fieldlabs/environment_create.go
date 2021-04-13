@@ -298,7 +298,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			kotsProvisionScript := fmt.Sprintf(`
 curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
 
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"allowAnonymousUploads": "0"}}}'
+KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"acceptAnonymousUploads": "0"}}}'
 
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
   --license-file ./license.yaml \
