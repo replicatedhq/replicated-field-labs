@@ -481,6 +481,11 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
 			return errors.Wrap(err, "send invite request")
 		}
 		defer resp.Body.Close()
+		// rate limit returned when already invited
+		if resp.StatusCode == 429 {
+			e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", env.Email)
+			continue
+		}
 		if resp.StatusCode != 204 {
 			body, _ := ioutil.ReadAll(resp.Body)
 			return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
