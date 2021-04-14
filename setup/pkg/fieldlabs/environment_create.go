@@ -196,7 +196,7 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 		}
 		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
 		if labInstance.Spec.JumpBox {
-			jumpBoxName := fmt.Sprintf("jump-%s", labInstance.Status.InstanceToMake.Name)
+			jumpBoxName := fmt.Sprintf("%s-jump", labInstance.Status.InstanceToMake.Name)
 			gcpInstances[jumpBoxName] = Instance{
 				Name: jumpBoxName,
 				InstallScript: fmt.Sprintf(`
@@ -481,6 +481,11 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
 			return errors.Wrap(err, "send invite request")
 		}
 		defer resp.Body.Close()
+		// rate limit returned when already invited
+		if resp.StatusCode == 429 {
+			e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", env.Email)
+			continue
+		}
 		if resp.StatusCode != 204 {
 			body, _ := ioutil.ReadAll(resp.Body)
 			return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
