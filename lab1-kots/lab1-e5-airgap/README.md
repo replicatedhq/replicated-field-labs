@@ -144,7 +144,7 @@ In this example we've ssh'd the jump box with the -A flag so the SSH agent will 
 dex@jump-dx411-dex-lab1-e5-airgap ~$ scp kurlbundle.tar.gz dx411-dex-lab1-e5-airgap:
 ```
 
-**Note** -- we use SCP via an ssh tunnel in this case, but the airgap methods int his lab also extend to 
+**Note** -- we use SCP via an ssh tunnel in this case, but the airgap methods in this lab also extend to 
 more locked down environments where e.g. physical media is required to move assets into the datacenter.
 
 Now we'll SSH all the way to airgap node. If you still have a shell on your jump box, you can use the instance name.
