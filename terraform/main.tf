@@ -14,6 +14,7 @@ locals {
   // load the json file produced by the go program, with a list of pairs of instance-name + provision-script,
   // one instance per participant per exercise
   provisioner_pairs = jsondecode(file("${path.module}/../${var.provisioner_pairs_json}"))
+
   regular_instances = {
     for name, instance in local.provisioner_pairs :
     name => instance
