@@ -11,6 +11,22 @@ Once that's done, we'll explore how some of the support techniques differ betwee
 
 ### Airgap Workflow Overview
 
+First, we'll push a release -- in the background, Replicated's airgap builder will prepare an airgap bundle.
+
+![airgap-slide-1](img/airgap-slide-1.png)
+
+Next, we'll collect a license file, a download link, and a public kURL bundle.
+
+![airgap-slide-2](img/airgap-slide-2.png)
+
+From there, we'll move all three artifacts into the datacenter via a jump box.
+
+![airgap-slide-3](img/airgap-slide-3.png)
+
+The above diagram shows a three node cluster, but we'll use only a  single node.
+While the KOTS bundle will be moved onto the server via SCP as in the diagram,
+the app bundle and license file will be uploaded via a browser UI through an SSH tunnel.
+
 ### Instance Overview
 
 You will have received the IP of a jump box and the name of an airgapped server.
@@ -198,20 +214,76 @@ standard nginx entrypoint has been overriden:
             - "1"
 ```
 
-So we'll need to create a new release in order to 
+So we'll need to create a new release in order to fix this.
 
-### Airgapped Upgrades
 
-- make release
-- download new bundle
-- upload new bundle
+### Deploying a new version
 
+From the `lab1-kots/lab1-e5-airgap` directory, remove the command override.
+
+
+```diff
+diff --git a/lab1-kots/lab1-e5-airgap/manifests/nginx-deployment.yaml b/lab1-kots/lab1-e5-airgap/manifests/nginx-deployment.yaml
+index fa29e8d..3a66405 100644
+--- a/lab1-kots/lab1-e5-airgap/manifests/nginx-deployment.yaml
++++ b/lab1-kots/lab1-e5-airgap/manifests/nginx-deployment.yaml
+@@ -16,9 +16,6 @@ spec:
+       containers:
+         - name: nginx
+           image: nginx:latest
+-          command:
+-            - exit
+-            - "1"
+           volumeMounts:
+             - mountPath: /usr/share/nginx/html
+               name: html
+```
+
+Once you're satisfied with your `nginx-deployment.yaml` create a new release with `make release`.
+You'll need to ensure you've got `REPLICATED_APP` and `REPLICATED_API_TOKEN` set.
+
+
+```shell
+make release
+```
+
+Once the release is made, you should be able to navigate back to the customer download portal we accessed from the customer page.
+Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab1-e5-airgap channel.
+The new release may take a minute or two to build, so you're want to refresh the make until you see one
+with a timestamp that matches when you ran `make release`.
+
+![download-portal-more](img/download-portal-more.png)
+
+Once you've downloaded the new version, select "upload a new version" from the main dashboard and select your bundle.
+
+![airgap-new-upload](img/airgap-new-upload.png)
+
+You'll see the bundle upload as before and you'll have the option to deploy it once the
+preflight checks complete.
+The app should now show as ready on the main dashboard.
+
+In order to access the application though, you'll need to create another SSH tunnel for the app's port (8888).
+
+<details>
+    <summary>Click for a hint</summary>
+
+From your workstation, run
+
+```shell
+export JUMP_BOX_IP=...
+export REPLICATED_APP=... # your app slug
+ssh -vNL 8888:${REPLICATED_APP}-lab1-e5-airgap:8888 dex@${JUMP_BOX_IP}
+```
+
+</details>
+
+Congrats! You've installed and then upgraded an airgapped instance!
 
 ### Collecting a CLI support bundle
 
-- move file into place
-- run w/ path to file
-Of course, since our app is installed, we could also have used the command from [lab 3](../lab1-e3-support-cli):
+As a final step, we'll review how to collect support bundles
+
+Of course, since our app is installed, we can use the command from [lab 3](../lab1-e3-support-cli):
   
 ```shell
 export REPLICATED_APP=... # your app slug
@@ -220,7 +292,227 @@ kubectl support-bundle \
   --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-${REPLICATED_APP}-redact-spec/redact-spec
 ```
 
-- do an airgap install
-- collect kots.io support bundle by transferring spec onto instance
-- scp bundle off instance via jumpbox  
-- fix instance
+However, what would we do in the case that the app installation itself was failing?
+We can try our `kots.io` support bundle from the airgapped server.
+
+```shell
+kubectl kots support-bundle https://kots.io
+```
+
+As you might expect this will fail because we can't fetch the spec from the internet.
+
+```text
+Error: failed to load collector spec: failed to get spec from URL: execute request: Get "https://kots.io": dial tcp 104.21.18.220:443: i/o timeout
+```
+
+In this case, we'll want to pull in the spec from https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
+How you get this file onto the server is up to you -- expand below for an option that uses `cat` with a heredoc.
+
+
+<details> 
+
+```shell
+cat <<EOF > support-bundle.yaml
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: collector-sample
+spec:
+  collectors:
+    - clusterInfo: {}
+    - clusterResources: {}
+    - ceph: {}
+    - exec:
+        args:
+          - "-U"
+          - kotsadm
+        collectorName: kotsadm-postgres-db
+        command:
+          - pg_dump
+        containerName: kotsadm-postgres
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-postgres
+        timeout: 10s
+    - exec:
+        args:
+          - "http://localhost:3030/goroutines"
+        collectorName: kotsadm-goroutines
+        command:
+          - curl
+        containerName: kotsadm
+        name: kots/admin_console
+        selector:
+          - app=kotsadm
+        timeout: 10s
+    - exec:
+        args:
+          - "http://localhost:3030/goroutines"
+        collectorName: kotsadm-operator-goroutines
+        command:
+          - curl
+        containerName: kotsadm-operator
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-operator
+        timeout: 10s
+    - logs:
+        collectorName: kotsadm-postgres-db
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-postgres
+    - logs:
+        collectorName: kotsadm-api
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-api
+    - logs:
+        collectorName: kotsadm-operator
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-operator
+    - logs:
+        collectorName: kotsadm
+        name: kots/admin_console
+        selector:
+          - app=kotsadm
+    - logs:
+        collectorName: kurl-proxy-kotsadm
+        name: kots/admin_console
+        selector:
+          - app=kurl-proxy-kotsadm
+    - logs:
+        collectorName: kotsadm-dex
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-dex
+    - logs:
+        collectorName: kotsadm-fs-minio
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-fs-minio
+    - logs:
+        collectorName: kotsadm-s3-ops
+        name: kots/admin_console
+        selector:
+          - app=kotsadm-s3-ops
+    - secret:
+        collectorName: kotsadm-replicated-registry
+        includeValue: false
+        key: .dockerconfigjson
+        name: kotsadm-replicated-registry
+    - logs:
+        collectorName: rook-ceph-agent
+        selector:
+          - app=rook-ceph-agent
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-mgr
+        selector:
+          - app=rook-ceph-mgr
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-mon
+        selector:
+          - app=rook-ceph-mon
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-operator
+        selector:
+          - app=rook-ceph-operator
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-osd
+        selector:
+          - app=rook-ceph-osd
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-osd-prepare
+        selector:
+          - app=rook-ceph-osd-prepare
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-ceph-rgw
+        selector:
+          - app=rook-ceph-rgw
+        namespace: rook-ceph
+        name: kots/rook
+    - logs:
+        collectorName: rook-discover
+        selector:
+          - app=rook-discover
+        namespace: rook-ceph
+        name: kots/rook
+    - exec:
+        collectorName: weave-status
+        command:
+        - /home/weave/weave
+        args:
+        - --local
+        - status
+        containerName: weave
+        exclude: ""
+        name: kots/kurl/weave
+        namespace: kube-system
+        selector:
+        - name=weave-net
+        timeout: 10s
+    - exec:
+        collectorName: weave-report
+        command:
+        - /home/weave/weave
+        args:
+        - --local
+        - report
+        containerName: weave
+        exclude: ""
+        name: kots/kurl/weave
+        namespace: kube-system
+        selector:
+        - name=weave-net
+        timeout: 10s
+
+  analyzers:
+    - textAnalyze:
+        checkName: Weave Status
+        exclude: ""
+        fileName: kots/kurl/weave/kube-system/weave-net-*/weave-status-stdout.txt
+        outcomes:
+        - fail:
+            message: Weave is not ready
+        - pass:
+            message: Weave is ready
+        regex: 'Status: ready'
+    - textAnalyze:
+        checkName: Weave Report
+        exclude: ""
+        fileName: kots/kurl/weave/kube-system/weave-net-*/weave-report-stdout.txt
+        outcomes:
+        - fail:
+            message: Weave is not ready
+        - pass:
+            message: Weave is ready
+        regex: '"Ready": true'
+EOF
+```
+</details>
+
+Once this is present, you can use the following to collect a bundle as usual.
+
+```shell
+kubectl support-bundle ./support-bundle.yaml
+```
+
+
+### Extra exercises
+
+If you finish the lab early you can:
+
+1. Experiment with copying the CLI-generated bundle off the server and uploading it to https://vendor.replicated.com
+1. Experiment with expanding or building your own `support-bundle.yaml` and using it to collect other information about the host

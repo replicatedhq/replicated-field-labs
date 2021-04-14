@@ -58,5 +58,20 @@
     "post_install_sh": "",
     "public_ip": true,
     "jump_box": false
+  },
+  {
+    "name": "Lab 1.5: Airgap",
+    "slug": "lab1-e5-airgap",
+    "channel": "lab1-e5-airgap",
+    "channel_slug": "lab1-e5-airgap",
+    "customer": "lab1-e5-airgap",
+    "yaml_dir": "lab1-kots/lab1-e5-airgap/manifests",
+    "k8s_installer_yaml_path": "lab1-kots/lab1-e5-airgap/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "public_ip": false,
+    "jump_box": true
   }
 ]
