@@ -134,6 +134,12 @@ Scrolling to the failing check, we can review the error message:
 
 ![failing-analzyer](./img/failing-analyzer.png)
 
+Specifically, you'll see the error message:
+
+```shell
+Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to lauch the application.
+```
+
 We can remove this file with
 
 ```shell
