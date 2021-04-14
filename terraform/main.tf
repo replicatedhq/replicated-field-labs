@@ -118,3 +118,8 @@ output "instance_ips" {
     if length(instance.network_interface.0.access_config) > 0
   }
 }
+output "airgap_instances" {
+  value = [
+  for instance in local.airgap_instances: instance.instance.name
+  ]
+}
