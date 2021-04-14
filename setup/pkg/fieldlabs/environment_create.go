@@ -196,7 +196,7 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 		}
 		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
 		if labInstance.Spec.JumpBox {
-			jumpBoxName := fmt.Sprintf("jump-%s", labInstance.Status.InstanceToMake.Name)
+			jumpBoxName := fmt.Sprintf("%s-jump", labInstance.Status.InstanceToMake.Name)
 			gcpInstances[jumpBoxName] = Instance{
 				Name: jumpBoxName,
 				InstallScript: fmt.Sprintf(`

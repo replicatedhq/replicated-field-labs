@@ -22,8 +22,8 @@ locals {
   }
   jump_boxes = {
     for instance in google_compute_instance.kots-field-labs :
-    replace(instance.name, "jump-", "") => instance
-    if length(regexall("jump-.*", instance.name)) > 0
+    replace(instance.name, "-jump", "") => instance
+    if length(regexall(".*-jump", instance.name)) > 0
   }
   airgap_instances = {
     for name, instance in local.provisioner_pairs :
