@@ -149,7 +149,7 @@ We'll use the `-A` flag to the `ssh` command to forward our agent so we can inte
 Replace the URL with the one you copied above
 
 ```text
-dex@dx411-dex-lab1-e5-airgap-jump ~$ curl -okurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab1-e5-airgap.tar.gz
+dex@dx411-dex-lab1-e5-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab1-e5-airgap.tar.gz
 ```
 
 When it's finished, copy it to the airgapped server. 
