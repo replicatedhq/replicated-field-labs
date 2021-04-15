@@ -155,11 +155,7 @@ the `kotsadm` deployment.
 As we did in the airgap scenario, we'll open two SSH tunnels to access the admin console and the app.
 
 ```shell
-ssh -vNL 8800:${REPLICATED_APP}-lab1-e6-proxy:8800 ${JUMP_BOX_IP}
-```
-
-```shell
-ssh -vNL 8888:${REPLICATED_APP}-lab1-e6-proxy:8888 ${JUMP_BOX_IP}
+ssh -vNL 8800:${REPLICATED_APP}-lab1-e6-proxy:8800 -L 8888:${REPLICATED_APP}-lab1-e6-proxy:8888 ${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment
