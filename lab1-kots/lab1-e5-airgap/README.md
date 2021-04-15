@@ -94,6 +94,22 @@ By default, only the Stable and Beta channels will automatically build airgap bu
 For a production application, airgap releases will be built automatically on the Stable channel, so this won't
 be necessary.
 
+In this case, since we're working off the `lab1-e5-airgap` channel, you'll want to enable airgap builds on that channel.
+
+You can check the build status by navigating to the "Release History" for the channel.
+
+![release-history](img/release-history.png)
+
+You can build invividual bundles on the Release History page, but you'll likely want to edit the channel and enable "build all releases for this channel".
+
+![edit-channel](img/edit-channel.png)
+
+![auto-build](img/auto-build.png)
+
+Now you should see all the bundles building or built on the release history page:
+
+![airgap-built](img/airgap-built.png)
+
 #### Enabling Airgap for a customer
 
 The first step will be to enable airgap for the `lab1-e5` customer:

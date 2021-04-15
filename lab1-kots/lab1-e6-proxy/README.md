@@ -73,12 +73,14 @@ The IP above will be the IP of the <code>kots-field-labs-squid-proxy</code> serv
 </details>
 
 
-We can also use environment variables to configure a proxy. Let's try setting `HTTP_PROXY`.
+We can also use environment variables to configure a proxy. Let's try setting `HTTP_PROXY`. 
 
 ```shell
 export HTTP_PROXY=kots-field-labs-squid-proxy:3128
 curl https://api.replicated.com/market/v1/echo/ip
 ```
+
+This command will hang too, we'll explore why below.
 
 #### Question 2
 
@@ -114,7 +116,7 @@ Ensure you select the right app and channel, and the `Embedded Cluster` option.
 
 <details>
   <summary>Get a Script from the UI</summary>
-  <img alt="embedded-script" src="img/embedded-script.png">
+<img alt="embedded-script" src="img/embedded-script.png">
 </details>
 
 
