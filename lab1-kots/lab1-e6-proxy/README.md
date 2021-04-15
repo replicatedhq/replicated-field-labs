@@ -227,4 +227,5 @@ You'll see an entry in the env vars where the kURL script has patched the deploy
 ### Additional Exercises
 
 - Test out running a KOTS kots.io support bundle through the proxy
-- Explore the Proxy template function for passing proxy info into a KOTS application
+- Explore the [Proxy template functions](https://kots.io/reference/template-functions/static-context/#httpproxy) for passing proxy info into a KOTS application. 
+
