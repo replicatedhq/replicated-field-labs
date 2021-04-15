@@ -128,7 +128,7 @@ After saving the customer, scroll to the bottom of the page to the `Download Por
 
 Generate a new password and save it somewhere in your notes.
 Next, click the link to open the download portal. 
-This is a link you would usually send to your customer, so from here on our we'll be wearing our "end user" hat.
+This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
 
 
 Navigate to the "embedded cluster" option and review the three downloadable assets.
