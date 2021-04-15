@@ -73,5 +73,5 @@ spec:
           - pass:
               message: No restrictions in place!
           - fail:
-              message: Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to lauch the application.
+              message: Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to launch the application.
 
