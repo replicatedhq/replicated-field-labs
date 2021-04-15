@@ -33,15 +33,15 @@ You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
 
 ```text
-jump-dx411-dex-lab1-e5-airgap = 104.155.131.205
+dx411-dex-lab1-e5-airgap-jump = 104.155.131.205
 dx411-dex-lab1-e5-airgap
 ```
 
-In general, the name of the private server will be the same as the Jump box, with the characters `jump-` removed from the prefix. 
+In general, the name of the private server will be the same as the Jump box, with the characters `-jump` removed from the suffix.
 Put another way, you could construct both instance names programatically as
 
 ```shell
-jump-${REPLICATED_APP}-lab1-e5-airgap
+${REPLICATED_APP}-lab1-e5-airgap-jump
 ```
 
 and
@@ -133,7 +133,7 @@ We'll use the `-A` flag to the `ssh` command to forward our agent so we can inte
 Replace the URL with the one you copied above
 
 ```text
-dex@jump-dx411-dex-lab1-e5-airgap ~$ curl -okurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab1-e5-airgap.tar.gz
+dex@dx411-dex-lab1-e5-airgap-jump ~$ curl -okurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab1-e5-airgap.tar.gz
 ```
 
 When it's finished, copy it to the airgapped server. 
@@ -141,7 +141,7 @@ You can use the DNS name in this case, as described in [Instance Overview](#inst
 In this example we've ssh'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
-dex@jump-dx411-dex-lab1-e5-airgap ~$ scp kurlbundle.tar.gz dx411-dex-lab1-e5-airgap:
+dex@dx411-dex-lab1-e5-airgap-jump ~$ scp kurlbundle.tar.gz dx411-dex-lab1-e5-airgap:
 ```
 
 **Note** -- we use SCP via an ssh tunnel in this case, but the airgap methods in this lab also extend to 
@@ -150,7 +150,7 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to airgap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-dex@jump-dx411-dex-lab1-e5-airgap ~$ ssh dx411-dex-lab1-e5-airgap
+dex@dx411-dex-lab1-e5-airgap-jump ~$ ssh dx411-dex-lab1-e5-airgap
 ```
 
 Otherwise, you can use the above 
