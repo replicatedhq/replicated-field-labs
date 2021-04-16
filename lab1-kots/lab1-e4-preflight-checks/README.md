@@ -2,10 +2,10 @@ Lab 1.4: Preflight Checks
 =========================================
 
 
-- no kots installed
+- no KOTS installed
 - Add config.txt and secretfile.txt as preflight checks
-- then do a kots install
-- how to force reset with kots remove, guidance on this
+- then do a KOTS install
+- how to force reset with KOTS
 
 
 Now that we've found a number of things that can go wrong and built support analyzers to understand them,

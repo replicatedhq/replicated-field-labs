@@ -1,7 +1,7 @@
 Lab 1.6: Proxy
 =========================================
 
-In this lab, we'll explore doing a
+In this lab, we'll explore configuring a proxy server in an airgapped environment.
 
 ### Instance Overview
 
@@ -13,7 +13,7 @@ dx411-dex-lab1-e6-proxy-jump = 104.155.131.205
 dx411-dex-lab1-e6-proxy
 ```
 
-In general, the name of the private server will be the same as the Jump box, with the characters `-jump` removed from the suffix.
+In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
 Put another way, you could construct both instance names programatically as
 
 ```shell
@@ -35,13 +35,13 @@ kots-field-labs-squid-proxy
 
 ### The proxy environment
 
-To start, let's SSH via jump box and explore our server in the private network.
+To start, let's SSH via the jump box and explore our server in the private network.
 
 
 ```shell
 export REPLICATED_APP=... # your app slug
 export JUMP_BOX_IP=...
-ssh -J ${JUMP_BOX_IP} ${REPLICATED_APP}-lab1-e6-proxy 
+ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab1-e6-proxy
 ```
 
 You'll note that egress is not possible by typical means
@@ -51,10 +51,10 @@ curl -v https://kubernetes.io
 ping kubernetes.io
 ```
 
-However, if we tunnel out throught he
+However, we are able to tunnel out through the proxy server
 
 ```shell
-curl curl -x kots-field-labs-squid-proxy:3128 https://kubernetes.io
+curl -x kots-field-labs-squid-proxy:3128 https://kubernetes.io
 ```
 
 You can use an api.replicated.com endpoint to check the observed egress IP address of your request
@@ -101,7 +101,7 @@ We can use <code>HTTPS_PROXY</code> in this case.
 ### Getting an install script
 
 
-First we'll get the kurl install script for our channel. From your workstation:
+First we'll get the kURL install script for our channel. From your workstation:
 
 ```shell
 export REPLICATED_APP=...
@@ -137,7 +137,7 @@ curl -sSL https://k8s.kurl.sh/dx411-dex-lab1-e6-proxy | sudo -E bash
 Note that you'll need to add `-E` flag to the `sudo` command in order to forward your environment to `bash` process runing under `sudo`.
 You can also experiment with only forwarding specific variables as suggested in [this article](https://www.petefreitag.com/item/877.cfm).
 
-> The sudo has a handy argument -E or --preserve-env which will pass all your environment variables into the sudo environment.
+> The sudo command has a handy argument -E or --preserve-env which will pass all your environment variables into the sudo environment.
  
  
 ### What this does
@@ -155,7 +155,7 @@ the `kotsadm` deployment.
 As we did in the airgap scenario, we'll open two SSH tunnels to access the admin console and the app.
 
 ```shell
-ssh -vNL 8800:${REPLICATED_APP}-lab1-e6-proxy:8800 -L 8888:${REPLICATED_APP}-lab1-e6-proxy:8888 ${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab1-e6-proxy:8800 -L 8888:${REPLICATED_APP}-lab1-e6-proxy:8888 ${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment

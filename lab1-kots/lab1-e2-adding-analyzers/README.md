@@ -14,7 +14,7 @@ If you want to get the most of out these labs, use the presented debugging steps
 
 ### Before you start
 
-Before you start, it's worth noting that this server already has the `config.txt` file in place. You can SSH the
+Before you start, it's worth noting that this server already has the `config.txt` file in place. You can SSH into the
 node before you start to verify
 
 ```shell
@@ -30,7 +30,7 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 ### The Problem
 
-You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
+You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -64,7 +64,7 @@ In the real world, you can receive the bundle from a customer by whatever means 
 
 ![upload-bundle](./img/upload-bundle.png)
 
-Once its uploaded, you should see a similar view of the analyzers.
+Once it's uploaded, you should see a similar view of the analyzers.
 
 ![vendor-analyzers](./img/vendor-analyzers.png)
 
@@ -74,7 +74,7 @@ We can use the line-level deep linking in the UI to highlight and share specific
 
 **Exercise** navigate to `cluster-info/cluster_version.json`, and determine the version of Kubernetes that is running on the server side.
 Test the line-level linking by copying the URL into a new tab.
-Then, in chat, to send the same link to another lab participant and ensure they can access the line in your bundle.
+Then, in chat, send the same link to another lab participant and ensure they can access the line in your bundle.
 
 ![bundle-line-links](./img/bundle-line-links.png)
 
@@ -82,7 +82,7 @@ Note that as you click line numbers in the gutter, the URL changes.
 
 <div align="center"><blockquote><h3>Once a bundle has been uploaded to the vendor console, use deep-linking to collaborate on the diagnosis with your team.</h3></blockquote></div>
 
-These links can be attached to a support ticket, shared in slack, etc.
+These links can be attached to a support ticket, shared in Slack, etc.
 
 If you choose the "Share with Replicated" option in the https://vendor.replicated.com, the same links will become accessible to Replicated's support team.
 
@@ -150,14 +150,14 @@ Once the fix is done, we can wait for the nginx pod to recover, or we can give t
 kubectl delete pod -l app=nginx
 ```
 
-We can now verify that the app comes up as expected:
+We can now verify that the app comes up as expected.
 
 
 
 ### Adding an Analyzer
 
 The most important lesson to take away from this lab is that troubleshooting with logs should be a pathological event.
-Any time you find yourself using logs to debug something, as did just now you should ask yourself 
+Any time you find yourself using logs to debug something, you should ask yourself
 
 > What analyzer could I write to prevent anyone else from having to read logs to diagnose this?
 > 
@@ -187,7 +187,7 @@ and the [regex analyzer](https://troubleshoot.sh/docs/analyze/regex/).
 Using the files there and the troubleshoot docs, add a collector + analyzer to check for the existence of /etc/lab1-e2/secretkey.txt
 and fail with a helpful error message if it's not there.
 
-Make changes to your yaml, then run `make release` from the `lab1-e2-adding-analyzers` directory to create a new release.
+Make changes to your YAML, then run `make release` from the `lab1-e2-adding-analyzers` directory to create a new release.
 Test your changes by navigating to your KOTS UI's Version History tab, checking for updates, 
 deploying the new version, collecting another support bundle, and reviewing the analyzers.
 

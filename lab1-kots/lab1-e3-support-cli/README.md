@@ -3,7 +3,7 @@ Lab 1.3: Support CLI
 
 In this lab, we'll learn how to debug and diagnose support problems when the KOTS admin console is unavailable.
 
-You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
+You can open the KOTS admin console for your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -137,7 +137,7 @@ Scrolling to the failing check, we can review the error message:
 Specifically, you'll see the error message:
 
 ```shell
-Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to lauch the application.
+Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to launch the application.
 ```
 
 We can remove this file with
@@ -168,7 +168,7 @@ After a few minutes, we should see that the app becomes available
 
 ![app-ready](./img/app-ready.png)
 
-If you leave the instance for a while, you should also notice the cpu graphs settle down
+If you leave the instance for a while, you should also notice the CPU graphs settle down
 
 ![stable-graphs](./img/stable-graphs.png)
 
@@ -184,7 +184,7 @@ total 1388
 -rw-rw-r-- 1 dex dex 461852 Apr 13 15:44 support-bundle-2021-04-13T15_43_47.tar.gz
 ```
 
-Use `scp` or some other means to copy the bundle off the server and upload it to vendor.replicated.com, review the analyzers there as well.
+Use `scp` or some other means to copy the bundle off the server to your workstation, upload it to vendor.replicated.com, and review the analyzers there as well.
 
 ![uploaded-bundle](img/uploaded-bundle.png)
 
@@ -235,7 +235,7 @@ W0413 15:43:50.363264   25323 warnings.go:70] storage.k8s.io/v1beta1 StorageClas
 
 
 **Note** -- using this technique this requires outbound internet access to pull the spec from kots.io. 
-The SupportBundle spec that is used in this case is at https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
+The SupportBundle spec that is used in this case is at https://github.com/replicatedhq/kots/master/support-bundle.yaml.
 In [Lab 5 - airgap](../lab1-e5-airgap) we'll learn to run this generic bundle when there is no outbound internet access.
 
 

@@ -243,12 +243,12 @@ AIRGAP:
 
 ### 7. Installing KOTS
 
-A server has already been provisioned for this exercise, you'll want to find the one with the name matching `lab1-e0-hello-world`. 
-KOTS has not yet been installed on this server, to give you an opportunity to experiment with the install process.
+A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab1-e0-hello-world`.
+KOTS has not yet been installed on this server to give you an opportunity to experiment with the install process.
 
 ###### On the Server
 
-Next, ssh into the server we just created, and run the install script from above, using the `EMBEDDED` version:
+Next, SSH into the server we just created, and run the install script from above, using the `EMBEDDED` version:
 
 ```shell
 curl -sSL https://k8s.kurl.sh/<app-slug-name>-<channel name> | sudo bash
@@ -400,7 +400,7 @@ make release
 ### Update the Test Server
 
 To install and test this new release, we need to connect to the Admin Console dashboard on port :8800 using a web browser.
-At this point, it will likely show that our test application is "Up To Date" and that "No Updates" Are Available.
+At this point, it will likely show that our test application is "Up To Date" and that "No Updates Are Available".
 The Admin Console can be configured to check for new updates at regular intervals but for now we'll trigger a check manually by clicking "Check for Updates".
 You should see a new release in the history now.
 You can click the +/- diff numbers to review the diff, but for now let's click "Deploy" to roll out this new version.
