@@ -33,6 +33,24 @@ locals {
     }
     if length(instance.public_ips) == 0
   }
+  names = setunion([
+    for name, instance_ip in local.instance_ips :
+    split("-", split("lab", name)[0])[1]
+  ])
+  instance_ips = {
+    for instance in google_compute_instance.kots-field-labs :
+    instance.name => instance.network_interface.0.access_config.0.nat_ip
+    if length(instance.network_interface.0.access_config) > 0
+  }
+  grouped_by_name = {
+    for name in local.names :
+    name => [
+      for iname, ip in local.instance_ips :
+      "${ip}\tlab${split("lab", iname)[1]}\t# ${iname}"
+      if length(regexall(name, iname)) > 0
+    ]
+
+  }
 }
 
 resource "google_compute_instance" "shared_squid_proxy" {
@@ -147,11 +165,7 @@ resource "google_compute_instance" "kots-field-labs" {
 }
 
 output "instance_ips" {
-  value = {
-    for instance in google_compute_instance.kots-field-labs:
-    instance.name => instance.network_interface.0.access_config.0.nat_ip
-    if length(instance.network_interface.0.access_config) > 0
-  }
+  value = local.instance_ips
 }
 output "airgap_instances" {
   value = [
@@ -161,7 +175,25 @@ output "airgap_instances" {
 
 output "proxy" {
   value = {
-    name = google_compute_instance.shared_squid_proxy.name
+    name    = google_compute_instance.shared_squid_proxy.name
     address = google_compute_instance.shared_squid_proxy.network_interface.0.access_config.0.nat_ip
   }
+}
+
+resource "local_file" "etc_hosts" {
+  for_each = local.grouped_by_name
+
+
+  filename = "etchosts/${each.key}"
+  content = <<EOF
+# copy the below and add it to your hosts file with
+#
+#     echo '
+#     <PASTE>
+#     ' | sudo tee -a /etc/hosts
+
+${join("\n", each.value)}
+
+EOF
+
 }

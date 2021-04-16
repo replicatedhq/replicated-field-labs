@@ -168,7 +168,7 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 	}
 
 	e.Log.ActionWithoutSpinner("Preparing terraform command:")
-	fmt.Printf("make tf provisioner_json_out=%q\n", e.Params.InstanceJSONOutput)
+	fmt.Printf("make instances provisioner_json_out=%q\n", e.Params.InstanceJSONOutput)
 
 	return nil
 }
