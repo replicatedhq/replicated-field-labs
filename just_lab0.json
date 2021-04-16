@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Lab 1.0: Hello World",
+    "slug": "lab0-hello-world",
+    "channel": "Unstable",
+    "channel_slug": "unstable",
+    "customer": "Dev Customer",
+    "yaml_dir": "labs/lab0-hello-world/manifests",
+    "k8s_installer_yaml_path": "labs/lab0-hello-world/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "public_ip": true,
+    "jump_box": false
+  }
+]
