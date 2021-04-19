@@ -4,7 +4,7 @@ Lab 1.5: Airgap
 In this lab, we'll review how to perform installations in airgapped environments, and
 how to collect support bundles in airgapped environments.
 
-In this case we'll start with a bare airgapped server with no kots installation, so you can
+In this case we'll start with a bare airgapped server with no KOTS installation, so you can
 get practice performing an airgap install from scratch.
 
 Once that's done, we'll explore how some of the support techniques differ between online and airgapped environments. 
@@ -23,7 +23,7 @@ From there, we'll move all three artifacts into the datacenter via a jump box.
 
 ![airgap-slide-3](img/airgap-slide-3.png)
 
-The above diagram shows a three node cluster, but we'll use only a  single node.
+The above diagram shows a three node cluster, but we'll use only a single node.
 While the KOTS bundle will be moved onto the server via SCP as in the diagram,
 the app bundle and license file will be uploaded via a browser UI through an SSH tunnel.
 
@@ -37,7 +37,7 @@ dx411-dex-lab1-e5-airgap-jump = 104.155.131.205
 dx411-dex-lab1-e5-airgap
 ```
 
-In general, the name of the private server will be the same as the Jump box, with the characters `-jump` removed from the suffix.
+In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
 Put another way, you could construct both instance names programatically as
 
 ```shell
@@ -59,7 +59,7 @@ export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
 ```
 
-Next, you can ssh the airgapped server with
+Next, you can SSH the airgapped server with
 
 ```shell
 ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab1-e5-airgap
@@ -136,7 +136,7 @@ Navigate to the "embedded cluster" option and review the three downloadable asse
 ![download-portal-view](img/download-portal-view.png)
 
 Download the license file, but **don't download the kURL bundle**.
-While you can download the kurl bundles directly to your workstation and copy it to the remote server, you'll
+While you can download the kURL bundle directly to your workstation and copy it to the remote server, you'll
 likely be able to go much faster if you copy the URL and download the assets directly onto the jump box.
 You can copy each URL as shown below:
 
@@ -144,7 +144,7 @@ You can copy each URL as shown below:
 
 You'll want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-Now, let's SSH our Jump box (the one with the public IP) and download the kurl bundle.
+Now, let's SSH our jump box (the one with the public IP) and download the kurl bundle.
 We'll use the `-A` flag to the `ssh` command to forward our agent so we can interact with the airgapped node as well.
 Replace the URL with the one you copied above
 
@@ -154,13 +154,13 @@ dex@dx411-dex-lab1-e5-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/b
 
 When it's finished, copy it to the airgapped server. 
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
-In this example we've ssh'd the jump box with the -A flag so the SSH agent will be forwarded.
+In this example we've SSH'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
-dex@dx411-dex-lab1-e5-airgap-jump ~$ scp kurlbundle.tar.gz dx411-dex-lab1-e5-airgap:
+dex@dx411-dex-lab1-e5-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab1-e5-airgap:/home/dex
 ```
 
-**Note** -- we use SCP via an ssh tunnel in this case, but the airgap methods in this lab also extend to 
+**Note** -- we use SCP via an SSH tunnel in this case, but the airgap methods in this lab also extend to
 more locked down environments where e.g. physical media is required to move assets into the datacenter.
 
 Now we'll SSH all the way to airgap node. If you still have a shell on your jump box, you can use the instance name.
@@ -172,7 +172,7 @@ dex@dx411-dex-lab1-e5-airgap-jump ~$ ssh dx411-dex-lab1-e5-airgap
 Otherwise, you can use the above 
 
 ```shell
-ssh -J ${JUMP_BOX_IP} ${REPLICATED_APP}-lab1-e5-airgap
+ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab1-e5-airgap
 ```
 
 Once you're on the "airgapped" node, untar the bundle and run the install script with the `airgap` flag.
@@ -184,7 +184,7 @@ sudo bash install.sh airgap
 ```
 
 At the end, you should see the familiar `Installation Complete` message. 
-Since the instance is airgapped, we'll need to create a port-forward to access the UI from our workstation in the next step.
+Since the instance is airgapped, we'll need to create a port forward to access the UI from our workstation in the next step.
 
 ### Accessing the UI via SSH tunnel, Configuring the instance
 
@@ -194,7 +194,7 @@ Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it 
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
-ssh -vNL 8800:${REPLICATED_APP}-lab1-e5-airgap:8800 dex@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab1-e5-airgap:8800 dex@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output, but you can test by navigating to http://localhost:8800
@@ -288,7 +288,7 @@ From your workstation, run
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
-ssh -vNL 8888:${REPLICATED_APP}-lab1-e5-airgap:8888 dex@${JUMP_BOX_IP}
+ssh -NL 8888:${REPLICATED_APP}-lab1-e5-airgap:8888 dex@${JUMP_BOX_IP}
 ```
 
 </details>
@@ -321,7 +321,7 @@ As you might expect this will fail because we can't fetch the spec from the inte
 Error: failed to load collector spec: failed to get spec from URL: execute request: Get "https://kots.io": dial tcp 104.21.18.220:443: i/o timeout
 ```
 
-In this case, we'll want to pull in the spec from https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
+In this case, we'll want to pull in the spec from https://github.com/replicatedhq/kots/master/support-bundle.yaml.
 How you get this file onto the server is up to you -- expand below for an option that uses `cat` with a heredoc.
 
 
