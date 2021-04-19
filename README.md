@@ -26,7 +26,7 @@ You'll also need to set an API token
 Prefix should be set to a short unique string to prevent name collisions
 
 	make apps prefix=abcd env_json=... labs_json=...
-	make tf
+	make instances
 
 ### Cleanup
 
