@@ -34,7 +34,7 @@ I usually drop mine in a `.dex` folder which is globally git-ignored.
 ## 3. Choose your labs
 
 You can use the `labs_all.json` file, or you can copy it to another file and edit it to remove labs you'd like to skip.
-If you'd like to set up all the labs, you can skip this next step.
+If you'd like to set up all the labs, you can skip the below commands and just pass `labs_json=labs_all.json` in step 4.
 
 ```
 cp labs_all.json labs-dh-test.json
