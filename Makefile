@@ -33,6 +33,7 @@ instances:
 	TF_VAR_user=$(user) \
 	TF_VAR_provisioner_pairs_json=$(provisioner_json_out) \
 	$(MAKE) -C terraform apply
+
 outputs:
 	$(MAKE) -C terraform output
 
