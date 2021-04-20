@@ -105,7 +105,7 @@ For airgap/proxy labs, where the primary instance doesn't have a public IP addre
 }
 ```
 
-**NOTE** Neither provisioner_pairs.json or the terraform state are version controlled. As a lab session instructor,
+**NOTE** Neither provisioner_pairs.json or the terraform state are version controlled. As a lab session instructor, you'll own keeping these files so you can tear down apps and instances after a training session.
 
 #### Terraform
 
