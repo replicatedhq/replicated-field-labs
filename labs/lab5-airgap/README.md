@@ -194,11 +194,7 @@ Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it 
 ```shell
 export JUMP_BOX_IP=lab5-airgap
 export REPLICATED_APP=... # your app slug
-<<<<<<< HEAD:lab1-kots/lab1-e5-airgap/README.md
-ssh -NL 8800:${REPLICATED_APP}-lab1-e5-airgap:8800 dex@${JUMP_BOX_IP}
-=======
 ssh -NL 8800:${REPLICATED_APP}-lab5-airgap:8800 dex@${JUMP_BOX_IP}
->>>>>>> ef0b2ea... big refactor/rename for v2:labs/lab5-airgap/README.md
 ```
 
 This will run in the foreground, and you wont see any output, but you can test by navigating to http://localhost:8800

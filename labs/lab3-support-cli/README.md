@@ -3,7 +3,7 @@ Lab 1.3: Support CLI
 
 In this lab, we'll learn how to debug and diagnose support problems when the KOTS admin console is unavailable.
 
-You can open the KOTS admin console for your node by navigating to https://lab3-support-cli:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+You can open the KOTS admin console* for your node by navigating to https://lab3-support-cli:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -13,12 +13,12 @@ kubectl kots reset-password -n default
 ### Ground Rules
 
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
-It is very possible to reverse-engineer the solution by reading the Kubernetes YAML rather instead of following the lab steps.
+It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
 
 ### Investigating
 
-At first glance, you may notice that something is entirely wrong with this instance. You may even get a 502 error 
+*At first glance, you may notice that something is entirely wrong with this instance. You may even get a 502 error 
 when trying to open kotsadm.
 
 ![kots-502](./img/kots-502.png)

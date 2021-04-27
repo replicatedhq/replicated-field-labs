@@ -9,8 +9,8 @@ As in [Lab 1.5](../lab5-airgap), You will have received the IP of a jump box and
 For example, you may have received:
 
 ```text
-dx411-dex-lab1-e6-proxy-jump = 104.155.131.205
-dx411-dex-lab1-e6-proxy
+dx411-dex-lab6-proxy-jump = 104.155.131.205
+dx411-dex-lab6-proxy
 ```
 
 In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
@@ -69,7 +69,7 @@ Which IP address was printed by the above command?
 
 <details>
   <summary>Answer</summary>
-The IP above will be the IP of the <code>kots-field-labs-squid-proxy</code> server.
+The IP above will be the public IP of the <code>kots-field-labs-squid-proxy</code> server.
 </details>
 
 
@@ -124,14 +124,14 @@ Ensure you select the right app and channel, and the `Embedded Cluster` option.
 Fortunately, KOTS and kURL have built-in support for these types of proxy environments.
 There are many ways to do this, the simplest being to set the HTTP_PROXY, HTTPS_PROXY, and NO_PROXY
 variables in your shell before runing the kURL install script.
-We'll use the environment variable method today, but you can also use a [kurl install-time patch](https://kurl.sh/docs/install-with-kurl/#select-examples-of-using-a-patch-yaml-file)
+We'll use the environment variable method today, but you can also use a [kurl install-time patch](https://kurl.sh/docs/install-with-kurl/#select-examples-of-using-a-patch-yaml-file).
 
 
 ```shell
 export HTTP_PROXY=kots-field-labs-squid-proxy:3128
 export HTTPS_PROXY=kots-field-labs-squid-proxy:3128
 # use install script we grabbed above, adding a -E flag to sudo
-curl -sSL https://k8s.kurl.sh/dx411-dex-lab1-e6-proxy | sudo -E bash
+curl -sSL https://k8s.kurl.sh/dx411-dex-lab6-proxy | sudo -E bash
 ```
 
 Note that you'll need to add `-E` flag to the `sudo` command in order to forward your environment to `bash` process runing under `sudo`.
@@ -145,7 +145,7 @@ You can also experiment with only forwarding specific variables as suggested in 
 When the kURL script detects a proxy configuration in the environment, it will do several things:
 
 - ensure the container runtime (docker or containerd) is configured to pull images via the proxy
-- ensure the KOTS admin console is configure to pull app updates and license metadata through the proxy
+- ensure the KOTS admin console is configured to pull app updates and license metadata through the proxy
 
 Once the install skip completes, you can validate this by reviewing the environment variables on 
 the `kotsadm` deployment.
@@ -153,13 +153,10 @@ the `kotsadm` deployment.
 ### Configuring the instance
 
 As we did in the airgap scenario, we'll open two SSH tunnels to access the admin console and the app.
+Run the following on your workstation.
 
 ```shell
-ssh -NL 8800:${REPLICATED_APP}-lab6-proxy:8800 ${JUMP_BOX_IP}
-```
-
-```shell
-ssh -NL 8888:${REPLICATED_APP}-lab6-proxy:8888 ${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab6-proxy:8800 -L 8888:${REPLICATED_APP}-lab6-proxy:8888 dex@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment

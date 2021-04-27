@@ -178,7 +178,7 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 // json file
 func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error {
 	bs, err := ioutil.ReadFile(e.Params.InstanceJSONOutput)
-	if err != nil && err != os.ErrNotExist {
+	if err != nil && !os.IsNotExist(err) {
 		return errors.Wrapf(err, "read file %q", e.Params.InstanceJSONOutput)
 	}
 
