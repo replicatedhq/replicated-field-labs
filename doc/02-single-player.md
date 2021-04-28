@@ -4,7 +4,7 @@ Single Player Mode
 
 This guide will walk you through running all the labs on your own.
 
-You should probably skim through [the architecture outline](./architecture.md) first.
+You should probably skim through [the architecture outline](./01-architecture.md) first.
 
 ## 1. Prerequisites
 
@@ -14,7 +14,7 @@ You should probably skim through [the architecture outline](./architecture.md) f
 * Install terraform
 * Install a Go toolchain (this has been tested w/ 1.16)
 * Install the `gcloud` CLI and log in with application default credentials: `gcloud auth application-default login`
-* You should probably skim through [the architecture outline](./architecture.md) first.
+* You should probably skim through [the architecture outline](./01-architecture.md) first.
 
 ## 2. Create an environment JSON
 
