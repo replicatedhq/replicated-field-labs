@@ -9,7 +9,7 @@ It will take **15-30 minutes**.
 ### Ground Rules
 
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
-It is very possible to reverse-engineer the solution by reading the Kubernetes YAML rather instead of following the lab steps.
+It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
 
 ### Before you start
