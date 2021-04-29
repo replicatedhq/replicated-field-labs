@@ -131,7 +131,7 @@ You can verify this yaml with `replicated release lint`:
 replicated release lint --yaml-dir=manifests
 ```
 
-You should get a list that returns no errors, and exits with a 0 exit code. Output should look something like this:
+You should get a list that returns no errors, and exits with a 0 exit code. Output should look something like this, although if your info/warnings are slightly different that's okay.
 
 ```text
 RULE                   TYPE    FILENAME                     LINE    MESSAGE
