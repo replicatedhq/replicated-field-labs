@@ -33,21 +33,21 @@ You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
 
 ```text
-dx411-dex-lab1-e5-airgap-jump = 104.155.131.205
-dx411-dex-lab1-e5-airgap
+dx411-dex-lab5-airgap-jump = 104.155.131.205
+dx411-dex-lab5-airgap
 ```
 
 In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
 Put another way, you could construct both instance names programatically as
 
 ```shell
-${REPLICATED_APP}-lab5-airgap-jump
+${REPLICATED_APP}-lab05-airgap-jump
 ```
 
 and
 
 ```shell
-${REPLICATED_APP}-lab5-airgap
+${REPLICATED_APP}-lab05-airgap
 ```
 
 ### Connecting
@@ -62,7 +62,7 @@ export REPLICATED_APP=... # your app slug
 Next, you can SSH the airgapped server with
 
 ```shell
-ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab5-airgap
+ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on, you can verify that the server indeed does not have internet access. Once you're convinced, you 
@@ -94,7 +94,7 @@ By default, only the Stable and Beta channels will automatically build airgap bu
 For a production application, airgap releases will be built automatically on the Stable channel, so this won't
 be necessary.
 
-In this case, since we're working off the `lab1-e5-airgap` channel, you'll want to enable airgap builds on that channel.
+In this case, since we're working off the `lab5-airgap` channel, you'll want to enable airgap builds on that channel.
 
 You can check the build status by navigating to the "Release History" for the channel.
 
@@ -112,7 +112,7 @@ Now you should see all the bundles building or built on the release history page
 
 #### Enabling Airgap for a customer
 
-The first step will be to enable airgap for the `lab1-e5` customer:
+The first step will be to enable airgap for the `lab5` customer:
 
 ![enable-airgap](./img/enable-airgap.png)
 
@@ -149,7 +149,7 @@ We'll use the `-A` flag to the `ssh` command to forward our agent so we can inte
 Replace the URL with the one you copied above
 
 ```text
-dex@dx411-dex-lab1-e5-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab1-e5-airgap.tar.gz
+dex@dx411-dex-lab5-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab5-airgap.tar.gz
 ```
 
 When it's finished, copy it to the airgapped server. 
@@ -157,7 +157,8 @@ You can use the DNS name in this case, as described in [Instance Overview](#inst
 In this example we've SSH'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
-dex@dx411-dex-lab1-e5-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab1-e5-airgap:/home/dex
+dex@dx411-dex-lab5-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab5-airgap:/home/dex
+
 ```
 
 **Note** -- we use SCP via an SSH tunnel in this case, but the airgap methods in this lab also extend to
@@ -172,7 +173,7 @@ dex@dx411-dex-lab5-airgap-jump ~$ ssh dx411-dex-lab5-airgap
 Otherwise, you can use the above 
 
 ```shell
-ssh -J dex@lab5-airgap-jump dex@${REPLICATED_APP}-lab5-airgap
+ssh -J dex@lab05-airgap-jump dex@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the "airgapped" node, untar the bundle and run the install script with the `airgap` flag.
@@ -192,9 +193,9 @@ You'll want to create a port forward from your workstation in order to access to
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
 
 ```shell
-export JUMP_BOX_IP=lab5-airgap
+export JUMP_BOX_IP=lab05-airgap
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab5-airgap:8800 dex@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 dex@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output, but you can test by navigating to http://localhost:8800
@@ -235,14 +236,14 @@ So we'll need to create a new release in order to fix this.
 
 ### Deploying a new version
 
-From the `labs/lab1-e5-airgap` directory, remove the command override.
+From the `labs/lab5-airgap` directory, remove the command override.
 
 
 ```diff
-diff --git a/labs/lab1-e5-airgap/manifests/nginx-deployment.yaml b/labs/lab1-e5-airgap/manifests/nginx-deployment.yaml
+diff --git a/labs/lab5-airgap/manifests/nginx-deployment.yaml b/labs/lab5-airgap/manifests/nginx-deployment.yaml
 index fa29e8d..3a66405 100644
---- a/labs/lab1-e5-airgap/manifests/nginx-deployment.yaml
-+++ b/labs/lab1-e5-airgap/manifests/nginx-deployment.yaml
+--- a/labs/lab5-airgap/manifests/nginx-deployment.yaml
++++ b/labs/lab5-airgap/manifests/nginx-deployment.yaml
 @@ -16,9 +16,6 @@ spec:
        containers:
          - name: nginx
@@ -264,7 +265,7 @@ make release
 ```
 
 Once the release is made, you should be able to navigate back to the customer download portal we accessed from the customer page.
-Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab1-e5-airgap channel.
+Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab5-airgap channel.
 The new release may take a minute or two to build, so you're want to refresh the make until you see one
 with a timestamp that matches when you ran `make release`.
 
@@ -286,9 +287,9 @@ In order to access the application though, you'll need to create another SSH tun
 From your workstation, run
 
 ```shell
-export JUMP_BOX_IP=lab5-airgap
+export JUMP_BOX_IP=lab05-airgap
 export REPLICATED_APP=... # your app slug
-ssh -NL 8888:${REPLICATED_APP}-lab5-airgap:8888 dex@${JUMP_BOX_IP}
+ssh -NL 8888:${REPLICATED_APP}-lab05-airgap:8888 dex@${JUMP_BOX_IP}
 ```
 
 </details>
@@ -299,7 +300,7 @@ Congrats! You've installed and then upgraded an airgapped instance!
 
 As a final step, we'll review how to collect support bundles
 
-Of course, since our app is installed, we can use the command from [lab 3](../lab3-support-cli):
+Of course, since our app is installed, we can use the command from [lab 3](../lab03-support-cli):
   
 ```shell
 export REPLICATED_APP=... # your app slug

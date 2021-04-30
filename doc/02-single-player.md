@@ -98,7 +98,7 @@ $ cat terraform/etchosts/aj
 ## 8. You're ready!
 
 For each lab you provisioned, head to the README for that lab. 
-For example, to walk through Lab 0, navigate to the [labs/lab0-hello-world README](../labs/lab0-hello-world).
+For example, to walk through Lab 0, navigate to the [labs/lab0-hello-world README](../labs/lab00-hello-world).
 
 ## 9. Iterating
 

@@ -21,10 +21,10 @@ spec:
             - -ec
             - |
               sleep 90 # trying to combat backoff
-              perms=$(stat -c "%a" /etc/lab1-e3/more-secret-key.txt)
-              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab1-e3/more-secret-key.txt, better delete kotsadm"; kubectl delete pod -lapp=kotsadm; exit 1; fi
+              perms=$(stat -c "%a" /etc/lab3/more-secret-key.txt)
+              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab3/more-secret-key.txt, better delete kotsadm"; kubectl delete pod -lapp=kotsadm; exit 1; fi
           volumeMounts:
-            - mountPath: /etc/lab1-e3
+            - mountPath: /etc/lab3
               name: lab1-config
       containers:
         - name: nginx
@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: lab1-config
           hostPath:
-            path: /etc/lab1-e3/
+            path: /etc/lab3/
         - name: html
           configMap:
             name: nginx-html

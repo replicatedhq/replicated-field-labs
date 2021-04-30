@@ -2,7 +2,7 @@ Lab 1.2: Support Analyzers
 =========================================
 
 
-**NOTE** to complete this lab, you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab0-hello-world) to add an analyzer.
+**NOTE** to complete this lab, you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 
@@ -166,7 +166,7 @@ Any time you find yourself using logs to debug something, you should ask yoursel
 So before we move on to the next issue, let's take some time to build and test an analyzer that will check for the existence of this `/etc/lab2/secretkey.txt`
 as part of support bundle collection.
 
-**NOTE** you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab0-hello-world) to add an analyzer.
+**NOTE** you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now. 
 It will take **15-30 minutes**.
 
@@ -174,7 +174,7 @@ Open up a shell on your workstation wherever you have the `kots-field-labs` repo
 and cd into the Lab 1.2 directory.
 
 ```shell
-cd labs/lab2-adding-analyzers
+cd labs/lab02-adding-analyzers
 ```
 
 The files we care about are in the `manifests` directory, most importantly, `kots-support-bundle.yaml`.

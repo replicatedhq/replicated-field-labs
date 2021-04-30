@@ -20,9 +20,9 @@ spec:
             - sleep
             - infinity
           volumeMounts:
-            - mountPath: /etc/lab1-e5
+            - mountPath: /etc/lab5
               name: lab1-config
       volumes:
         - name: lab1-config
           hostPath:
-            path: /etc/lab1-e5/
+            path: /etc/lab5/

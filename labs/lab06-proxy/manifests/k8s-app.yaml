@@ -1,9 +1,9 @@
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
-  name: "lab1-e3-airgap"
+  name: "lab6-proxy"
 spec:
   descriptor:
     links:
-      - description: Open Lab 1.3
+      - description: Open Lab 6
         url: "http://nginx"

@@ -12,7 +12,7 @@ To start, you'll want to clone this repo somewhere. Optionally, you can fork it 
 
 ```shell script
 git clone git@github.com:replicatedhq/kots-field-labs
-cd kots-field-labs/labs/lab0-hello-world
+cd kots-field-labs/labs/lab00-hello-world
 ```
 
 #### Install CLI
@@ -243,7 +243,7 @@ AIRGAP:
 
 ### 7. Installing KOTS
 
-A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab1-e0-hello-world`.
+A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab0-hello-world`.
 KOTS has not yet been installed on this server to give you an opportunity to experiment with the install process.
 
 ###### On the Server

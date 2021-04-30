@@ -71,7 +71,7 @@ An example entry in this map might look like
 ```json
 {
   "rp415-dex-lab0-hello-world": {
-    "name": "rp415-dex-lab0-hello-world",
+    "name": "rp415-dex-lab00-hello-world",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\ncat # ... rest of provisioner script",
     "machine_type": "n1-standard-4",
     "boot_disk_gb": "200",
@@ -87,14 +87,14 @@ For airgap/proxy labs, where the primary instance doesn't have a public IP addre
 ```json
 {
   "dppt-aj-lab5-airgap": {
-    "name": "dppt-aj-lab1-e5-airgap",
+    "name": "dppt-aj-lab05-airgap",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\n",
     "machine_type": "n1-standard-4",
     "boot_disk_gb": "200",
     "public_ips": {}
   },
   "dppt-aj-lab5-airgap-jump": {
-    "name": "jump-dppt-aj-lab1-e5-airgap",
+    "name": "jump-dppt-aj-lab05-airgap",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\n",
     "machine_type": "n1-standard-1",
     "boot_disk_gb": "10",

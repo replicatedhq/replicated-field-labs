@@ -5,7 +5,7 @@ In this lab, we'll explore configuring a proxy server in an airgapped environmen
 
 ### Instance Overview
 
-As in [Lab 1.5](../lab5-airgap), You will have received the IP of a jump box and the name of an airgapped server.
+As in [Lab 1.5](../lab05-airgap), You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
 
 ```text
@@ -17,13 +17,13 @@ In general, the name of the private server will be the same as the jump box, wit
 Put another way, you could construct both instance names programatically as
 
 ```shell
-${REPLICATED_APP}-lab6-proxy-jump
+${REPLICATED_APP}-lab06-proxy-jump
 ```
 
 and
 
 ```shell
-${REPLICATED_APP}-lab6-proxy
+${REPLICATED_APP}-lab06-proxy
 ```
 
 An HTTP proxy has been provisioned to be shared by all lab participants. 
@@ -39,9 +39,9 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 
 
 ```shell
-export JUMP_BOX_IP=lab6-proxy
+export JUMP_BOX_IP=lab06-proxy
 export REPLICATED_APP=... # your app slug
-ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab1-e6-proxy
+ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab06-proxy
 ```
 
 You'll note that egress is not possible by typical means
@@ -108,7 +108,7 @@ First we'll get the kURL install script for our channel. From your workstation:
 ```shell
 export REPLICATED_APP=...
 export REPLICATED_API_TOKEN=...
-replicated channel inspect lab6-proxy
+replicated channel inspect lab06-proxy
 ```
 
 Grab the install script from the `EMBEDDED` section.
@@ -158,7 +158,7 @@ As we did in the airgap scenario, we'll open two SSH tunnels to access the admin
 Run the following on your workstation.
 
 ```shell
-ssh -NL 8800:${REPLICATED_APP}-lab6-proxy:8800 -L 8888:${REPLICATED_APP}-lab6-proxy:8888 dex@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 dex@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment
