@@ -18,7 +18,7 @@ spec:
           - stat
           - -c
           - "%a"
-          - /etc/lab1-e3/config.txt
+          - /etc/lab3/config.txt
     - exec:
         name: file-checks
         collectorName: check-secret
@@ -29,7 +29,7 @@ spec:
           - stat
           - -c
           - "%a"
-          - /etc/lab1-e3/secretkey.txt
+          - /etc/lab3/secretkey.txt
     - exec:
         name: file-checks
         collectorName: check-rb
@@ -40,7 +40,7 @@ spec:
           - /bin/sh
           - -c
           - |
-            if [ -f /etc/lab1-e3/restraining-bolt.txt ]; then
+            if [ -f /etc/lab3/restraining-bolt.txt ]; then
               echo failed
             else
               echo success
@@ -53,18 +53,18 @@ spec:
         regex: '400'
         outcomes:
           - pass:
-              message: Found properly-restricted file at /etc/lab1-e3/config.txt
+              message: Found properly-restricted file at /etc/lab3/config.txt
           - fail:
-              message: Could not find a file at /etc/lab1-e3/config.txt with 400 permissions -- please ensure this file exists with any content
+              message: Could not find a file at /etc/lab3/config.txt with 400 permissions -- please ensure this file exists with any content
     - textAnalyze:
         checkName: Secret Check
         fileName: file-checks/{{repl Namespace}}/*/check-secret-*.txt
         regex: '400'
         outcomes:
           - pass:
-              message: Found properly-restricted file at /etc/lab1-e3/secretkey.txt
+              message: Found properly-restricted file at /etc/lab3/secretkey.txt
           - fail:
-              message: Could not find a file at /etc/lab1-e3/secretkey.txt with 400 permissions -- please ensure this file exists with any content
+              message: Could not find a file at /etc/lab3/secretkey.txt with 400 permissions -- please ensure this file exists with any content
     - textAnalyze:
         checkName: Restraint Check
         fileName: file-checks/{{repl Namespace}}/*/check-rb-*.txt
@@ -73,5 +73,5 @@ spec:
           - pass:
               message: No restrictions in place!
           - fail:
-              message: Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to launch the application.
+              message: Restraining bolt in /etc/lab3 has short circuited the startup process. If you remove it, we might be able to launch the application.
 

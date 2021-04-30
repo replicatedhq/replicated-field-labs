@@ -21,11 +21,11 @@ spec:
             - /bin/sh
             - -ec
             - |
-              perms=$(stat -c "%a" /etc/lab1-e3/config.txt)
+              perms=$(stat -c "%a" /etc/lab3/config.txt)
               if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
               echo "found config.txt"
           volumeMounts:
-            - mountPath: /etc/lab1-e3
+            - mountPath: /etc/lab3
               name: lab1-config
         - name: check-secret-file
           image: busybox
@@ -33,11 +33,11 @@ spec:
             - /bin/sh
             - -ec
             - |
-              perms=$(stat -c "%a" /etc/lab1-e3/secretkey.txt)
-              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab1-e3/secretkey.txt"; exit 1; fi
+              perms=$(stat -c "%a" /etc/lab3/secretkey.txt)
+              if [ "$perms" -ne "400" ]; then echo "missing /etc/lab3/secretkey.txt"; exit 1; fi
               echo "found secretkey.txt"
           volumeMounts:
-            - mountPath: /etc/lab1-e3
+            - mountPath: /etc/lab3
               name: lab1-config
         - name: check-rb
           image: kotsadm/kotsadm-operator:v1.33.1
@@ -47,8 +47,8 @@ spec:
             - |
               while :; do
                 sleep 5
-                if [ -f /etc/lab1-e3/restraining-bolt.txt ]; then
-                  echo "restraining bolt found at /etc/lab1-e3/restraining-bolt.txt, better delete kotsadm"
+                if [ -f /etc/lab3/restraining-bolt.txt ]; then
+                  echo "restraining bolt found at /etc/lab3/restraining-bolt.txt, better delete kotsadm"
                   kubectl delete pod -lapp=kotsadm
                 else
                   echo "all clear!"
@@ -56,7 +56,7 @@ spec:
                 fi
               done
           volumeMounts:
-            - mountPath: /etc/lab1-e3
+            - mountPath: /etc/lab3
               name: lab1-config
       containers:
         - name: nginx
@@ -74,7 +74,7 @@ spec:
       volumes:
         - name: lab1-config
           hostPath:
-            path: /etc/lab1-e3/
+            path: /etc/lab3/
         - name: html
           configMap:
             name: nginx-html
