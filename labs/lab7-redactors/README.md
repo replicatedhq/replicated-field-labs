@@ -1,6 +1,7 @@
 Lab 1.7: Redactors
 =========================================
 
+Redactors allow end users to promgramatically control which information is included in support bundles and which types of information are excluded.
 In this lab, we'll explore how Redactors work and learn the workflows that end customers can use to review and customize redaction of support bundles.
 We'll study an app that has a container that logs sensitive information, and how to ensure that information is excluded from support bundles.
 
@@ -23,6 +24,25 @@ That's to be expected.
 ### Redactors Overview
 
 Let's straight away head to the Troubleshoot tab and collect a support bundle.
+When it's done, head over to the "Redactor Report" tab.
+
+![Redactor Report](./img/redactor-report.png)
+
+You'll notice the following redaction rules are applied automatically
+
+* Redact connection strings with username and password
+* Redact ipv4 addresses
+* Redact usernames in multiline JSON
+* Redact values for environment variables with names beginning with 'user'
+  
+Clicking into one of these, you can review not only where redactions were perfomed, but actually click into files
+and view where data was redacted:
+
+![pg-user](./img/pg-user.png)
+
+![pg-user-2](./img/pg-user-2.png)
+
+
 
 ### Adding a Custom redactor
 
@@ -40,7 +60,11 @@ Tue Apr 27 19:54:00 UTC 2021 [info] the secret code is SW0RDF!SH
 Reviewing the redactor documentation in the [troubleshoot.sh documentation](https://troubleshoot.sh/docs/redact/redactors/), we'll write a custom redactor to hide this 
 
 
-If you need a hint, you can reveal an example redactor to hide the "secret code" from the logs.
+
+
+### Example redactor
+
+If you need a hint, you can click below for a redactor to hide the "secret code" from the logs.
 
 <details>
     <summary>Reveal</summary>
@@ -49,3 +73,5 @@ If you need a hint, you can reveal an example redactor to hide the "secret code"
 TO DO -- a Redactor
 ```
 </details>
+
+### Example redactor
