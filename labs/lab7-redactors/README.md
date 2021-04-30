@@ -59,9 +59,6 @@ Tue Apr 27 19:54:00 UTC 2021 [info] the secret code is SW0RDF!SH
 
 Reviewing the redactor documentation in the [troubleshoot.sh documentation](https://troubleshoot.sh/docs/redact/redactors/), we'll write a custom redactor to hide this 
 
-
-
-
 ### Example redactor
 
 If you need a hint, you can click below for a redactor to hide the "secret code" from the logs.
@@ -74,4 +71,4 @@ TO DO -- a Redactor
 ```
 </details>
 
-### Example redactor
+Congrats! You've completed Exercise 7! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
