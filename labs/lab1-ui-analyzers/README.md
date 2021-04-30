@@ -66,5 +66,5 @@ Furthermore, we should now see that the application shows ready in the admin con
 
 ![congrats-page](img/congrats-page.png)
 
-Congrats! You've completed Exercise 1! [Back To Exercise List](../../)
+Congrats! You've completed Exercise 1! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
