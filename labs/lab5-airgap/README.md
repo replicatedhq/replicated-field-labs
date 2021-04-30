@@ -525,6 +525,8 @@ Once this is present, you can use the following to collect a bundle as usual.
 kubectl support-bundle ./support-bundle.yaml
 ```
 
+Congrats! You've completed Exercise 5! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
+
 
 ### Extra exercises
 
