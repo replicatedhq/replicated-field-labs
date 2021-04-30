@@ -6,7 +6,7 @@ In this lab, we'll use the Support Bundle analyzers feature to debug an applicat
 
 ![lab1-kots-ui-unavailable](img/lab1-kots-ui-unavailable.png)
 
-You can open the KOTS admin console your your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
+You can open the KOTS admin console on your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
 
 ```shell
 kubectl kots reset-password -n default
