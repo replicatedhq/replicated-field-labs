@@ -221,6 +221,8 @@ You'll see an entry in the env vars where the kURL script has patched the deploy
   "name": "HTTP_PROXY"
   "value": "kots-field-labs-squid-proxy:3128"
 ```
+Congrats! You've completed Exercise 6! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
+
 
 
 ### Additional Exercises
