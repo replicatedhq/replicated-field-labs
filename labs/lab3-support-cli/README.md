@@ -138,13 +138,13 @@ Scrolling to the failing check, we can review the error message:
 Specifically, you'll see the error message:
 
 ```shell
-Restraining bolt in /etc/lab1-e3 has short circuited the startup process. If you remove it, we might be able to launch the application.
+Restraining bolt in /etc/lab3 has short circuited the startup process. If you remove it, we might be able to launch the application.
 ```
 
 We can remove this file with
 
 ```shell
-sudo rm /etc/lab1-e3/restraining-bolt.txt
+sudo rm /etc/lab3/restraining-bolt.txt
 ```
 
 </details>
