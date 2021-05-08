@@ -1,4 +1,4 @@
-user := ${USER}
+user := $(or ${REPLICATED_GCP_USER},${USER})
 labs_json := "labs_e0.json"
 env_json := ""
 env_csv := ""
@@ -9,6 +9,8 @@ inviter_email := "dexter+training415@replicated.com"
 inviter_password := ""
 invite_rbac_policy_id := ""
 provisioner_json_out := "terraform/provisioner_pairs.json"
+REPLICATED_GCP_PROJECT ?= "smart-proxy-839"
+REPLICATED_GCP_ZONE ?= "us-central1-b"
 
 .PHONY: install
 install:
@@ -31,8 +33,18 @@ apps: install
 .PHONY: instances
 instances:
 	TF_VAR_user=$(user) \
+	TF_VAR_gcp_project=$(REPLICATED_GCP_PROJECT) \
+	TF_VAR_gcp_zone=$(REPLICATED_GCP_ZONE) \
 	TF_VAR_provisioner_pairs_json=$(provisioner_json_out) \
 	$(MAKE) -C terraform apply
+
+.PHONY: tfdestroy
+tfdestroy:
+	TF_VAR_user=$(user) \
+	TF_VAR_gcp_project=$(REPLICATED_GCP_PROJECT) \
+	TF_VAR_gcp_zone=$(REPLICATED_GCP_ZONE) \
+	TF_VAR_provisioner_pairs_json=$(provisioner_json_out) \
+	$(MAKE) -C terraform destroy
 
 outputs:
 	$(MAKE) -C terraform output

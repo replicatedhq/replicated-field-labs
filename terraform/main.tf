@@ -1,6 +1,17 @@
+variable "gcp_project" {
+  description = "gcp project to provision instances to"
+}
+variable "gcp_zone" {
+  description = "gcp zone to provision instances to"
+}
+
 provider "google" {
-  project = "smart-proxy-839"
-  region  = "us-central1"
+  project = var.gcp_project
+  region  = join("-",[
+      split("-", var.gcp_zone)[0],
+      split("-", var.gcp_zone)[1],
+    ]
+  )
 }
 
 variable "user" {
@@ -55,7 +66,7 @@ locals {
 
 resource "google_compute_instance" "shared_squid_proxy" {
   name         = "kots-field-labs-squid-proxy"
-  zone         = "us-central1-b"
+  zone         = var.gcp_zone
   machine_type = "n1-standard-1"
 
   boot_disk {
@@ -90,7 +101,7 @@ resource "google_compute_instance" "shared_squid_proxy" {
 resource "google_compute_instance" "airgapped-instance" {
   for_each     = local.airgap_instances
   name         = each.key
-  zone         = "us-central1-b"
+  zone         = var.gcp_zone
   machine_type = each.value.instance.machine_type
 
   provisioner "file" {
@@ -131,7 +142,7 @@ resource "google_compute_instance" "airgapped-instance" {
 resource "google_compute_instance" "kots-field-labs" {
   for_each     = local.regular_instances
   name         = each.key
-  zone         = "us-central1-b"
+  zone         = var.gcp_zone
   machine_type = each.value.machine_type
 
   provisioner "file" {
