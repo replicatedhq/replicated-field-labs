@@ -78,6 +78,7 @@ resource "google_compute_instance" "shared_squid_proxy" {
     connection {
       host = self.network_interface.0.access_config.0.nat_ip
       user = var.user
+      private_key = "${file("~/.ssh/google_compute_engine")}"
     }
   }
 
@@ -101,6 +102,7 @@ resource "google_compute_instance" "airgapped-instance" {
       user         = var.user
       bastion_host = each.value.jump_box.network_interface.0.access_config.0.nat_ip
       bastion_user = var.user
+      private_key = "${file("~/.ssh/google_compute_engine")}"
     }
   }
   provisioner "remote-exec" {
@@ -112,6 +114,7 @@ resource "google_compute_instance" "airgapped-instance" {
       user         = var.user
       bastion_host = each.value.jump_box.network_interface.0.access_config.0.nat_ip
       bastion_user = var.user
+      private_key = "${file("~/.ssh/google_compute_engine")}"
     }
   }
 
@@ -140,6 +143,7 @@ resource "google_compute_instance" "kots-field-labs" {
     connection {
       host = self.network_interface.0.access_config.0.nat_ip
       user = var.user
+      private_key = "${file("~/.ssh/google_compute_engine")}"
     }
   }
   provisioner "remote-exec" {
@@ -149,6 +153,7 @@ resource "google_compute_instance" "kots-field-labs" {
     connection {
       host = self.network_interface.0.access_config.0.nat_ip
       user = var.user
+      private_key = "${file("~/.ssh/google_compute_engine")}"
     }
   }
   boot_disk {
