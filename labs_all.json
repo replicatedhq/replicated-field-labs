@@ -88,5 +88,15 @@
     "post_install_sh": "",
     "public_ip": false,
     "jump_box": true
+  },
+  {
+    "name": "Lab 7: Redactors",
+    "slug": "lab07-redactors",
+    "channel": "lab07-redactors",
+    "channel_slug": "lab07-redactors",
+    "customer": "lab07-redactors",
+    "yaml_dir": "labs/lab07-redactors/manifests",
+    "k8s_installer_yaml_path": "labs/lab07-redactors/kurl-installer.yaml",
+    "public_ip": true
   }
 ]

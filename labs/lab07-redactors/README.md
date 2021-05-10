@@ -104,3 +104,6 @@ spec:
 ```
 </details>
 
+### Additional Exercises
+
+If you finish early, you can try alternate regexes or try redacting out other specific information in the support bundle files.
