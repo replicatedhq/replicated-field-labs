@@ -90,11 +90,13 @@ It looks like that didn't work -- what environment variable should we set to ena
 <details>
   <summary>Answer</summary>
 
-We can use <code>HTTPS_PROXY</code> in this case.
+We can use <code>HTTPS_PROXY</code> in this case since we are making a call with HTTPS and not plain HTTP.
 
     export HTTPS_PROXY=kots-field-labs-squid-proxy:3128
     curl https://api.replicated.com/market/v1/echo/ip
 
+For more details, explore https://everything.curl.dev/usingcurl/proxies#proxy-environment-variables
+> All these proxy environment variable names except http_proxy can also be specified in uppercase, like HTTPS_PROXY.
 </details>
 
 
