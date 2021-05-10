@@ -60,6 +60,10 @@ You should log into your vendor.replicated.com account to briefly review the app
 
 ## 5. Terraform Init
 
+* By default this procedure will deploy instances to the GCP Project `smart-proxy-839` in zone `us-central1-b`. To set an alternate project `export REPLICATED_GCP_PROJECT=...`. To set an alternate zone `export REPLICATED_GCP_ZONE=...`
+* By default this procedure will provision a user account on the GCP instances that matches your currently logged in local user. To override this in cases where your GCP username differs from your workstation, set `export REPLICATED_GCP_USER=...`
+* The terraform provisioners' connection settings leverage ssh-agent. If terraform errors with ssh timeouts, consider adding your local private key to ssh agent with `ssh-add -K ...`.
+
 If you haven't already, initialize the terraform dir. You can cd in and run `terraform init`, or there's a `make` wrapper for this.
 
 ```shell
@@ -109,7 +113,7 @@ The exception is releases -- new releases for app YAML and kURL installer will a
 ## 10. Cleaning up
 
 ```shell
-make -C terraform destroy
+make tfdestroy
 make apps \
   action=destroy \
   prefix=dh-test \
