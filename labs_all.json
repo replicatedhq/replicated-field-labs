@@ -87,6 +87,7 @@
     "pre_install_sh": "",
     "post_install_sh": "",
     "public_ip": false,
+    "proxy": true,
     "jump_box": true
   },
   {

@@ -4,17 +4,18 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/gosimple/slug"
-	"github.com/pkg/errors"
-	"github.com/replicatedhq/replicated/cli/print"
-	"github.com/replicatedhq/replicated/pkg/kotsclient"
-	"github.com/replicatedhq/replicated/pkg/types"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gosimple/slug"
+	"github.com/pkg/errors"
+	"github.com/replicatedhq/replicated/cli/print"
+	"github.com/replicatedhq/replicated/pkg/kotsclient"
+	"github.com/replicatedhq/replicated/pkg/types"
 )
 
 const (
@@ -63,6 +64,8 @@ type LabSpec struct {
 
 	// add a public ip?
 	PublicIP bool `json:"public_ip"`
+	// add a squid proxy?
+	Proxy bool `json:"proxy"`
 	// add a jump box?
 	JumpBox bool `json:"jump_box"`
 }
@@ -76,6 +79,9 @@ type Instance struct {
 	InstallScript string `json:"provision_sh"`
 	MachineType   string `json:"machine_type"`
 	BookDiskGB    string `json:"boot_disk_gb"`
+
+	// used to define if a proxy server should be used.
+	Proxy bool `json:"proxy"`
 
 	// used in a tf for_each, just put nils in both, the keys and values are ignored
 	PublicIps map[string]interface{} `json:"public_ips"`
@@ -155,8 +161,6 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 		return errors.Wrap(err, "create apps")
 	}
 
-
-
 	labStatuses, err := e.createVendorLabs(envs, labSpecs)
 	if err != nil {
 		return errors.Wrap(err, "create vendor labs")
@@ -217,7 +221,6 @@ EOF
 			}
 		}
 	}
-
 
 	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
 	if err != nil {
@@ -316,10 +319,16 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 				publicIPs["_"] = nil
 			}
 
+			proxy := false
+			if lab.Spec.Proxy {
+				proxy = true
+			}
+
 			lab.Status.InstanceToMake = Instance{
 				Name:        appLabSlug,
 				MachineType: "n1-standard-4",
 				BookDiskGB:  "200",
+				Proxy:       proxy,
 				PublicIps:   publicIPs,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
@@ -457,7 +466,7 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
 			continue
 		}
 		inviteBody := map[string]string{
-			"email": env.Email,
+			"email":     env.Email,
 			"policy_id": e.Params.RBACPolicyID,
 		}
 		inviteBodyBytes, err := json.Marshal(inviteBody)
