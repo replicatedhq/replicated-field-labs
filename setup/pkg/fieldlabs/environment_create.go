@@ -63,11 +63,11 @@ type LabSpec struct {
 	PostInstallSH string `json:"post_install_sh"`
 
 	// add a public ip?
-	PublicIP bool `json:"public_ip"`
+	UsePublicIP bool `json:"use_public_ip"`
 	// add a squid proxy?
-	Proxy bool `json:"proxy"`
+	UseProxy bool `json:"use_proxy"`
 	// add a jump box?
-	JumpBox bool `json:"jump_box"`
+	UseJumpBox bool `json:"use_jump_box"`
 }
 
 type Token struct {
@@ -81,7 +81,7 @@ type Instance struct {
 	BookDiskGB    string `json:"boot_disk_gb"`
 
 	// used to define if a proxy server should be used.
-	Proxy bool `json:"proxy"`
+	UseProxy bool `json:"use_proxy"`
 
 	// used in a tf for_each, just put nils in both, the keys and values are ignored
 	PublicIps map[string]interface{} `json:"public_ips"`
@@ -199,7 +199,7 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 			e.Log.Error(errors.Errorf("WARNING -- instance %q already present in %q, refusing to overwrite", labInstance.Status.InstanceToMake.Name, e.Params.InstanceJSONOutput))
 		}
 		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
-		if labInstance.Spec.JumpBox {
+		if labInstance.Spec.UseJumpBox {
 			jumpBoxName := fmt.Sprintf("%s-jump", labInstance.Status.InstanceToMake.Name)
 			gcpInstances[jumpBoxName] = Instance{
 				Name: jumpBoxName,
@@ -314,21 +314,16 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 			}
 
 			publicIPs := map[string]interface{}{}
-			if lab.Spec.PublicIP {
+			if lab.Spec.UsePublicIP {
 				// hack: used in a tf for_each loop, just need something here
 				publicIPs["_"] = nil
-			}
-
-			proxy := false
-			if lab.Spec.Proxy {
-				proxy = true
 			}
 
 			lab.Status.InstanceToMake = Instance{
 				Name:        appLabSlug,
 				MachineType: "n1-standard-4",
 				BookDiskGB:  "200",
-				Proxy:       proxy,
+				UseProxy:    lab.Spec.UseProxy,
 				PublicIps:   publicIPs,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
