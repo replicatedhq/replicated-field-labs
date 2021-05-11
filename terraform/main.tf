@@ -69,6 +69,10 @@ resource "google_compute_instance" "shared_squid_proxy" {
   zone         = var.gcp_zone
   machine_type = "n1-standard-1"
 
+  labels = {
+    user = var.user
+  }
+
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-1804-lts"
@@ -103,6 +107,10 @@ resource "google_compute_instance" "airgapped-instance" {
   name         = each.key
   zone         = var.gcp_zone
   machine_type = each.value.instance.machine_type
+
+  labels = {
+    user = var.user
+  }
 
   provisioner "file" {
     content     = each.value.instance.provision_sh
@@ -144,6 +152,10 @@ resource "google_compute_instance" "kots-field-labs" {
   name         = each.key
   zone         = var.gcp_zone
   machine_type = each.value.machine_type
+
+  labels = {
+    user = var.user
+  }
 
   provisioner "file" {
     content     = each.value.provision_sh
