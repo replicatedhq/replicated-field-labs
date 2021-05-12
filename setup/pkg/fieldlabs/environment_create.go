@@ -4,17 +4,18 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/gosimple/slug"
-	"github.com/pkg/errors"
-	"github.com/replicatedhq/replicated/cli/print"
-	"github.com/replicatedhq/replicated/pkg/kotsclient"
-	"github.com/replicatedhq/replicated/pkg/types"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gosimple/slug"
+	"github.com/pkg/errors"
+	"github.com/replicatedhq/replicated/cli/print"
+	"github.com/replicatedhq/replicated/pkg/kotsclient"
+	"github.com/replicatedhq/replicated/pkg/types"
 )
 
 const (
@@ -54,6 +55,8 @@ type LabSpec struct {
 
 	// whether to include a license file and install KOTS
 	SkipInstallKots bool `json:"skip_install_kots"`
+	// whether to include a license file and install the app
+	SkipInstallApp bool `json:"skip_install_app"`
 	// kots config values to pass during install
 	ConfigValues string `json:"config_values"`
 	// bash source to run before installing KOTS
@@ -155,8 +158,6 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 		return errors.Wrap(err, "create apps")
 	}
 
-
-
 	labStatuses, err := e.createVendorLabs(envs, labSpecs)
 	if err != nil {
 		return errors.Wrap(err, "create vendor labs")
@@ -217,7 +218,6 @@ EOF
 			}
 		}
 	}
-
 
 	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
 	if err != nil {
@@ -296,18 +296,24 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			}
 
 			kotsProvisionScript := fmt.Sprintf(`
-curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash 
+curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash &> kURL.output
+`, lab.Status.App.Slug, lab.Spec.ChannelSlug)
 
+			appProvisioningScript := fmt.Sprintf(`
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"acceptAnonymousUploads": "0"}}}'
 
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
-  --license-file ./license.yaml \
-  --namespace default \
-  --shared-password %s
-`, lab.Status.App.Slug, lab.Spec.ChannelSlug, lab.Status.App.Slug, lab.Spec.ChannelSlug, env.KotsadmPassword)
+	--license-file ./license.yaml \
+	--namespace default \
+	--shared-password %s			
+`, lab.Status.App.Slug, lab.Spec.ChannelSlug, env.KotsadmPassword)
 
-			if lab.Spec.SkipInstallKots {
+			if lab.Spec.SkipInstallKots && lab.Spec.SkipInstallApp {
 				kotsProvisionScript = ""
+			}
+
+			if lab.Spec.SkipInstallApp {
+				appProvisioningScript = ""
 			}
 
 			publicIPs := map[string]interface{}{}
@@ -341,7 +347,9 @@ EOF
 %s
 
 %s
-`, lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, lab.Spec.PostInstallSH),
+
+%s
+`, lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
 			}
 			e.Log.FinishSpinner()
 			labs = append(labs, lab)
@@ -457,7 +465,7 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
 			continue
 		}
 		inviteBody := map[string]string{
-			"email": env.Email,
+			"email":     env.Email,
 			"policy_id": e.Params.RBACPolicyID,
 		}
 		inviteBodyBytes, err := json.Marshal(inviteBody)

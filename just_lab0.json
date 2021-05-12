@@ -8,6 +8,7 @@
     "yaml_dir": "labs/lab0-hello-world/manifests",
     "k8s_installer_yaml_path": "labs/lab0-hello-world/kurl-installer.yaml",
     "skip_install_kots": true,
+    "skip_install_app": true,
     "config_values": "",
     "pre_install_sh": "",
     "post_install_sh": "",
