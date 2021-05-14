@@ -11,7 +11,7 @@
     "config_values": "",
     "pre_install_sh": "",
     "post_install_sh": "",
-    "public_ip": true,
-    "jump_box": false
+    "use_public_ip": true,
+    "use_jump_box": false
   }
 ]

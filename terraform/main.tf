@@ -36,6 +36,11 @@ locals {
     replace(instance.name, "-jump", "") => instance
     if length(regexall(".*-jump", instance.name)) > 0
   }
+  proxies = {
+    for name, instance in local.provisioner_pairs :
+    name => instance
+    if instance.use_proxy
+  }
   airgap_instances = {
     for name, instance in local.provisioner_pairs :
     name => {
@@ -65,6 +70,7 @@ locals {
 }
 
 resource "google_compute_instance" "shared_squid_proxy" {
+  count        = length(local.proxies) > 0 ? 1 : 0
   name         = "kots-field-labs-squid-proxy"
   zone         = var.gcp_zone
   machine_type = "n1-standard-1"
@@ -100,6 +106,7 @@ resource "google_compute_instance" "shared_squid_proxy" {
     network = "default"
     access_config {}
   }
+
 }
 
 resource "google_compute_instance" "airgapped-instance" {
@@ -197,10 +204,10 @@ output "airgap_instances" {
 }
 
 output "proxy" {
-  value = {
-    name    = google_compute_instance.shared_squid_proxy.name
-    address = google_compute_instance.shared_squid_proxy.network_interface.0.access_config.0.nat_ip
-  }
+  value = length(google_compute_instance.shared_squid_proxy) > 0 ? {
+    name    = google_compute_instance.shared_squid_proxy.0.name
+    address = google_compute_instance.shared_squid_proxy.0.network_interface.0.access_config.0.nat_ip
+  } : null
 }
 
 resource "local_file" "etc_hosts" {
