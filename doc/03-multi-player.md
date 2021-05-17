@@ -1,4 +1,4 @@
-Single Player Mode
+Multi Player Mode
 ======================
 
 
