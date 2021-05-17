@@ -70,7 +70,7 @@ An example entry in this map might look like
 
 ```json
 {
-  "rp415-dex-lab0-hello-world": {
+  "rp415-dex-lab00-hello-world": {
     "name": "rp415-dex-lab00-hello-world",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\ncat # ... rest of provisioner script",
     "machine_type": "n1-standard-4",
@@ -86,14 +86,14 @@ For airgap/proxy labs, where the primary instance doesn't have a public IP addre
 
 ```json
 {
-  "dppt-aj-lab5-airgap": {
+  "dppt-aj-lab05-airgap": {
     "name": "dppt-aj-lab05-airgap",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\n",
     "machine_type": "n1-standard-4",
     "boot_disk_gb": "200",
     "public_ips": {}
   },
-  "dppt-aj-lab5-airgap-jump": {
+  "dppt-aj-lab05-airgap-jump": {
     "name": "jump-dppt-aj-lab05-airgap",
     "provision_sh": "\n#!/bin/bash \n\nset -euo pipefail\n\n\n\n",
     "machine_type": "n1-standard-1",
@@ -128,8 +128,8 @@ $ cat terraform/etchosts/aj
 #     <PASTE>
 #     ' | sudo tee -a /etc/hosts
 
-34.121.47.43	lab5-airgap-jump	# dppt-aj-lab5-airgap-jump
-104.198.254.92	lab6-proxy-jump	# dppt-aj-lab6-proxy-jump
+34.121.47.43	lab05-airgap-jump	# dppt-aj-lab05-airgap-jump
+104.198.254.92	lab06-proxy-jump	# dppt-aj-lab06-proxy-jump
 ```
 
 

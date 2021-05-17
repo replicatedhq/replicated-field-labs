@@ -243,12 +243,12 @@ AIRGAP:
 
 ### 7. Installing KOTS
 
-A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab0-hello-world`.
+A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab00-hello-world`.
 KOTS has not yet been installed on this server to give you an opportunity to experiment with the install process.
 
 ###### On the Server
 
-Next, SSH into the server `lab0-hello-world`, and run the install script from above, using the `EMBEDDED` version:
+Next, SSH into the server `lab00-hello-world`, and run the install script from above, using the `EMBEDDED` version:
 
 ```shell
 curl -sSL https://k8s.kurl.sh/<app-slug-name>-<channel name> | sudo bash

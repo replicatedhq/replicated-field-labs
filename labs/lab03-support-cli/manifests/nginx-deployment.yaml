@@ -26,7 +26,7 @@ spec:
               echo "found config.txt"
           volumeMounts:
             - mountPath: /etc/lab3
-              name: lab1-config
+              name: config
         - name: check-secret-file
           image: busybox
           command:
@@ -38,7 +38,7 @@ spec:
               echo "found secretkey.txt"
           volumeMounts:
             - mountPath: /etc/lab3
-              name: lab1-config
+              name: config
         - name: check-rb
           image: kotsadm/kotsadm-operator:v1.33.1
           command:
@@ -57,7 +57,7 @@ spec:
               done
           volumeMounts:
             - mountPath: /etc/lab3
-              name: lab1-config
+              name: config
       containers:
         - name: nginx
           image: nginx
@@ -72,7 +72,7 @@ spec:
               memory: '32Mi'
               cpu: '100m'
       volumes:
-        - name: lab1-config
+        - name: config
           hostPath:
             path: /etc/lab3/
         - name: html

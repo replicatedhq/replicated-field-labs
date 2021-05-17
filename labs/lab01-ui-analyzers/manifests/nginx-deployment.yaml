@@ -24,7 +24,7 @@ spec:
               if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
           volumeMounts:
             - mountPath: /etc/lab1
-              name: lab1-config
+              name: config
       containers:
         - name: nginx
           image: nginx
@@ -39,7 +39,7 @@ spec:
               memory: '32Mi'
               cpu: '100m'
       volumes:
-        - name: lab1-config
+        - name: config
           hostPath:
             path: /etc/lab1/
         - name: html

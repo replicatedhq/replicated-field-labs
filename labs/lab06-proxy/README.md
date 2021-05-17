@@ -9,8 +9,8 @@ As in [Lab 1.5](../lab05-airgap), You will have received the IP of a jump box an
 For example, you may have received:
 
 ```text
-dx411-dex-lab6-proxy-jump = 104.155.131.205
-dx411-dex-lab6-proxy
+dx411-dex-lab06-proxy-jump = 104.155.131.205
+dx411-dex-lab06-proxy
 ```
 
 In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
@@ -133,7 +133,7 @@ We'll use the environment variable method today, but you can also use a [kurl in
 export HTTP_PROXY=kots-field-labs-squid-proxy:3128
 export HTTPS_PROXY=kots-field-labs-squid-proxy:3128
 # use install script we grabbed above, adding a -E flag to sudo
-curl -sSL https://k8s.kurl.sh/dx411-dex-lab6-proxy | sudo -E bash
+curl -sSL https://k8s.kurl.sh/dx411-dex-lab06-proxy | sudo -E bash
 ```
 
 Note that you'll need to add `-E` flag to the `sudo` command in order to forward your environment to `bash` process runing under `sudo`.

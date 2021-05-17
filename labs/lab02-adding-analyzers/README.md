@@ -14,7 +14,7 @@ If you want to get the most of out these labs, use the presented debugging steps
 
 ### Before you start
 
-Before you start, it's worth noting that the `lab2-support-analyzers` server already has the `config.txt` file in place. You can SSH into the
+Before you start, it's worth noting that the `lab02-support-analyzers` server already has the `config.txt` file in place. You can SSH into the
 node before you start, just to verify:
 
 ```shell
@@ -30,7 +30,7 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 ### The Problem
 
-You can open the KOTS admin console your your node by navigating to https://lab2-support-analyzers:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+You can open the KOTS admin console your your node by navigating to https://lab02-support-analyzers:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -187,7 +187,7 @@ and the [regex analyzer](https://troubleshoot.sh/docs/analyze/regex/).
 Using the files there and the troubleshoot docs, add a collector + analyzer to check for the existence of /etc/lab2/secretkey.txt
 and fail with a helpful error message if it's not there.
 
-Make changes to your YAML, then run `make release` from the `lab2-adding-analyzers` directory to create a new release.
+Make changes to your YAML, then run `make release` from the `lab02-adding-analyzers` directory to create a new release.
 Test your changes by navigating to your KOTS UI's Version History tab, checking for updates, 
 deploying the new version, collecting another support bundle, and reviewing the analyzers.
 

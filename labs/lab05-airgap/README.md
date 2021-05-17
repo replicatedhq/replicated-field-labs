@@ -33,8 +33,8 @@ You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
 
 ```text
-dx411-dex-lab5-airgap-jump = 104.155.131.205
-dx411-dex-lab5-airgap
+dx411-dex-lab05-airgap-jump = 104.155.131.205
+dx411-dex-lab05-airgap
 ```
 
 In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
@@ -94,7 +94,7 @@ By default, only the Stable and Beta channels will automatically build airgap bu
 For a production application, airgap releases will be built automatically on the Stable channel, so this won't
 be necessary.
 
-In this case, since we're working off the `lab5-airgap` channel, you'll want to enable airgap builds on that channel.
+In this case, since we're working off the `lab05-airgap` channel, you'll want to enable airgap builds on that channel.
 
 You can check the build status by navigating to the "Release History" for the channel.
 
@@ -149,7 +149,7 @@ We'll use the `-A` flag to the `ssh` command to forward our agent so we can inte
 Replace the URL with the one you copied above
 
 ```text
-dex@dx411-dex-lab5-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab5-airgap.tar.gz
+dex@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab05-airgap.tar.gz
 ```
 
 When it's finished, copy it to the airgapped server. 
@@ -157,7 +157,7 @@ You can use the DNS name in this case, as described in [Instance Overview](#inst
 In this example we've SSH'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
-dex@dx411-dex-lab5-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab5-airgap:/home/dex
+dex@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab05-airgap:/home/dex
 
 ```
 
@@ -167,7 +167,7 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to airgap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-dex@dx411-dex-lab5-airgap-jump ~$ ssh dx411-dex-lab5-airgap
+dex@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
 ```
 
 Otherwise, you can use the above 
@@ -236,14 +236,14 @@ So we'll need to create a new release in order to fix this.
 
 ### Deploying a new version
 
-From the `labs/lab5-airgap` directory, remove the command override.
+From the `labs/lab05-airgap` directory, remove the command override.
 
 
 ```diff
-diff --git a/labs/lab5-airgap/manifests/nginx-deployment.yaml b/labs/lab5-airgap/manifests/nginx-deployment.yaml
+diff --git a/labs/lab05-airgap/manifests/nginx-deployment.yaml b/labs/lab05-airgap/manifests/nginx-deployment.yaml
 index fa29e8d..3a66405 100644
---- a/labs/lab5-airgap/manifests/nginx-deployment.yaml
-+++ b/labs/lab5-airgap/manifests/nginx-deployment.yaml
+--- a/labs/lab05-airgap/manifests/nginx-deployment.yaml
++++ b/labs/lab05-airgap/manifests/nginx-deployment.yaml
 @@ -16,9 +16,6 @@ spec:
        containers:
          - name: nginx
@@ -265,7 +265,7 @@ make release
 ```
 
 Once the release is made, you should be able to navigate back to the customer download portal we accessed from the customer page.
-Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab5-airgap channel.
+Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab05-airgap channel.
 The new release may take a minute or two to build, so you're want to refresh the make until you see one
 with a timestamp that matches when you ran `make release`.
 

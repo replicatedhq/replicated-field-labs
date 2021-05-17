@@ -14,7 +14,7 @@ spec:
         app: file-check-pod
     spec:
       volumes:
-        - name: lab1-config
+        - name: config
           hostPath:
             path: /etc/lab2/
       containers:
@@ -25,7 +25,7 @@ spec:
             - infinity
           volumeMounts:
             - mountPath: /etc/lab2
-              name: lab1-config
+              name: config
           resources:
             limits:
               memory: '256Mi'

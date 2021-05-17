@@ -4,7 +4,7 @@ Lab 1.1: Using Support Analyzers
 In this lab, we'll use the Support Bundle analyzers feature to debug an application, modifying the host in order to create the correct conditions for the application to start. In this case, the app is already deployed, but something is not quite right. The Status Informers show "Unavailable".
 
 
-![lab1-kots-ui-unavailable](img/lab1-kots-ui-unavailable.png)
+![lab01-kots-ui-unavailable](img/lab1-kots-ui-unavailable.png)
 
 You can open the KOTS admin console on your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
 
@@ -36,7 +36,7 @@ Once the bundle is collected, you should see an informative error message in the
 
 ### Correcting
 
-In order to correct this issue, you'll need to SSH into your `lab1-ui-analyzers` node and add this file. 
+In order to correct this issue, you'll need to SSH into your `lab01-ui-analyzers` node and add this file. 
 
 <details>
   <summary>Expand for shell commands</summary>

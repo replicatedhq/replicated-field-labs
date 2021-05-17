@@ -91,14 +91,14 @@ $ cat terraform/etchosts/aj
 #     <PASTE>
 #     ' | sudo tee -a /etc/hosts
 
-34.121.47.43	lab5-airgap-jump	# dppt-aj-lab5-airgap-jump
-104.198.254.92	lab6-proxy-jump	# dppt-aj-lab6-proxy-jump
+34.121.47.43	lab05-airgap-jump	# dppt-aj-lab05-airgap-jump
+104.198.254.92	lab06-proxy-jump	# dppt-aj-lab06-proxy-jump
 ```
 
 ## 8. You're ready!
 
 For each lab you provisioned, head to the README for that lab. 
-For example, to walk through Lab 0, navigate to the [labs/lab0-hello-world README](../labs/lab00-hello-world).
+For example, to walk through Lab 0, navigate to the [labs/lab00-hello-world README](../labs/lab00-hello-world).
 
 ## 9. Iterating
 

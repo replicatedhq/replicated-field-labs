@@ -21,8 +21,8 @@ spec:
             - infinity
           volumeMounts:
             - mountPath: /etc/lab5
-              name: lab1-config
+              name: config
       volumes:
-        - name: lab1-config
+        - name: config
           hostPath:
             path: /etc/lab5/
