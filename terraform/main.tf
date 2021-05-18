@@ -38,7 +38,7 @@ locals {
   }
   proxies = {
     for name, instance in local.provisioner_pairs :
-    name => instance
+    instance.prefix => true
     if instance.use_proxy
   }
   airgap_instances = {
@@ -70,8 +70,8 @@ locals {
 }
 
 resource "google_compute_instance" "shared_squid_proxy" {
-  count        = length(local.proxies) > 0 ? 1 : 0
-  name         = "kots-field-labs-squid-proxy"
+  for_each     = local.proxies
+  name         = "${each.key}-kots-field-labs-squid-proxy"
   zone         = var.gcp_zone
   machine_type = "n1-standard-1"
 
@@ -203,11 +203,13 @@ output "airgap_instances" {
   ]
 }
 
-output "proxy" {
-  value = length(google_compute_instance.shared_squid_proxy) > 0 ? {
-    name    = google_compute_instance.shared_squid_proxy.0.name
-    address = google_compute_instance.shared_squid_proxy.0.network_interface.0.access_config.0.nat_ip
-  } : null
+output "proxies" {
+  value = [
+    for instance in google_compute_instance.shared_squid_proxy : {
+      name    = instance.name
+      address = instance.network_interface.0.access_config.0.nat_ip
+    }
+  ]
 }
 
 resource "local_file" "etc_hosts" {

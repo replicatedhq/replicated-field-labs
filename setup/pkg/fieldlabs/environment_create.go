@@ -76,6 +76,7 @@ type Token struct {
 
 type Instance struct {
 	Name          string `json:"name"`
+	Prefix        string `json:"prefix"`
 	InstallScript string `json:"provision_sh"`
 	MachineType   string `json:"machine_type"`
 	BookDiskGB    string `json:"boot_disk_gb"`
@@ -202,7 +203,8 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 		if labInstance.Spec.UseJumpBox {
 			jumpBoxName := fmt.Sprintf("%s-jump", labInstance.Status.InstanceToMake.Name)
 			gcpInstances[jumpBoxName] = Instance{
-				Name: jumpBoxName,
+				Name:   jumpBoxName,
+				Prefix: e.Params.NamePrefix,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
 
@@ -321,6 +323,7 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 
 			lab.Status.InstanceToMake = Instance{
 				Name:        appLabSlug,
+				Prefix:      e.Params.NamePrefix,
 				MachineType: "n1-standard-4",
 				BookDiskGB:  "200",
 				UseProxy:    lab.Spec.UseProxy,
