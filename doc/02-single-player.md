@@ -12,7 +12,7 @@ You should probably skim through [the architecture outline](./01-architecture.md
 * Create and copy an API token, set it in your shell with `export REPLICATED_API_TOKEN=...`
 * Choose a unique name for your session, e.g. `dh-test`
 * Install terraform
-* Install a Go toolchain (this has been tested w/ 1.16)
+* Install a Go toolchain (this has been tested w/ 1.16), ensure `$GOPATH` is set and `$GOPATH/bin` is added to your `$PATH` 
 * Install the `gcloud` CLI and log in with application default credentials: `gcloud auth application-default login`
 * Add your `google_compute_engine` ssh key to the `ssh-agent` or configure `~/.ssh/config` correctly.
 * You should probably skim through [the architecture outline](./01-architecture.md) first.
