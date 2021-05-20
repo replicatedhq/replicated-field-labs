@@ -3,8 +3,7 @@ name: "Validate Terraform files"
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - "**"
 
 jobs:
   terraform:
@@ -20,8 +19,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-        with:
-          fetch-depth: 1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.3.2
@@ -36,5 +33,4 @@ jobs:
 
       - name: Run `terraform validate`
         id: validate
-        if: github.event_name == 'pull_request'
-        run: terraform validate -no-color
+        run: terraform validate

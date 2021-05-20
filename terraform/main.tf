@@ -7,9 +7,9 @@ variable "gcp_zone" {
 
 provider "google" {
   project = var.gcp_project
-  region  = join("-",[
-      split("-", var.gcp_zone)[0],
-      split("-", var.gcp_zone)[1],
+  region = join("-", [
+    split("-", var.gcp_zone)[0],
+    split("-", var.gcp_zone)[1],
     ]
   )
 }
@@ -217,7 +217,7 @@ resource "local_file" "etc_hosts" {
 
 
   filename = "etchosts/${each.key}"
-  content = <<EOF
+  content  = <<EOF
 # copy the below and add it to your hosts file with
 #
 #     echo '
