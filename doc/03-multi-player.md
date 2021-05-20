@@ -24,6 +24,16 @@ Timestamp,Source Email,name,pub_key,password,email,slug
 5/13/2021 18:02:25,participant.one@somecompany.com,Participant One,ssh-rsa public key particpant.one@somecompany.com,password,participant.one+[PREFIX]@somecompany.com,participant
 ```
 
+In above example, the following fields are being mapped:
++ `name`: name of the environment
++ `pub_key`: public key of the user who will access this environment
++ `password`: password to be set on kotsadm instances
++ `email`: email to invite to vendor.replicated.com if Params.InviteUsers is set
++ `slug`: slug of the environment
+
+
+
+
 ## 3. VM Instances
 
 See [Terraform apply](./02-single-player.md#6-terraform-apply)
