@@ -75,7 +75,7 @@ and should be omitted in this case.
 
 In the case that the UI is totally unreachable, the command will follow the pattern below. 
 Note that this pattern is subject to change in future KOTS versions and you should prefer to copying the command from the UI.
-The below was build from a KOTS instance running version 1.37.0.
+The below was built from a KOTS instance running version 1.37.0.
 
 ```shell
 export REPLICATED_APP=... # your app slug
