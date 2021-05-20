@@ -15,7 +15,7 @@ This guide will walk you through running all the labs for a team of people.
 When provisioning for an actual training, the following is needed (to invite users):
 
 ```(shell)
-make apps invite_users=1 env_csv=[CSV File with ssh keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] invite_rbac_policy_id=[Check the RBAC token in chrome dev tools] inviter_email=[your Vendor web email]
+make apps invite_users=1 env_csv=[CSV File with ssh  public keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] invite_rbac_policy_id=[Check the RBAC token in chrome dev tools] inviter_email=[your Vendor web email]
 ```
 
 A csv example:
