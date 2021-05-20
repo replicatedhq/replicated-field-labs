@@ -159,7 +159,7 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 
 	envs, appsToCreate, appsToDelete, err := e.getAppsDelta(envs)
 	if err != nil {
-		return errors.Wrap(err, "Failed calculating deltas")
+		return errors.Wrap(err, "calculating deltas fails")
 	}
 
 	// confirm delete
