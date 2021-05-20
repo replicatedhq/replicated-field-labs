@@ -16,6 +16,10 @@ REPLICATED_GCP_ZONE ?= "us-central1-b"
 install:
 	@$(MAKE) -C setup install
 
+.PHONY: test
+test:
+	@$(MAKE) -C setup test
+
 .PHONY: apps
 apps: install
 	REPLICATED_LABS_JSON=$(labs_json) \
