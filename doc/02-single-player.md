@@ -111,10 +111,12 @@ same `make apps` and `make instances` commands. `make apps` will recreate `provi
 
 + When an entry is added to the environments json, it will result in a new app creation (by running `make apps`) and the provisioner json output will be updated (which can be triggered via `make instances`).
 + When an entry is removed from the environments json, it will result in the corresponding app being removed in the vendor portal (by running `make apps`). The provsioner json will also be updated and after executing `make instances` the corresponding vm's will also be removed.
++ When an entry is added to the labs json, it will result in the corresponding channels and customers to be created (by running `make apps`) and the provisioner json output will be updated (which can be triggered via `make instances`).
++ When an entry is removed from the labs json, **NO UPDATES** will happen to the corresponding channels and customers for the apps defined in environment json! If you want to remove channels or customers, you'll have to remove them by removing the entry from environments.json and recreating them.
 
 ## 10. Cleaning up
 
-+ Empty the `env_json` file.
++ Empty the `env_json` file by making it contain `[]`.
 + Run 
   ```shell
   make apps \
