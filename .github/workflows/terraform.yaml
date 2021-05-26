@@ -9,13 +9,7 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        directory: ["./terraform"]
-    defaults:
-      run:
-        working-directory: ${{ matrix.directory }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
