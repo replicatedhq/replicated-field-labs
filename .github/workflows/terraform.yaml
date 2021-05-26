@@ -1,0 +1,30 @@
+name: "Validate Terraform files"
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+
+      - name: Run `terraform fmt`
+        id: fmt
+        run: terraform fmt -diff -check -no-color -recursive
+
+      - name: Run `terraform init`
+        id: init
+        run: terraform init
+
+      - name: Run `terraform validate`
+        id: validate
+        run: terraform validate

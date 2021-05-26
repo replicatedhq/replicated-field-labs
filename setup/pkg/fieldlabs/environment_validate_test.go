@@ -1,8 +1,9 @@
 package fieldlabs
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestValidateEnv(t *testing.T) {
@@ -14,8 +15,9 @@ func TestValidateEnv(t *testing.T) {
 		{
 			name: "basic",
 			env: Environment{
-				Name: "Dex",
-				Slug: "dex",
+				Name:            "Dex",
+				Slug:            "dex",
+				KotsadmPassword: "password",
 			},
 		},
 		{
