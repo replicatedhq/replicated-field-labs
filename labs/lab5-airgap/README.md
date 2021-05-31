@@ -217,7 +217,7 @@ We'll find that the application is unavailable.
 
 ![app-down](img/app-down.png)
 
-While we'll expore [support techniques for airgapped environments](#collecting-a-cli-support-bundle) 
+While we'll explore [support techniques for airgapped environments](#collecting-a-cli-support-bundle) 
 below, in this case you should observe that our deployment is simply not valid, specifically, the
 standard nginx entrypoint has been overriden:
 
