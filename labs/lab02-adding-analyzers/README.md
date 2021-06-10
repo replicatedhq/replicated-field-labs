@@ -14,7 +14,7 @@ If you want to get the most of out these labs, use the presented debugging steps
 
 ### Before you start
 
-Before you start, it's worth noting that the `lab02-support-analyzers` server already has the `config.txt` file in place. You can SSH into the
+Before you start, it's worth noting that the `lab02-adding-analyzers` server already has the `config.txt` file in place. You can SSH into the
 node before you start, just to verify:
 
 ```shell
@@ -30,7 +30,7 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 ### The Problem
 
-You can open the KOTS admin console your your node by navigating to https://lab02-support-analyzers:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+You can open the KOTS admin console your your node by navigating to https://lab02-adding-analyzers:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -163,10 +163,10 @@ Any time you find yourself using logs to debug something, you should ask yoursel
 > 
 > How can I present valuable diagnostic information directly to my customer, in the case that they're unable to send logs out of the environment?
 
-So before we move on to the next issue, let's take some time to build and test an analyzer that will check for the existence of this `/etc/lab2/secretkey.txt`
+So before we move on to the next lab, let's take some time to build and test an analyzer that will check for the existence of this `/etc/lab2/secretkey.txt`
 as part of support bundle collection.
 
-**NOTE** you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab00-hello-world) to add an analyzer.
+**NOTE** you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now. 
 It will take **15-30 minutes**.
 
@@ -259,9 +259,20 @@ spec:
 
 </details>
 
+Again, once you've made this change on your workstation, you'll want to run `make release` and deploy the update on the Lab instance using the Admin Console.
+If you have trouble using `make release`, ensure you've completed the CLI setup in [Lab 0](../lab00-hello-world).
+
 
 To validate your analyzer works, you'll want to collect two support bundles, one when the secretkey.txt file is present and another when it is absent. 
+
+```shell
+sudo rm /etc/lab2/secretkey.txt
+```
+
 You should confirm that in the "absent" case, your bundle analyis presents an error with helpful remediation info.
+
+
+![negative-test-analyzer](img/negative-test-analyzer.png)
 
 ### Going deeper (optional)
 

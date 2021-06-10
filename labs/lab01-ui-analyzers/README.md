@@ -1,22 +1,42 @@
 Lab 1.1: Using Support Analyzers
 =========================================
 
-In this lab, we'll use the Support Bundle analyzers feature to debug an application, modifying the host in order to create the correct conditions for the application to start. In this case, the app is already deployed, but something is not quite right. The Status Informers show "Unavailable".
+In this lab, we'll use the Support Bundle analyzers feature to debug an application, modifying the host in order to create the correct conditions for the application to start. 
 
-
-![lab01-kots-ui-unavailable](img/lab1-kots-ui-unavailable.png)
-
-You can open the KOTS admin console on your node by navigating to https://$IP_ADDRESS:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing the node and running
-
-```shell
-kubectl kots reset-password -n default
-```
 
 ### Ground Rules
 
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
 It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
+
+### Accessing the UI
+
+You can open the KOTS admin console on your node by navigating to
+
+```
+https://$IP_ADDRESS:8800
+```
+
+in a browser. If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access it at
+
+
+[https://lab00-hello-world:8800](https://lab00-hello-world:8800)
+
+
+The password to your instance UI will be provided as part of the lab, or you can reset by SSHing the node and running
+
+```shell
+kubectl kots reset-password -n default
+```
+
+### The Issue
+
+In this case, the app is already deployed, but something is not quite right.
+The Status Informers show "Unavailable".
+
+
+![lab01-kots-ui-unavailable](img/lab1-kots-ui-unavailable.png)
 
 ### Investigating
 

@@ -18,12 +18,12 @@ If you want to get the most of out these labs, use the presented debugging steps
 
 ### Investigating
 
-*At first glance, you may notice that something is entirely wrong with this instance. You may even get a 502 error 
+At first glance, you may notice that something is entirely wrong with this instance. You may even get a 502 error 
 when trying to open kotsadm.
 
 ![kots-502](./img/kots-502.png)
 
-In this exercise, we'll review how to collect a support bundle when these types of errors arise. However, to start, you should be able
+In this exercise, we'll review how to collect a support bundle when the admin console itself is having issues. However, to start, you should be able
 to access the KOTS UI for about 30 seconds at a time in between errors. So you'll want to *start by refreshing a few 
 times* until the UI itself loads.
 

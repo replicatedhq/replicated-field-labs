@@ -109,7 +109,7 @@ replicated release ls
 
 #### 3. Verifying manifests
 
-You should have a few YAML files in `manifests`:
+From `labs/lab00-hello-world`, You should have a few YAML files in `manifests`:
 
 
 ```text
@@ -136,7 +136,6 @@ You should get a list that returns no errors, and exits with a 0 exit code. Outp
 ```text
 RULE                   TYPE    FILENAME                     LINE    MESSAGE
 config-spec            warn                                                                        Missing config spec
-container-resources    info    manifests/deployment.yaml    17      Missing container resources
 ```
 
 * * *
@@ -166,11 +165,13 @@ SEQUENCE    CREATED                      EDITED                  ACTIVE_CHANNELS
 ### 5. Download a Customer License
 
 A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
-To create a customer license, log in to the [Vendor Portal](https://vendor.replicated.com) and select the "Customers" link on the left. A customer has already been created for you
+To create a customer license, log in to the [Vendor Portal](https://vendor.replicated.com) and select the "Customers" link on the left. Customers for each lab have already been created for you.
 
-![Customers](./img/dev-customer.png)
+![Customers](./img/dev-customer-all.png)
 
-You can view the customer details by clicking the row. You'll notice that the customer is assigned to the the "Unstable" channel on the right hand side, and the Customer Type is set to "Development".
+You can view the customer details by clicking the row. 
+For this Hello World exercise we'll use `Dev Customer`. 
+You'll notice that the customer is assigned to the the "Unstable" channel on the right hand side, and the Customer Type is set to "Development".
 When you've reviewed these, you can click the "Download License" link in the top right corner.
 
 ![Create Customer](./img/view-customer.png)
@@ -197,11 +198,11 @@ $ head dev-customer.yaml
 apiVersion: kots.io/v1beta1
 kind: License
 metadata:
-  name: some-big-bank
+  name: dev-customer
 spec:
-  appSlug: kots-dex
+  appSlug: rp415-dex
   channelName: Unstable
-  customerName: Some-Big-Bank
+  customerName: Dev Customer
   endpoint: https://replicated.app
 ```
  * * *
@@ -225,17 +226,17 @@ VERSION:        Unstable-ba710e5
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install cli-quickstart-puma/unstable
+    kubectl kots install rp415-dex/unstable
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/cli-quickstart-puma-unstable | sudo bash
+    curl -fsSL https://k8s.kurl.sh/rp415-dex-unstable | sudo bash
 
 AIRGAP:
 
-    curl -fSL -o cli-quickstart-puma-unstable.tar.gz https://k8s.kurl.sh/bundle/cli-quickstart-puma-unstable.tar.gz
-    # ... scp or sneakernet cli-quickstart-puma-unstable.tar.gz to airgapped machine, then
-    tar xvf cli-quickstart-puma-unstable.tar.gz
+    curl -fSL -o rp415-dex-unstable.tar.gz https://k8s.kurl.sh/bundle/rp415-dex-unstable.tar.gz
+    # ... scp or sneakernet rp415-dex-unstable.tar.gz to airgapped machine, then
+    tar xvf rp415-dex-unstable.tar.gz
     sudo bash ./install.sh airgap
 ```
 
@@ -275,7 +276,7 @@ The UIs of Prometheus, Grafana and Alertmanager have been exposed on NodePorts 3
 To access Grafana use the generated user:password of admin:[password] .
 
 To add worker nodes to this installation, run the following script on your other nodes
-    curl -sSL https://kurl.sh/cli-quickstart-puma-unstable/join.sh | sudo bash -s kubernetes-master-address=[ip-address]:6443 kubeadm-token=[token] kubeadm-token-ca-hash=sha256:[sha] kubernetes-version=1.16.4 docker-registry-ip=[ip-address]
+    curl -sSL https://kurl.sh/rp415-dex-unstable/join.sh | sudo bash -s kubernetes-master-address=[ip-address]:6443 kubeadm-token=[token] kubeadm-token-ca-hash=sha256:[sha] kubernetes-version=1.16.4 docker-registry-ip=[ip-address]
 
 ```
 
