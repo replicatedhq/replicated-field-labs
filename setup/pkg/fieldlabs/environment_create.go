@@ -209,6 +209,15 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 				Prefix: e.Params.NamePrefix,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
+# add new user
+sudo useradd -s /bin/bash -d /home/kots -m -p safWNrcAGYqm2 -G sudo kots
+sudo groups kots
+echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+# update ssh to allow password login
+sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
+sudo service ssh restart
+# user must change password on first login
+sudo chage --lastday 0 kots
 
 set -euo pipefail
 
@@ -338,6 +347,15 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 				PublicIps:   publicIPs,
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
+# add new user
+sudo useradd -s /bin/bash -d /home/kots -m -p safWNrcAGYqm2 -G sudo kots
+sudo groups kots
+echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+# update ssh to allow password login
+sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
+sudo service ssh restart
+# user must change password on first login
+sudo chage --lastday 0 kots
 
 set -euo pipefail
 
