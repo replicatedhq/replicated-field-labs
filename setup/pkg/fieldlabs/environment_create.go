@@ -216,6 +216,8 @@ echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 # update ssh to allow password login
 sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
 sudo service ssh restart
+# add kots to google-sudoers
+sudo usermod -aG google-sudoers kots
 # user must change password on first login
 sudo chage --lastday 0 kots
 
@@ -354,6 +356,8 @@ echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 # update ssh to allow password login
 sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
 sudo service ssh restart
+# add kots to google-sudoers
+sudo usermod -aG google-sudoers kots
 # user must change password on first login
 sudo chage --lastday 0 kots
 
