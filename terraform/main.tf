@@ -216,7 +216,7 @@ resource "local_file" "etc_hosts" {
   for_each = local.grouped_by_name
 
 
-  filename = "etchosts/${each.key}"
+  filename = "${path.module}/etchosts/${each.key}"
   content  = <<EOF
 # copy the below and add it to your hosts file with
 #
