@@ -2,12 +2,12 @@ Lab 1.2: Support Analyzers
 =========================================
 
 
-**NOTE** to complete this lab, you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab00-hello-world) to add an analyzer.
+> **NOTE**: to complete this lab, you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 1 Exercise 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 
-### Ground Rules
-
+## Ground Rules
+***
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
 It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
@@ -16,6 +16,11 @@ If you want to get the most of out these labs, use the presented debugging steps
 
 Before you start, it's worth noting that the `lab02-adding-analyzers` server already has the `config.txt` file in place. You can SSH into the
 node before you start, just to verify:
+
+```bash
+ssh kots@<server ip address>
+```
+> **Note**: You will be prompted to change the password on first login
 
 ```shell
 ls -l /etc/lab2/
@@ -30,7 +35,9 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 ### The Problem
 
-You can open the KOTS admin console your your node by navigating to https://lab02-adding-analyzers:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+> **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab02-adding-analyzers in place of the node IP address. 
+
+Open the KOTS admin console by navigating to https://lab02-adding-analyzers:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -45,8 +52,8 @@ Unfortunately, we'll find that all the analyzers are "info" level, and there are
 
 ![analyzers-green](./img/analyzers-green.png)
 
-### Investigating
-
+## Investigating
+***
 The key lesson of this lab is around what to do if analyzers don't provide any useful information. 
 We'll walk through downloading the bundle, collaborating with your team to diagnose the error, and preventing it in the future.
 
@@ -87,8 +94,8 @@ These links can be attached to a support ticket, shared in Slack, etc.
 If you choose the "Share with Replicated" option in the https://vendor.replicated.com, the same links will become accessible to Replicated's support team.
 
 
-### The issue
-
+## The issue
+***
 When we don't have an analyzer to tell us what's wrong, we end up looking through log files.
 Fortunately, the support bundle includes a wealth of information about the cluster and our application's nginx pod.
 Explore the files in the support bundle, either in the UI or by untarring locally, and see if you can figure out what's missing from the system.
@@ -125,17 +132,17 @@ It appears our initContainer relies on this file to proceed.
 
 </details>
 
+<br>
 
-
-
-### Correcting
-
+## Correcting
+***
 To correct the issue, let's address the problem we uncovered in the init container.
 
 <details>
   <summary>Expand for a Hint</summary>
 
-As with many infrastructure problems, now that we have diagnosed the issue, the fix is relatively simple.
+As with many infrastructure problems, now that we have diagnosed the issue, the fix is relatively simple. SSH into your node if you have not done so and issue the following commands:
+
 
 ```text
 sudo touch /etc/lab2/secretkey.txt
@@ -152,10 +159,10 @@ kubectl delete pod -l app=nginx
 
 We can now verify that the app comes up as expected.
 
+<br>
 
-
-### Adding an Analyzer
-
+## Adding an Analyzer
+***
 The most important lesson to take away from this lab is that troubleshooting with logs should be a pathological event.
 Any time you find yourself using logs to debug something, you should ask yourself
 
@@ -166,7 +173,7 @@ Any time you find yourself using logs to debug something, you should ask yoursel
 So before we move on to the next lab, let's take some time to build and test an analyzer that will check for the existence of this `/etc/lab2/secretkey.txt`
 as part of support bundle collection.
 
-**NOTE** you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+> **NOTE**: you will need to ensure you've set `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now. 
 It will take **15-30 minutes**.
 
@@ -274,8 +281,8 @@ You should confirm that in the "absent" case, your bundle analyis presents an er
 
 ![negative-test-analyzer](img/negative-test-analyzer.png)
 
-### Going deeper (optional)
-
+## Going deeper (optional)
+***
 If you finish up Lab 1.2 early, try your hand at the following exercise:
 
 Instead of using `exec` + `textAnalyze` collector combo, could you use the existing `logs` collector for the nginx initContainers with a `textAnalyze` collector instead?

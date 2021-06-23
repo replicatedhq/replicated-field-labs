@@ -6,16 +6,14 @@ with the exercises in Lab 1.
 
 The README and the YAML sources draw from https://github.com/replicatedhq/replicated-starter-kots
 
-### Get started
-
+## Get started
+***
 To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
 
 ```shell script
 git clone git@github.com:replicatedhq/kots-field-labs
 cd kots-field-labs/labs/lab00-hello-world
 ```
-
-#### Install CLI
 
 ### 1. Install CLI
 
@@ -67,8 +65,8 @@ $ replicated version
 }
 ```
 
-
-#### 2. Configure environment
+***
+### 2. Configure environment
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
@@ -106,8 +104,8 @@ You can ensure this is working with
 ```
 replicated release ls
 ```
-
-#### 3. Verifying manifests
+***
+### 3. Verifying manifests
 
 From `labs/lab00-hello-world`, You should have a few YAML files in `manifests`:
 
@@ -247,9 +245,15 @@ AIRGAP:
 A server has already been provisioned for this exercise by your instructor, and details should have been shared with you. You'll want to find the one with the name matching `lab00-hello-world`.
 KOTS has not yet been installed on this server to give you an opportunity to experiment with the install process.
 
-###### On the Server
+#### **On the Server**
 
 Next, SSH into the server `lab00-hello-world`, and run the install script from above, using the `EMBEDDED` version:
+
+```bash
+ssh kots@<server ip address>
+```
+> **Note**: You will be prompted to change the password on first login
+
 
 ```shell
 curl -sSL https://k8s.kurl.sh/<app-slug-name>-<channel name> | sudo bash
@@ -280,7 +284,7 @@ To add worker nodes to this installation, run the following script on your other
 
 ```
 
-Please note the Kotsadm URL and Password in the above output. We will use this later to complete the install of the application.
+> **NOTE**: The Kotsadm URL and Password in the above output. We will use this later to complete the install of the application.
 
 Per the instructions, run the following to reload your shell so that you can run `kubectl`
 
