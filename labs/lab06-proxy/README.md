@@ -45,7 +45,7 @@ export REPLICATED_APP=... # your app slug
 ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab06-proxy
 ```
 
-> **NOTE**: You will be prompted to **twice** to change the password on first login. Once for the JUMP_BOX and again for the PROXY server.
+> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the PROXY server.
 
 You'll note that egress is not possible by typical means
 
