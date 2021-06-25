@@ -6,8 +6,9 @@ with the exercises in Lab 1.
 
 The README and the YAML sources draw from https://github.com/replicatedhq/replicated-starter-kots
 
-## Get started
 ***
+## Get started
+
 To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
 
 ```shell script

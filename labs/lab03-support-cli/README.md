@@ -17,9 +17,9 @@ ssh kots@<server ip address>
 kubectl kots reset-password -n default
 ```
 
-
-## Ground Rules
 ***
+## Ground Rules
+
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
 It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
@@ -67,10 +67,9 @@ nginx-8b679cd99-zmv2w                 0/1     Init:2/3      0          5m25s
 
 It appears that our app pod is stuck initializing, and the KOTS admin console is in the middle of terminating/re-initializing.
 
-<br>
-
-## Getting a Support Bundle when KOTS is crashing
 ***
+## Getting a Support Bundle when KOTS is crashing
+
 This brings us to our next key takeaway:
 
 <div align="center"><blockquote><h3>When the KOTS admin console is unavailable, the <code>kubectl support-bundle</code> command should be used to collect a support bundle.</h3></blockquote></div>
@@ -183,8 +182,9 @@ If you leave the instance for a while, you should also notice the CPU graphs set
 
 ![stable-graphs](./img/stable-graphs.png)
 
-## Additional exercise: Sharing the Bundle
 ***
+## Additional exercise: Sharing the Bundle
+
 As part of the CLI collection, a support bundle will be dropped in your current working directory.
 
 

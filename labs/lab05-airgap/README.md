@@ -9,8 +9,9 @@ get practice performing an airgap install from scratch.
 
 Once that's done, we'll explore how some of the support techniques differ between online and airgapped environments. 
 
-## Airgap Workflow Overview
 ***
+## Airgap Workflow Overview
+
 First, we'll push a release -- in the background, Replicated's airgap builder will prepare an airgap bundle.
 
 ![airgap-slide-1](img/airgap-slide-1.png)
@@ -27,8 +28,8 @@ The above diagram shows a three node cluster, but we'll use only a single node.
 While the KOTS bundle will be moved onto the server via SCP as in the diagram,
 the app bundle and license file will be uploaded via a browser UI through an SSH tunnel.
 
-## Getting Started
 ***
+## Getting Started
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
@@ -56,8 +57,9 @@ git clone https://github.com/replicatedhq/kots-field-labs
 cd kots-field-labs/labs/lab05-airgap
 ```
 
-## Instance Overview
 ***
+## Instance Overview
+
 You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
 
@@ -101,9 +103,9 @@ can ctrl+C the command and proceed to the next section
 ```shell
 curl -v https://kubernetes.io
 ```
-
-## Moving Assets into place
 ***
+## Moving Assets into place
+
 If you haven't already, you can log out of the airgapped instance with `exit` or ctrl+D. 
 Our next step is to collect the assets we need for an airgapped installation:
 
@@ -214,8 +216,9 @@ At the end, you should see a `Installation Complete` message as shown below. Sin
 
 ![kurl-password](img/kurl-password.png)
 
-## Accessing the UI via SSH tunnel, Configuring the instance
 ***
+## Accessing the UI via SSH tunnel, Configuring the instance
+
 You'll want to create a port forward from your workstation in order to access to UI locally.
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
 
@@ -283,10 +286,9 @@ standard nginx entrypoint has been overriden:
 
 So we'll need to create a new release in order to fix this.
 
-<br>
-
-## Deploying a new version
 ***
+## Deploying a new version
+
 From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below.
 
 
@@ -557,8 +559,9 @@ kubectl support-bundle ./support-bundle.yaml
 Congrats! You've completed Exercise 5! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
 
-## Extra exercises
 ***
+## Extra exercises
+
 If you finish the lab early you can:
 
 1. Experiment with copying the CLI-generated bundle off the server and uploading it to https://vendor.replicated.com

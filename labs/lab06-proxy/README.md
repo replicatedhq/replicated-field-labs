@@ -102,10 +102,10 @@ For more details, explore https://everything.curl.dev/usingcurl/proxies#proxy-en
 > All these proxy environment variable names except http_proxy can also be specified in uppercase, like HTTPS_PROXY.
 </details>
 
-<br>
 
-## Getting an install script
 ***
+## Getting an install script
+
 
 First we'll get the kURL install script for our channel. From your workstation:
 
@@ -125,10 +125,10 @@ Ensure you select the right app and channel, and the `Embedded Cluster` option.
 <img alt="embedded-script" src="img/embedded-script.png">
 </details>
 
-<br>
 
-## Installing KOTS
 ***
+## Installing KOTS
+
 Fortunately, KOTS and kURL have built-in support for these types of proxy environments.
 There are many ways to do this, the simplest being to set the HTTP_PROXY, HTTPS_PROXY, and NO_PROXY
 variables in your shell before runing the kURL install script.
@@ -158,10 +158,9 @@ When the kURL script detects a proxy configuration in the environment, it will d
 Once the install skip completes, you can validate this by reviewing the environment variables on 
 the `kotsadm` deployment.
 
-<br>
-
-## Configuring the instance
 ***
+## Configuring the instance
+
 As we did in the airgap scenario, we'll open two SSH tunnels to access the admin console and the app.
 Run the following on your workstation.
 
@@ -171,10 +170,9 @@ ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-
 
 From here, we can explore a few last things about our environment
 
-<br>
-
-## Exploring the install script changes
 ***
+## Exploring the install script changes
+
 
 
 ```shell
@@ -239,10 +237,10 @@ You'll see an entry in the env vars where the kURL script has patched the deploy
 ```
 Congrats! You've completed Exercise 6! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
-<br>
 
-## Additional Exercises
 ***
+## Additional Exercises
+
 
 - Test out running a KOTS kots.io support bundle through the proxy
 - Explore the [Proxy template functions](https://kots.io/reference/template-functions/static-context/#httpproxy) for passing proxy info into a KOTS application. 

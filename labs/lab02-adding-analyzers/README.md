@@ -6,8 +6,9 @@ Lab 1.2: Support Analyzers
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 
-## Ground Rules
 ***
+## Ground Rules
+
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
 It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
 If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
@@ -52,8 +53,9 @@ Unfortunately, we'll find that all the analyzers are "info" level, and there are
 
 ![analyzers-green](./img/analyzers-green.png)
 
-## Investigating
 ***
+## Investigating
+
 The key lesson of this lab is around what to do if analyzers don't provide any useful information. 
 We'll walk through downloading the bundle, collaborating with your team to diagnose the error, and preventing it in the future.
 
@@ -93,9 +95,9 @@ These links can be attached to a support ticket, shared in Slack, etc.
 
 If you choose the "Share with Replicated" option in the https://vendor.replicated.com, the same links will become accessible to Replicated's support team.
 
-
-## The issue
 ***
+## The issue
+
 When we don't have an analyzer to tell us what's wrong, we end up looking through log files.
 Fortunately, the support bundle includes a wealth of information about the cluster and our application's nginx pod.
 Explore the files in the support bundle, either in the UI or by untarring locally, and see if you can figure out what's missing from the system.
@@ -132,10 +134,9 @@ It appears our initContainer relies on this file to proceed.
 
 </details>
 
-<br>
-
-## Correcting
 ***
+## Correcting
+
 To correct the issue, let's address the problem we uncovered in the init container.
 
 <details>
@@ -159,10 +160,9 @@ kubectl delete pod -l app=nginx
 
 We can now verify that the app comes up as expected.
 
-<br>
-
-## Adding an Analyzer
 ***
+## Adding an Analyzer
+
 The most important lesson to take away from this lab is that troubleshooting with logs should be a pathological event.
 Any time you find yourself using logs to debug something, you should ask yourself
 
@@ -281,8 +281,9 @@ You should confirm that in the "absent" case, your bundle analyis presents an er
 
 ![negative-test-analyzer](img/negative-test-analyzer.png)
 
-## Going deeper (optional)
 ***
+## Going deeper (optional)
+
 If you finish up Lab 1.2 early, try your hand at the following exercise:
 
 Instead of using `exec` + `textAnalyze` collector combo, could you use the existing `logs` collector for the nginx initContainers with a `textAnalyze` collector instead?
