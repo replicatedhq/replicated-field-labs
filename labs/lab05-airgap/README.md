@@ -336,9 +336,10 @@ In order to access the application select **Open Lab 5**.
 > **Note**: For this work successfully you'll need to ensure the SSH tunnel for the app's port (8888) was initialized.
 
 Congrats! You've installed and then upgraded an airgapped instance!
-<br></br>
-## Collecting a CLI support bundle
+
 ***
+## Collecting a CLI support bundle
+
 As a final step, we'll review how to collect support bundles. However, what would we do in the case that the app installation itself was failing?
 We can try our `kots.io` support bundle from the airgapped server.
 
