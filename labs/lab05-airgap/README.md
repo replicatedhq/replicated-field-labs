@@ -93,7 +93,7 @@ Next, you can SSH into the airgapped server using the following command:
 ```shell
 ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab05-airgap
 ```
-> **NOTE**: You will be prompted to **twice** to change the password on first login. Once for the JUMP_BOX and again for the AIRGAP server.
+> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the AIRGAP server.
 
 Once you're on the airgap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 
 can ctrl+C the command and proceed to the next section
@@ -228,7 +228,7 @@ ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
 To complete the installation, visit http://localhost:8800 in your browser.
 
-Click "**Continute and Setup**" in the browser to continue to the secure Admin Console.
+Click "**Continue and Setup**" in the browser to continue to the secure Admin Console.
 
 ![kots-tls-wanring](img/kots-tls-warning.png)
 
@@ -283,7 +283,8 @@ standard nginx entrypoint has been overriden:
 
 So we'll need to create a new release in order to fix this.
 
-<br></br>
+<br>
+
 ## Deploying a new version
 ***
 From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below.
