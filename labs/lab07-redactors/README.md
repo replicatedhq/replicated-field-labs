@@ -7,15 +7,19 @@ They can be used to prevent sensitive data like usernames, IP addresses, and pas
 In this lab, we'll explore how Redactors work and learn the workflows that end customers can use to review and customize redaction of support bundles.
 We'll study an app that has a container that logs sensitive information, and how to ensure that information is excluded from support bundles.
 
-You can open the KOTS admin console* for your node by navigating to https://lab7-redactors:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+You can open the KOTS admin console for your node by navigating to https://lab7-redactors:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the command below:
+
+```bash
+ssh kots@<server ip address>
+```
+> **Note**: You will be prompted to change the password on first login
 
 ```shell
 kubectl kots reset-password -n default
 ```
 
-
-### The application
-
+***
+## The application
 Unlike some of the other labs, you'll notice that in this case, the app is up and running but that there's no "open".
 
 That's to be expected.
@@ -44,7 +48,8 @@ and view where data was redacted:
 
 ![pg-user-2](./img/pg-user-2.png)
 
-### Sensitive data
+***
+## Sensitive data
 
 On our same support bundle, navigate to the File Inspector tab and find the application logs.
 
@@ -58,7 +63,8 @@ Tue Apr 27 19:54:00 UTC 2021 [info] the secret code is SW0RDF!SH
 
 Next, we'll write a custom redactor to remove this from the support bundle.
 
-### Adding a Custom redactor
+***
+## Adding a Custom redactor
 
 To add a custom redactor, navigate back to the main Troubleshoot tab and select `Configure redaction`:
 
@@ -71,7 +77,8 @@ add a custom redactor to remove the secret code.
 
 ![configure-redaction-2](./img/configure-redaction-2.png)
 
-### Testing
+***
+## Testing
 
 Once you've edited redaction settings, you can collect another support bundle to review the effect.
 
@@ -104,6 +111,7 @@ spec:
 ```
 </details>
 
-### Additional Exercises
+***
+## Additional Exercises
 
 If you finish early, you can try alternate regexes or try redacting out other specific information in the support bundle files.

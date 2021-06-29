@@ -3,7 +3,8 @@ Lab 1.6: Proxy
 
 In this lab, we'll explore configuring a proxy server in an airgapped environment.
 
-### Instance Overview
+***
+## Instance Overview
 
 As in [Lab 1.5](../lab05-airgap), You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
@@ -41,8 +42,10 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 ```shell
 export JUMP_BOX_IP=lab06-proxy
 export REPLICATED_APP=... # your app slug
-ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab06-proxy
+ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab06-proxy
 ```
+
+> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the PROXY server.
 
 You'll note that egress is not possible by typical means
 
@@ -100,7 +103,8 @@ For more details, explore https://everything.curl.dev/usingcurl/proxies#proxy-en
 </details>
 
 
-### Getting an install script
+***
+## Getting an install script
 
 
 First we'll get the kURL install script for our channel. From your workstation:
@@ -122,11 +126,13 @@ Ensure you select the right app and channel, and the `Embedded Cluster` option.
 </details>
 
 
-### Installing KOTS
+***
+## Installing KOTS
+
 Fortunately, KOTS and kURL have built-in support for these types of proxy environments.
 There are many ways to do this, the simplest being to set the HTTP_PROXY, HTTPS_PROXY, and NO_PROXY
 variables in your shell before runing the kURL install script.
-We'll use the environment variable method today, but you can also use a [kurl install-time patch](https://kurl.sh/docs/install-with-kurl/#select-examples-of-using-a-patch-yaml-file).
+We'll use the environment variable method today, but you can also use a [kurl install-time patch](https://kurl.sh/docs/install-with-kurl/#select-examples-of-using-a-patch-yaml-file). In your `lab06-proxy` server run the following:
 
 
 ```shell
@@ -136,7 +142,7 @@ export HTTPS_PROXY=kots-field-labs-squid-proxy:3128
 curl -sSL https://k8s.kurl.sh/dx411-dex-lab06-proxy | sudo -E bash
 ```
 
-Note that you'll need to add `-E` flag to the `sudo` command in order to forward your environment to `bash` process runing under `sudo`.
+Note that you'll need to add `-E` flag to the `sudo` command in order to forward your environment to `bash` process running under `sudo`.
 You can also experiment with only forwarding specific variables as suggested in [this article](https://www.petefreitag.com/item/877.cfm).
 
 > The sudo command has a handy argument -E or --preserve-env which will pass all your environment variables into the sudo environment.
@@ -152,19 +158,21 @@ When the kURL script detects a proxy configuration in the environment, it will d
 Once the install skip completes, you can validate this by reviewing the environment variables on 
 the `kotsadm` deployment.
 
-### Configuring the instance
+***
+## Configuring the instance
 
 As we did in the airgap scenario, we'll open two SSH tunnels to access the admin console and the app.
 Run the following on your workstation.
 
 ```shell
-ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 dex@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 kots@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment
 
+***
+## Exploring the install script changes
 
-### Exploring the install script changes
 
 
 ```shell
@@ -177,7 +185,11 @@ tunnel out through the proxy to talk to `kube-apiserver`.
 
 We'll use ifconfig but you can use whichever preferred method to discover the private IP of your instance.
 
-![ifconfig](img/ifconfig.png)
+Run the following command and take note of the `inet` address provided.
+
+```shell
+ifconfig | grep ens4 -A 5
+```
 
 #### Question
 
@@ -202,7 +214,7 @@ There are a lot of options here, including `/etc/kubernetes/admin.conf`
 
 </details>
 
-Once we have this info, we can set NO_PROXY to get kubectl working.
+Once you have the ip address set NO_PROXY to get kubectl working.
 
 
 
@@ -226,8 +238,9 @@ You'll see an entry in the env vars where the kURL script has patched the deploy
 Congrats! You've completed Exercise 6! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
 
+***
+## Additional Exercises
 
-### Additional Exercises
 
 - Test out running a KOTS kots.io support bundle through the proxy
 - Explore the [Proxy template functions](https://kots.io/reference/template-functions/static-context/#httpproxy) for passing proxy info into a KOTS application. 

@@ -9,7 +9,8 @@ get practice performing an airgap install from scratch.
 
 Once that's done, we'll explore how some of the support techniques differ between online and airgapped environments. 
 
-### Airgap Workflow Overview
+***
+## Airgap Workflow Overview
 
 First, we'll push a release -- in the background, Replicated's airgap builder will prepare an airgap bundle.
 
@@ -27,7 +28,37 @@ The above diagram shows a three node cluster, but we'll use only a single node.
 While the KOTS bundle will be moved onto the server via SCP as in the diagram,
 the app bundle and license file will be uploaded via a browser UI through an SSH tunnel.
 
-### Instance Overview
+***
+## Getting Started
+
+You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
+
+Now, you'll need to set up two environment variables to interact with vendor.replicated.com:
+
+
+`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
+ahead of time.
+
+<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
+
+`REPLICATED_API_TOKEN` should have been provided ahead of time or during the working session.
+
+Once you have the values,
+set them in your environment.
+
+```
+export REPLICATED_APP=...
+export REPLICATED_API_TOKEN=...
+```
+
+Lastly before continuing make sure to clone this repo locally as we will be modifying `lab05` later during the workshop.
+```bash
+git clone https://github.com/replicatedhq/kots-field-labs
+cd kots-field-labs/labs/lab05-airgap
+```
+
+***
+## Instance Overview
 
 You will have received the IP of a jump box and the name of an airgapped server.
 For example, you may have received:
@@ -59,20 +90,21 @@ export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
 ```
 
-Next, you can SSH the airgapped server with
+Next, you can SSH into the airgapped server using the following command:
 
 ```shell
-ssh -J dex@${JUMP_BOX_IP} dex@${REPLICATED_APP}-lab05-airgap
+ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab05-airgap
 ```
+> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the AIRGAP server.
 
-Once you're on, you can verify that the server indeed does not have internet access. Once you're convinced, you 
+Once you're on the airgap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 
 can ctrl+C the command and proceed to the next section
 
 ```shell
 curl -v https://kubernetes.io
 ```
-
-### Moving Assets into place
+***
+## Moving Assets into place
 
 If you haven't already, you can log out of the airgapped instance with `exit` or ctrl+D. 
 Our next step is to collect the assets we need for an airgapped installation:
@@ -117,11 +149,7 @@ The first step will be to enable airgap for the `lab5` customer:
 ![enable-airgap](./img/enable-airgap.png)
 
 
-
-
 #### Download Airgap Assets 
-
-
 After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
 
 ![download-portal](img/download-portal.png)
@@ -144,12 +172,12 @@ You can copy each URL as shown below:
 
 You'll want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-Now, let's SSH our jump box (the one with the public IP) and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
 We'll use the `-A` flag to the `ssh` command to forward our agent so we can interact with the airgapped node as well.
-Replace the URL with the one you copied above
+Replace the URL with the one you copied above.
 
 ```text
-dex@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab05-airgap.tar.gz
+kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab05-airgap.tar.gz
 ```
 
 When it's finished, copy it to the airgapped server. 
@@ -157,23 +185,23 @@ You can use the DNS name in this case, as described in [Instance Overview](#inst
 In this example we've SSH'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
-dex@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz dex@dx411-dex-lab05-airgap:/home/dex
+kots@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab05-airgap:/home/kots
 
 ```
 
-**Note** -- we use SCP via an SSH tunnel in this case, but the airgap methods in this lab also extend to
+> **Note**: -- we use SCP via an SSH tunnel in this case, but the airgap methods in this lab also extend to
 more locked down environments where e.g. physical media is required to move assets into the datacenter.
 
 Now we'll SSH all the way to airgap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-dex@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
+kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
 ```
 
 Otherwise, you can use the above 
 
 ```shell
-ssh -J dex@lab05-airgap-jump dex@${REPLICATED_APP}-lab05-airgap
+ssh -J kots@lab05-airgap-jump kots@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the "airgapped" node, untar the bundle and run the install script with the `airgap` flag.
@@ -184,10 +212,12 @@ tar xvf kurlbundle.tar.gz
 sudo bash install.sh airgap
 ```
 
-At the end, you should see the familiar `Installation Complete` message. 
-Since the instance is airgapped, we'll need to create a port forward to access the UI from our workstation in the next step.
+At the end, you should see a `Installation Complete` message as shown below. Since the instance is airgapped, we'll need to create a port forward to access the UI from your workstation in the next step.
 
-### Accessing the UI via SSH tunnel, Configuring the instance
+![kurl-password](img/kurl-password.png)
+
+***
+## Accessing the UI via SSH tunnel, Configuring the instance
 
 You'll want to create a port forward from your workstation in order to access to UI locally.
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
@@ -195,24 +225,47 @@ Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it 
 ```shell
 export JUMP_BOX_IP=lab05-airgap
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 dex@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 kots@${JUMP_BOX_IP}
 ```
 
-This will run in the foreground, and you wont see any output, but you can test by navigating to http://localhost:8800
+This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
+To complete the installation, visit http://localhost:8800 in your browser.
 
-From here, you can proceed with the standard setup steps, until we get to the post-license install step.
-Remember that this is a fresh install so you'll need to grab the password from the install script output:
+Click "**Continue and Setup**" in the browser to continue to the secure Admin Console.
 
-![kurl-password](img/kurl-password.png)
+![kots-tls-wanring](img/kots-tls-warning.png)
 
-After you upload your license, you'll be greeted with an Airgap Upload screen. Use the "application bundle" that you
-downloaded to your workstation using the customer portal here.
+Click the "**Skip and continue**" to Accept the insecure certificate in the admin console.
+> **Note**: For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
+
+![Console TLS](img/admin-console-tls.png)
+
+At the login screen paste in the password noted previously on the `Installation Complete` screen. The password is shown in the output from the installation script.
+
+![Log In](img/admin-console-login.png)
+
+Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
+The next step is to upload a license file so KOTS can validate which application is authorized to be deployed. Use the license file we downloaded earlier.
+
+Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
+
+![Upload License](img/upload-license.png)
+
+After you upload your license, you'll be greeted with an Airgap Upload screen. Select **choose a bundle to upload** and use the "application bundle" that you
+downloaded to your workstation using the customer portal here. Click **Upload airgap bundle** to continue the upload process.
 
 ![airgap-upload](img/airgap-upload.png)
 
-You'll see the bundle uploaded and images being pushed to kURL's internal registry:
+You'll see the bundle uploaded and images being pushed to kURL's internal registry. This will take a few minutes to complete.
 
 ![airgap-push](img/airgap-push.png)
+
+Once uploaded `Preflight Checks` will run. These are designed to ensure this server has the minimum system and software requirements to run the application.
+Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
+If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
+
+![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
+
 
 We'll find that the application is unavailable. 
 
@@ -233,10 +286,10 @@ standard nginx entrypoint has been overriden:
 
 So we'll need to create a new release in order to fix this.
 
+***
+## Deploying a new version
 
-### Deploying a new version
-
-From the `labs/lab05-airgap` directory, remove the command override.
+From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below.
 
 
 ```diff
@@ -257,8 +310,7 @@ index fa29e8d..3a66405 100644
 ```
 
 Once you're satisfied with your `nginx-deployment.yaml` create a new release with `make release`.
-You'll need to ensure you've got `REPLICATED_APP` and `REPLICATED_API_TOKEN` set.
-
+You'll need to ensure you have your `REPLICATED_APP` and `REPLICATED_API_TOKEN` set. See the **Getting Started** section for information on how to obtain and set these.
 
 ```shell
 make release
@@ -271,49 +323,28 @@ with a timestamp that matches when you ran `make release`.
 
 ![download-portal-more](img/download-portal-more.png)
 
-Once you've downloaded the new version, select "upload a new version" from the main dashboard and select your bundle.
+Once you've downloaded the new version, in the KOTS Admin Console select **Version History** and click "**Upload a new version**" and select your bundle.
 
 ![airgap-new-upload](img/airgap-new-upload.png)
 
 You'll see the bundle upload as before and you'll have the option to deploy it once the
-preflight checks complete.
-The app should now show as ready on the main dashboard.
+preflight checks complete. Click **Deploy** to perform the upgrade.
 
-In order to access the application though, you'll need to create another SSH tunnel for the app's port (8888).
+Click the **Application** button to navigate back to the main landing page. The app should now show as **Ready** status on the main dashboard.
 
-<details>
-    <summary>Click for a hint</summary>
-
-From your workstation, run
-
-```shell
-export JUMP_BOX_IP=lab05-airgap
-export REPLICATED_APP=... # your app slug
-ssh -NL 8888:${REPLICATED_APP}-lab05-airgap:8888 dex@${JUMP_BOX_IP}
-```
-
-</details>
+In order to access the application select **Open Lab 5**. 
+> **Note**: For this work successfully you'll need to ensure the SSH tunnel for the app's port (8888) was initialized.
 
 Congrats! You've installed and then upgraded an airgapped instance!
 
-### Collecting a CLI support bundle
+***
+## Collecting a CLI support bundle
 
-As a final step, we'll review how to collect support bundles
-
-Of course, since our app is installed, we can use the command from [lab 3](../lab03-support-cli):
-  
-```shell
-export REPLICATED_APP=... # your app slug
-kubectl support-bundle \
-  secret/default/kotsadm-${REPLICATED_APP}-supportbundle \
-  --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-${REPLICATED_APP}-redact-spec/redact-spec
-```
-
-However, what would we do in the case that the app installation itself was failing?
+As a final step, we'll review how to collect support bundles. However, what would we do in the case that the app installation itself was failing?
 We can try our `kots.io` support bundle from the airgapped server.
 
 ```shell
-kubectl kots support-bundle https://kots.io
+kubectl support-bundle https://kots.io
 ```
 
 As you might expect this will fail because we can't fetch the spec from the internet.
@@ -529,7 +560,8 @@ kubectl support-bundle ./support-bundle.yaml
 Congrats! You've completed Exercise 5! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
 
-### Extra exercises
+***
+## Extra exercises
 
 If you finish the lab early you can:
 

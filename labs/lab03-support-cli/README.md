@@ -3,14 +3,22 @@ Lab 1.3: Support CLI
 
 In this lab, we'll learn how to debug and diagnose support problems when the KOTS admin console is unavailable.
 
-You can open the KOTS admin console* for your node by navigating to https://lab03-support-cli:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+> **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab03-support-cli in place of the node IP address. 
+
+You can open the KOTS admin console* for your node by navigating to https://lab03-support-cli:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command.
+
+```bash
+ssh kots@<server ip address>
+```
+> **Note**: You will be prompted to change the password on first login
+
 
 ```shell
 kubectl kots reset-password -n default
 ```
 
-
-### Ground Rules
+***
+## Ground Rules
 
 In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
 It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
@@ -41,8 +49,9 @@ there are issues with the kotsadm console itself. You will likely see 502 or 401
 
 
 
-While the goal of this lab is to show you how to get rich diagnostic information without using granular `kubectl` CLI
-commands, we'll pause for a second here to do some very basic inspection of what's happening with `kubectl get pod`.
+While the goal of this lab is to show you how to get rich diagnostic information without using granular `kubectl` CLI 
+commands, we'll pause for a second here to do some very basic inspection of what's happening using `kubectl get pod`. 
+
 
 ```text
 $ kubectl get pod 
@@ -58,8 +67,8 @@ nginx-8b679cd99-zmv2w                 0/1     Init:2/3      0          5m25s
 
 It appears that our app pod is stuck initializing, and the KOTS admin console is in the middle of terminating/re-initializing.
 
-
-### Getting a Support Bundle when KOTS is crashing
+***
+## Getting a Support Bundle when KOTS is crashing
 
 This brings us to our next key takeaway:
 
@@ -173,7 +182,8 @@ If you leave the instance for a while, you should also notice the CPU graphs set
 
 ![stable-graphs](./img/stable-graphs.png)
 
-### Additional exercise: Sharing the Bundle
+***
+## Additional exercise: Sharing the Bundle
 
 As part of the CLI collection, a support bundle will be dropped in your current working directory.
 
@@ -185,7 +195,11 @@ total 1388
 -rw-rw-r-- 1 dex dex 461852 Apr 13 15:44 support-bundle-2021-04-13T15_43_47.tar.gz
 ```
 
-Use `scp` or some other means to copy the bundle off the server to your workstation, upload it to vendor.replicated.com, and review the analyzers there as well.
+Use `scp` or some other means to copy the bundle off the server to your workstation, upload it to vendor.replicated.com, and review the analyzers there as well. An example of using `scp` is proivded below. This command should be run from your local workstation.
+
+```bash
+scp kots@<server ip address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
+```
 
 ![uploaded-bundle](img/uploaded-bundle.png)
 
@@ -235,8 +249,8 @@ W0413 15:43:50.363264   25323 warnings.go:70] storage.k8s.io/v1beta1 StorageClas
 ```
 
 
-**Note** -- using this technique this requires outbound internet access to pull the spec from kots.io. 
-The SupportBundle spec that is used in this case is at https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
+> **Note**: -- using this technique this requires outbound internet access to pull the spec from kots.io. 
+The SupportBundle spec that is used in this case is located [here](https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml).
 In [Lab 5 - airgap](../lab05-airgap) we'll learn to run this generic bundle when there is no outbound internet access.
 
 Congrats! You've completed Exercise 3! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
