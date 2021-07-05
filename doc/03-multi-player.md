@@ -9,6 +9,9 @@ This guide will walk you through running all the labs for a team of people.
 
 + You should probably skim through [the architecture outline](./01-architecture.md) first.
 + You should be able to setup the labs in [single player mode](./02-single-player.md).
++ `invite_rbac_policy_id` obtained from vendor.replicated.com
+  + Navigate to Team > RBAC > Admin > View Policy, and pull the policy ID from the URL bar or the developer console.
+  > Example: `https://vendor.replicated.com/team/policy/HPCzGS0cRaKvV7fTJRCSL02K_f5V0aBn`
 
 ## 2. Initialization
 
