@@ -39,7 +39,7 @@ Now, you'll need to set up two environment variables to interact with vendor.rep
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
 ahead of time.
 
-<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
+![kots-app-slug](img/application-slug.png)
 
 `REPLICATED_API_TOKEN` should have been provided ahead of time or during the working session.
 
@@ -130,29 +130,29 @@ In this case, since we're working off the `lab05-airgap` channel, you'll want to
 
 You can check the build status by navigating to the "Release History" for the channel.
 
-![release-history](img/release-history.png)
+![release-history](img/channel-release-history.png)
 
 You can build invividual bundles on the Release History page, but you'll likely want to edit the channel and enable "build all releases for this channel".
 
-![edit-channel](img/edit-channel.png)
+![edit-channel](img/channel-edit-info-btn.png)
 
-![auto-build](img/auto-build.png)
+![auto-build](img/channel-enable-airgap.png)
 
 Now you should see all the bundles building or built on the release history page:
 
-![airgap-built](img/airgap-built.png)
+![airgap-built](img/airgap-builds.png)
 
 #### Enabling Airgap for a customer
 
 The first step will be to enable airgap for the `lab5` customer:
 
-![enable-airgap](./img/enable-airgap.png)
+![enable-airgap](./img/airgap-customer-enable.png)
 
 
 #### Download Airgap Assets 
 After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
 
-![download-portal](img/download-portal.png)
+![download-portal](img/airgap-customer-portal.png)
 
 Generate a new password and save it somewhere in your notes.
 Next, click the link to open the download portal. 
@@ -223,7 +223,7 @@ You'll want to create a port forward from your workstation in order to access to
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
 
 ```shell
-export JUMP_BOX_IP=lab05-airgap
+export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
 ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 kots@${JUMP_BOX_IP}
 ```
@@ -353,7 +353,7 @@ As you might expect this will fail because we can't fetch the spec from the inte
 Error: failed to load collector spec: failed to get spec from URL: execute request: Get "https://kots.io": dial tcp 104.21.18.220:443: i/o timeout
 ```
 
-In this case, we'll want to pull in the spec from https://github.com/replicatedhq/kots/master/support-bundle.yaml.
+In this case, we'll want to pull in the spec from https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
 How you get this file onto the server is up to you -- expand below for an option that uses `cat` with a heredoc.
 
 
