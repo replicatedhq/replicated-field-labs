@@ -172,7 +172,7 @@ You can copy each URL as shown below:
 
 You'll want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh -A kots@<jump box IP address>` and download the kurl bundle.
 We'll use the `-A` flag to the `ssh` command to forward our agent so we can interact with the airgapped node as well.
 Replace the URL with the one you copied above.
 
