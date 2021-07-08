@@ -33,7 +33,7 @@ the app bundle and license file will be uploaded via a browser UI through an SSH
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-Now, you'll need to set up two environment variables to interact with vendor.replicated.com:
+Now, you'll need to install the **Replicated CLI** and set up two environment variables to interact with vendor.replicated.com. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
 
 
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
