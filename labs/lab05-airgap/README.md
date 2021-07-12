@@ -53,6 +53,8 @@ the app bundle and license file will be uploaded via a browser UI through an SSH
 ***
 ## Getting Started
 
+> **Note:** If you've already completed [Lab 0](../lab00-hello-world), you can skip to [Instance Overview](#instance-overview).
+
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
 Now, you'll need to install the **Replicated CLI** and set up two environment variables to interact with vendor.replicated.com. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)

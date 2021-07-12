@@ -266,16 +266,18 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 
 #### **On the Server**
 
-Next, SSH into the server `lab00-hello-world`, and run the install script from above, using the `EMBEDDED` version:
+Next, SSH into the server `lab00-hello-world`, 
 
 ```bash
 ssh kots@<server ip address>
 ```
 > **Note**: You will be prompted to change the password on first login
-
+ 
+Next run the install script from `replicated channel inspect Unstable` above,
+using the `EMBEDDED` version:
 
 ```shell
-curl -sSL https://k8s.kurl.sh/<app-slug-name>-<channel name> | sudo bash
+curl -sSL ... | bash
 ```
 
 This script will install Docker, Kubernetes, and the KOTS admin console containers (kotsadm).
