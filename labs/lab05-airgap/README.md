@@ -127,6 +127,8 @@ can ctrl+C the command and proceed to the next section
 ```shell
 curl -v https://kubernetes.io
 ```
+
+
 ***
 ## Moving Assets into place
 
@@ -139,6 +141,22 @@ Our next step is to collect the assets we need for an Air Gap installation:
 
 (2) and (3) are separate artifacts to cut down on bundle size during upgrade scenarios where only the application version 
 is changing and no changes are needed to the underlying cluster.
+
+
+#### Starting the kURL Bundle Download
+
+Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Replace the URL below with the one you can query from 
+
+```
+replicated channel inspect lab05-airgap
+```
+
+```text
+kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
+```
+
+This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
 
 #### Building an Airgap Release
 
@@ -187,26 +205,21 @@ Navigate to the "embedded cluster" option and review the three downloadable asse
 
 ![download-portal-view](img/download-portal-view.png)
 
-Download the license file, but **don't download the kURL bundle**.
-While you can download the kURL bundle directly to your workstation and copy it to the remote server, you'll
-likely be able to go much faster if you copy the URL and download the assets directly onto the jump box.
-You can copy each URL as shown below:
+Download the license file, but **don't download the kURL bundle** -- this is the download we already started on the server.
 
-![kurl-url](img/kurl-url.png)
+You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-You'll want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
-
-Now, let's SSH to our jump box (the one with the public IP) `ssh -A kots@<jump box IP address>` and download the kurl bundle.
-We'll use the `-A` flag to the `ssh` command to forward our agent so we can interact with the Air Gap node as well.
+Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
 Replace the URL with the one you copied above.
 
+At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
+
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz https://kurl.sh/bundle/dx411-dex-lab05-airgap.tar.gz
+kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
 ```
 
-When it's finished, copy it to the Air Gap server. 
+It should be finished now, so you can copy it to the Air Gap server. 
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
-In this example we've SSH'd the jump box with the -A flag so the SSH agent will be forwarded.
 
 ```text
 kots@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab05-airgap:/home/kots
@@ -222,13 +235,13 @@ Now we'll SSH all the way to Air Gap node. If you still have a shell on your jum
 kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
 ```
 
-Otherwise, you can use the above 
+Otherwise, you can use the below 
 
 ```shell
 ssh -J kots@lab05-airgap-jump kots@${REPLICATED_APP}-lab05-airgap
 ```
 
-Once you're on the "Air Gap" node, untar the bundle and run the install script with the `airgap` flag.
+Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
 kURL install flags are documented [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
 
 ```shell
