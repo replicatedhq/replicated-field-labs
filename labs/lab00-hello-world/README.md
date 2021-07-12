@@ -1,12 +1,29 @@
 Lab 0: Hello World
 =========================================
 
-This exercise is designed to give you a sandbox to ensure you have the basic CLI tools set up and are prepared to proceed 
-with the exercises in Lab 1. 
+This exercise is designed to give you a sandbox to ensure you have the basic CLI tools set up and are prepared to proceed
+with the exercises in Lab 1.
 
 The README and the YAML sources draw from https://github.com/replicatedhq/replicated-starter-kots
 
-***
+* **What you will do**: 
+  * Complete the simplest possible "Hello World" setup with a minimal KOTS application designed for demos
+  * Set up Replicated CLI Tools for developing again your 
+* **Who this is for**: This lab is for anyone who works with app code, docker images, k8s yamls, or does field support for multi-prem applications
+  * Full Stack / DevOps / Product Engineers 
+  * Support Engineers
+  * Implementation / Field Engineers
+* **Prerequisities**: 
+  * Basic working knowledge of Kubernetes
+  * A Linux or Mac machine on which to set up the development environment (see [this issue](https://github.com/replicatedhq/kots-field-labs/issues/7) for windows)
+* **Outcomes**:
+  * You will build a working understanding of the Replicated CLI tools and a fast development workflow
+  * You will be prepared to integate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
+  * You will have completed the pre-requisites for labs 2, 5 and 6
+
+
+* * *
+
 ## Get started
 
 To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
