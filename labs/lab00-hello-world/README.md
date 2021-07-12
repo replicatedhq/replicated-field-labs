@@ -8,7 +8,8 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 
 * **What you will do**: 
   * Complete the simplest possible "Hello World" setup with a minimal KOTS application designed for demos
-  * Set up Replicated CLI Tools for developing again your 
+  * Set up Replicated CLI Tools for fast iteration
+  * Ship an update to a development instance
 * **Who this is for**: This lab is for anyone who works with app code, docker images, k8s yamls, or does field support for multi-prem applications
   * Full Stack / DevOps / Product Engineers 
   * Support Engineers
