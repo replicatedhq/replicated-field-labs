@@ -14,13 +14,13 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
   * Full Stack / DevOps / Product Engineers 
   * Support Engineers
   * Implementation / Field Engineers
-* **Prerequisities**: 
+* **Prerequisites**: 
   * Basic working knowledge of Kubernetes
   * A Linux or Mac machine on which to set up the development environment (see [this issue](https://github.com/replicatedhq/kots-field-labs/issues/7) for windows)
 * **Outcomes**:
   * You will build a working understanding of the Replicated CLI tools and a fast development workflow
-  * You will be prepared to integate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
-  * You will have completed the pre-requisites for labs 2, 5 and 6
+  * You will be prepared to integrate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
+  * You will have completed the prerequisites for labs 2, 5 and 6
 
 
 * * *

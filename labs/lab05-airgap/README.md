@@ -12,7 +12,7 @@ how to collect support bundles in Air Gap environments.
     * Use the `kubectl support-bundle` CLI in an Air Gap environment
 * **Who this is for**: This lab is for anyone who builds/maintains KOTS applications (see note below)
     * Full Stack / DevOps / Product Engineers
-* **Prerequisities**:
+* **Prerequisites**:
     * [Development environment setup from Lab 0](../lab00-hello-world)
     * Basic working knowledge of Kubernetes
 * **Outcomes**:
@@ -235,7 +235,7 @@ Now we'll SSH all the way to Air Gap node. If you still have a shell on your jum
 kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
 ```
 
-Otherwise, you can use the below 
+Otherwise, you can use the one below 
 
 ```shell
 ssh -J kots@lab05-airgap-jump kots@${REPLICATED_APP}-lab05-airgap

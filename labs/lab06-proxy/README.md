@@ -11,13 +11,13 @@ In this lab, we'll explore configuring a proxy server in an airgapped environmen
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
     * Implementation / Field Engineers
-* **Prerequisities**:
+* **Prerequisites**:
     * Basic working knowledge of Kubernetes
     * A Linux or Mac machine on which to set up the development environment (see [this issue](https://github.com/replicatedhq/kots-field-labs/issues/7) for windows)
 * **Outcomes**:
     * You will build a working understanding of the Replicated CLI tools and a fast development workflow
-    * You will be prepared to integate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
-    * You will have completed the pre-requisites for labs 2, 5 and 6
+    * You will be prepared to integrate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
+    * You will have completed the prerequisites for labs 2, 5 and 6
 
 ***
 ## Instance Overview
@@ -260,4 +260,3 @@ Congrats! You've completed Exercise 6! [Back To Exercise List](https://github.co
 
 - Test out running a KOTS kots.io support bundle through the proxy
 - Explore the [Proxy template functions](https://kots.io/reference/template-functions/static-context/#httpproxy) for passing proxy info into a KOTS application. 
-

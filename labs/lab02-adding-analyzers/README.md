@@ -8,7 +8,7 @@ Lab 1.2: Support Analyzers
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
     * Implementation / Field Engineers
-* **Prerequisities**:
+* **Prerequisites**:
     * [Development environment setup from Lab 0](../lab00-hello-world)
     * Basic working knowledge of Kubernetes
 * **Outcomes**:
@@ -305,4 +305,3 @@ If you finish up Lab 1.2 early, try your hand at the following exercise:
 Instead of using `exec` + `textAnalyze` collector combo, could you use the existing `logs` collector for the nginx initContainers with a `textAnalyze` collector instead?
 
 Congrats! You've completed Exercise 2! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
-

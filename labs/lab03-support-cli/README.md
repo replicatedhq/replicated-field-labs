@@ -9,7 +9,7 @@ In this lab, we'll learn how to debug and diagnose support problems when the KOT
     * Support Engineers
     * Implementation / Field Engineers
     * Full Stack / DevOps / Product Engineers
-* **Prerequisities**:
+* **Prerequisites**:
     * Basic working knowledge of Kubernetes
 * **Outcomes**:
     * You will be ready to use the support-bundle CLI to collect a bundle & analysis
@@ -271,5 +271,4 @@ The SupportBundle spec that is used in this case is located [here](https://githu
 In [Lab 5 - airgap](../lab05-airgap) we'll learn to run this generic bundle when there is no outbound internet access.
 
 Congrats! You've completed Exercise 3! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
-
 
