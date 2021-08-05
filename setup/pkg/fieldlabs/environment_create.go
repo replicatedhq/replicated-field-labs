@@ -198,6 +198,7 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 	}
 
 	for _, labInstance := range labStatuses {
+		u := strings.Split(labInstance.Status.Env.Name, " ")
 		if _, ok := gcpInstances[labInstance.Status.InstanceToMake.Name]; ok {
 			e.Log.Error(errors.Errorf("WARNING -- instance %q already present in %q, refusing to overwrite", labInstance.Status.InstanceToMake.Name, e.Params.InstanceJSONOutput))
 		}
@@ -210,16 +211,16 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
 # add new user
-sudo useradd -s /bin/bash -d /home/kots -m -p safWNrcAGYqm2 -G sudo kots
-sudo groups kots
-echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+sudo useradd -s /bin/bash -d /home/%[1]v -m -p safWNrcAGYqm2 -G sudo %[1]v
+sudo groups %[1]v
+echo '%[1]v ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 # update ssh to allow password login
 sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
 sudo service ssh restart
-# add kots to google-sudoers
-sudo usermod -aG google-sudoers,kots kots
+# add %[1]v to google-sudoers
+sudo usermod -aG google-sudoers,%[1]v %[1]v
 # user must change password on first login
-sudo chage --lastday 0 kots
+sudo chage --lastday 0 %[1]v
 
 set -euo pipefail
 
@@ -227,7 +228,7 @@ mkdir -p ~/.ssh
 cat <<EOF >>~/.ssh/authorized_keys
 %s
 EOF
-`, labInstance.Status.Env.PubKey),
+`, strings.ToLower(u[0]), labInstance.Status.Env.PubKey),
 				MachineType: "n1-standard-1",
 				BookDiskGB:  "10",
 				PublicIps: map[string]interface{}{
@@ -255,6 +256,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 
 	for _, env := range envs {
 		app := env.App
+		u := strings.Split(env.Name, " ")
 		for _, labSpec := range labSpecs {
 			var lab Lab
 			lab.Spec = labSpec
@@ -350,19 +352,16 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
 				InstallScript: fmt.Sprintf(`
 #!/bin/bash 
 # add new user
-sudo useradd -s /bin/bash -d /home/kots -m -p safWNrcAGYqm2 -G sudo kots
-sudo groups kots
-echo 'kots ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+sudo useradd -s /bin/bash -d /home/%[1]v -m -p safWNrcAGYqm2 -G sudo %[1]v
+sudo groups %[1]v
+echo '%[1]v ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 # update ssh to allow password login
 sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
 sudo service ssh restart
-# add kots to google-sudoers
-sudo usermod -aG google-sudoers,kots kots
-
-# TODO(dex) - discuss w/ team -- for airgap-only labs this creates a little bit too much friction
-#
-#     # user must change password on first login
-#     sudo chage --lastday 0 kots
+# add %[1]v to google-sudoers
+sudo usermod -aG google-sudoers,%[1]v %[1]v
+# user must change password on first login
+sudo chage --lastday 0 %[1]v
 
 set -euo pipefail
 
@@ -383,7 +382,7 @@ EOF
 %s
 
 %s
-`, lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
+`, strings.ToLower(u[0]), lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
 			}
 			e.Log.FinishSpinner()
 			labs = append(labs, lab)
