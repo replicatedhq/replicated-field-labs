@@ -198,7 +198,7 @@ func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error 
 	}
 
 	for _, labInstance := range labStatuses {
-		u := strings.Split(labInstance.Status.Env.Name, " ")
+		firstname := strings.Split(labInstance.Status.Env.Name, " ")
 		if _, ok := gcpInstances[labInstance.Status.InstanceToMake.Name]; ok {
 			e.Log.Error(errors.Errorf("WARNING -- instance %q already present in %q, refusing to overwrite", labInstance.Status.InstanceToMake.Name, e.Params.InstanceJSONOutput))
 		}
@@ -220,7 +220,7 @@ sudo service ssh restart
 # add %[1]v to google-sudoers
 sudo usermod -aG google-sudoers,%[1]v %[1]v
 # user must change password on first login
-sudo chage --lastday 0 %[1]v
+#sudo chage --lastday 0 %[1]v
 
 set -euo pipefail
 
@@ -228,7 +228,7 @@ mkdir -p ~/.ssh
 cat <<EOF >>~/.ssh/authorized_keys
 %s
 EOF
-`, strings.ToLower(u[0]), labInstance.Status.Env.PubKey),
+`, strings.ToLower(firstname[0]), labInstance.Status.Env.PubKey),
 				MachineType: "n1-standard-1",
 				BookDiskGB:  "10",
 				PublicIps: map[string]interface{}{
@@ -256,7 +256,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 
 	for _, env := range envs {
 		app := env.App
-		u := strings.Split(env.Name, " ")
+		firstname := strings.Split(env.Name, " ")
 		for _, labSpec := range labSpecs {
 			var lab Lab
 			lab.Spec = labSpec
@@ -361,7 +361,7 @@ sudo service ssh restart
 # add %[1]v to google-sudoers
 sudo usermod -aG google-sudoers,%[1]v %[1]v
 # user must change password on first login
-sudo chage --lastday 0 %[1]v
+#sudo chage --lastday 0 %[1]v
 
 set -euo pipefail
 
@@ -382,7 +382,7 @@ EOF
 %s
 
 %s
-`, strings.ToLower(u[0]), lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
+`, strings.ToLower(firstname[0]), lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
 			}
 			e.Log.FinishSpinner()
 			labs = append(labs, lab)
