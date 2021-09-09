@@ -594,6 +594,8 @@ Once this is present, you can use the following to collect a bundle as usual.
 kubectl support-bundle ./support-bundle.yaml
 ```
 
+There's an in depth post with some other options at [How can i generate a support bundle if i cannot access the admin console?](https://help.replicated.com/community/t/kots-how-can-i-generate-a-support-bundle-if-i-cannot-access-the-admin-console/455).
+
 Congrats! You've completed Exercise 5! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
 
