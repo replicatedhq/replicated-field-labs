@@ -23,9 +23,8 @@ In this lab, we'll learn how to debug and diagnose support problems when the KOT
 You can open the KOTS admin console* for your node by navigating to https://lab03-support-cli:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command.
 
 ```bash
-ssh kots@<server ip address>
+ssh <your_first_name>@<server ip address>
 ```
-> **Note**: You will be prompted to change the password on first login
 
 
 ```shell
@@ -215,7 +214,7 @@ An example of using `scp` is proivded below.
 This command should be run from your local workstation.
 
 ```bash
-scp kots@<server ip address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
+scp <your_first_name>@<server ip address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
 ```
 
 ![uploaded-bundle](img/uploaded-bundle.png)

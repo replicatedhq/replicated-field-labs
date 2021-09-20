@@ -35,9 +35,8 @@ Before you start, it's worth noting that the `lab02-adding-analyzers` server alr
 node before you start, just to verify:
 
 ```bash
-ssh kots@<server ip address>
+ssh <your_first_name>@<server ip address>
 ```
-> **Note**: You will be prompted to change the password on first login
 
 ```shell
 ls -l /etc/lab2/

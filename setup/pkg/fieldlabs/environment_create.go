@@ -107,11 +107,10 @@ type LabStatus struct {
 }
 
 type EnvironmentManager struct {
-	Log     *print.Logger
-	Writer  io.Writer
-	Params  *Params
-	Client  *kotsclient.VendorV3Client
-	GClient *kotsclient.GraphQLClient
+	Log    *print.Logger
+	Writer io.Writer
+	Params *Params
+	Client *kotsclient.VendorV3Client
 }
 
 func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error {
@@ -287,25 +286,25 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			}
 			lab.Status.Customer = customer
 
-			release, err := e.GClient.CreateRelease(app.ID, kotsYAML)
+			release, err := e.Client.CreateRelease(app.ID, kotsYAML)
 			if err != nil {
 				return nil, errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
 			}
 
 			lab.Status.Release = release
 
-			err = e.GClient.PromoteRelease(app.ID, release.Sequence, labSpec.Slug, labSpec.Name, channel.ID)
+			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
 			if err != nil {
 				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 			}
 
-			installer, err := e.GClient.CreateInstaller(app.ID, string(kurlYAML))
+			installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
 			if err != nil {
 				return nil, errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
 			}
 			lab.Status.Installer = installer
 
-			err = e.GClient.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
+			err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
 			if err != nil {
 				return nil, errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
 			}
@@ -413,7 +412,7 @@ func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error)
 		return nil, errors.Errorf("expected at most one channel to match %q, found %d", lab.Spec.Channel, len(matchedChannels))
 	}
 
-	channel, err := e.GClient.CreateChannel(lab.Status.App.ID, lab.Spec.Slug, lab.Spec.Name)
+	channel, err := e.Client.CreateChannel(lab.Status.App.ID, lab.Spec.Slug, lab.Spec.Name)
 	if err != nil {
 		return nil, errors.Wrapf(err, "create channel for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
 	}
@@ -458,7 +457,7 @@ func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, erro
 }
 
 func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) {
-	existingApp, err := e.GClient.GetApp(appName)
+	existingApp, err := e.Client.GetApp(appName)
 	if err != nil && !e.isNotFound(err) {
 		return nil, errors.Wrapf(err, "check for existing app")
 	}
@@ -481,7 +480,7 @@ func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) 
 	e.Log.FinishSpinner()
 
 	return &types.App{
-		ID:        app.ID,
+		ID:        app.Id,
 		Name:      app.Name,
 		Scheduler: "kots",
 		Slug:      app.Slug,

@@ -10,7 +10,7 @@ We'll study an app that has a container that logs sensitive information, and how
 You can open the KOTS admin console for your node by navigating to https://lab7-redactors:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the command below:
 
 ```bash
-ssh kots@<server ip address>
+ssh <your_first_name>@<server ip address>
 ```
 > **Note**: You will be prompted to change the password on first login
 

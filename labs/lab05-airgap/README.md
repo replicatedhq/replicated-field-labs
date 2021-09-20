@@ -117,9 +117,8 @@ export REPLICATED_APP=... # your app slug
 Next, you can SSH into the Air Gap server using the following command:
 
 ```shell
-ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab05-airgap
+ssh -J <your_first_name>@${JUMP_BOX_IP} <your_first_name>${REPLICATED_APP}-lab05-airgap
 ```
-> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the AIRGAP server.
 
 Once you're on the Air Gap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 
 can ctrl+C the command and proceed to the next section
@@ -145,7 +144,7 @@ is changing and no changes are needed to the underlying cluster.
 
 #### Starting the kURL Bundle Download
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh <your_first_name>@<jump box IP address>` and download the kurl bundle.
 Replace the URL below with the one you can query from 
 
 ```
@@ -209,7 +208,7 @@ Download the license file, but **don't download the kURL bundle** -- this is the
 
 You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh <your_first_name>@<jump box IP address>` and download the kurl bundle.
 Replace the URL with the one you copied above.
 
 At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
@@ -238,7 +237,7 @@ kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
 Otherwise, you can use the one below 
 
 ```shell
-ssh -J kots@lab05-airgap-jump kots@${REPLICATED_APP}-lab05-airgap
+ssh -J <your_first_name>@lab05-airgap-jump <your_first_name>@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
@@ -262,7 +261,7 @@ Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it 
 ```shell
 export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 kots@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 <your_first_name>@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.

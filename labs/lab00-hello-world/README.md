@@ -269,9 +269,8 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 Next, SSH into the server `lab00-hello-world`, 
 
 ```bash
-ssh kots@<server ip address>
+ssh <your_first_name>@<server ip address>
 ```
-> **Note**: You will be prompted to change the password on first login
  
 Next run the install script from `replicated channel inspect Unstable` above,
 using the `EMBEDDED` version:

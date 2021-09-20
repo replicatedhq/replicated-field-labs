@@ -72,9 +72,8 @@ Once the bundle is collected, you should see an informative error message in the
 In order to correct this issue, you'll need to SSH into your `lab01-ui-analyzers` node and add this file. 
 
 ```bash
-ssh kots@<server ip address>
+ssh <your_first_name>@<server ip address>
 ```
-> **Note**: You will be prompted to change the password on first login
 
 <details>
   <summary>Expand for shell commands</summary>
