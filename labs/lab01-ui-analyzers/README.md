@@ -69,10 +69,10 @@ Once the bundle is collected, you should see an informative error message in the
 
 ### Correcting
 
-In order to correct this issue, you'll need to SSH into your `lab01-ui-analyzers` node and add this file. 
+In order to correct this issue, you'll need to SSH into your `lab01-ui-analyzers` node and add this file. First export your first name, `export FIRST_NAME=... # your first name`
 
 ```bash
-ssh <your_first_name>@<server ip address>
+ssh ${FIRST_NAME}@<server ip address>
 ```
 
 <details>

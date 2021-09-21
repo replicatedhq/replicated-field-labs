@@ -58,10 +58,10 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 ```shell
 export JUMP_BOX_IP=lab06-proxy
 export REPLICATED_APP=... # your app slug
-ssh -J <your_first_name>@${JUMP_BOX_IP} <your_first_name>@${REPLICATED_APP}-lab06-proxy
-```
+export FIRST_NAME=... # your first name
 
-> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the PROXY server.
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab06-proxy
+```
 
 You'll note that egress is not possible by typical means
 
@@ -181,7 +181,7 @@ As we did in the airgap scenario, we'll open two SSH tunnels to access the admin
 Run the following on your workstation.
 
 ```shell
-ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 <your_first_name>@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment

@@ -116,6 +116,7 @@ set them in your environment.
 ```
 export REPLICATED_APP=...
 export REPLICATED_API_TOKEN=...
+export FIRST_NAME=... #your first name
 ```
 
 You can ensure this is working with
@@ -269,7 +270,7 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 Next, SSH into the server `lab00-hello-world`, 
 
 ```bash
-ssh <your_first_name>@<server ip address>
+ssh ${FIRST_NAME}@<server ip address>
 ```
  
 Next run the install script from `replicated channel inspect Unstable` above,
