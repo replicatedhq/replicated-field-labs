@@ -73,7 +73,6 @@ set them in your environment.
 ```
 export REPLICATED_APP=...
 export REPLICATED_API_TOKEN=...
-export FIRST_NAME=<YOUR_FIRST_NAME>
 ```
 
 Lastly before continuing make sure to clone this repo locally as we will be modifying `lab05` later during the workshop.
@@ -108,12 +107,12 @@ ${REPLICATED_APP}-lab05-airgap
 
 ### Connecting
 
-First set your application slug, and the public IP of your jump box:
+First set your application slug, the public IP of your jump box and your first name:
 
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
-export FIRST_NAME=<... # your first name
+export FIRST_NAME=... # your first name
 ```
 
 Next, you can SSH into the Air Gap server using the following command:
@@ -145,16 +144,45 @@ is changing and no changes are needed to the underlying cluster.
 
 
 #### Starting the kURL Bundle Download
-
-Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle.
-Replace the URL below with the one you can query from 
+From your local system run the command below and record the `AIRGAP` section output.
 
 ```
 replicated channel inspect lab05-airgap
 ```
+<details>
+  <summary>Example Output:</summary>
+
+```bash
+❯ replicated channel inspect lab05-airgap
+ID:             1wyFvAQANNcga1zkRoMIPpQpb9q
+NAME:           lab05-airgap
+DESCRIPTION:
+RELEASE:        1
+VERSION:        0.0.1
+EXISTING:
+
+    curl -fsSL https://kots.io/install | bash
+    kubectl kots install lab05-airgap
+
+EMBEDDED:
+
+    curl -fsSL https://k8s.kurl.sh/lab05-airgap | sudo bash
+
+AIRGAP:
+
+    curl -fSL -o lab05-airgap.tar.gz https://k8s.kurl.sh/bundle/lab05-airgap.tar.gz
+    # ... scp or sneakernet lab05-airgap.tar.gz to airgapped machine, then
+    tar xvf lab05-airgap.tar.gz
+    sudo bash ./install.sh airgap
+```
+
+</details>
+<br>
+
+Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace the <URl> with the URL from the command ran previously. 
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
+curl -o kurlbundle.tar.gz <URL>
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
@@ -210,21 +238,14 @@ Download the license file, but **don't download the kURL bundle** -- this is the
 
 You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}>@<${JUMP_BOX_IP}` and download the kurl bundle.
-Replace the URL with the one you copied above.
+From your jumpbox, check that the download has finished, so you can copy it to the Air Gap server. If you have not started the download, see the [Starting the kURL Bundle Download](#starting-the-kurl-bundle-download) instructions above.
 
-At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
-
-```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
-```
-
-It should be finished now, so you can copy it to the Air Gap server. 
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
-```text
-kots@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab05-airgap:/home/kots
-
+```bash
+export REPLICATED_APP=... # your app slug
+export FIRST_NAME=... # your first name
+scp kurlbundle.tar.gz ${REPLICATED_APP}-lab05-airgap:/home/${FIRST_NAME}
 ```
 
 > **Note**: -- we use SCP via an SSH tunnel in this case, but the Air Gap methods in this lab also extend to
@@ -232,11 +253,11 @@ more locked down environments where e.g. physical media is required to move asse
 
 Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
 
-```text
-kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
+```bash
+ssh ${REPLICATED_APP}-lab05-airgap
 ```
 
-Otherwise, you can use the one below 
+Otherwise, from your local system you can use the one below 
 
 ```shell
 ssh -J ${FIRST_NAME}@lab05-airgap-jump ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
@@ -257,7 +278,7 @@ At the end, you should see a `Installation Complete` message as shown below. Sin
 ***
 ## Accessing the UI via SSH tunnel, Configuring the instance
 
-You'll want to create a port forward from your workstation in order to access to UI locally.
+You'll want to create a port forward from your local workstation in order to access to UI locally.
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
 
 ```shell

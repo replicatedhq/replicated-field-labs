@@ -19,6 +19,10 @@ In this lab, we'll explore configuring a proxy server in an airgapped environmen
     * You will be prepared to integrate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
     * You will have completed the prerequisites for labs 2, 5 and 6
 
+> **NOTE**: to complete this lab, you will need to ensure you've set 
+> `REPLICATED_APP`, `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+If you haven't completed Exercise 0, you should go back and do that now.
+It will take **15-30 minutes**.
 ***
 ## Instance Overview
 
@@ -56,12 +60,13 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 
 
 ```shell
-export JUMP_BOX_IP=lab06-proxy
+export JUMP_BOX_IP= # jump box ip address
 export REPLICATED_APP=... # your app slug
 export FIRST_NAME=... # your first name
 
 ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab06-proxy
 ```
+> NOTE: you will be prompted for a password.
 
 You'll note that egress is not possible by typical means
 

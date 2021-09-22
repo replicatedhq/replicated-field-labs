@@ -18,7 +18,7 @@ Lab 1.2: Support Analyzers
     * You will understand how to escalate issues to the Replicated support team  
 
 > **NOTE**: to complete this lab, you will need to ensure you've set 
-> `REPLICATED_APP`, `REPLICATED_API_TOKEN` and `FIRST_NAME` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+> `REPLICATED_APP`, `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 
@@ -35,6 +35,8 @@ Before you start, it's worth noting that the `lab02-adding-analyzers` server alr
 node before you start, just to verify:
 
 ```bash
+export FIRST_NAME=... # your first name
+
 ssh ${FIRST_NAME}@<server ip address>
 ```
 
@@ -188,7 +190,7 @@ Any time you find yourself using logs to debug something, you should ask yoursel
 So before we move on to the next lab, let's take some time to build and test an analyzer that will check for the existence of this `/etc/lab2/secretkey.txt`
 as part of support bundle collection.
 
-> **NOTE**: you will need to ensure you've set `REPLICATED_APP`,  `REPLICATED_API_TOKEN` and `FIRST_NAME` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+> **NOTE**: you will need to ensure you've set `REPLICATED_APP`, and  `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now. 
 It will take **15-30 minutes**.
 

@@ -93,12 +93,8 @@ You will be in a shared account with all other lab participants -- once you log 
 
 <img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/3730605/114389938-406ac380-9b5b-11eb-9eaa-dada2eae08f8.png">
 
-Now, you'll need to set up two environment variables to interact with vendor.replicated.com:
+Now, you'll need to set up environment variables to interact with vendor.replicated.com and instance.
 
-```
-export REPLICATED_APP=...
-export REPLICATED_API_TOKEN=...
-```
 
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
 ahead of time.
@@ -116,7 +112,7 @@ set them in your environment.
 ```
 export REPLICATED_APP=...
 export REPLICATED_API_TOKEN=...
-export FIRST_NAME=... #your first name
+export FIRST_NAME=... # your first name
 ```
 
 You can ensure this is working with
@@ -267,7 +263,6 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 
 #### **On the Server**
 
-Next, SSH into the server `lab00-hello-world`, 
 
 ```bash
 ssh ${FIRST_NAME}@<server ip address>
