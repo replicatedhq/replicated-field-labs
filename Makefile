@@ -7,7 +7,6 @@ prefix := ""
 invite_users := ""
 inviter_email := "dexter+training415@replicated.com"
 inviter_password := ""
-invite_rbac_policy_id := ""
 provisioner_json_out := "terraform/provisioner_pairs.json"
 REPLICATED_GCP_PROJECT ?= "smart-proxy-839"
 REPLICATED_GCP_ZONE ?= "us-central1-b"
@@ -30,7 +29,6 @@ apps: install
 	REPLICATED_INVITE_USERS=$(invite_users) \
 	REPLICATED_INVITER_EMAIL=$(inviter_email) \
 	REPLICATED_INVITER_PASSWORD=$(inviter_password) \
-	REPLICATED_INVITE_RBAC_POLICY_ID=$(invite_rbac_policy_id) \
 	REPLICATED_INSTANCE_JSON_OUT=$(provisioner_json_out) \
 	kots-field-labs
 

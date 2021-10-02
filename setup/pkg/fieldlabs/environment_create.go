@@ -153,7 +153,17 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 }
 func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
 	if e.Params.InviteUsers {
-		err := e.inviteUsers(envs)
+		err := e.createRBAC(envs)
+		if err != nil {
+			return errors.Wrap(err, "invite rbac")
+		}
+
+		policies, err := e.getPolicies()
+		if err != nil {
+			return errors.Wrap(err, "get policies")
+		}
+
+		err = e.inviteUsers(envs, policies)
 		if err != nil {
 			return errors.Wrap(err, "invite users")
 		}
@@ -440,11 +450,15 @@ func (e *EnvironmentManager) getOrCreateCustomer(lab Lab) (*types.Customer, erro
 	return customer, nil
 }
 
+func (e *EnvironmentManager) getAppName(env Environment) string {
+	return fmt.Sprintf("%s-%s", e.Params.NamePrefix, env.Slug)
+}
+
 func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, error) {
 	var outEnvs []Environment
 	var appsCreated []types.App
 	for _, env := range envs {
-		appName := fmt.Sprintf("%s-%s", e.Params.NamePrefix, env.Slug)
+		appName := e.getAppName(env)
 		app, err := e.getOrCreateApp(appName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "get or create app %q", appName)
@@ -493,19 +507,107 @@ func (e *EnvironmentManager) isNotFound(err error) bool {
 	return strings.Contains(err.Error(), "App not found")
 }
 
-func (e *EnvironmentManager) inviteUsers(envs []Environment) error {
+func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
+	req, err := http.NewRequest(
+		"GET",
+		fmt.Sprintf("%s/v1/policies", e.Params.IDOrigin),
+		nil,
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "build policies request")
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "send policies request")
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("GET /v1/policies %d: %s", resp.StatusCode, body)
+	}
+	var policies []PolicyListItem
+	err = json.Unmarshal([]byte(body), &policies)
+	if err != nil {
+		return nil, errors.Wrap(err, "list policies unmarshal")
+	}
+
+	policiesMap := make(map[string]string)
+	for i := 0; i < len(policies); i += 1 {
+		policiesMap[policies[i].Name] = policies[i].Id
+	}
+	return policiesMap, nil
+}
+
+func (e *EnvironmentManager) createRBAC(envs []Environment) error {
+	for _, env := range envs {
+		policyDefinition := &PolicyDefinition{
+			V1: PolicyDefinitionV1{
+				Name: "Policy Name",
+				Resources: PolicyResourcesV1{
+					Allowed: []string{fmt.Sprintf("kots/app/%s/**", e.getAppName(env)), "kots/license/**"},
+					Denied:  []string{},
+				},
+			},
+		}
+		policyDefinitionBytes, err := json.Marshal(policyDefinition)
+		if err != nil {
+			return errors.Wrap(err, "marshal definition body")
+		}
+		rbacBody := &Policy{
+			Name:        e.getAppName(env),
+			Description: e.getAppName(env),
+			Definition:  string(policyDefinitionBytes),
+		}
+
+		rbacBodyBytes, err := json.Marshal(rbacBody)
+		if err != nil {
+			return errors.Wrap(err, "marshal rbac body")
+		}
+		req, err := http.NewRequest(
+			"POST",
+			fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
+			bytes.NewReader(rbacBodyBytes),
+		)
+		if err != nil {
+			return errors.Wrap(err, "build rbac request")
+		}
+		req.Header.Set("Authorization", e.Params.SessionToken)
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return errors.Wrap(err, "send rbac request")
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode != 201 {
+			body, _ := ioutil.ReadAll(resp.Body)
+			return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
+		}
+	}
+	return nil
+
+}
+
+func (e *EnvironmentManager) inviteUsers(envs []Environment, policies map[string]string) error {
 	for _, env := range envs {
 		if env.Email == "" {
 			continue
 		}
 		inviteBody := map[string]string{
 			"email":     env.Email,
-			"policy_id": e.Params.RBACPolicyID,
+			"policy_id": policies[e.getAppName(env)],
 		}
 		inviteBodyBytes, err := json.Marshal(inviteBody)
 		if err != nil {
 			return errors.Wrap(err, "marshal invite body")
 		}
+		fmt.Println(string(inviteBodyBytes))
 		req, err := http.NewRequest(
 			"POST",
 			fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
