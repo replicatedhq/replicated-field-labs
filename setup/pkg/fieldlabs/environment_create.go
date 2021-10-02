@@ -153,12 +153,17 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 }
 func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
 	if e.Params.InviteUsers {
-		err := e.createRBAC(envs)
+		policies, err := e.getPolicies()
+		if err != nil {
+			return errors.Wrap(err, "get policies")
+		}
+
+		err = e.createRBAC(envs, policies)
 		if err != nil {
 			return errors.Wrap(err, "invite rbac")
 		}
 
-		policies, err := e.getPolicies()
+		policies, err = e.getPolicies()
 		if err != nil {
 			return errors.Wrap(err, "get policies")
 		}
@@ -543,8 +548,12 @@ func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
 	return policiesMap, nil
 }
 
-func (e *EnvironmentManager) createRBAC(envs []Environment) error {
+func (e *EnvironmentManager) createRBAC(envs []Environment, policies map[string]string) error {
 	for _, env := range envs {
+		if _, policyExists := policies[e.getAppName(env)]; policyExists {
+			// Policy already exists, not recreating
+			continue
+		}
 		policyDefinition := &PolicyDefinition{
 			V1: PolicyDefinitionV1{
 				Name: "Policy Name",
@@ -607,7 +616,6 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment, policies map[string
 		if err != nil {
 			return errors.Wrap(err, "marshal invite body")
 		}
-		fmt.Println(string(inviteBodyBytes))
 		req, err := http.NewRequest(
 			"POST",
 			fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
