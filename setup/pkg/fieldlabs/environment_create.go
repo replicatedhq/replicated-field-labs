@@ -151,6 +151,11 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 	return nil
 }
 func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
+	envs, err := e.createApps(envs)
+	if err != nil {
+		return errors.Wrap(err, "create apps")
+	}
+
 	if e.Params.InviteUsers {
 		policies, err := e.getPolicies()
 		if err != nil {
@@ -171,11 +176,6 @@ func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) erro
 		if err != nil {
 			return errors.Wrap(err, "invite users")
 		}
-	}
-
-	envs, err := e.createApps(envs)
-	if err != nil {
-		return errors.Wrap(err, "create apps")
 	}
 
 	labStatuses, err := e.createVendorLabs(envs, labSpecs)
@@ -548,7 +548,7 @@ func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
 
 func (e *EnvironmentManager) createRBAC(envs []Environment, policies map[string]string) error {
 	for _, env := range envs {
-		if _, policyExists := policies[e.getAppName(env)]; policyExists {
+		if _, policyExists := policies[env.App.ID]; policyExists {
 			// Policy already exists, not recreating
 			continue
 		}
@@ -556,7 +556,7 @@ func (e *EnvironmentManager) createRBAC(envs []Environment, policies map[string]
 			V1: PolicyDefinitionV1{
 				Name: "Policy Name",
 				Resources: PolicyResourcesV1{
-					Allowed: []string{fmt.Sprintf("kots/app/%s/**", e.getAppName(env)), "kots/license/**"},
+					Allowed: []string{fmt.Sprintf("kots/app/%s/**", env.App.ID), "kots/license/**"},
 					Denied:  []string{},
 				},
 			},
@@ -566,7 +566,7 @@ func (e *EnvironmentManager) createRBAC(envs []Environment, policies map[string]
 			return errors.Wrap(err, "marshal definition body")
 		}
 		rbacBody := &Policy{
-			Name:        e.getAppName(env),
+			Name:        env.App.ID,
 			Description: e.getAppName(env),
 			Definition:  string(policyDefinitionBytes),
 		}
@@ -608,7 +608,7 @@ func (e *EnvironmentManager) inviteUsers(envs []Environment, policies map[string
 		}
 		inviteBody := map[string]string{
 			"email":     env.Email,
-			"policy_id": policies[e.getAppName(env)],
+			"policy_id": policies[env.App.ID],
 		}
 		inviteBodyBytes, err := json.Marshal(inviteBody)
 		if err != nil {
