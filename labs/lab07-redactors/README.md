@@ -7,12 +7,12 @@ They can be used to prevent sensitive data like usernames, IP addresses, and pas
 In this lab, we'll explore how Redactors work and learn the workflows that end customers can use to review and customize redaction of support bundles.
 We'll study an app that has a container that logs sensitive information, and how to ensure that information is excluded from support bundles.
 
-You can open the KOTS admin console for your node by navigating to https://lab7-redactors:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the command below:
+You can open the KOTS admin console for your node by navigating to https://lab7-redactors:8800 in a browser. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the command below. 
 
 ```bash
-ssh kots@<server ip address>
+export FIRST_NAME=... # your first name
+ssh ${FIRST_NAME}@<server ip address>
 ```
-> **Note**: You will be prompted to change the password on first login
 
 ```shell
 kubectl kots reset-password -n default

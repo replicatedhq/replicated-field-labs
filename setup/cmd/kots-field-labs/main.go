@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/kots-field-labs/setup/pkg/fieldlabs"
 	"github.com/replicatedhq/replicated/cli/print"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
 	"github.com/replicatedhq/replicated/pkg/platformclient"
-	"log"
-	"os"
 )
 
 func main() {
@@ -30,11 +31,10 @@ func Run() error {
 
 	platformClient := *platformclient.NewHTTPClient(params.APIOrigin, params.APIToken)
 	envManager := &fieldlabs.EnvironmentManager{
-		Log:     print.NewLogger(os.Stdout),
-		Writer:  os.Stdout,
-		Params:  params,
-		Client:  &kotsclient.VendorV3Client{HTTPClient: platformClient},
-		GClient: kotsclient.NewGraphQLClient(params.GraphQLOrigin, params.APIToken, params.KURLSHOrigin),
+		Log:    print.NewLogger(os.Stdout),
+		Writer: os.Stdout,
+		Params: params,
+		Client: &kotsclient.VendorV3Client{HTTPClient: platformClient},
 	}
 
 	if err := envManager.Validate(environments, labs); err != nil {

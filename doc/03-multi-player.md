@@ -17,18 +17,20 @@ When provisioning for an actual training, the following is needed (to invite use
 ```(shell)
 make apps invite_users=1 env_csv=[CSV File with ssh  public keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] inviter_email=[your Vendor web email]
 ```
+> NOTE: 
+When creating the field labs the prefix cannot begin a number. Additionally the inviter_password cannot contain a '!'.
 
 A csv example:
 ```csv
-Timestamp,Source Email,name,pub_key,password,email,slug
+Timestamp,Source Email,participant name,pub_key,password,participant email,slug
 5/13/2021 18:02:25,participant.one@somecompany.com,Participant One,ssh-rsa public key particpant.one@somecompany.com,password,participant.one+[PREFIX]@somecompany.com,participant
 ```
 
 In above example, the following fields are being mapped:
-+ `name`: name of the environment
++ `participant name`: full name of the participant
 + `pub_key`: public key of the user who will access this environment
 + `password`: password to be set on kotsadm instances
-+ `email`: email to invite to vendor.replicated.com if Params.InviteUsers is set
++ `participant email`: participant email address to send invite to vendor.replicated.com if Params.InviteUsers is set
 + `slug`: slug of the environment
 
 

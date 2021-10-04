@@ -2,14 +2,15 @@ package fieldlabs
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/replicated/pkg/types"
-	"strings"
 )
 
 func (e *EnvironmentManager) Destroy(envs []Environment) error {
 	var appsToDelete []types.App
-	apps, err := e.GClient.ListApps()
+	apps, err := e.Client.ListApps()
 	if err != nil {
 		return errors.Wrapf(err, "list apps")
 	}
@@ -40,7 +41,7 @@ func (e *EnvironmentManager) Destroy(envs []Environment) error {
 
 	for _, app := range appsToDelete {
 		e.Log.ActionWithSpinner(fmt.Sprintf("Deleting App %s", app.Slug))
-		err := e.GClient.DeleteKOTSApp(app.ID)
+		err := e.Client.DeleteKOTSApp(app.ID)
 		if err != nil {
 			e.Log.FinishSpinnerWithError()
 			return errors.Wrapf(err, "delete app %q %q", app.Slug, app.ID)

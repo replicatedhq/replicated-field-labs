@@ -19,6 +19,10 @@ In this lab, we'll explore configuring a proxy server in an airgapped environmen
     * You will be prepared to integrate the Replicated Vendor platform into your existing CI/CD workflow via GitHub actions or your platform of choice
     * You will have completed the prerequisites for labs 2, 5 and 6
 
+> **NOTE**: to complete this lab, you will need to ensure you've set 
+> `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+If you haven't completed Exercise 0, you should go back and do that now.
+It will take **15-30 minutes**.
 ***
 ## Instance Overview
 
@@ -56,12 +60,13 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 
 
 ```shell
-export JUMP_BOX_IP=lab06-proxy
+export JUMP_BOX_IP= # jump box ip address
 export REPLICATED_APP=... # your app slug
-ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab06-proxy
-```
+export FIRST_NAME=... # your first name
 
-> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the PROXY server.
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab06-proxy
+```
+> NOTE: you will be prompted for a password.
 
 You'll note that egress is not possible by typical means
 
@@ -181,7 +186,7 @@ As we did in the airgap scenario, we'll open two SSH tunnels to access the admin
 Run the following on your workstation.
 
 ```shell
-ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 kots@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment
