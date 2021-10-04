@@ -20,7 +20,7 @@ In this lab, we'll explore configuring a proxy server in an airgapped environmen
     * You will have completed the prerequisites for labs 2, 5 and 6
 
 > **NOTE**: to complete this lab, you will need to ensure you've set 
-> `REPLICATED_APP`, `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
+> `REPLICATED_APP` and `REPLICATED_API_TOKEN` as you did in [Lab 0](../lab00-hello-world) to add an analyzer.
 If you haven't completed Exercise 0, you should go back and do that now.
 It will take **15-30 minutes**.
 ***

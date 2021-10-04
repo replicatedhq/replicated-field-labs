@@ -20,7 +20,7 @@ In this lab, we'll learn how to debug and diagnose support problems when the KOT
 
 > **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab03-support-cli in place of the node IP address. 
 
-You can open the KOTS admin console* for your node by navigating to https://lab03-support-cli:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command. 
+You can open the KOTS admin console for your node by navigating to https://lab03-support-cli:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command. 
 
 
 ```bash
