@@ -1,7 +1,7 @@
 apiVersion: troubleshoot.sh/v1beta2
 kind: SupportBundle
 metadata:
-  name: lab1e1
+  name: lab8
 spec:
   collectors:
     - logs:
