@@ -1,3 +1,6 @@
+data "google_service_account" "default" {
+  account_id = "kots-field-labs"
+}
 variable "gcp_project" {
   description = "gcp project to provision instances to"
 }
@@ -191,6 +194,11 @@ resource "google_compute_instance" "kots-field-labs" {
   network_interface {
     network = "default"
     access_config {}
+  }
+
+  service_account {
+    email  = data.google_service_account.default.email
+    scopes = ["compute-rw", "storage-rw"]
   }
 }
 
