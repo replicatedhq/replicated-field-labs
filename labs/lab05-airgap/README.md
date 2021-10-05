@@ -127,9 +127,8 @@ You can also do it in multiple steps and achieve the same:
 
 ```shell
 local> ssh ${FIRST_NAME}@${JUMP_BOX_IP}
-jump> export FIRST_NAME=...
 jump> export REPLICATED_APP=...
-jump> ssh ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
+jump> ssh ${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the Air Gap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 
