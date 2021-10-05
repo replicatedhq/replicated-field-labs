@@ -65,7 +65,7 @@ ahead of time.
 
 ![kots-app-slug](img/application-slug.png)
 
-`REPLICATED_API_TOKEN` should have been provided ahead of time or during the working session.
+`REPLICATED_API_TOKEN` should be set to the previously created user api token. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
 
 Once you have the values,
 set them in your environment.
@@ -119,6 +119,17 @@ Next, you can SSH into the Air Gap server using the following command:
 
 ```shell
 ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
+```
+
+The `-J` option, allows to connect to the target host by first making a ssh connection to the jump host (`${JUMP_BOX_IP}`) described by destination and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab05-airgap`) from there.
+
+You can also do it in multiple steps and achieve the same:
+
+```shell
+local> ssh ${FIRST_NAME}@${JUMP_BOX_IP}
+jump> export FIRST_NAME=...
+jump> export REPLICATED_APP=...
+jump> ssh ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the Air Gap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 

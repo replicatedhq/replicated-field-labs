@@ -89,9 +89,9 @@ $ replicated version
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-You will be in a shared account with all other lab participants -- once you log in, you'll want to select your specific app for the lab:
+You will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
 
-<img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/3730605/114389938-406ac380-9b5b-11eb-9eaa-dada2eae08f8.png">
+<img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/1579188/136086041-0a8a6cd9-20c8-4627-83b3-c62223cbae44.png">
 
 Now, you'll need to set up environment variables to interact with vendor.replicated.com and instance.
 
@@ -101,10 +101,10 @@ ahead of time.
 
 <p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
 
-Next, create a `read/write` API token from the [Teams and Tokens](https://vendor.replicated.com/team/tokens) page:
+Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings) page:
 > Note: Ensure the token has "Write" access or you'll be unable create new releases.
 
-<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-api-token.png" width=600></img></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1579188/136093225-4fcba8a6-e713-4deb-ae60-390870103d95.png" width="1368"></img></p>
 
 Once you have the values,
 set them in your environment.
