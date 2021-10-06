@@ -1,0 +1,8 @@
+# copy the below and add it to your hosts file with
+#
+#     echo '
+#     <PASTE>
+#     ' | sudo tee -a /etc/hosts
+
+34.134.151.206	lab08-airgap-lite-jump	# dx1006-dex-lab08-airgap-lite-jump
+
