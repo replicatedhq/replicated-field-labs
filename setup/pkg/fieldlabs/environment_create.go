@@ -37,6 +37,19 @@ type Environment struct {
 	App types.App `json:"-" csv:"-"`
 }
 
+type ExtraReleaseSpec struct {
+	// Dir of YAML sources to promote to channel
+	YAMLDir string `json:"yaml_dir"`
+	// If set, promote this release to a channel
+	PromoteChannel string `json:"promote_channel"`
+}
+
+type ExtraReleaseStatus struct {
+	Spec ExtraReleaseSpec
+	YAML string
+	Release *types.ReleaseInfo
+}
+
 type LabSpec struct {
 	// Name of the lab
 	Name string `json:"name"`
@@ -52,7 +65,8 @@ type LabSpec struct {
 	YAMLDir string `json:"yaml_dir"`
 	// Path to Installer YAML to promote to channel
 	K8sInstallerYAMLPath string `json:"k8s_installer_yaml_path"`
-
+	// List of additional releases to promote
+	ExtraReleases []ExtraReleaseSpec `json:"extra_releases"`
 	// whether to include a license file and install KOTS
 	SkipInstallKots bool `json:"skip_install_kots"`
 	// whether to include a license file and install the app
@@ -103,6 +117,7 @@ type LabStatus struct {
 	Channel   *types.Channel
 	Customer  *types.Customer
 	Release   *types.ReleaseInfo
+	ExtraReleases []ExtraReleaseStatus
 	Installer *types.InstallerSpec
 }
 
@@ -279,9 +294,22 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			appLabSlug := fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug)
 			e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
 
+			// load yaml for releases first to ensure directories exist
 			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
 			if err != nil {
 				return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
+			}
+
+			for _, extraRelease := range lab.Spec.ExtraReleases {
+				kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
+				if err != nil {
+					return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
+				}
+				lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
+					Spec:    extraRelease,
+					YAML:    kotsYAML,
+				})
+
 			}
 
 			kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
@@ -311,6 +339,18 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
 			if err != nil {
 				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
+			}
+
+			for _, extraRelease := range lab.Status.ExtraReleases {
+				releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+				if err != nil {
+					return nil, errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+				}
+				extraRelease.Release = releaseInfo
+
+				if extraRelease.Spec.PromoteChannel != "" {
+					return nil, errors.Errorf("promoting extra releases not implemented, bailing on %q", extraRelease.Spec.YAMLDir)
+				}
 			}
 
 			installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
