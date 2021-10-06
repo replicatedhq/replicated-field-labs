@@ -8,7 +8,7 @@ invite_users := ""
 inviter_email := "dexter+training415@replicated.com"
 inviter_password := ""
 provisioner_json_out := "terraform/provisioner_pairs.json"
-REPLICATED_GCP_PROJECT ?= "smart-proxy-839"
+REPLICATED_GCP_PROJECT ?= "kots-field-labs"
 REPLICATED_GCP_ZONE ?= "us-central1-b"
 
 .PHONY: install
