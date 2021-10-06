@@ -1,10 +1,11 @@
 package fieldlabs
 
 import (
-	"github.com/replicatedhq/replicated/pkg/types"
 	"io"
 	"text/tabwriter"
 	"text/template"
+
+	"github.com/replicatedhq/replicated/pkg/types"
 )
 
 const (
@@ -64,5 +65,25 @@ func (e *EnvironmentManager) PrintChannel(appChan types.Channel) error {
 	if err := channelAttrsTmpl.Execute(w, appChan); err != nil {
 		return err
 	}
+	return w.Flush()
+}
+
+var membersTmpl = template.Must(template.New("members").Parse(membersTmplSrc))
+var membersTmplSrc = `ID	EMAIL	PENDING
+{{ range . -}}
+{{ .Id }}	{{ .Email }} 	{{ .Is_Pending_Invite}}
+{{ end }}`
+
+func (e *EnvironmentManager) PrintMember(members []MemberList) error {
+	if len(members) == 0 {
+		return nil
+	}
+
+	w := tabWriter(e.Writer)
+
+	if err := membersTmpl.Execute(w, members); err != nil {
+		return err
+	}
+
 	return w.Flush()
 }
