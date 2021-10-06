@@ -78,6 +78,36 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 	return nil
 }
 
+// Deletes users with pending invites
+func (e *EnvironmentManager) DeleteMemberPendingInvite(id string) error {
+	url := fmt.Sprintf("%s/v1/team/invite/%s", e.Params.IDOrigin, id)
+	req, err := http.NewRequest(
+		"DELETE",
+		url,
+		nil,
+	)
+
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("GET /v1/team/invite %d: %s", resp.StatusCode, body)
+	}
+	return nil
+}
+
 // Delete policies create through multi-player mode
 func (e *EnvironmentManager) DeletePolicyId(id string) error {
 	url := fmt.Sprintf("%s/v1/policy/%s", e.Params.IDOrigin, id)
@@ -118,7 +148,10 @@ func (e *EnvironmentManager) Destroy(envs []Environment) error {
 		for _, env := range envs {
 			for _, member := range members {
 				if env.Email == member.Email && member.Is_Pending_Invite {
-					continue
+					err := e.DeleteMemberPendingInvite(member.Id)
+					if err != nil {
+						return err
+					}
 				}
 				if env.Email == member.Email && !member.Is_Pending_Invite {
 					err := e.DeleteMember(member.Id)
