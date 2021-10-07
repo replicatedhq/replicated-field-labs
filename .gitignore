@@ -1,1 +1,2 @@
 *.csv
+terraform/etc_hosts
