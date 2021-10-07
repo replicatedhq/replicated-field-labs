@@ -105,5 +105,27 @@
     "yaml_dir": "labs/lab07-redactors/manifests",
     "k8s_installer_yaml_path": "labs/lab07-redactors/kurl-installer.yaml",
     "use_public_ip": true
+  },
+  {
+    "name": "Lab 8: Airgap Lite",
+    "slug": "lab08-airgap-lite",
+    "channel": "lab08-airgap-lite",
+    "channel_slug": "lab08-airgap-lite",
+    "customer": "lab08-airgap-lite",
+    "yaml_dir": "labs/lab08-airgap-lite/manifests",
+    "extra_releases": [
+      {
+        "yaml_dir": "labs/lab08-airgap-lite/manifests-2",
+        "promote_channel": ""
+      }
+    ],
+    "k8s_installer_yaml_path": "labs/lab08-airgap-lite/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "skip_install_app": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "use_public_ip": false,
+    "use_jump_box": true
   }
 ]
