@@ -208,7 +208,7 @@ It should be finished now, so you can copy it to the Air Gap server.
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
 ```text
-kots@dx411-dex-lab08-airgap-lite-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab08-airgap-lite:/home/kots
+kots@dx411-dex-lab08-airgap-lite-jump ~$ scp kurlbundle.tar.gz ${REPLICATED_APP}-lab08-airgap-lite:~
 
 ```
 
@@ -218,13 +218,13 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-kots@dx411-dex-lab08-airgap-lite-jump ~$ ssh dx411-dex-lab08-airgap-lite
+kots@dx411-dex-lab08-airgap-lite-jump ~$ ssh ${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 Otherwise, you can use the one below 
 
 ```shell
-ssh -J ${FIRST_NAME}@lab08-airgap-lite-jump ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
