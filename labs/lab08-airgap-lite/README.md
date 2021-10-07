@@ -201,7 +201,7 @@ Replace the URL with the one you copied above.
 At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
+kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
 ```
 
 It should be finished now, so you can copy it to the Air Gap server. 
