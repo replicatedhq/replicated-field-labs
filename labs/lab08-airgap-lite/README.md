@@ -315,6 +315,8 @@ So we'll need to deploy a new release in order to fix this.
 
 As part of the lab setup, a new release has been created in Vendor Portal with the fix. In order to make the release available, go to `Releases > Sequence 2` and click `Promote`. Select the `lab08-airgap-lite` channel to promote it to.
 
+![app-down](img/promote-sequence-2.png)
+
 If you are interested, you can review the difference between the two releases in the Vendor Portal. It is also shown below:
 
 ```diff
