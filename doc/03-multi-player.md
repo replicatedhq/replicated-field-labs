@@ -14,8 +14,8 @@ This guide will walk you through running all the labs for a team of people.
 
 When provisioning for an actual training, the following is needed (to invite users):
 
-```(shell)
-make apps invite_users=1 env_csv=[CSV File with ssh  public keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] inviter_email=[your Vendor web email]
+```shell
+make apps invite_users=1 env_csv=[CSV File with ssh public keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] inviter_email=[your Vendor web email]
 ```
 > NOTE: 
 When creating the field labs the prefix cannot begin a number. Additionally the inviter_password cannot contain a '!'.
@@ -51,4 +51,10 @@ After the training is done, we usually give them a couple days to finish the lab
     gcloud compute instances delete $(gcloud compute instances list --filter="name:[PREFIX]" | awk '{ print $1 }' | grep [USERNAME]) --zone us-central1-b
     ```
 1. Day after the training: Ask again who is finished with the labs and remove their instances.
-1. 3 days after the training was done: Let them know all instances will be removed EOD, unless someone lets us know they will need more time. See [cleaning up](./02-single-player.md#10-cleaning-up) 
+1. 3 days after the training was done: Let them know all instances will be removed EOD, unless someone lets us know they will need more time. Delete all resources created by running the following two commands:
+```shell
+make tfdestroy
+
+make apps action=destroy invite_users=1 env_csv=[CSV File with ssh public keys] labs_json=labs_all.json prefix=[PREFIX] inviter_password=[Your Vendor web password] inviter_email=[your Vendor web email]
+```
+> NOTE: Use the same PREFIX and `labs_all.json` that was used during creation.
