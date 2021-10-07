@@ -68,6 +68,7 @@ func (e *EnvironmentManager) PrintChannel(appChan types.Channel) error {
 	return w.Flush()
 }
 
+// Print Members List
 var membersTmpl = template.Must(template.New("members").Parse(membersTmplSrc))
 var membersTmplSrc = `ID	EMAIL	PENDING
 {{ range . -}}
@@ -82,6 +83,27 @@ func (e *EnvironmentManager) PrintMember(members []MemberList) error {
 	w := tabWriter(e.Writer)
 
 	if err := membersTmpl.Execute(w, members); err != nil {
+		return err
+	}
+
+	return w.Flush()
+}
+
+// Print Policies List
+var policiesTmpl = template.Must(template.New("policies").Parse(policiesTmplSrc))
+var policiesTmplSrc = `ID	POLICY_NAME
+{{ range $key, $value := . -}}
+{{ $value }}	{{ $key }}
+{{ end }}`
+
+func (e *EnvironmentManager) PrintPolicies(policies map[string]string) error {
+	if len(policies) == 0 {
+		return nil
+	}
+
+	w := tabWriter(e.Writer)
+
+	if err := policiesTmpl.Execute(w, policies); err != nil {
 		return err
 	}
 

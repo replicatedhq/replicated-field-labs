@@ -141,6 +141,11 @@ func (e *EnvironmentManager) DeletePolicyId(id string) error {
 func (e *EnvironmentManager) Destroy(envs []Environment) error {
 	// Check if using single player mode and skip
 	if len(e.Params.EnvironmentsJSON) == 0 {
+		var pendingMembersToDelete []MemberList
+		var activeMembersToDelete []MemberList
+		var membersToDelete []MemberList
+		policiesToDelete := make(map[string]string)
+
 		members, err := e.GetMembers()
 		if err != nil {
 			return err
@@ -148,32 +153,82 @@ func (e *EnvironmentManager) Destroy(envs []Environment) error {
 		for _, env := range envs {
 			for _, member := range members {
 				if env.Email == member.Email && member.Is_Pending_Invite {
-					err := e.DeleteMemberPendingInvite(member.Id)
-					if err != nil {
-						return err
-					}
+					pendingMembersToDelete = append(pendingMembersToDelete, member)
 				}
 				if env.Email == member.Email && !member.Is_Pending_Invite {
-					err := e.DeleteMember(member.Id)
-					if err != nil {
-						return err
-					}
+					activeMembersToDelete = append(activeMembersToDelete, member)
 				}
 			}
-
 			policies, err := e.getPolicies()
 			if err != nil {
 				return err
 			}
-			appSlug := fmt.Sprintf("%s-%s", e.Params.NamePrefix, env.Slug)
+			appSlug := e.getAppName(env)
 			for policyName, Id := range policies {
 				if policyName == appSlug {
-					err := e.DeletePolicyId(Id)
-					if err != nil {
-						return err
-					}
+					policiesToDelete[policyName] = Id
 				}
 			}
+		}
+		membersToDelete = append(membersToDelete, pendingMembersToDelete...)
+		membersToDelete = append(membersToDelete, activeMembersToDelete...)
+		// Print and Confirm members deletion
+		e.PrintMember(membersToDelete)
+		if err != nil {
+			return errors.Wrap(err, "print members to delete")
+		}
+		// confirm delete
+		deleteMembersAnswer, err := PromptConfirmDeleteMembers()
+		if err != nil {
+			return errors.Wrap(err, "confirm delete")
+		}
+
+		if deleteMembersAnswer != "yes" {
+			return errors.New("prompt declined")
+		}
+
+		// Start deleting members and policies
+		for _, member := range pendingMembersToDelete {
+			e.Log.ActionWithSpinner(fmt.Sprintf("Deleting Member %s", member.Email))
+			err := e.DeleteMemberPendingInvite(member.Id)
+			if err != nil {
+				e.Log.FinishSpinnerWithError()
+				return err
+			}
+			e.Log.FinishSpinner()
+		}
+
+		for _, member := range activeMembersToDelete {
+			e.Log.ActionWithSpinner(fmt.Sprintf("Deleting Member %s", member.Email))
+			err := e.DeleteMember(member.Id)
+			if err != nil {
+				e.Log.FinishSpinnerWithError()
+				return err
+			}
+			e.Log.FinishSpinner()
+		}
+
+		// Print and Confirm policies deletion
+		e.PrintPolicies(policiesToDelete)
+		if err != nil {
+			return errors.Wrap(err, "print policies to delete")
+		}
+		deletePoliciesAnswer, err := PromptConfirmDeletePolicies()
+		if err != nil {
+			return errors.Wrap(err, "confirm delete")
+		}
+
+		if deletePoliciesAnswer != "yes" {
+			return errors.New("prompt declined")
+		}
+		for policyName, Id := range policiesToDelete {
+			e.Log.ActionWithSpinner(fmt.Sprintf("Deleting Policy %s", policyName))
+			err := e.DeletePolicyId(Id)
+			if err != nil {
+				e.Log.FinishSpinnerWithError()
+				return err
+			}
+			e.Log.FinishSpinner()
 		}
 	}
 
