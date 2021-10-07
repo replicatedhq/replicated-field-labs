@@ -78,17 +78,29 @@ ${REPLICATED_APP}-lab08-airgap-lite
 
 First set your application slug, and the public IP of your jump box:
 
+First set your application slug, the public IP of your jump box and your first name:
+
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
+export FIRST_NAME=... # your first name
 ```
 
 Next, you can SSH into the Air Gap server using the following command:
 
 ```shell
-ssh -J kots@${JUMP_BOX_IP} kots@${REPLICATED_APP}-lab05-airgap
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
 ```
-> **NOTE**: You will be prompted **twice** to change the password on first login. Once for the JUMP_BOX and again for the AIRGAP server.
+
+The `-J` option, allows to connect to the target host by first making a ssh connection to the jump host (`${JUMP_BOX_IP}`) described by destination and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`) from there.
+
+You can also do it in multiple steps and achieve the same:
+
+```shell
+local> ssh ${FIRST_NAME}@${JUMP_BOX_IP}
+jump> export REPLICATED_APP=...
+jump> ssh ${REPLICATED_APP}-lab08-airgap-lite
+```
 
 Once you're on the Air Gap server, you can verify that the server indeed does not have internet access. Once you're convinced, you 
 can ctrl+C the command and proceed to the next section
@@ -296,32 +308,7 @@ So we'll need to deploy a new release in order to fix this.
 ***
 ## Deploying a new version
 
-From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below.
-
-
-```diff
-diff --git a/labs/lab05-airgap/manifests/nginx-deployment.yaml b/labs/lab05-airgap/manifests/nginx-deployment.yaml
-index fa29e8d..3a66405 100644
---- a/labs/lab05-airgap/manifests/nginx-deployment.yaml
-+++ b/labs/lab05-airgap/manifests/nginx-deployment.yaml
-@@ -16,9 +16,6 @@ spec:
-       containers:
-         - name: nginx
-           image: nginx:latest
--          command:
--            - exit
--            - "1"
-           volumeMounts:
-             - mountPath: /usr/share/nginx/html
-               name: html
-```
-
-Once you're satisfied with your `nginx-deployment.yaml` create a new release with `make release`.
-You'll need to ensure you have your `REPLICATED_APP` and `REPLICATED_API_TOKEN` set. See the **Getting Started** section for information on how to obtain and set these.
-
-```shell
-make release
-```
+As part of the lab setup, a new Release has been created in Vendor Portal with the fix. In order to make the release available, go to `Releases > Sequence 2` and click `Promote`. Select the `lab08-airgap-lite` channel to promote it to.
 
 Once the promotion is done, you should be able to navigate back to the customer download portal we accessed from the customer page.
 Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab08-airgap channel.
