@@ -80,8 +80,6 @@ ${REPLICATED_APP}-lab08-airgap-lite
 
 ### Connecting
 
-First set your application slug, and the public IP of your jump box:
-
 First set your application slug, the public IP of your jump box and your first name:
 
 ```shell
@@ -268,7 +266,7 @@ At the login screen paste in the password noted previously on the `Installation 
 
 ![Log In](img/admin-console-login.png)
 
-Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
+Until this point, this server is just running Kubernetes and the kotsadm containers.
 The next step is to upload a license file so KOTS can validate which application is authorized to be deployed. Use the license file we downloaded earlier.
 
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
