@@ -50,6 +50,10 @@ the app bundle and license file will be uploaded via a browser UI through an SSH
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
+From the Settings page, copy the Application Slug. You'll need that later to set the `REPLICATED_APP`.
+
+![kots-app-slug](img/application-slug.png)
+
 ***
 ## Instance Overview
 
@@ -76,14 +80,12 @@ ${REPLICATED_APP}-lab08-airgap-lite
 
 ### Connecting
 
-First set your application slug, and the public IP of your jump box:
-
 First set your application slug, the public IP of your jump box and your first name:
 
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
-export FIRST_NAME=... # your first name
+export FIRST_NAME=... # your first name (lower case)
 ```
 
 Next, you can SSH into the Air Gap server using the following command:
@@ -127,11 +129,25 @@ is changing and no changes are needed to the underlying cluster.
 #### Starting the kURL Bundle Download
 
 Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
-Replace the URL below with the one you can query from 
 
-```
-replicated channel inspect lab05-airgap
-```
+##### Enabling Airgap for a customer
+
+The first step will be to enable Air Gap for the `lab8` customer:
+
+![enable-airgap](./img/airgap-customer-enable.png)
+
+
+##### Download Airgap Assets 
+After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
+
+![download-portal](img/airgap-customer-portal.png)
+
+Generate a new password and save it somewhere in your notes.
+Next, click the link to open the download portal. 
+This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
+Replace the URL below with the one you can get from the downlaod portal
+
+![download-portal](img/download-portal-kurl.png)
 
 ```text
 kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
@@ -141,10 +157,10 @@ This will take several minutes, leave this running and proceed to the next step,
 
 #### Building an Airgap Release
 
-By default, only the Stable and Beta channels will automatically build Air Gap bundles
+By default, only the Stable and Beta channels will automatically build Air Gap bundles. For other channels, you have two options to create an airgap release:
 
-- manually build
-- set channel to auto build
+- Manually build from the "Release History" view for a channel
+- Set a channel to auto build all promoted releases
 
 For a production application, Air Gap releases will be built automatically on the Stable channel, so this won't
 be necessary.
@@ -165,21 +181,8 @@ Now you should see all the bundles building or built on the release history page
 
 ![airgap-built](img/airgap-builds.png)
 
-#### Enabling Airgap for a customer
-
-The first step will be to enable Air Gap for the `lab8` customer:
-
-![enable-airgap](./img/airgap-customer-enable.png)
-
-
 #### Download Airgap Assets 
-After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
-
-![download-portal](img/airgap-customer-portal.png)
-
-Generate a new password and save it somewhere in your notes.
-Next, click the link to open the download portal. 
-This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
+Let's go back to the download portal where we previously got the kURL bundle URL, so we can download the airgap assets.
 
 
 Navigate to the "embedded cluster" option and review the three downloadable assets.
@@ -190,20 +193,20 @@ Download the license file, but **don't download the kURL bundle** -- this is the
 
 You'll also want to download the other bundle `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and check the download of the kurl bundle.
 Replace the URL with the one you copied above.
 
 At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
+kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
 ```
 
 It should be finished now, so you can copy it to the Air Gap server. 
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
 ```text
-kots@dx411-dex-lab08-airgap-lite-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab08-airgap-lite:/home/kots
+kots@dx411-dex-lab08-airgap-lite-jump ~$ scp kurlbundle.tar.gz ${REPLICATED_APP}-lab08-airgap-lite:~
 
 ```
 
@@ -213,13 +216,13 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-kots@dx411-dex-lab08-airgap-lite-jump ~$ ssh dx411-dex-lab08-airgap-lite
+kots@dx411-dex-lab08-airgap-lite-jump ~$ ssh ${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 Otherwise, you can use the one below 
 
 ```shell
-ssh -J ${FIRST_NAME}@lab08-airgap-lite-jump ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
@@ -263,7 +266,7 @@ At the login screen paste in the password noted previously on the `Installation 
 
 ![Log In](img/admin-console-login.png)
 
-Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
+Until this point, this server is just running Kubernetes and the kotsadm containers.
 The next step is to upload a license file so KOTS can validate which application is authorized to be deployed. Use the license file we downloaded earlier.
 
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
@@ -309,6 +312,8 @@ So we'll need to deploy a new release in order to fix this.
 ## Deploying a new version
 
 As part of the lab setup, a new release has been created in Vendor Portal with the fix. In order to make the release available, go to `Releases > Sequence 2` and click `Promote`. Select the `lab08-airgap-lite` channel to promote it to.
+
+![app-down](img/promote-sequence-2.png)
 
 If you are interested, you can review the difference between the two releases in the Vendor Portal. It is also shown below:
 
