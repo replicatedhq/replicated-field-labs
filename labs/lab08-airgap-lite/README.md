@@ -159,7 +159,7 @@ This will take several minutes, leave this running and proceed to the next step,
 
 #### Building an Airgap Release
 
-By default, only the Stable and Beta channels will automatically build Air Gap bundles
+By default, only the Stable and Beta channels will automatically build Air Gap bundles. Alternatively you have two options to create an airgap release:
 
 - manually build
 - set channel to auto build
