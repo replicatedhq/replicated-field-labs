@@ -1,4 +1,4 @@
-Lab 1.5: Airgap
+Lab 1.8: Airgap
 =========================================
 
 In this lab, we'll review how to perform installations in Air Gap environments, and
@@ -13,17 +13,11 @@ how to collect support bundles in Air Gap environments.
 * **Who this is for**: This lab is for anyone who builds/maintains KOTS applications (see note below)
     * Full Stack / DevOps / Product Engineers
 * **Prerequisites**:
-    * [Development environment setup from Lab 0](../lab00-hello-world)
     * Basic working knowledge of Kubernetes
 * **Outcomes**:
     * You will be ready to deliver a KOTS application into an Air Gap environment
     * You will build confidence in performing upgrades and troubleshooting in Air Gap environments
 
-* **Note** -- a more minimal Air Gap lab is in the works for non-dev teams to learn just the user-side installation
-    workflow without needing to understand the building/packaging of new Air Gap versions. 
-    Until that is made available, this lab is also appropriate for
-    * Implementation / Field Engineers
-    * Support Engineers
 ## Overview
 
 In this case we'll start with a bare Air Gap server with no KOTS installation, so you can
@@ -53,33 +47,8 @@ the app bundle and license file will be uploaded via a browser UI through an SSH
 ***
 ## Getting Started
 
-> **Note:** If you've already completed [Lab 0](../lab00-hello-world), you can skip to [Instance Overview](#instance-overview).
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
-
-Now, you'll need to install the **Replicated CLI** and set up two environment variables to interact with vendor.replicated.com. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
-
-
-`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
-ahead of time.
-
-![kots-app-slug](img/application-slug.png)
-
-`REPLICATED_API_TOKEN` should have been provided ahead of time or during the working session.
-
-Once you have the values,
-set them in your environment.
-
-```
-export REPLICATED_APP=...
-export REPLICATED_API_TOKEN=...
-```
-
-Lastly before continuing make sure to clone this repo locally as we will be modifying `lab05` later during the workshop.
-```bash
-git clone https://github.com/replicatedhq/kots-field-labs
-cd kots-field-labs/labs/lab05-airgap
-```
 
 ***
 ## Instance Overview
@@ -88,21 +57,21 @@ You will have received the IP of a jump box and the name of an Air Gap server.
 For example, you may have received:
 
 ```text
-dx411-dex-lab05-airgap-jump = 104.155.131.205
-dx411-dex-lab05-airgap
+dx411-dex-lab08-airgap-lite-jump = 104.155.131.205
+dx411-dex-lab08-airgap-lite
 ```
 
 In general, the name of the private server will be the same as the jump box, with the characters `-jump` removed from the suffix.
 Put another way, you could construct both instance names programatically as
 
 ```shell
-${REPLICATED_APP}-lab05-airgap-jump
+${REPLICATED_APP}-lab08-airgap-lite-jump
 ```
 
 and
 
 ```shell
-${REPLICATED_APP}-lab05-airgap
+${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 ### Connecting
@@ -153,7 +122,7 @@ replicated channel inspect lab05-airgap
 ```
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ curl -o kurlbundle.tar.gz <URL>
+kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
@@ -168,7 +137,7 @@ By default, only the Stable and Beta channels will automatically build Air Gap b
 For a production application, Air Gap releases will be built automatically on the Stable channel, so this won't
 be necessary.
 
-In this case, since we're working off the `lab05-airgap` channel, you'll want to enable Air Gap builds on that channel.
+In this case, since we're working off the `lab08-airgap-lite` channel, you'll want to enable Air Gap builds on that channel.
 
 You can check the build status by navigating to the "Release History" for the channel.
 
@@ -186,7 +155,7 @@ Now you should see all the bundles building or built on the release history page
 
 #### Enabling Airgap for a customer
 
-The first step will be to enable Air Gap for the `lab5` customer:
+The first step will be to enable Air Gap for the `lab8` customer:
 
 ![enable-airgap](./img/airgap-customer-enable.png)
 
@@ -207,7 +176,7 @@ Navigate to the "embedded cluster" option and review the three downloadable asse
 
 Download the license file, but **don't download the kURL bundle** -- this is the download we already started on the server.
 
-You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
+You'll also want to download the other bundle `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
 Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
 Replace the URL with the one you copied above.
@@ -222,7 +191,7 @@ It should be finished now, so you can copy it to the Air Gap server.
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab05-airgap:/home/kots
+kots@dx411-dex-lab08-airgap-lite-jump ~$ scp kurlbundle.tar.gz kots@dx411-dex-lab08-airgap-lite:/home/kots
 
 ```
 
@@ -232,13 +201,13 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```text
-kots@dx411-dex-lab05-airgap-jump ~$ ssh dx411-dex-lab05-airgap
+kots@dx411-dex-lab08-airgap-lite-jump ~$ ssh dx411-dex-lab08-airgap-lite
 ```
 
 Otherwise, you can use the one below 
 
 ```shell
-ssh -J kots@lab05-airgap-jump kots@${REPLICATED_APP}-lab05-airgap
+ssh -J ${FIRST_NAME}@lab08-airgap-lite-jump ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
@@ -260,9 +229,10 @@ You'll want to create a port forward from your workstation in order to access to
 Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
 
 ```shell
+export FIRST_NAME=... # your firstname (lowercase)
 export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 kots@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab08-airgap-lite:8800 -L 8888:${REPLICATED_APP}-lab08-airgap-lite:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
@@ -321,7 +291,7 @@ standard nginx entrypoint has been overriden:
             - "1"
 ```
 
-So we'll need to create a new release in order to fix this.
+So we'll need to deploy a new release in order to fix this.
 
 ***
 ## Deploying a new version
@@ -353,10 +323,10 @@ You'll need to ensure you have your `REPLICATED_APP` and `REPLICATED_API_TOKEN` 
 make release
 ```
 
-Once the release is made, you should be able to navigate back to the customer download portal we accessed from the customer page.
-Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab05-airgap channel.
+Once the promotion is done, you should be able to navigate back to the customer download portal we accessed from the customer page.
+Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab08-airgap channel.
 The new release may take a minute or two to build, so you're want to refresh the make until you see one
-with a timestamp that matches when you ran `make release`.
+with a timestamp that matches when you promoted the release.
 
 ![download-portal-more](img/download-portal-more.png)
 
@@ -369,7 +339,7 @@ preflight checks complete. Click **Deploy** to perform the upgrade.
 
 Click the **Application** button to navigate back to the main landing page. The app should now show as **Ready** status on the main dashboard.
 
-In order to access the application select **Open Lab 5**. 
+In order to access the application select **Open Lab 8**. 
 > **Note**: For this work successfully you'll need to ensure the SSH tunnel for the app's port (8888) was initialized.
 
 Congrats! You've installed and then upgraded an Air Gap instance!
@@ -596,7 +566,7 @@ kubectl support-bundle ./support-bundle.yaml
 
 There's an in depth post with some other options at [How can i generate a support bundle if i cannot access the admin console?](https://help.replicated.com/community/t/kots-how-can-i-generate-a-support-bundle-if-i-cannot-access-the-admin-console/455).
 
-Congrats! You've completed Exercise 5! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
+Congrats! You've completed Exercise 8! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
 
 
 ***
