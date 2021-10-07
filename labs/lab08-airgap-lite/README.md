@@ -131,11 +131,25 @@ is changing and no changes are needed to the underlying cluster.
 #### Starting the kURL Bundle Download
 
 Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
-Replace the URL below with the one you can query from 
 
-```
-replicated channel inspect lab05-airgap
-```
+##### Enabling Airgap for a customer
+
+The first step will be to enable Air Gap for the `lab8` customer:
+
+![enable-airgap](./img/airgap-customer-enable.png)
+
+
+##### Download Airgap Assets 
+After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
+
+![download-portal](img/airgap-customer-portal.png)
+
+Generate a new password and save it somewhere in your notes.
+Next, click the link to open the download portal. 
+This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
+Replace the URL below with the one you can get from the downlaod portal
+
+![download-portal](img/download-portal-kurl.png)
 
 ```text
 kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
