@@ -349,7 +349,8 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 				extraRelease.Release = releaseInfo
 
 				if extraRelease.Spec.PromoteChannel != "" {
-					return nil, errors.Errorf("promoting extra releases not implemented, bailing on %q", extraRelease.Spec.YAMLDir)
+                                          
+					continue
 				}
 			}
 
