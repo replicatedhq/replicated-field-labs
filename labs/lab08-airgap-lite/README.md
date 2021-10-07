@@ -50,6 +50,10 @@ the app bundle and license file will be uploaded via a browser UI through an SSH
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
+From the Settings page, copy the Application Slug. You'll need that later to set the `REPLICATED_APP`.
+
+![kots-app-slug](img/application-slug.png)
+
 ***
 ## Instance Overview
 
@@ -83,7 +87,7 @@ First set your application slug, the public IP of your jump box and your first n
 ```shell
 export JUMP_BOX_IP=...
 export REPLICATED_APP=... # your app slug
-export FIRST_NAME=... # your first name
+export FIRST_NAME=... # your first name (lower case)
 ```
 
 Next, you can SSH into the Air Gap server using the following command:
