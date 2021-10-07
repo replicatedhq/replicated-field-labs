@@ -162,7 +162,7 @@ This will take several minutes, leave this running and proceed to the next step,
 By default, only the Stable and Beta channels will automatically build Air Gap bundles. For other channels, you have two options to create an airgap release:
 
 - Manually build from the "Release History" view for a channel
-- set channel to auto build
+- Set a channel to auto build all promoted releases
 
 For a production application, Air Gap releases will be built automatically on the Stable channel, so this won't
 be necessary.
