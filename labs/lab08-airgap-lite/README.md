@@ -308,7 +308,26 @@ So we'll need to deploy a new release in order to fix this.
 ***
 ## Deploying a new version
 
-As part of the lab setup, a new Release has been created in Vendor Portal with the fix. In order to make the release available, go to `Releases > Sequence 2` and click `Promote`. Select the `lab08-airgap-lite` channel to promote it to.
+As part of the lab setup, a new release has been created in Vendor Portal with the fix. In order to make the release available, go to `Releases > Sequence 2` and click `Promote`. Select the `lab08-airgap-lite` channel to promote it to.
+
+If you are interested, you can review the difference between the two releases in the Vendor Portal. It is also shown below:
+
+```diff
+diff --git a/labs/lab05-airgap/manifests/nginx-deployment.yaml b/labs/lab05-airgap/manifests/nginx-deployment.yaml
+index fa29e8d..3a66405 100644
+--- a/labs/lab05-airgap/manifests/nginx-deployment.yaml
++++ b/labs/lab05-airgap/manifests/nginx-deployment.yaml
+@@ -16,9 +16,6 @@ spec:
+       containers:
+         - name: nginx
+           image: nginx:latest
+-          command:
+-            - exit
+-            - "1"
+           volumeMounts:
+             - mountPath: /usr/share/nginx/html
+               name: html
+```
 
 Once the promotion is done, you should be able to navigate back to the customer download portal we accessed from the customer page.
 Scrolling to the bottom, you can click "show older bundles" to see the history of releases on the lab08-airgap channel.
