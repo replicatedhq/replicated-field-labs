@@ -183,21 +183,8 @@ Now you should see all the bundles building or built on the release history page
 
 ![airgap-built](img/airgap-builds.png)
 
-#### Enabling Airgap for a customer
-
-The first step will be to enable Air Gap for the `lab8` customer:
-
-![enable-airgap](./img/airgap-customer-enable.png)
-
-
 #### Download Airgap Assets 
-After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
-
-![download-portal](img/airgap-customer-portal.png)
-
-Generate a new password and save it somewhere in your notes.
-Next, click the link to open the download portal. 
-This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
+Let's go back to the download portal where we previously got the kURL bundle URL, so we can download the airgap assets.
 
 
 Navigate to the "embedded cluster" option and review the three downloadable assets.
@@ -208,7 +195,7 @@ Download the license file, but **don't download the kURL bundle** -- this is the
 
 You'll also want to download the other bundle `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and download the kurl bundle.
+Now, let's SSH to our jump box (the one with the public IP) `ssh kots@<jump box IP address>` and check the download of the kurl bundle.
 Replace the URL with the one you copied above.
 
 At the beginning of the lab, we downloaded the bundle with this command from the Jump box.
