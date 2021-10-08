@@ -1,24 +1,24 @@
-apiVersion: kurl.sh/v1beta1
+apiVersion: cluster.kurl.sh/v1beta1
 kind: Installer
 metadata:
-  name: 'myapp'
+  name: ""
 spec:
-  kubernetes:
-    version: latest
   containerd:
     version: latest
-  weave:
+  contour:
     version: latest
-  minio:
-    version: latest
-  openebs:
-    version: latest
-    namespace: "openebs"
-    isLocalPVEnabled: true
-    localPVStorageClassName: default
-  registry:
+  ekco:
     version: latest
   kotsadm:
     version: latest
+  kubernetes:
+    version: latest
   prometheus:
     version: latest
+  registry:
+    version: latest
+  rook:
+    version: latest
+  weave:
+    version: latest
+
