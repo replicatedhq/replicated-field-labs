@@ -94,7 +94,7 @@ Next, you can SSH into the Air Gap server using the following command:
 ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
 ```
 
-The `-J` option, allows to connect to the target host by first making a ssh connection to the jump host (`${JUMP_BOX_IP}`) described by destination and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`) from there.
+The `-J` option allows you to connect to the target host by first making a ssh connection to the jump host (`${JUMP_BOX_IP}`) described by destination and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`) from there.
 
 You can also do it in multiple steps and achieve the same:
 
