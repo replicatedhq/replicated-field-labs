@@ -345,7 +345,7 @@ When you've downloaded the new version, you can now deploy it:
 
   ![airgap-new-upload](img/airgap-new-upload.png)
 
-  You will see the bundle uploaded and you will have the option to deploy it once the preflight checks are complete.
+    You will see the bundle uploaded and you will have the option to deploy it once the preflight checks are complete.
 2. Click **Deploy** to perform the upgrade.
 
 3. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
