@@ -9,13 +9,10 @@ In this lab, we'll review how to perform installations and collect support bundl
     * Create an SSH tunnel to configure an Air Gap instance
     * Perform an upgrade of an application in an Air Gap environment
     * Use the `kubectl support-bundle` CLI in an Air Gap environment
-
 * **Who this is for**:
     * Anyone who builds or maintains app manager applications (Full Stack/Devops/ Product Engineers)
-
 * **Prerequisites**:
     * Basic working knowledge of Kubernetes
-
 * **Outcomes**:
     * You can deliver an app manager application into an Air Gap environment
     * You can build confidence in performing upgrades and troubleshooting in Air Gap environments
@@ -87,10 +84,10 @@ export REPLICATED_APP=... # your app slug
 export FIRST_NAME=... # your first name (lower case)
 ```
 
-2. SSH into the Air Gap server using the following command:
-```shell
-ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
-```
+1. SSH into the Air Gap server using the following command:
+  ```shell
+  ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
+  ```
 > **Note**: The `-J` option allows you to connect to the target host by first making a SSH connection to the jump host (`${JUMP_BOX_IP}`) described by the destination,  and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`).
 
   Optional: Instead of using the above command to SSH into the Air Gap server, you can perform multiple steps to achieve the same result:
@@ -137,10 +134,10 @@ Scroll to the bottom of the page to the **Download Portal** section.
 ![download-portal](img/airgap-customer-portal.png)
 
 1. Click **Generate new password** and save the generated password somewhere in your notes.
-2. Click the **View download portal** link to open the download portal.
+1. Click the **View download portal** link to open the download portal.
 
   > **Note**: This is a link you would usually send to your customer, so from this point forward in the lab we will be wearing our "end user" hat.
-3. Replace the URL below with the one you get from the download portal.
+1. Replace the URL below with the one you get from the download portal.
 
   ```text
   kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
@@ -183,13 +180,13 @@ To continue downloading the air gap assets, navigate back to the download portal
 
   ![download-portal-view](img/download-portal-view.png)
 
-2. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step above.
+1. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step above.
 
-3. Download the `Latest Lab 1.8: Airgap Bundle` to your workstation.
+1. Download the `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
-4. SSH to your jump box (the one with the public IP) `ssh kots@<jump box IP address>` and check the download of the Kubernetes installer (kURL) bundle.
+1. SSH to your jump box (the one with the public IP) `ssh kots@<jump box IP address>` and check the download of the Kubernetes installer (kURL) bundle.
 
-5. Replace the URL with the one you copied above.
+1. Replace the URL with the one you copied above.
 
 At the beginning of the lab, we downloaded the bundle with this command from the Jump box:
 
@@ -248,27 +245,27 @@ ssh -NL 8800:${REPLICATED_APP}-lab08-airgap-lite:8800 -L 8888:${REPLICATED_APP}-
 To complete the installation:
 1. Visit http://localhost:8800 in your browser.
 
-2. Click **Continue to Setup** in the browser to navigate to the secure Admin Console.
+1. Click **Continue to Setup** in the browser to navigate to the secure Admin Console.
 
   ![kots-tls-wanring](img/kots-tls-warning.png)
 
-3. Click **Skip & continue** to Accept the insecure certificate in the admin console.
+1. Click **Skip & continue** to Accept the insecure certificate in the admin console.
 > **Note**: For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
   ![Console TLS](img/admin-console-tls.png)
 
-4. On the login screen, paste the password noted previously on the `Installation Complete` screen. The password is shown in the output from the installation script.
+1. On the login screen, paste the password noted previously on the `Installation Complete` screen. The password is shown in the output from the installation script.
 
   ![Log In](img/admin-console-login.png)
 
 Until this point, this server is just running Kubernetes and the `kotsadm` containers.
 The next step is to upload a license file so app manager can validate which application is authorized to be deployed. You must use the license file we downloaded earlier.
 
-5. Click **Upload** and select your `.yaml` file to continue. You can also drag and drop the license file from a file browser. After you upload your license, you'll be greeted with an Airgap Upload screen.
+1. Click **Upload** and select your `.yaml` file to continue. You can also drag and drop the license file from a file browser. After you upload your license, you'll be greeted with an Airgap Upload screen.
 
   ![Upload License](img/upload-license.png)
 
-6. Select **choose a bundle to upload** and use the application bundle that you
+1. Select **choose a bundle to upload** and use the application bundle that you
 downloaded to your workstation using the customer portal. Click **Upload Air Gap bundle** to continue the upload process.
 
   ![airgap-upload](img/airgap-upload.png)
@@ -308,8 +305,8 @@ You must deploy a new release in order to fix this error.
 
 As part of the lab setup, a new release was created in the Vendor Portal with the fix. To make the release available:
 1. Navigate to **Sequence 2** under **All releases**.  
-2. Click **Promote**.
-3. Select the `lab08-airgap-lite` channel as the channel to promote the release to.
+1. Click **Promote**.
+1. Select the `lab08-airgap-lite` channel as the channel to promote the release to.
 
   ![app-down](img/promote-sequence-2.png)
 
@@ -346,11 +343,11 @@ When you've downloaded the new version, you can now deploy it:
   ![airgap-new-upload](img/airgap-new-upload.png)
 
   You will see the bundle uploaded and you will have the option to deploy it once the preflight checks are complete.
-2. Click **Deploy** to perform the upgrade.
+1. Click **Deploy** to perform the upgrade.
 
-3. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
+1. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
 
-4. To access the application select **Open Lab 8**.
+1. To access the application select **Open Lab 8**.
     > **Note**: The SSH tunnel for the application's port (8888) must be initialized for this to work successfully.
 
 Congrats! You've installed and then upgraded an Air Gap instance!
@@ -588,4 +585,4 @@ Congrats! You've completed Exercise 8! [Back To Exercise List](https://github.co
 If you finish the lab early you can:
 
 1. Experiment with copying the CLI-generated bundle off the server and uploading it to https://vendor.replicated.com.
-2. Experiment with expanding or building your own `support-bundle.yaml` and using it to collect other information about the host.
+1. Experiment with expanding or building your own `support-bundle.yaml` and using it to collect other information about the host.
