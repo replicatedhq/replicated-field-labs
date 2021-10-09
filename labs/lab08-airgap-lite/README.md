@@ -10,7 +10,7 @@ In this lab, we'll review how to perform installations and collect support bundl
     * Perform an upgrade of an application in an Air Gap environment
     * Use the `kubectl support-bundle` CLI in an Air Gap environment
 * **Who this is for**:
-    * Anyone who builds or maintains app manager applications (Full Stack/Devops/ Product Engineers)
+    * Anyone who builds or maintains app manager applications (Full Stack / Devops/ Product Engineers)
 * **Prerequisites**:
     * Basic working knowledge of Kubernetes
 * **Outcomes**:
@@ -78,26 +78,25 @@ ${REPLICATED_APP}-lab08-airgap-lite
 ### Connecting to the Air Gap server
 
 1. Set your application slug, the public IP of your jump box and your first name:
-```shell
-export JUMP_BOX_IP=...
-export REPLICATED_APP=... # your app slug
-export FIRST_NAME=... # your first name (lower case)
-```
-
+    ```shell
+    export JUMP_BOX_IP=...
+    export REPLICATED_APP=... # your app slug
+    export FIRST_NAME=... # your first name (lower case)
+    ```
 1. SSH into the Air Gap server using the following command:
-  ```shell
-  ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
-  ```
-> **Note**: The `-J` option allows you to connect to the target host by first making a SSH connection to the jump host (`${JUMP_BOX_IP}`) described by the destination,  and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`).
+    ```shell
+    ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
+    ```
+    > **Note**: The `-J` option allows you to connect to the target host by first making a SSH connection to the jump host (`${JUMP_BOX_IP}`) described by the destination,  and then establishing a TCP forwarding to the ultimate destination (`${REPLICATED_APP}-lab08-airgap-lite`).
 
-  Optional: Instead of using the above command to SSH into the Air Gap server, you can perform multiple steps to achieve the same result:
-  ```shell
-  local> ssh ${FIRST_NAME}@${JUMP_BOX_IP}
-  jump> export REPLICATED_APP=...
-  jump> ssh ${REPLICATED_APP}-lab08-airgap-lite
-  ```
+    Optional: Instead of using the above command to SSH into the Air Gap server, you can perform multiple steps to achieve the same result:
+    ```shell
+    local> ssh ${FIRST_NAME}@${JUMP_BOX_IP}
+    jump> export REPLICATED_APP=...
+    jump> ssh ${REPLICATED_APP}-lab08-airgap-lite
+    ```
 
-When you are on the Air Gap server, you can verify that the server does not have internet access. When you've confirmed no internet access exists, you can copy the below command and proceed to the next section.
+When you are on the Air Gap server, you can verify that the server does not have internet access. When you've confirmed no internet access exists, you can ctrl+C the below command and proceed to the next section.
 
 ```shell
 curl -v https://kubernetes.io
@@ -136,12 +135,12 @@ Scroll to the bottom of the page to the **Download Portal** section.
 1. Click **Generate new password** and save the generated password somewhere in your notes.
 1. Click the **View download portal** link to open the download portal.
 
-  > **Note**: This is a link you would usually send to your customer, so from this point forward in the lab we will be wearing our "end user" hat.
+    > **Note**: This is a link you would usually send to your customer, so from this point forward in the lab we will be wearing our "end user" hat.
 1. Replace the URL below with the one you get from the download portal.
 
-  ```text
-  kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
-  ```
+    ```text
+    kots@dx411-dex-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
+    ```
 
 ![download-portal](img/download-portal-kurl.png)
 
@@ -178,7 +177,7 @@ To continue downloading the air gap assets, navigate back to the download portal
 
 1. Navigate to the **Embedded cluster** option and review the three downloadable assets.
 
-  ![download-portal-view](img/download-portal-view.png)
+   ![download-portal-view](img/download-portal-view.png)
 
 1. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step above.
 
@@ -224,7 +223,7 @@ tar xvf kurlbundle.tar.gz
 sudo bash install.sh airgap
 ```
 
-At the end, you should see an `Installation Complete` message. Because this instance is an Air Gap, you must create a port forward to access the UI from your workstation in the next step.
+At the end, you should see an `Installation Complete` message. Because this instance is in Air Gap, you must create a port forward to access the UI from your workstation in the next step.
 
 ![kurl-password](img/kurl-password.png)
 
@@ -247,28 +246,28 @@ To complete the installation:
 
 1. Click **Continue to Setup** in the browser to navigate to the secure Admin Console.
 
-  ![kots-tls-wanring](img/kots-tls-warning.png)
+   ![kots-tls-wanring](img/kots-tls-warning.png)
 
 1. Click **Skip & continue** to Accept the insecure certificate in the admin console.
-> **Note**: For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
+    > **Note**: For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
-  ![Console TLS](img/admin-console-tls.png)
+   ![Console TLS](img/admin-console-tls.png)
 
 1. On the login screen, paste the password noted previously on the `Installation Complete` screen. The password is shown in the output from the installation script.
 
-  ![Log In](img/admin-console-login.png)
+   ![Log In](img/admin-console-login.png)
 
-Until this point, this server is just running Kubernetes and the `kotsadm` containers.
-The next step is to upload a license file so app manager can validate which application is authorized to be deployed. You must use the license file we downloaded earlier.
+    Until this point, this server is just running Kubernetes and the `kotsadm` containers.
+    The next step is to upload a license file so app manager can validate which application is authorized to be deployed. You must use the license file we downloaded earlier.
 
 1. Click **Upload** and select your `.yaml` file to continue. You can also drag and drop the license file from a file browser. After you upload your license, you'll be greeted with an Airgap Upload screen.
 
-  ![Upload License](img/upload-license.png)
+   ![Upload License](img/upload-license.png)
 
 1. Select **choose a bundle to upload** and use the application bundle that you
 downloaded to your workstation using the customer portal. Click **Upload Air Gap bundle** to continue the upload process.
 
-  ![airgap-upload](img/airgap-upload.png)
+   ![airgap-upload](img/airgap-upload.png)
 
 You'll see the bundle uploaded and images being pushed to kURL's internal registry. This will take a few minutes to complete.
 
@@ -308,7 +307,7 @@ As part of the lab setup, a new release was created in the Vendor Portal with th
 1. Click **Promote**.
 1. Select the `lab08-airgap-lite` channel as the channel to promote the release to.
 
-  ![app-down](img/promote-sequence-2.png)
+   ![app-down](img/promote-sequence-2.png)
 
 If you are interested, you can review the differences between the two releases in the Vendor Portal. It is also shown below:
 
@@ -338,12 +337,12 @@ The new release may take a minute or two to build. You can refresh the page unti
 ![download-portal-more](img/download-portal-more.png)
 
 When you've downloaded the new version, you can now deploy it:
-1.  In the app manager Admin Console select **Version History**, click **Upload a new version**, and select your bundle.
+1. In the app manager Admin Console select **Version History**, click **Upload a new version**, and select your bundle.
 
-  ![airgap-new-upload](img/airgap-new-upload.png)
+   ![airgap-new-upload](img/airgap-new-upload.png)
 
     You will see the bundle uploaded and you will have the option to deploy it once the preflight checks are complete.
-2. Click **Deploy** to perform the upgrade.
+1. Click **Deploy** to perform the upgrade.
 
 1. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
 
