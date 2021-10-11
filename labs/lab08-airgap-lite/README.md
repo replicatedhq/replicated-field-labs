@@ -328,7 +328,7 @@ As part of the lab setup, a new release was created in the vendor portal with th
               volumeMounts:
                 - mountPath: /usr/share/nginx/html
                   name: html
-```
+   ```
 
 1. When the promotion is done, navigate back to the customer download portal we accessed from the customer page.
     Scroll to the bottom and click **Show older bundles** to see the history of the releases on the `lab08-airgap` channel.
@@ -337,20 +337,20 @@ As part of the lab setup, a new release was created in the vendor portal with th
 
    ![download-portal-more](img/download-portal-more.png)
 
-When you've downloaded the new version, you can now deploy it:
-1. In the app manager admin console, select **Version History**. Click **Upload a new version**, and select your bundle.
+1. When you've downloaded the new version, you can now deploy it:
+   1. In the app manager admin console, select **Version History**. Click **Upload a new version**, and select your bundle.
 
-   ![airgap-new-upload](img/airgap-new-upload.png)
+      ![airgap-new-upload](img/airgap-new-upload.png)
 
-    You see the bundle uploaded and you have the option to deploy it after the preflight checks are complete.
-1. Click **Deploy** to perform the upgrade.
+      You see the bundle uploaded and you have the option to deploy it after the preflight checks are complete.
+   1. Click **Deploy** to perform the upgrade.
 
-1. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
+   1. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
 
-1. To access the application select **Open Lab 8**.
-    > **Note**: The SSH tunnel for the application's port (8888) must be initialized for this to work successfully.
+   1. To access the application select **Open Lab 8**.
+      > **Note**: The SSH tunnel for the application's port (8888) must be initialized for this to work successfully.
 
-Congratutations! You have installed and then upgraded an air gap instance!
+Congratulations! You have installed and then upgraded an air gap instance!
 
 ***
 ## Collecting a CLI support bundle
