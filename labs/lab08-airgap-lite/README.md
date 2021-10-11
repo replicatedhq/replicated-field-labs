@@ -181,7 +181,7 @@ To continue downloading the air gap assets, navigate back to the download portal
 
    ![download-portal-view](img/download-portal-view.png)
 
-2. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previously.
+2. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step.
 
 3. Download the `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
