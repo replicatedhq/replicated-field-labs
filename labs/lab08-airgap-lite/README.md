@@ -331,7 +331,7 @@ As part of the lab setup, a new release was created in the vendor portal with th
 ```
 
 1. When the promotion is done, navigate back to the customer download portal we accessed from the customer page.
-Scroll to the bottom and click **Show older bundles** to see the history of the releases on the `lab08-airgap` channel.
+    Scroll to the bottom and click **Show older bundles** to see the history of the releases on the `lab08-airgap` channel.
 
    The new release can take a minute or two to build. Refresh the page until you see a release with a timestamp that matches when you promoted your release.
 
