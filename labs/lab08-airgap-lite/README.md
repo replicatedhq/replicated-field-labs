@@ -28,11 +28,11 @@ To practice performing an air gap installation from scratch, you will start this
 
    ![airgap-slide-1](img/airgap-slide-1.png)
 
-2. Collect a license file, a download link, and a public Kubernetes installer bundle.
+1. Collect a license file, a download link, and a public Kubernetes installer bundle.
 
    ![airgap-slide-2](img/airgap-slide-2.png)
 
-3. Move all three artifacts into the datacenter using a jump box.
+1. Move all three artifacts into the datacenter using a jump box.
 
    ![airgap-slide-3](img/airgap-slide-3.png)
 
@@ -45,7 +45,7 @@ To practice performing an air gap installation from scratch, you will start this
 
 1. You will receive an invitation by email to log into https://vendor.replicated.com. Accept this invitation and set your password.
 
-2. From the Settings page, copy the Application Slug. You will need this slug in a later step to set the `REPLICATED_APP`.
+1. From the Settings page, copy the Application Slug. You will need this slug in a later step to set the `REPLICATED_APP`.
 
    ![kots-app-slug](img/application-slug.png)
 
@@ -84,7 +84,7 @@ ${REPLICATED_APP}-lab08-airgap-lite
     ```
     This will run in the foreground, and you won't see any output.
     
-2. SSH into the air gap server using the following command:
+1. SSH into the air gap server using the following command:
     ```shell
     ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
     ```
@@ -97,13 +97,13 @@ ${REPLICATED_APP}-lab08-airgap-lite
     jump> ssh ${REPLICATED_APP}-lab08-airgap-lite
     ```
 
-3. When you are on the air gap server, run the following command to verify that the server does not have internet access: 
+1. When you are on the air gap server, run the following command to verify that the server does not have internet access: 
 
    ```shell
    curl -v https://kubernetes.io
    ```
 
-4. When you've confirmed no internet access exists, you can ctrl+C the below command and proceed to the next section.
+1. When you've confirmed no internet access exists, you can ctrl+C the below command and proceed to the next section.
 
 ***
 ## Moving assets into place
@@ -112,7 +112,7 @@ To perform an air gap installation, you will need to collect the following asset
 * An air gap bundle containing the Kubernetes installer cluster components **
 * An air gap bundle containing the application components **
 * A license with the air gap entitlement enabled
-* 
+
 > ** **Note**: These are separate artifacts to cut down on bundle size during upgrade scenarios where only the application version
 is changing and no changes are needed to the underlying cluster.
 
@@ -134,11 +134,11 @@ Enable air gap for the `lab8` customer and click **Save Changes**:
 
    ![download-portal](img/airgap-customer-portal.png)
 
-2. Click **Generate new password** and save the generated password in your notes.
-3. Click the **View download portal** link to open the download portal.
+1. Click **Generate new password** and save the generated password in your notes.
+1. Click the **View download portal** link to open the download portal.
 
     > **Note**: This is a link you would usually send to your customer, so from this point forward in the lab you will be wearing your "end user" hat.
-4. From your jump box, run the following curl command. Replace the URL below with the one you get from the download portal.
+1. From your jump box, run the following curl command. Replace the URL below with the one you get from the download portal.
 
     ```text
     <name>@{REPLICATED_APP}-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
@@ -163,7 +163,7 @@ For this lab, since you are working off the `lab08-airgap-lite` channel, you wil
 
    ![release-history](img/channel-release-history.png)
 
-2. You can build individual bundles on the **Release history** page, but you will likely want to edit the channel and enable the option for all releases. Next to **Automatically create airgap builds for all releases in this channel**, slide the toggle swith to `on` to enable this option.
+1. You can build individual bundles on the **Release history** page, but you will likely want to edit the channel and enable the option for all releases. Next to **Automatically create airgap builds for all releases in this channel**, slide the toggle swith to `on` to enable this option.
 
    ![edit-channel](img/channel-edit-info-btn.png)
 
@@ -181,15 +181,15 @@ To continue downloading the air gap assets, navigate back to the download portal
 
    ![download-portal-view](img/download-portal-view.png)
 
-2. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step.
+1. Download the license file, but **do not** download the Kubernetes installer (kURL) bundle. This download was already started on the server in a previous step.
 
-3. Download the `Latest Lab 1.8: Airgap Bundle` to your workstation.
+1. Download the `Latest Lab 1.8: Airgap Bundle` to your workstation.
 
-4. SSH to your jump box (the one with the public IP) `ssh <name>@<jump box IP address>` and check the download of the Kubernetes installer (kURL) bundle.
+1. SSH to your jump box (the one with the public IP) `ssh <name>@<jump box IP address>` and check the download of the Kubernetes installer (kURL) bundle.
 
-5. Replace the URL with the one you copied previously.
+1. Replace the URL with the one you copied previously.
 
-6. At the beginning of the lab, we downloaded the bundle with this command from the jump box:
+1. At the beginning of the lab, we downloaded the bundle with this command from the jump box:
 
    ```text
    <name>@{REPLICATED_APP}-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
@@ -204,7 +204,7 @@ To continue downloading the air gap assets, navigate back to the download portal
 
    > **Note**: This lab uses SCP using an SSH tunnel, but the air gap methods in this lab also extend to more locked down environments where, for example, physical media is required to move assets into the datacenter.
 
-7. SSH all the way to air gap node. If you still have a shell on your jump box, you can use the instance name:
+1. SSH all the way to air gap node. If you still have a shell on your jump box, you can use the instance name:
 
    ```text
    <name>@{REPLICAED_APP}-lab08-airgap-lite-jump ~$ ssh ${REPLICATED_APP}-lab08-airgap-lite
@@ -216,7 +216,7 @@ To continue downloading the air gap assets, navigate back to the download portal
    ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab08-airgap-lite
    ```
 
-8. From the air gap node, untar the bundle and run the install script with the `airgap` flag. The Kubernetes installer (kURL) install flags are documented [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
+1. From the air gap node, untar the bundle and run the install script with the `airgap` flag. The Kubernetes installer (kURL) install flags are documented [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
 
    ```shell
    tar xvf kurlbundle.tar.gz
