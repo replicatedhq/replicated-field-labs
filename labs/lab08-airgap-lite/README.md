@@ -103,7 +103,7 @@ ${REPLICATED_APP}-lab08-airgap-lite
    curl -v https://kubernetes.io
    ```
 
-1. When you've confirmed no internet access exists, you can ctrl+C the below command and proceed to the next section.
+1. When you've confirmed no internet access exists, you can ctrl+C the above command and proceed to the next section.
 
 ***
 ## Moving assets into place
