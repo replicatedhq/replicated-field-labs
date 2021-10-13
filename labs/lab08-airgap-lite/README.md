@@ -207,7 +207,7 @@ To continue downloading the air gap assets, navigate back to the download portal
 1. SSH all the way to air gap node. If you still have a shell on your jump box, you can use the instance name:
 
    ```text
-   <name>@{REPLICAED_APP}-lab08-airgap-lite-jump ~$ ssh ${REPLICATED_APP}-lab08-airgap-lite
+   <name>@{REPLICATED_APP}-lab08-airgap-lite-jump ~$ ssh ${REPLICATED_APP}-lab08-airgap-lite
    ```
 
    Alternatively, you can use the one below:
