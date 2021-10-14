@@ -187,8 +187,6 @@ To continue downloading the air gap assets, navigate back to the download portal
 
 1. SSH to your jump box (the one with the public IP) `ssh <name>@<jump box IP address>` and check the download of the Kubernetes installer (kURL) bundle.
 
-1. Replace the URL with the one you copied previously.
-
 1. At the beginning of the lab, we downloaded the bundle with this command from the jump box:
 
    ```text
