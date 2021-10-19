@@ -127,5 +127,15 @@
     "post_install_sh": "",
     "use_public_ip": false,
     "use_jump_box": true
+  },
+  {
+    "name": "Lab 9: Licenses",
+    "slug": "lab09-licenses",
+    "channel": "lab09-licenses",
+    "channel_slug": "lab09-licenses",
+    "customer": "lab09-licenses",
+    "yaml_dir": "labs/lab09-licenses/manifests",
+    "k8s_installer_yaml_path": "labs/lab09-licenses/kurl-installer.yaml",
+    "use_public_ip": true
   }
 ]
