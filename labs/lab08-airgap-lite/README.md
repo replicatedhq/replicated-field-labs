@@ -367,7 +367,7 @@ As expected, this will fail because we cannot fetch the spec from the internet.
 Error: failed to load collector spec: failed to get spec from URL: execute request: Get "https://kots.io": dial tcp 104.21.18.220:443: i/o timeout
 ```
 
-In this case, pull in the spec from https://github.com/replicatedhq/kots/blob/master/support-bundle.yaml.
+In this case, pull in the spec from https://github.com/replicatedhq/kots/blob/master/pkg/supportbundle/defaultspec/spec.yaml.
 
 How you get this file onto the server is up to you. Expand the **Details** below for an option that uses `cat` with a heredoc.
 
