@@ -78,6 +78,7 @@ The image for this app is located here and the code is available here. The versi
 
 ```python
 
+@app.route('/')
 def license_check():
     message_to_display = ''
     response = requests.get(
@@ -87,11 +88,12 @@ def license_check():
     },
     )
     response_json = response.json()
-    message_to_display += '<br> License Assigned To:' + response_json["assignee"]
+    message_to_display += '<b>License Details:</b><br/><br> License assigned to <b>' + response_json["assignee"] + '</b>'
     custom_fields = response_json['fields']
     for custom_field in custom_fields:
+        print (message_to_display)
         if custom_field['field']=='subscription-tier' :
-           message_to_display += '<br><br><br> The Current Subscription Tier is: ' + custom_field["value"]
+           message_to_display += '<br><br><br> The Current Subscription Tier is <b>' + custom_field["value"] + '</b>'
         
     return message_to_display
 
@@ -377,7 +379,7 @@ Once the App Manager has deployed the application we should see two options in t
 
 Click on **Open License App** to see the License values:
 
-<img src='img/license-app-ui.png' width=550></img>
+<img src='img/lic-serv-ui.png' width=550></img>
 
 ***
 
