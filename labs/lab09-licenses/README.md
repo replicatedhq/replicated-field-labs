@@ -373,7 +373,7 @@ Since we have a default value, we don't need to enter a value.
 
 Once the App Manager has deployed the application we should see two options in the **Application** tile:
 
-<img src='img/app-manager-open-apps.png' width=550></img>
+<img src='img/app-manager-open-links.png' width=550></img>
 
 Click on **Open License App** to see the License values:
 

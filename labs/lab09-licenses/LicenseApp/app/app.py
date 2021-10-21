@@ -16,12 +16,12 @@ def license_check():
     },
     )
     response_json = response.json()
-    message_to_display += '<br> License Assigned To:' + response_json["assignee"]
+    message_to_display += '<b>License Details:</b><br/><br> License assigned to <b>' + response_json["assignee"] + '</b>'
     custom_fields = response_json['fields']
     for custom_field in custom_fields:
         print (message_to_display)
         if custom_field['field']=='subscription-tier' :
-           message_to_display += '<br><br><br> The Current Subscription Tier is: ' + custom_field["value"]
+           message_to_display += '<br><br><br> The Current Subscription Tier is <b>' + custom_field["value"] + '</b>'
         
     return message_to_display
 if __name__ == '__main__':
