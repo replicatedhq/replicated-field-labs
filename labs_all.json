@@ -127,5 +127,21 @@
     "post_install_sh": "",
     "use_public_ip": false,
     "use_jump_box": true
+  },
+  {
+    "name": "Lab 10: Demo",
+    "slug": "lab10-demo",
+    "channel": "lab10-demo",
+    "channel_slug": "lab10-demo",
+    "customer": "lab10-demo",
+    "yaml_dir": "labs/lab10-demo/manifests",
+    "k8s_installer_yaml_path": "labs/lab10-demo/kurl-installer.yaml",
+    "skip_install_kots": false,
+    "skip_install_app": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "use_public_ip": true,
+    "use_jump_box": false
   }
 ]

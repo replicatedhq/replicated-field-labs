@@ -1,0 +1,14 @@
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: app-slug
+spec:
+  title: "Lab 10"
+  statusInformers:
+    - deployment/nginx
+  ports:
+    - serviceName: "nginx"
+      servicePort: 80
+      localPort: 8888
+      applicationUrl: "http://nginx"
+  icon: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABgAAAAYADwa0LPAAACMklEQVRo3u2ZO04DMRCGPwISSJAQ6IKogR7EAYADQJQbJTUErkCJQOICXIBHnVDxEo+aoHQJhb3SauPM2htnHUR+aZRi157/n3Xs8QxMMcX/xoyneQrADrCnfzeAdWBRP/8B3oA2cA/cAHdAL3QAKkADeAH6jvasx1ZCEF8BToFuBuJJ6+q5ynmRrwJfHogn7VPPPTbM6kj5Jp60pvblFQvAVQ7kI7vSPr1F/iJH8pFdA3M+BOSxbIbZyajkqwHJ91HnxFFW8svAe2AB0e60kkXA2ZAJ02Aa8wrUgKLh/aKOcksQcepKvsLwQ8pVwCuwajGujEo1hh12Tid2Q4iGq4Cag1/pP9ewnaSAylN8CShajIlQEvw+aW6p2BUmsRHk+3ncdkzRTmLfIWJ5Y89GwHZolgKsvsBmaJYCtmwErIVmKWBgKzUJWArNUsDAjma1LU0yTAI6oUkJ+LYR8B6apYAPGwHt0CwFtGwE3IdmKeDO5qU/lUqYkJbMuRJwSeaWBT9PGFaMaQn1gHMHp2k4cHhXysPOcShFShca1y/Qwq7qVsbjhQbsqxFpAvqaWBWV7ydR0s/ago+mK/lo4km51Nt8QSOqqHUXinwPOMxKPkIzoIDjUclD2NKityLvPPkWdy+1T6+YRdUqx/mf6KGWjffyehxHqJ1hHLtN5jqoK8r4bTE1ybHFFEcFqOOWO8VzmzojNvl8tlm3GWyzRvfrDqrN+gjcotqsD0xAm3WKKf46fgErebH8DKZ/ywAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0xMC0yMlQyMjo1MzozMiswMDowMC8N/L0AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMTAtMjJUMjI6NTM6MzIrMDA6MDBeUEQBAAAAAElFTkSuQmCC
