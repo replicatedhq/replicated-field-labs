@@ -75,12 +75,6 @@ Go to Customers and click the download button:
 
     in a browser. If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access it at [https://lab10-demo:8800](https://lab10-demo:8800).
 
-    The password to your instance UI will be provided as part of the lab, or you can reset by SSHing the node and running
-
-    ```shell
-    kubectl kots reset-password -n default
-    ```
-
 1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
 
    ![kots-tls-wanring](img/kots-tls-warning.png)
@@ -90,7 +84,15 @@ Go to Customers and click the download button:
 
    ![Console TLS](img/admin-console-tls.png)
 
-1. On the login screen, paste the password noted from step 1.
+1. On the login screen use the password provided as part of the lab. or you can reset by SSHing the node and running
+
+    ```bash
+    export FIRST_NAME=... # your first name
+
+    ssh ${FIRST_NAME}@<server ip address>
+
+    kubectl kots reset-password -n default
+    ```
 
 1. Upload the license (previously downloaded from the vendor portal)
 
