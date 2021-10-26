@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: license-app-deployment
+  labels:
+    app: license-app
+  annotations:
+    kots.io/when: '{{repl eq (LicenseFieldValue "deploy-license-svc") "true" }}'  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: license-app
+  template:
+    metadata:
+      labels:
+        app: license-app
+    spec:
+      containers:
+        - name: license-app
+          image: cremerfc/repl-license-app:latest
+          ports:
+            - containerPort: 5000

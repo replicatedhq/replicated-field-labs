@@ -1,0 +1,11 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "lab09-Licenses"
+spec:
+  descriptor:
+    links:
+      - description: Open Lab 9
+        url: "http://nginx"
+      - description: Open License App
+        url: "http://license-app-service"

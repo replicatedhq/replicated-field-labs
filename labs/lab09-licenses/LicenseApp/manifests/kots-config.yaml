@@ -1,0 +1,15 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: license-app-config
+spec:
+  groups:
+    - name: license-app-opts
+      title: License Service Options
+      description: Set License Service Options Below
+      when: repl{{ eq (LicenseFieldValue "deploy-license-svc") "true" }}
+      items:
+      - name: service-port
+        title: Port to expose the License Service UI
+        type: text
+        default: '8080'

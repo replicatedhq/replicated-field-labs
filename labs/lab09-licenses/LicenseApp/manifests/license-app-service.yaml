@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: license-app-service
+  labels:
+    app: license-app
+  annotations:
+    kots.io/when: '{{repl eq (not IsKurl) (eq (LicenseFieldValue "deploy-license-svc") "true" ) }}'
+spec:
+  type: ClusterIP
+  ports:
+  - port: repl{{ ConfigOption "service-port"}}
+  selector:
+    app: license-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: license-app-service
+  labels:
+    app: license-app
+  annotations:
+    kots.io/when: '{{repl eq (IsKurl) (eq (LicenseFieldValue "deploy-license-svc") "true" ) }}'
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      nodePort: repl{{ ConfigOption "service-port"}}
+  selector:
+    app: license-app
