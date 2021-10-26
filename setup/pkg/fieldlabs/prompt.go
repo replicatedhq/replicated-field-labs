@@ -44,7 +44,7 @@ func PromptConfirmDelete() (string, error) {
 func PromptConfirmDeleteMembers() (string, error) {
 
 	prompt := promptui.Prompt{
-		Label:     "Delete the above listed memebers? There is no undo:",
+		Label:     "Delete the above listed members? There is no undo:",
 		Templates: templates,
 		Default:   "",
 		Validate: func(input string) error {

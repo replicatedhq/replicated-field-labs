@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Lab 1.9</title>
+    </head>
+    <body>
+      <h2>Congrats!</h2>
+      This is the default NGINX app for Lab 9
+    </body>
+    </html>

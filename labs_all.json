@@ -129,6 +129,18 @@
     "use_jump_box": true
   },
   {
+    "name": "Lab 9: Licenses",
+    "slug": "lab09-licenses",
+    "channel": "lab09-licenses",
+    "channel_slug": "lab09-licenses",
+    "customer": "lab09-licenses",
+    "yaml_dir": "labs/lab09-licenses/manifests",
+    "k8s_installer_yaml_path": "labs/lab09-licenses/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "skip_install_app": true,
+    "use_public_ip": true
+  },
+  {
     "name": "Lab 10: Demo",
     "slug": "lab10-demo",
     "channel": "lab10-demo",
