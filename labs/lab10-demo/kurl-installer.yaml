@@ -1,0 +1,23 @@
+apiVersion: cluster.kurl.sh/v1beta1
+kind: Installer
+metadata:
+  name: ""
+spec:
+  containerd:
+    version: latest
+  contour:
+    version: latest
+  ekco:
+    version: latest
+  kotsadm:
+    version: latest
+  kubernetes:
+    version: latest
+  prometheus:
+    version: latest
+  registry:
+    version: latest
+  rook:
+    version: latest
+  weave:
+    version: latest
