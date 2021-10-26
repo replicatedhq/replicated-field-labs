@@ -1,7 +1,7 @@
 Lab 1.9: Licenses
 =========================================
 
-In this lab, you will .
+In this lab, you will learn how to use licenses and add custom entitlements to customer licenses.
 
 * **What you will do**:
     * Learn about Licenses 
@@ -9,12 +9,12 @@ In this lab, you will .
     * Anyone who builds or maintains app manager applications (Full Stack / Devops/ Product Engineers)
 * **Prerequisites**:
     * Basic working knowledge of Kubernetes
-    * Have completed Lab00-hello-world
+    * Have completed [Lab00-hello-world]((../lab00-hello-world))
 * **Outcomes**:
-    * You can define License Custom Fields
-    * You can use License Context to control deployment of a service
+    * You can define License Custom Fields.
+    * You can use License Context to control deployment of a service.
     * You can use License Context to control the display of Config Options.
-    * You can build confidence in performing upgrades and troubleshooting in air gap environments
+    * You can build confidence in performing upgrades and troubleshooting in air gap environments.
 
 ## Overview
 
@@ -74,7 +74,7 @@ As mentioned above, our License Service is a simple flask application that calls
 
 ```
 
-The image for this app is located here and the code is available here. The version of the application contains the following code:
+The image for this app is located [here](./LicenseApp/Dockerfile) and the code is available [here](./LicenseApp/app/app.py). The version of the application contains the following code:
 
 ```python
 
@@ -114,15 +114,12 @@ Make sure to update your environment variables to interact with this application
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
 ahead of time.
 
-<br>
-<img src=img/application-slug.png width=550 ></img>
-<br>
+![Application Slug](img/application-slug.png)
 
 
 `REPLICATED_API_TOKEN` should be set to the previously created user api token. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
 
-Once you have the values,
-set them in your environment.
+Once you have the values, set them in your environment.
 
 ```
 export REPLICATED_APP=...
@@ -180,19 +177,15 @@ While the installation runs, we can proceed to make changes to the application.
 
 * Navigate to **License Fields** and define two new fields to look like the ones shown below:
 
-<br>
-<img src=img/lic-fields.png width=550 ></img>
-<br>
+![License Fields](img/lic-fields.png)
 
 * Create or update an existing license and set the values of the newly created fields.
 
-<br>
-<img src=img/field-values.png width=550 ></img>
-<br>
+![License Values](img/field-values.png)
 
 ## Create a New Release
 
-Our starting point is the same `nginx` app we have been using in the previous labs. The contents of your first release are in the /lab09-licenses/manifests directory. 
+Our starting point is the same `nginx` app we have been using in the previous labs. The contents of your first release are in the `/lab09-licenses/manifests` directory. 
 
 It is assumed that you have already followed `lab00 - Hello World` and have already set up your local dev environment. 
 
@@ -365,21 +358,21 @@ Create a new release that includes the above changes
 
 While we were creating our new release, the installation on the VM should have completed by now. In the output of the install, locate the `kotsadm` address and password as shown below:
 
-[todo] - add image
+![kotsadm url](img/kotsadm-url.png)
 
-Enter the password to login to the App Manager. The next window should display the License Service options:
+Enter the password to login to the App Manager and upload the customer license `yaml` file. The next window should display the License Service options:
 
-<img src='img/lic-serv-opts.png' width=550></img>
+![License Service Options](img/lic-serv-opts.png)
 
 Since we have a default value, we don't need to enter a value.
 
 Once the App Manager has deployed the application we should see two options in the **Application** tile:
 
-<img src='img/app-manager-open-links.png' width=550></img>
+![License Service Open Link](img/app-manager-open-links.png)
 
 Click on **Open License App** to see the License values:
 
-<img src='img/lic-serv-ui.png' width=550></img>
+![License Service UI](img/lic-serv-ui.png)
 
 ***
 

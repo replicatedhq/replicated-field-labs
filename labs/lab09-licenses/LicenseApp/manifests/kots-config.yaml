@@ -12,4 +12,4 @@ spec:
       - name: service-port
         title: Port to expose the License Service UI
         type: text
-        default: '5000'
+        default: '8080'

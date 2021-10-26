@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: app-slug
 spec:
-  title: "Lab 1.8: Airgap"
+  title: "Lab 1.9: Licenses"
   statusInformers:
     - deployment/nginx
   ports:
