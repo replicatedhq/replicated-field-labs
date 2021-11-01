@@ -237,6 +237,7 @@ Create a new manifest with the following contents:
 
 ```yaml
 
+apiVersion: kots.io/v1beta1
 kind: Config
 metadata:
   name: license-app-config
