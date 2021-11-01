@@ -250,7 +250,7 @@ spec:
       - name: service-port
         title: Port to expose the License Service UI
         type: text
-        default: '5000'
+        default: '8080'
 
 ```
 
@@ -319,8 +319,8 @@ First, we will add another `ports` entry to the `kots-app.yaml` file so App Mana
         localPort: 8888
         applicationUrl: "http://nginx"
 +     - serviceName: "license-app-service"
-+       servicePort: 5000
-+       localPort: 5000
++       servicePort: 8080
++       localPort: 8080
 +       applicationUrl: "http://license-app-service"  
     icon: data:image/png;base64,...
 
