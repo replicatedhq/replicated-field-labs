@@ -1,0 +1,82 @@
+name: Release Prometheus Alerting Demo and Monitoring Lab
+
+on:
+  push:
+    paths:
+    - 'labs/lab11-monitoring/**'
+    - '!doc/**'
+    - '!**.png'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Get tag name, if specified
+      run: if grep -q "/tags/" <<< "${GITHUB_REF}"; then echo ::set-output name=tag::${GITHUB_REF:10}; fi
+      id: get_tag
+    - name: Get branch name
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: get_branch
+    - name: Debug Environment
+      run: echo ${GITHUB_REF} - ${GITHUB_BRANCH} - ${GITHUB_BRANCH_NAME} - ${GITHUB_TAG_NAME}
+      env:
+        GITHUB_BRANCH: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_BRANCH_NAME: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_TAG_NAME: ${{ steps.get_tag.outputs.tag }}
+        
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        REGISTRY: ghcr.io
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      env:
+        REGISTRY: ghcr.io
+        IMAGE_NAME: lab11-monitoring
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      with:
+        context: ./labs/lab11-monitoring
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Lint the release
+      uses: docker://replicated/vendor-cli:latest
+      with:
+        args: release lint --yaml-dir=prometheus-alerting/manifests
+      env:
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+    - name: Create a release on Channel associated with the branch
+      uses: docker://replicated/vendor-cli:latest
+      with:
+        args: release create --auto -y --yaml-dir=prometheus-alerting/manifests
+      env:
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+        GITHUB_BRANCH: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_BRANCH_NAME: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_TAG_NAME: ${{ steps.get_tag.outputs.tag }}
+    - name: Create a kurl release
+      uses: docker://replicated/vendor-cli:latest
+      with:
+        args: installer create --auto -y --yaml-file=prometheus-alerting/kurl-installer.yaml
+      env:
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+        GITHUB_BRANCH: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_BRANCH_NAME: ${{ steps.get_branch.outputs.branch }}
+        GITHUB_TAG_NAME: ${{ steps.get_tag.outputs.tag }}
+
+

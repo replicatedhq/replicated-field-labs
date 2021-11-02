@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flaky-app
+  namespace: monitoring
+  labels:
+    app: flaky-app
+    k8s-app: flaky-app
+spec:
+  namespaceSelector:
+    matchNames:
+      - '{{repl Namespace }}'
+  selector:
+    matchLabels:
+      app: flaky-app
+  endpoints:
+    - port: http
+      interval: 5s

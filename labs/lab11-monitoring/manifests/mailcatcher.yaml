@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailcatcher
+  namespace: monitoring
+  labels:
+    app: mailcatcher
+  annotations:
+    kots.io/when: '{{repl ConfigOption "smtp_run_mailcatcher"}}'
+spec:
+  selector:
+    matchLabels:
+      app: mailcatcher
+  template:
+    metadata:
+      labels:
+        app: mailcatcher
+    spec:
+      containers:
+        - name: mailcatcher
+          image: schickling/mailcatcher
+          ports:
+            - containerPort: 1080
+              name: http
+            - containerPort: 1025
+              name: smtp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailcatcher
+  namespace: monitoring
+  labels:
+    app: mailcatcher
+  annotations:
+    kots.io/when: '{{repl and (not IsKurl) (ConfigOption "smtp_run_mailcatcher") }}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1025
+      name: smtp
+    - port: 1080
+      name: http
+  selector:
+    app: mailcatcher
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailcatcher
+  namespace: monitoring
+  labels:
+    app: mailcatcher
+  annotations:
+    kots.io/when: '{{repl and (IsKurl) (ConfigOption "smtp_run_mailcatcher") }}'
+spec:
+  type: NodePort
+  ports:
+    - port: 1025
+      nodePort: 1025
+      name: smtp
+    - port: 1080
+      nodePort: 1080
+      name: http
+  selector:
+    app: mailcatcher

@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: flaky-app-high-temperature
+  namespace: monitoring
+spec:
+  groups:
+    - name: flaky-app-temperature.rules
+      rules:
+        - alert: HighTemperatureWarning
+          annotations:
+            message: Alertmanager has found pod {{ $labels.pod }} with unhealthy temperature of {{ $value }}
+          expr: temperature_celsius{service="flaky-app"} > 85
+          for: 15s
+          labels:
+            severity: warning
+        - alert: HighTemperatureCritical
+          annotations:
+            message: Alertmanager has found pod {{ $labels.pod }} with unhealthy temperature of {{ $value }}
+          expr: temperature_celsius{service="flaky-app"} > 90
+          for: 5s
+          labels:
+            severity: critical
