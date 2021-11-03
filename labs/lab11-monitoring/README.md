@@ -12,15 +12,15 @@ The deployment and service can be found in [./manifests/flaky-app.yaml](./manife
 
 The applicaiton stores a single temperature value in memory and has controls and API endpoints to modify the temperature up or down.
 
-![app dashboard](./doc/healthy-app.png)
+![app dashboard](./img/healthy-app.png)
 
 Changing the temperature will show a visual state change in the application, and we'll explore how this affects the monitoring systems on the backend.
 
-![app dashboard](./doc/warning-app.png)
+![app dashboard](./img/warning-app.png)
 
 Most notably, the applicaiton will expose the value of this temperature at `/metrics` for prometheus to pick up
 
-![app dashboard](./doc/exposed-temp.png)
+![app dashboard](./img/exposed-temp.png)
 
 ### Monitoring Metrics
 
@@ -49,17 +49,17 @@ spec:
 
 When this is added to our kots manifests, we should see the prometheus configuration updated with a scrape job for this service:
 
-![prom config](./doc/prom-config.png)
+![prom config](./img/prom-config.png)
 
 When this configuration is picked up, an additional prometheus target should be available
 
-![prom target](./doc/prom-target.png)
+![prom target](./img/prom-target.png)
 
 We can now graph the value of value of `temperature_celsius` over time using the graph viewer:
 
-![prom graph](./doc/prom-graph.png)
+![prom graph](./img/prom-graph.png)
 
-**Note for completeness** this project notably *does not* add a graph to the KOTS dashboard [as documented on kots.io](https://kots.io/vendor/config/dashboard-graphs/). Doing so *is* encouraged when shipping production applications.
+**Note for completeness** this project notably *does not* add a graph to the KOTS dashboard [as imgumented on kots.io](https://kots.io/vendor/config/dashboard-graphs/). Doing so *is* encouraged when shipping production applications.
 
 ### Temperature Alerting
 
@@ -96,12 +96,12 @@ spec:
 
 Once this yaml is applied, we should see two alerts in the prometheus dashboard:
 
-![prom-warning](./doc/prom-warning.png)
+![prom-warning](./img/prom-warning.png)
 
 Navigating to alert manager on `:30903`, we can also see this alert firing in AlertManager:
 
 
-![am-warning](./doc/am-warning.png)
+![am-warning](./img/am-warning.png)
 
 ### Configuring Alert Sinks
 
@@ -110,11 +110,11 @@ By default, no alerts are configured in alert manager. In this project, we'll co
 To demonstrate this easily, the project includes an optional [request bin](http://requestbin.net) container to capture and inspect webhook payloads, and a [MailCatcher](https://mailcatcher.me) container to capture and inspect email alerts. We'll take a look at these shortly. For now, the first step is to write our [kots-config.yaml](./manifests/kots-config.yaml) to display these alerting options to the user:
 
 
-![config-none](./doc/config-none.png)
+![config-none](./img/config-none.png)
 
-![config-filled](./doc/config-filled.png)
+![config-filled](./img/config-filled.png)
 
-![config-smtp-detail](./doc/config-smtp-detail.png)
+![config-smtp-detail](./img/config-smtp-detail.png)
 
 
 To convert this config into something alertmanager understands, we create [alertmanager-secret.yaml](./manifests/flaky-app-alertmanager-secret.yaml) which configures the alerting rules for AlertManager:
@@ -165,20 +165,20 @@ Note that this is deployed to the `monitoring` namespace and effectively patches
 
 Once this is deployed, we can confirm the configuration in AlertManager (it can sometimes take up to 5 minutes to AlertManager to pick up new configuration changes):
 
-![am-config](./doc/am-config.png)
+![am-config](./img/am-config.png)
 
 
 To view the actual alerts we can use the links from the flaky-app UI, or the kotsadm dashboard:
 
 
-![app-links](./doc/app-links.png)
+![app-links](./img/app-links.png)
 
 In requestbin, we can see the alert payloads:
 
-![request-bin](./doc/request-bin.png)
+![request-bin](./img/request-bin.png)
 
 In mailcatcher, we can see the email alerts:
 
-![mail-catcher](./doc/mail-catcher.png)
+![mail-catcher](./img/mail-catcher.png)
 
 

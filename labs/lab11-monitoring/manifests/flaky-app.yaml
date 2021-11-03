@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: flaky-app
-          image: registry.replicated.com/REPLICATED_APP/prometheus-alerting:latest
+          image: ghcr.io/replicatedhq/kots-field-labs/lab11-monitoring:main
           ports:
             - name: http
               containerPort: 3000
