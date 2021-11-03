@@ -41,7 +41,7 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       env:
         REGISTRY: ghcr.io
-        IMAGE_NAME: lab11-monitoring
+        IMAGE_NAME: replicatedhq/kots-field-labs/lab11-monitoring
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
