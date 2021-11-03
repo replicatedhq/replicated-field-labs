@@ -54,27 +54,27 @@ jobs:
     - name: Lint the release
       uses: docker://replicated/vendor-cli:latest
       with:
-        args: release lint --yaml-dir=prometheus-alerting/manifests
+        args: release lint --yaml-dir=labs/lab11-monitoring/manifests
       env:
-        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
-        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_LAB11_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_LAB11_APP }}
     - name: Create a release on Channel associated with the branch
       uses: docker://replicated/vendor-cli:latest
       with:
-        args: release create --auto -y --yaml-dir=prometheus-alerting/manifests
+        args: release create --auto -y --yaml-dir=labs/lab11-monitoring/manifests
       env:
-        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
-        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_LAB11_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_LAB11_APP }}
         GITHUB_BRANCH: ${{ steps.get_branch.outputs.branch }}
         GITHUB_BRANCH_NAME: ${{ steps.get_branch.outputs.branch }}
         GITHUB_TAG_NAME: ${{ steps.get_tag.outputs.tag }}
     - name: Create a kurl release
       uses: docker://replicated/vendor-cli:latest
       with:
-        args: installer create --auto -y --yaml-file=prometheus-alerting/kurl-installer.yaml
+        args: installer create --auto -y --yaml-file=labs/lab11-monitoring/kurl-installer.yaml
       env:
-        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_API_TOKEN }}
-        REPLICATED_APP: ${{ secrets.REPLICATED_APP__PA }}
+        REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_LAB11_API_TOKEN }}
+        REPLICATED_APP: ${{ secrets.REPLICATED_LAB11_APP }}
         GITHUB_BRANCH: ${{ steps.get_branch.outputs.branch }}
         GITHUB_BRANCH_NAME: ${{ steps.get_branch.outputs.branch }}
         GITHUB_TAG_NAME: ${{ steps.get_tag.outputs.tag }}
