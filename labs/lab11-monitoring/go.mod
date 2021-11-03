@@ -1,4 +1,4 @@
-module github.com/replicatedhq/kotsapps/prometheus-alerting
+module github.com/replicatedhq/kots-field-labs/labs/lab11-monitoring
 
 go 1.17
 
