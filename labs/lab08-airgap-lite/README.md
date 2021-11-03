@@ -138,10 +138,10 @@ Enable air gap for the `lab8` customer and click **Save Changes**:
 1. Click the **View download portal** link to open the download portal.
 
     > **Note**: This is a link you would usually send to your customer, so from this point forward in the lab you will be wearing your "end user" hat.
-1. From your jump box, run the following curl command. Replace the URL below with the one you get from the download portal.
+1. **From your jump box**, run the following curl command. Replace the URL below with the one you get from the download portal.
 
     ```text
-    <name>@{REPLICATED_APP}-lab08-airgap-lite-jump ~$ curl -o kurlbundle.tar.gz <URL>
+ curl -o kurlbundle.tar.gz <URL>
     ```
 
    ![download-portal](img/download-portal-kurl.png)
