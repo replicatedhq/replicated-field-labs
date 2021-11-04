@@ -1,7 +1,7 @@
 apiVersion: troubleshoot.replicated.com/v1beta1
 kind: Preflight
 metadata:
-  name: example-preflight-checks
+  name: monitoring-preflight-checks
 spec:
   analyzers:
     - clusterVersion:

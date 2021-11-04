@@ -1,7 +1,7 @@
 apiVersion: troubleshoot.replicated.com/v1beta1
 kind: Collector
 metadata:
-  name: collector-sample
+  name: monitoring-support-bundle
 spec:
   collectors:
     - clusterInfo: {}
