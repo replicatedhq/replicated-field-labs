@@ -3,6 +3,7 @@ kind: PrometheusRule
 metadata:
   labels:
     App: kube-prometheus-stack
+    Release:  v0.49.0-17.1.3
   name: flaky-app-high-temperature
   namespace: monitoring
 spec:
