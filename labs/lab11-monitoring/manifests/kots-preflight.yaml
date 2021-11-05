@@ -21,6 +21,9 @@ spec:
           - pass:
               when: "== docker"
               message: Docker container runtime was found.
+          - pass:
+              when: "== containerd"
+              message: Containerd runtime was found.
           - fail:
               message: Did not find Docker container runtime.
     - distribution:
