@@ -2,8 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    prometheus: k8s
-    role: alert-rules
+    App: kube-prometheus-stack
   name: flaky-app-high-temperature
   namespace: monitoring
 spec:
