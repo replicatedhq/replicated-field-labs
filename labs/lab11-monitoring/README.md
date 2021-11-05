@@ -10,7 +10,7 @@ In this example, we'll monitor a flaky app called `flaky-app`. Most notably, thi
 
 The deployment and service can be found in [./manifests/flaky-app.yaml](./manifests/flaky-app.yaml). The golang source code can be found in [./cmd/flaky-app](./cmd/flaky-app). The frontend is static HTML in [bad_javascript.go](./cmd/flaky-app/bad_javascript.go) (it certainly cannot be described as good javascript by any measure). 
 
-The applicaiton stores a single temperature value in memory and has controls and API endpoints to modify the temperature up or down.
+The application stores a single temperature value in memory and has controls and API endpoints to modify the temperature up or down.
 
 ![app dashboard](./img/healthy-app.png)
 
