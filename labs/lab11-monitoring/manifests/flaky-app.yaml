@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: flaky-app
-          image: ghcr.io/replicatedhq/kots-field-labs/lab11-monitoring:main
+          image: ghcr.io/replicatedhq/kots-field-labs/lab11-monitoring:latest
           ports:
             - name: http
               containerPort: 3000

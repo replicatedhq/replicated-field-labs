@@ -48,8 +48,12 @@ jobs:
       with:
         context: labs/lab11-monitoring
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${GITHUB_SHA::7}
         labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Change tag
+      run: |
+        sed -i.bak "s/latest/${GITHUB_SHA::7}/g" labs/lab11-monitoring/manifests/flaky-app.yaml
 
     - name: Lint the release
       uses: docker://replicated/vendor-cli:latest
