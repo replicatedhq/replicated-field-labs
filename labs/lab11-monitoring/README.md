@@ -123,7 +123,7 @@ To convert this config into something alertmanager understands, we create [alert
 apiVersion: v1
 kind: Secret
 metadata:
-  name: alertmanager-prometheus-alertmanager-generated
+  name: alertmanager-prometheus-alertmanager
   namespace: monitoring
 stringData:
   alertmanager.yaml: |

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mailcatcher
-          image: schickling/mailcatcher
+          image: sj26/mailcatcher
           ports:
             - containerPort: 1080
               name: http
