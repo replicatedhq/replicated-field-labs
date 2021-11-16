@@ -61,7 +61,7 @@ jobs:
 
     - name: Change tag
       run: |
-        sed -i.bak "s/latest/sha-${GITHUB_SHA::7}/g" labs/lab11-monitoring/monitoring/flaky-app.yaml
+        sed -i.bak "s/main/sha-${GITHUB_SHA::7}/g" labs/lab11-monitoring/monitoring/flaky-app.yaml
 
     - name: Lint the release
       uses: docker://replicated/vendor-cli:latest
