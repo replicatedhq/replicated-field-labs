@@ -150,8 +150,11 @@ spec:
     - port: http
       interval: 5s
 ```
+For instructions how to add/change manifests and deploy new releases, see [lab 0](../lab00-hello-world#9-iterating).
 
-When this is added to our kots manifests, we should see the prometheus configuration updated with a scrape job for this service. For instructions how to add/change manifests and deploy new releases, see [lab 0](../lab00-hello-world#9-iterating).
+When this is added to our kots manifests, we should see the prometheus configuration updated with a scrape job for this service.
+
+Navigating to Prometheus on `:30900`, we can also see the new scrape job:
 
 ![prom config](./img/prom-config.png)
 
