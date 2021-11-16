@@ -61,19 +61,19 @@ jobs:
 
     - name: Change tag
       run: |
-        sed -i.bak "s/latest/sha-${GITHUB_SHA::7}/g" labs/lab11-monitoring/manifests/flaky-app.yaml
+        sed -i.bak "s/latest/sha-${GITHUB_SHA::7}/g" labs/lab11-monitoring/monitoring/flaky-app.yaml
 
     - name: Lint the release
       uses: docker://replicated/vendor-cli:latest
       with:
-        args: release lint --yaml-dir=labs/lab11-monitoring/manifests
+        args: release lint --yaml-dir=labs/lab11-monitoring/monitoring
       env:
         REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_LAB11_API_TOKEN }}
         REPLICATED_APP: ${{ secrets.REPLICATED_LAB11_APP }}
     - name: Create a release on Channel associated with the branch
       uses: docker://replicated/vendor-cli:latest
       with:
-        args: release create --auto -y --yaml-dir=labs/lab11-monitoring/manifests
+        args: release create --auto -y --yaml-dir=labs/lab11-monitoring/monitoring
       env:
         REPLICATED_API_TOKEN: ${{ secrets.REPLICATED_LAB11_API_TOKEN }}
         REPLICATED_APP: ${{ secrets.REPLICATED_LAB11_APP }}
