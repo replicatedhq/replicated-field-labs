@@ -1,7 +1,3 @@
-
-
-
-
 ### High level Overview
 
 The main goal of the lab tools is to 
@@ -12,7 +8,7 @@ The main goal of the lab tools is to
 
 The structure is to create, for each student:
 
-* an invite to the vendor console
+* an invite to the vendor portal
 * an application in vendor.replicated.com
 
 For each student, for each lab, we'll create:
@@ -37,7 +33,7 @@ The current lab set focuses only on embedded cluster / kURL installations.
 The code in `setup` consumes two primary inputs, and a number of ancillary [parameters](../setup/cmd/kots-field-labs/param.go).
 
 * A list of Environments to provision. An environment represent a single user or student in the lab and includes information
-  like name, email, and SSH public key
+  like name and email.
 * A list of Labs to provision. A lab is a single exercise that will be provisioned for each environment, and includes details
   about the channels, customers, and release YAML to provision. Labs generally point to YAML in the [labs directory](../labs).
   (example: [just_lab0.json](../just_lab0.json) and [labs_all.json](../labs_all.json))
@@ -57,14 +53,14 @@ account based on user emails in the Environment list.
 
 #### Provisioner Pairs JSON
 
-Provisioner Pairs json contains a map of **instance name** => [Instance to Make](../setup/pkg/fieldlabs/environment_create.go#L73). 
+Provisioner Pairs json contains a map of **instance name** => [Instance to Make](../setup/pkg/fieldlabs/environment_create.go#L93). 
 This list will be iterated over by Terraform to generate GCP instances for the lab.
 Most of the key logic will be templated into a `provision_sh` bash script that will be run on the instance. This script includes logic for:
 
-* Adding the SSH public key to `authorized_keys`
+* Adding the user to the box
 * Adding the license file to the box
 * Optionally running a kURL install and a headless KOTS install
-* Any custom pre- and post- install hooks in the
+* Any custom pre- and post- install hooks in the script
 
 An example entry in this map might look like
 
