@@ -30,7 +30,7 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
 
 ```shell script
-git clone git@github.com:replicatedhq/kots-field-labs
+git clone https://github.com/replicatedhq/kots-field-labs 
 cd kots-field-labs/labs/lab00-hello-world
 ```
 
