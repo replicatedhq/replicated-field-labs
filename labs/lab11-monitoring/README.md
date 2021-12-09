@@ -229,8 +229,14 @@ Navigating to alert manager on `:30903`, we can also see this alert firing in Al
 
 By default, no alerts are configured in alert manager. In this project, we'll configure sending alerts to both a webhook sink and an SMTP email sink.
 
-To demonstrate this easily, the project includes an optional [request bin](http://requestbin.net) container to capture and inspect webhook payloads, and a [MailCatcher](https://mailcatcher.me) container to capture and inspect email alerts. We'll take a look at these shortly. For now, the first step is to write our [kots-config.yaml](./manifests/kots-config.yaml) to display these alerting options to the user:
+To demonstrate this easily, the project includes an optional [request bin](http://requestbin.net) container to capture and inspect webhook payloads, and a [MailCatcher](https://mailcatcher.me) container to capture and inspect email alerts. We'll take a look at these shortly. For now, the first step is to change the Configuration Values for our applications to enable the alerting options for the user:
 
+* Enable `Enable Webhook Alerts`
+  * Select `Use Embedded requestbin Server`
+* Enable `Enable SMTP Alerts`
+  * Use the default value for `Email Alert From Address`
+  * Use the default value for `Email Alert To Address`
+  * Select `Use Embedded mailcatcher.me Server`
 
 ![lab11-monitoring-config-none](img/lab11-monitoring-config-none.png)
 
