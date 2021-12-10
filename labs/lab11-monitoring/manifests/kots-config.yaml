@@ -1,0 +1,136 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: monitoring-config
+spec:
+  groups:
+    - name: webhook
+      title: Webhook Settings
+      description: Configure webhook alerting
+      items:
+        - name: enable_webhook_alerts
+          title: Enable Webhook Alerts
+          type: bool
+          default: "0"
+        - name: webhook_alert_target
+          title: Webhook Alert Target
+          help_text: Would you like to send alerts to an embedded server or an external one? If you'd like to inspect the webhook payload, "Embedded" is recommended
+          type: select_one
+          default: webhook_target_embedded
+          items:
+            - name: webhook_target_embedded
+              title: Use Embedded requestbin Server
+            - name: webhook_target_external
+              title: Use external target
+          when: repl{{ ConfigOptionEquals "enable_webhook_alerts" "1" }}
+        - name: webhook_alert_external_addr
+          title: Webhook Alert Target
+          type: text
+          when: repl{{ and (ConfigOptionEquals "webhook_alert_target" "webhook_target_external") (ConfigOptionEquals "enable_webhook_alerts" "1" ) }}
+          default: http://requestbin.net/r/1nc7icz1
+        # hidden/RO Webhook Fields
+        - name: webhook_run_requestbin
+          type: bool
+          hidden: true
+          readonly: true
+          value: '{{repl and (ConfigOptionEquals "webhook_alert_target" "webhook_target_embedded") (ConfigOptionEquals "enable_webhook_alerts" "1" ) }}'
+        - name: webhook_alert_target_actual
+          type: text
+          hidden: true
+          readonly: true
+          value: >-
+            {{repl if ConfigOptionEquals "webhook_alert_target" "webhook_target_external" }}
+              {{repl ConfigOption "webhook_alert_external_addr"}}
+            {{repl else}}
+              http://requestbin:8000/alerts
+            {{repl end}}
+    - name: smtp
+      title: SMTP Settings
+      description: Configure SMTP email alerting
+      items:
+        - name: enable_smtp_alerts
+          title: Enable SMTP Alerts
+          type: bool
+          default: "0"
+        - name: smtp_from
+          title: Email Alert From Address
+          type: text
+          default: alerts@kots.io
+          when: repl{{ ConfigOptionEquals "enable_smtp_alerts" "1" }}
+        - name: smtp_to
+          title: Email Alert To Address
+          help_text: Enter an email address to send alerts to
+          type: text
+          default: ops@somebigbank.com
+          when: repl{{ ConfigOptionEquals "enable_smtp_alerts" "1" }}
+        - name: smtp_alert_target
+          title: SMTP Alert Target
+          help_text: Would you like to send alerts to an embedded smtp server (via an instance of https://mailcatcher.me/) or an external one? If you'd like to inspect the email contents first, "Embedded" is recommended.
+          type: select_one
+          default: smtp_target_embedded
+          items:
+            - name: smtp_target_embedded
+              title: Use Embedded mailcatcher.me Server
+            - name: smtp_target_external
+              title: Use external target
+          when: repl{{ ConfigOptionEquals "enable_smtp_alerts" "1" }}
+        - name: smtp_smarthost_field
+          title: SMTP Alert Target
+          type: text
+          when: repl{{ ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+          default: mail.mycompany.com:1025
+        - name: smtp_auth_username_field
+          title: SMTP Auth Username
+          type: text
+          default: mail-admin
+          when: repl{{ ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+        - name: smtp_auth_password_field
+          title: SMTP Auth Password
+          type: password
+          required: true
+          when: repl{{ ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+        # hidden/RO SMTP Fields
+        - name: smtp_run_mailcatcher
+          type: bool
+          hidden: true
+          readonly: true
+          value: '{{repl and (ConfigOptionEquals "smtp_alert_target" "smtp_target_embedded") (ConfigOptionEquals "enable_smtp_alerts" "1")}}'
+        - name: smtp_auth_username
+          type: text
+          hidden: true
+          readonly: true
+          value: >-
+            {{repl if ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+              {{repl ConfigOption "smtp_auth_username_field"}}
+            {{repl else}}
+              admin
+            {{repl end}}
+        - name: smtp_auth_password
+          type: text
+          hidden: true
+          readonly: true
+          value: >-
+            {{repl if ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+              {{repl ConfigOption "smtp_auth_password_field"}}
+            {{repl else}}
+              pa$$w0rd
+            {{repl end}}
+        - name: smtp_smarthost
+          type: text
+          hidden: true
+          readonly: true
+          value: >-
+            {{repl if ConfigOptionEquals "smtp_alert_target" "smtp_target_external" }}
+              {{repl ConfigOption "smtp_smarthost_field"}}
+            {{repl else}}
+              mailcatcher:1025
+            {{repl end}}
+    - name: prometheus
+      title: Prometheus
+      description: Prometheus settings
+      items:
+        - name: prometheus_version
+          title: Prometheus Version
+          type: text
+          default: "v0.49.0-17.1.3"
+          required: true
