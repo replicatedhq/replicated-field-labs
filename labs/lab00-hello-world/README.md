@@ -166,7 +166,7 @@ for this and all future labs in this program.
 make release
 ```
 
-You can verify the release was created with `release ls`:
+You can verify the release was created with `replicated release ls`:
 
 ```text
 $ replicated release ls
