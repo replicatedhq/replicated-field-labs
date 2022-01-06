@@ -142,7 +142,7 @@ curl -v https://kubernetes.io
 ***
 ## Moving Assets into place
 
-If you haven't already, you can log out of the Air Gap instance with `exit` or ctrl+D. 
+If you haven't already, log out of the Air Gap instance with `exit` or ctrl+D. 
 Our next step is to collect the assets we need for an Air Gap installation:
 
 1. A license with the Air Gap entitlement enabled
@@ -189,7 +189,7 @@ AIRGAP:
 </details>
 <br>
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace the <URl> with the URL from the command ran previously. 
+Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace <URL> with the URL from the `AIRGAP` output that you recorded in the previous step.
 
 ```text
 curl -o kurlbundle.tar.gz <URL>
