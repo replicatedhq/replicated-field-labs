@@ -219,7 +219,7 @@ You can build invividual bundles on the Release History page, but you'll likely 
 
 ![auto-build](img/channel-enable-airgap.png)
 
-Now you should see all the bundles building or built on the release history page:
+Now you should see all the bundles building or built on the release history page. If you do not see "Aigap Built" for the release, click **Build**.
 
 ![airgap-built](img/airgap-builds.png)
 
