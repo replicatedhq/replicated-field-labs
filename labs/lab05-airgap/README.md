@@ -270,7 +270,7 @@ ssh ${REPLICATED_APP}-lab05-airgap
 Otherwise, from your local system you can use the one below 
 
 ```shell
-ssh -J ${FIRST_NAME}@lab05-airgap-jump ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
+ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
