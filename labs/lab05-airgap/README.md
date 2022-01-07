@@ -289,7 +289,10 @@ At the end, you should see a `Installation Complete` message as shown below. Sin
 ## Accessing the UI via SSH tunnel, Configuring the instance
 
 You'll want to create a port forward from your local workstation in order to access to UI locally.
-Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
+
+Run `exit` or click ctrl+D to log out of the air gap instance. Run `exit` or click ctrl+D again to log out of the jump box.
+   
+On your local workstation, run the following (again, we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well):
 
 ```shell
 export JUMP_BOX_IP=... # your jumpbox IP
