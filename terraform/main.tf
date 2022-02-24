@@ -77,6 +77,7 @@ resource "google_compute_instance" "shared_squid_proxy" {
 
   labels = {
     user = var.user
+    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
   }
 
   boot_disk {
@@ -117,6 +118,7 @@ resource "google_compute_instance" "airgapped-instance" {
 
   labels = {
     user = var.user
+    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {
@@ -162,6 +164,7 @@ resource "google_compute_instance" "kots-field-labs" {
 
   labels = {
     user = var.user
+    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {

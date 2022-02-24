@@ -45,8 +45,8 @@ type ExtraReleaseSpec struct {
 }
 
 type ExtraReleaseStatus struct {
-	Spec ExtraReleaseSpec
-	YAML string
+	Spec    ExtraReleaseSpec
+	YAML    string
 	Release *types.ReleaseInfo
 }
 
@@ -113,12 +113,12 @@ type LabStatus struct {
 	InstanceToMake Instance
 	Env            Environment
 
-	App       types.App
-	Channel   *types.Channel
-	Customer  *types.Customer
-	Release   *types.ReleaseInfo
+	App           types.App
+	Channel       *types.Channel
+	Customer      *types.Customer
+	Release       *types.ReleaseInfo
 	ExtraReleases []ExtraReleaseStatus
-	Installer *types.InstallerSpec
+	Installer     *types.InstallerSpec
 }
 
 type EnvironmentManager struct {
@@ -306,8 +306,8 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 					return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
 				}
 				lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
-					Spec:    extraRelease,
-					YAML:    kotsYAML,
+					Spec: extraRelease,
+					YAML: kotsYAML,
 				})
 
 			}
@@ -336,7 +336,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 
 			lab.Status.Release = release
 
-			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
+			err = e.Client.PromoteRelease(app.ID, "1.0.0", labSpec.Slug, release.Sequence, channel.ID)
 			if err != nil {
 				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 			}
@@ -349,7 +349,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 				extraRelease.Release = releaseInfo
 
 				if extraRelease.Spec.PromoteChannel != "" {
-                                          
+
 					continue
 				}
 			}
