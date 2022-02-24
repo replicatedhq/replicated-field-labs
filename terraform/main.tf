@@ -76,8 +76,8 @@ resource "google_compute_instance" "shared_squid_proxy" {
   machine_type = "n1-standard-1"
 
   labels = {
-    user = var.user
-    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
+    user       = var.user
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   boot_disk {
@@ -117,8 +117,8 @@ resource "google_compute_instance" "airgapped-instance" {
   machine_type = each.value.instance.machine_type
 
   labels = {
-    user = var.user
-    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
+    user       = var.user
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {
@@ -163,8 +163,8 @@ resource "google_compute_instance" "kots-field-labs" {
   machine_type = each.value.machine_type
 
   labels = {
-    user = var.user
-    expires-on = formatdate("YYYY-MM-DD",timeadd(timestamp(), "336h"))
+    user       = var.user
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {
