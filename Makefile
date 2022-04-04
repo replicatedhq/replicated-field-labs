@@ -52,7 +52,7 @@ outputs:
 	$(MAKE) -C terraform output
 
 pretty_ips:
-	@$(MAKE) outputs | sed 's/=//' | sed 's/"//g' | sed 's/,//g' | sort | column -t
+	tail -n 1000 terraform/etchosts/*
 
 .PHONY: both
 both: apps instances
