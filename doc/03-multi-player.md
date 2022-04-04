@@ -54,7 +54,7 @@ As promised, lab environments have been provisioned for $USERS -- to get started
 
 1. Check your email and accept the invite to create an account (subject will be "Invitation to join team on replicated" from "contact@replicated.com")
 2. Navigate to the [first lab](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab00-hello-world) and start working on the readme
-3. You will see prompts to "insert your IP address here" -- those IPs for each participant are found below:
+3. You will see prompts to "insert your IP address here" -- those IPs for each participant are found below. The password for each SSH login will be $SOMETHING and the UI password for logging into the browser view will be $SOMETHING_ELSE.
 
 
 $IP_ADDRESS_INFO
