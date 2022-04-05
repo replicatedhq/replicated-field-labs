@@ -49,7 +49,7 @@ brew install replicatedhq/replicated/cli
 
 ```shell script
 curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
-           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_amd64.tar.gz" \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_all.tar.gz" \
            | cut -d : -f 2,3 \
            | tr -d \" \
            | cat <( echo -n "url") - \
