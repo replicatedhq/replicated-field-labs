@@ -336,7 +336,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 
 			lab.Status.Release = release
 
-			err = e.Client.PromoteRelease(app.ID, "1.0.0", labSpec.Slug, release.Sequence, channel.ID)
+			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
 			if err != nil {
 				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 			}
