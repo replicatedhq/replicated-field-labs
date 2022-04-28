@@ -17,6 +17,9 @@ provider "google" {
 variable "user" {
   description = "ssh user for provisioning instances"
 }
+variable "owner" {
+  description = "The value for the owner label on the compute instance (should be your Replicated username)"
+}
 variable "provisioner_pairs_json" {
   description = "path to json file containing instance details"
 }
@@ -76,7 +79,9 @@ resource "google_compute_instance" "shared_squid_proxy" {
   machine_type = "n1-standard-1"
 
   labels = {
-    user = var.user
+    user       = var.user
+    owner      = var.owner
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   boot_disk {
@@ -116,7 +121,9 @@ resource "google_compute_instance" "airgapped-instance" {
   machine_type = each.value.instance.machine_type
 
   labels = {
-    user = var.user
+    user       = var.user
+    owner      = var.owner
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {
@@ -161,7 +168,9 @@ resource "google_compute_instance" "kots-field-labs" {
   machine_type = each.value.machine_type
 
   labels = {
-    user = var.user
+    user       = var.user
+    owner      = var.owner
+    expires-on = formatdate("YYYY-MM-DD", timeadd(timestamp(), "336h"))
   }
 
   provisioner "file" {
