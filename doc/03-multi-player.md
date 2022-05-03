@@ -22,15 +22,15 @@ When creating the field labs the prefix cannot begin a number or contain `lab`. 
 
 A csv example:
 ```csv
-Timestamp,Source Email,participant name,pub_key,password,participant email,slug
+Timestamp,Source Email,name,pub_key,password,email,slug
 5/13/2021 18:02:25,participant.one@somecompany.com,Participant One,ssh-rsa public key particpant.one@somecompany.com,password,participant.one+[PREFIX]@somecompany.com,participant
 ```
 
 In above example, the following fields are being mapped:
-+ `participant name`: full name of the participant
++ `name`: full name of the participant
 + `pub_key`: leave empty
 + `password`: password to be set on kotsadm instances
-+ `participant email`: participant email address to send invite to vendor.replicated.com if Params.InviteUsers is set
++ `email`: participant email address to send invite to vendor.replicated.com if Params.InviteUsers is set
 + `slug`: slug of the environment
 
 
