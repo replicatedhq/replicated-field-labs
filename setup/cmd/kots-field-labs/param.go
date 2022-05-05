@@ -23,35 +23,24 @@ func missingParam(s string) error {
 
 func GetParams() (*fieldlabs.Params, error) {
 	params := &fieldlabs.Params{
-		NamePrefix:         os.Getenv("REPLICATED_NAME_PREFIX"),
-		EnvironmentsJSON:   os.Getenv("REPLICATED_ENVIRONMENTS_JSON"),
-		EnvironmentsCSV:    os.Getenv("REPLICATED_ENVIRONMENTS_CSV"),
-		LabsJSON:           os.Getenv("REPLICATED_LABS_JSON"),
-		InstanceJSONOutput: os.Getenv("REPLICATED_INSTANCE_JSON_OUT"),
-		InviteUsers:        os.Getenv("REPLICATED_INVITE_USERS") != "",
-		InviterEmail:       os.Getenv("REPLICATED_INVITER_EMAIL"),
-		InviterPassword:    os.Getenv("REPLICATED_INVITER_PASSWORD"),
-		APIToken:           os.Getenv("REPLICATED_API_TOKEN"),
-		APIOrigin:          os.Getenv("REPLICATED_API_ORIGIN"),
-		GraphQLOrigin:      os.Getenv("REPLICATED_GRAPHQL_ORIGIN"),
-		KURLSHOrigin:       os.Getenv("REPLICATED_KURLSH_ORIGIN"),
-		IDOrigin:           os.Getenv("REPLICATED_ID_ORIGIN"),
+		ParticipantEmail: os.Getenv("PARTICIPANT_EMAIL"),
+		LabsJSON:         os.Getenv("REPLICATED_LABS_JSON"),
+		LabSlug:          os.Getenv("REPLICATED_LABS_SLUG"),
+		InviterEmail:     os.Getenv("REPLICATED_INVITER_EMAIL"),
+		InviterPassword:  os.Getenv("REPLICATED_INVITER_PASSWORD"),
+		APIToken:         os.Getenv("REPLICATED_API_TOKEN"),
+		APIOrigin:        os.Getenv("REPLICATED_API_ORIGIN"),
+		GraphQLOrigin:    os.Getenv("REPLICATED_GRAPHQL_ORIGIN"),
+		KURLSHOrigin:     os.Getenv("REPLICATED_KURLSH_ORIGIN"),
+		IDOrigin:         os.Getenv("REPLICATED_ID_ORIGIN"),
 	}
 
-	if params.NamePrefix == "" {
-		return nil, missingParam("REPLICATED_NAME_PREFIX")
-	}
-
-	if params.EnvironmentsJSON == "" && params.EnvironmentsCSV == "" {
-		params.EnvironmentsJSON = "./environments_test.json"
-	}
-
-	if params.EnvironmentsJSON != "" && params.EnvironmentsCSV != "" {
-		return nil, missingParam("exactly one of REPLICATED_ENVIRONMENTS_JSON or REPLICATED_ENVIRONMENTS_CSV")
+	if params.ParticipantEmail == "" {
+		return nil, missingParam("PARTICIPANT_EMAIL")
 	}
 
 	if params.LabsJSON == "" {
-		params.LabsJSON = "./labs_e0.json"
+		params.LabsJSON = "./labs/labs_all.json"
 	}
 
 	if params.APIToken == "" {
@@ -70,10 +59,6 @@ func GetParams() (*fieldlabs.Params, error) {
 		params.IDOrigin = "https://id.replicated.com"
 	}
 
-	if params.InstanceJSONOutput == "" {
-		params.InstanceJSONOutput = "./terraform/provisioner_pairs.json"
-	}
-
 	actionString := os.Getenv("REPLICATED_ACTION")
 	if actionString == "" {
 		actionString = "create"
@@ -85,11 +70,9 @@ func GetParams() (*fieldlabs.Params, error) {
 	}
 	params.Action = action
 
-	if params.InviteUsers {
-		err := getSessionTokenAndCheckInviteParams(params)
-		if err != nil {
-			return nil, errors.Wrap(err, "validate invite user params")
-		}
+	err := getSessionTokenAndCheckInviteParams(params)
+	if err != nil {
+		return nil, errors.Wrap(err, "validate invite user params")
 	}
 
 	return params, nil
@@ -113,10 +96,10 @@ func getSessionTokenAndCheckInviteParams(params *fieldlabs.Params) error {
 
 func validateInviteParams(params *fieldlabs.Params) error {
 	if params.InviterEmail == "" {
-		return errors.Errorf("REPLICATED_INVITER_EMAIL must be set if REPLICATED_INVITE_USERS is set")
+		return errors.Errorf("REPLICATED_INVITER_EMAIL must be set if action is create")
 	}
 	if params.InviterPassword == "" {
-		return errors.Errorf("REPLICATED_INVITER_PASSWORD must be set if REPLICATED_INVITE_USERS is set")
+		return errors.Errorf("REPLICATED_INVITER_PASSWORD must be set if action is create")
 	}
 	return nil
 }

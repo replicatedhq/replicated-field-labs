@@ -24,7 +24,7 @@ func Run() error {
 		return errors.Wrap(err, "get params")
 	}
 
-	environments, labs, err := loadConfig(params)
+	labs, err := loadConfig(params)
 	if err != nil {
 		return errors.Wrap(err, "load config")
 	}
@@ -37,15 +37,15 @@ func Run() error {
 		Client: &kotsclient.VendorV3Client{HTTPClient: platformClient},
 	}
 
-	if err := envManager.Validate(environments, labs); err != nil {
-		return errors.Wrap(err, "validate environments")
+	if err := envManager.Validate(labs); err != nil {
+		return errors.Wrap(err, "validate labs")
 	}
 
 	switch params.Action {
 	case fieldlabs.ActionCreate:
-		return envManager.Ensure(environments, labs)
+		return envManager.Ensure(labs)
 	case fieldlabs.ActionDestroy:
-		return envManager.Destroy(environments)
+		return envManager.Destroy()
 	}
 
 	return nil

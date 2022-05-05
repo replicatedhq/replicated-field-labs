@@ -7,7 +7,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -22,21 +21,6 @@ const (
 	OneWeek = 7 * 24 * time.Hour
 )
 
-type Environment struct {
-	// name of the environment
-	Name string `json:"name,omitempty" csv:"name"`
-	// slug of the environment
-	Slug string `json:"slug,omitempty" csv:"slug"`
-	// public key of the user who will access this environment
-	PubKey string `json:"pub_key,omitempty" csv:"pub_key"`
-	// email to invite to vendor.replicated.com if Params.InviteUsers is set
-	Email string `json:"email,omitempty" csv:"email"`
-	// password to be set on kotsadm instances
-	KotsadmPassword string `json:"password,omitempty" csv:"password"`
-
-	App types.App `json:"-" csv:"-"`
-}
-
 type ExtraReleaseSpec struct {
 	// Dir of YAML sources to promote to channel
 	YAMLDir string `json:"yaml_dir"`
@@ -45,8 +29,8 @@ type ExtraReleaseSpec struct {
 }
 
 type ExtraReleaseStatus struct {
-	Spec ExtraReleaseSpec
-	YAML string
+	Spec    ExtraReleaseSpec
+	YAML    string
 	Release *types.ReleaseInfo
 }
 
@@ -90,35 +74,18 @@ type Token struct {
 	AccessToken string `json:"access_token"`
 }
 
-type Instance struct {
-	Name          string `json:"name"`
-	Prefix        string `json:"prefix"`
-	InstallScript string `json:"provision_sh"`
-	MachineType   string `json:"machine_type"`
-	BookDiskGB    string `json:"boot_disk_gb"`
-
-	// used to define if a proxy server should be used.
-	UseProxy bool `json:"use_proxy"`
-
-	// used in a tf for_each, just put nils in both, the keys and values are ignored
-	PublicIps map[string]interface{} `json:"public_ips"`
-}
-
 type Lab struct {
 	Spec   LabSpec
 	Status LabStatus
 }
 
 type LabStatus struct {
-	InstanceToMake Instance
-	Env            Environment
-
-	App       types.App
-	Channel   *types.Channel
-	Customer  *types.Customer
-	Release   *types.ReleaseInfo
+	App           types.App
+	Channel       *types.Channel
+	Customer      *types.Customer
+	Release       *types.ReleaseInfo
 	ExtraReleases []ExtraReleaseStatus
-	Installer *types.InstallerSpec
+	Installer     *types.InstallerSpec
 }
 
 type EnvironmentManager struct {
@@ -128,28 +95,8 @@ type EnvironmentManager struct {
 	Client *kotsclient.VendorV3Client
 }
 
-func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error {
+func (e *EnvironmentManager) Validate(labs []LabSpec) error {
 	slug.CustomSub = map[string]string{"_": "-"}
-
-	for _, env := range envs {
-		if env.Name == "" {
-			return errors.Errorf("no name set for env %v", env)
-		}
-
-		if env.Slug == "" {
-			return errors.Errorf("no slug set for env %s", env.Name)
-		}
-
-		slugified := slug.Make(env.Slug)
-		if env.Slug != slugified {
-			return errors.Errorf("slugified form of env.Slug %q didn't match provided slug %q", slugified, env.Slug)
-		}
-
-		// slug is used as the password to all instances in the environment, so make sure it meets the kots minimum reqs
-		if env.KotsadmPassword == "" {
-			return errors.Errorf("no kotsadm password set for env %s", env.Name)
-		}
-	}
 
 	for _, lab := range labs {
 		slugifiedChannel := slug.Make(lab.Channel)
@@ -165,286 +112,131 @@ func (e *EnvironmentManager) Validate(envs []Environment, labs []LabSpec) error 
 
 	return nil
 }
-func (e *EnvironmentManager) Ensure(envs []Environment, labSpecs []LabSpec) error {
-	envs, err := e.createApps(envs)
+func (e *EnvironmentManager) Ensure(labSpecs []LabSpec) error {
+	app, err := e.createApp()
 	if err != nil {
 		return errors.Wrap(err, "create apps")
 	}
 
-	if e.Params.InviteUsers {
-		policies, err := e.getPolicies()
-		if err != nil {
-			return errors.Wrap(err, "get policies")
-		}
-
-		err = e.createRBAC(envs, policies)
-		if err != nil {
-			return errors.Wrap(err, "invite rbac")
-		}
-
-		policies, err = e.getPolicies()
-		if err != nil {
-			return errors.Wrap(err, "get policies")
-		}
-
-		err = e.inviteUsers(envs, policies)
-		if err != nil {
-			return errors.Wrap(err, "invite users")
-		}
-	}
-
-	labStatuses, err := e.createVendorLabs(envs, labSpecs)
+	policies, err := e.getPolicies()
 	if err != nil {
-		return errors.Wrap(err, "create vendor labs")
+		return errors.Wrap(err, "get policies")
 	}
 
-	err = e.mergeWriteTFInstancesJSON(labStatuses)
+	err = e.createRBAC(*app, policies)
 	if err != nil {
-		return errors.Wrap(err, "write tf instances json")
+		return errors.Wrap(err, "invite rbac")
 	}
 
-	e.Log.ActionWithoutSpinner("Preparing terraform command:")
-	fmt.Printf("make instances provisioner_json_out=%q\n", e.Params.InstanceJSONOutput)
-
-	return nil
-}
-
-// write TF json for the instances
-// merging the new instances with any already present in the
-// json file
-func (e *EnvironmentManager) mergeWriteTFInstancesJSON(labStatuses []Lab) error {
-	bs, err := ioutil.ReadFile(e.Params.InstanceJSONOutput)
-	if err != nil && !os.IsNotExist(err) {
-		return errors.Wrapf(err, "read file %q", e.Params.InstanceJSONOutput)
-	}
-
-	gcpInstances := map[string]Instance{}
-	if len(bs) > 0 {
-		err := json.Unmarshal(bs, &gcpInstances)
-		if err != nil {
-			return errors.Wrapf(err, "unmarshal existing instances from %q", e.Params.InstanceJSONOutput)
-		}
-	}
-
-	for _, labInstance := range labStatuses {
-		firstname := strings.Split(labInstance.Status.Env.Name, " ")
-		if _, ok := gcpInstances[labInstance.Status.InstanceToMake.Name]; ok {
-			e.Log.Error(errors.Errorf("WARNING -- instance %q already present in %q, refusing to overwrite", labInstance.Status.InstanceToMake.Name, e.Params.InstanceJSONOutput))
-		}
-		gcpInstances[labInstance.Status.InstanceToMake.Name] = labInstance.Status.InstanceToMake
-		if labInstance.Spec.UseJumpBox {
-			jumpBoxName := fmt.Sprintf("%s-jump", labInstance.Status.InstanceToMake.Name)
-			gcpInstances[jumpBoxName] = Instance{
-				Name:   jumpBoxName,
-				Prefix: e.Params.NamePrefix,
-				InstallScript: fmt.Sprintf(`
-#!/bin/bash 
-# add new user
-sudo useradd -s /bin/bash -d /home/%[1]v -m -p safWNrcAGYqm2 -G sudo %[1]v
-sudo groups %[1]v
-echo '%[1]v ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
-# update ssh to allow password login
-sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
-sudo service ssh restart
-# add %[1]v to google-sudoers
-sudo usermod -aG google-sudoers,%[1]v %[1]v
-# user must change password on first login
-#sudo chage --lastday 0 %[1]v
-
-set -euo pipefail
-
-mkdir -p ~/.ssh
-cat <<EOF >>~/.ssh/authorized_keys
-%s
-EOF
-`, strings.ToLower(firstname[0]), labInstance.Status.Env.PubKey),
-				MachineType: "n1-standard-1",
-				BookDiskGB:  "10",
-				PublicIps: map[string]interface{}{
-					"_": nil,
-				},
-			}
-		}
-	}
-
-	serialized, err := json.MarshalIndent(gcpInstances, "", "  ")
+	policies, err = e.getPolicies()
 	if err != nil {
-		return errors.Wrap(err, "serialize instance json")
+		return errors.Wrap(err, "get policies")
 	}
 
-	err = ioutil.WriteFile(e.Params.InstanceJSONOutput, serialized, 0644)
+	members, err := e.getMembersMap()
 	if err != nil {
-		return errors.Wrapf(err, "write file %q", e.Params.InstanceJSONOutput)
+		return errors.Wrap(err, "get members")
+	}
+
+	err = e.inviteUser(members, policies)
+	if err != nil {
+		return errors.Wrap(err, "invite users")
+	}
+
+	err = e.createVendorLab(*app, labSpecs)
+	if err != nil {
+		return errors.Wrap(err, "create vendor lab")
 	}
 
 	return nil
 }
 
-func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []LabSpec) ([]Lab, error) {
-	var labs []Lab
-
-	for _, env := range envs {
-		app := env.App
-		firstname := strings.Split(env.Name, " ")
-		for _, labSpec := range labSpecs {
-			var lab Lab
-			lab.Spec = labSpec
-			lab.Status.App = app
-			lab.Status.Env = env
-			appLabSlug := fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug)
-			e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
-
-			// load yaml for releases first to ensure directories exist
-			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
-			if err != nil {
-				return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-			}
-
-			for _, extraRelease := range lab.Spec.ExtraReleases {
-				kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
-				if err != nil {
-					return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-				}
-				lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
-					Spec:    extraRelease,
-					YAML:    kotsYAML,
-				})
-
-			}
-
-			kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
-			if err != nil {
-				return nil, errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
-			}
-
-			channel, err := e.getOrCreateChannel(lab)
-			if err != nil {
-				return nil, errors.Wrapf(err, "get or create channel %q", lab.Spec.Channel)
-			}
-			lab.Status.Channel = channel
-
-			customer, err := e.getOrCreateCustomer(lab)
-			if err != nil {
-				return nil, errors.Wrapf(err, "create customer for lab %q app %q", labSpec.Slug, app.Slug)
-			}
-			lab.Status.Customer = customer
-
-			release, err := e.Client.CreateRelease(app.ID, kotsYAML)
-			if err != nil {
-				return nil, errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
-			}
-
-			lab.Status.Release = release
-
-			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
-			if err != nil {
-				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
-			}
-
-			for _, extraRelease := range lab.Status.ExtraReleases {
-				releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
-				if err != nil {
-					return nil, errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
-				}
-				extraRelease.Release = releaseInfo
-
-				if extraRelease.Spec.PromoteChannel != "" {
-                                          
-					continue
-				}
-			}
-
-			installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
-			if err != nil {
-				return nil, errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
-			}
-			lab.Status.Installer = installer
-
-			err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
-			if err != nil {
-				return nil, errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
-			}
-
-			licenseContents, err := e.Client.DownloadLicense(app.ID, customer.ID)
-			if err != nil {
-				return nil, errors.Wrap(err, "download license")
-			}
-
-			kotsProvisionScript := fmt.Sprintf(`
-curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash &> kURL.output
-`, lab.Status.App.Slug, lab.Spec.ChannelSlug)
-
-			appProvisioningScript := fmt.Sprintf(`
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"acceptAnonymousUploads": "0"}}}'
-
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
-	--license-file ./license.yaml \
-	--namespace default \
-	--shared-password %s			
-`, lab.Status.App.Slug, lab.Spec.ChannelSlug, env.KotsadmPassword)
-
-			if lab.Spec.SkipInstallKots && lab.Spec.SkipInstallApp {
-				kotsProvisionScript = ""
-			}
-
-			if lab.Spec.SkipInstallApp {
-				appProvisioningScript = ""
-			}
-
-			publicIPs := map[string]interface{}{}
-			if lab.Spec.UsePublicIP {
-				// hack: used in a tf for_each loop, just need something here
-				publicIPs["_"] = nil
-			}
-
-			lab.Status.InstanceToMake = Instance{
-				Name:        appLabSlug,
-				Prefix:      e.Params.NamePrefix,
-				MachineType: "n1-standard-4",
-				BookDiskGB:  "200",
-				UseProxy:    lab.Spec.UseProxy,
-				PublicIps:   publicIPs,
-				InstallScript: fmt.Sprintf(`
-#!/bin/bash 
-# add new user
-sudo useradd -s /bin/bash -d /home/%[1]v -m -p safWNrcAGYqm2 -G sudo %[1]v
-sudo groups %[1]v
-echo '%[1]v ALL=(ALL)        NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
-# update ssh to allow password login
-sudo sed -i 's/no/yes/g' /etc/ssh/sshd_config
-sudo service ssh restart
-# add %[1]v to google-sudoers
-sudo usermod -aG google-sudoers,%[1]v %[1]v
-# user must change password on first login
-#sudo chage --lastday 0 %[1]v
-
-set -euo pipefail
-
-%s
-
-cat <<EOF > ./license.yaml
-%s
-EOF
-
-mkdir -p ~/.ssh
-cat <<EOF >>~/.ssh/authorized_keys
-# added by kots-field-labs
-%s
-EOF
-
-%s
-
-%s
-
-%s
-`, strings.ToLower(firstname[0]), lab.Spec.PreInstallSH, licenseContents, env.PubKey, kotsProvisionScript, appProvisioningScript, lab.Spec.PostInstallSH),
-			}
-			e.Log.FinishSpinner()
-			labs = append(labs, lab)
+func (e *EnvironmentManager) createVendorLab(app types.App, labSpecs []LabSpec) error {
+	for _, labSpec := range labSpecs {
+		if labSpec.Slug != e.Params.LabSlug {
+			continue
 		}
+		var lab Lab
+		lab.Spec = labSpec
+		lab.Status.App = app
+		appLabSlug := fmt.Sprintf("%s-%s", app.Slug, lab.Spec.Slug)
+		e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
+
+		// load yaml for releases first to ensure directories exist
+		kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
+		if err != nil {
+			return errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
+		}
+
+		for _, extraRelease := range lab.Spec.ExtraReleases {
+			kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
+			if err != nil {
+				return errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
+			}
+			lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
+				Spec: extraRelease,
+				YAML: kotsYAML,
+			})
+
+		}
+
+		kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
+		if err != nil {
+			return errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
+		}
+
+		channel, err := e.getOrCreateChannel(lab)
+		if err != nil {
+			return errors.Wrapf(err, "get or create channel %q", lab.Spec.Channel)
+		}
+		lab.Status.Channel = channel
+
+		customer, err := e.getOrCreateCustomer(lab)
+		if err != nil {
+			return errors.Wrapf(err, "create customer for lab %q app %q", labSpec.Slug, app.Slug)
+		}
+		lab.Status.Customer = customer
+
+		release, err := e.Client.CreateRelease(app.ID, kotsYAML)
+		if err != nil {
+			return errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
+		}
+
+		lab.Status.Release = release
+
+		err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
+		if err != nil {
+			return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
+		}
+
+		for _, extraRelease := range lab.Status.ExtraReleases {
+			releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+			if err != nil {
+				return errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+			}
+			extraRelease.Release = releaseInfo
+
+			if extraRelease.Spec.PromoteChannel != "" {
+
+				continue
+			}
+		}
+
+		installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
+		if err != nil {
+			return errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
+		}
+		lab.Status.Installer = installer
+
+		err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
+		if err != nil {
+			return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+		}
+
+		return nil
 	}
 
-	return labs, nil
+	return errors.Errorf("Lab with slug %q not found", e.Params.LabSlug)
 }
 
 func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error) {
@@ -494,26 +286,19 @@ func (e *EnvironmentManager) getOrCreateCustomer(lab Lab) (*types.Customer, erro
 	return customer, nil
 }
 
-func (e *EnvironmentManager) getAppName(env Environment) string {
-	return fmt.Sprintf("%s-%s", e.Params.NamePrefix, env.Slug)
+func (e *EnvironmentManager) getAppName() string {
+	appName := strings.Replace(e.Params.ParticipantEmail, "@", "-", 1)
+	appName = strings.Replace(appName, "+", "-", -1)
+	return strings.Replace(appName, ".", "-", -1)
 }
 
-func (e *EnvironmentManager) createApps(envs []Environment) ([]Environment, error) {
-	var outEnvs []Environment
-	var appsCreated []types.App
-	for _, env := range envs {
-		appName := e.getAppName(env)
-		app, err := e.getOrCreateApp(appName)
-		if err != nil {
-			return nil, errors.Wrapf(err, "get or create app %q", appName)
-		}
-		env.App = *app
-		outEnvs = append(outEnvs, env)
-		appsCreated = append(appsCreated, *app)
-
+func (e *EnvironmentManager) createApp() (*types.App, error) {
+	appName := e.getAppName()
+	app, err := e.getOrCreateApp(appName)
+	if err != nil {
+		return nil, errors.Wrapf(err, "get or create app %q", appName)
 	}
-	_ = e.PrintApps(appsCreated)
-	return outEnvs, nil
+	return app, nil
 }
 
 func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) {
@@ -587,100 +372,199 @@ func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
 	return policiesMap, nil
 }
 
-func (e *EnvironmentManager) createRBAC(envs []Environment, policies map[string]string) error {
-	for _, env := range envs {
-		if _, policyExists := policies[e.getAppName(env)]; policyExists {
-			// Policy already exists, not recreating
-			continue
-		}
-		policyDefinition := &PolicyDefinition{
-			V1: PolicyDefinitionV1{
-				Name: "Policy Name",
-				Resources: PolicyResourcesV1{
-					Allowed: []string{fmt.Sprintf("kots/app/%s/**", env.App.ID), "kots/license/**", "user/token/**"},
-					Denied:  []string{},
-				},
+func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
+	members, err := e.GetMembers()
+	if err != nil {
+		return nil, errors.Wrap(err, "get members")
+	}
+
+	membersMap := make(map[string]MemberList)
+	for i := 0; i < len(members); i += 1 {
+		membersMap[members[i].Email] = members[i]
+	}
+	return membersMap, nil
+}
+
+func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]string) error {
+	if _, policyExists := policies[e.getAppName()]; policyExists {
+		// Policy already exists, not recreating
+		return nil
+	}
+	//read + write policy
+	policyDefinition := &PolicyDefinition{
+		V1: PolicyDefinitionV1{
+			Name: "Policy Name",
+			Resources: PolicyResourcesV1{
+				Allowed: []string{fmt.Sprintf("kots/app/%s/**", app.ID), "kots/license/**", "user/token/**"},
+				Denied:  []string{},
 			},
-		}
-		policyDefinitionBytes, err := json.Marshal(policyDefinition)
-		if err != nil {
-			return errors.Wrap(err, "marshal definition body")
-		}
-		rbacBody := &Policy{
-			Name:        e.getAppName(env),
-			Description: e.getAppName(env),
-			Definition:  string(policyDefinitionBytes),
-		}
+		},
+	}
+	policyDefinitionBytes, err := json.Marshal(policyDefinition)
+	if err != nil {
+		return errors.Wrap(err, "marshal definition body")
+	}
+	rbacBody := &Policy{
+		Name:        e.getAppName(),
+		Description: e.getAppName(),
+		Definition:  string(policyDefinitionBytes),
+	}
 
-		rbacBodyBytes, err := json.Marshal(rbacBody)
-		if err != nil {
-			return errors.Wrap(err, "marshal rbac body")
-		}
-		req, err := http.NewRequest(
-			"POST",
-			fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
-			bytes.NewReader(rbacBodyBytes),
-		)
-		if err != nil {
-			return errors.Wrap(err, "build rbac request")
-		}
-		req.Header.Set("Authorization", e.Params.SessionToken)
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("Content-Type", "application/json")
+	rbacBodyBytes, err := json.Marshal(rbacBody)
+	if err != nil {
+		return errors.Wrap(err, "marshal rbac body")
+	}
+	req, err := http.NewRequest(
+		"POST",
+		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
+		bytes.NewReader(rbacBodyBytes),
+	)
+	if err != nil {
+		return errors.Wrap(err, "build rbac request")
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 
-		resp, err := http.DefaultClient.Do(req)
-		if err != nil {
-			return errors.Wrap(err, "send rbac request")
-		}
-		defer resp.Body.Close()
-		if resp.StatusCode != 201 {
-			body, _ := ioutil.ReadAll(resp.Body)
-			return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
-		}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, "send rbac request")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
+	}
+
+	//readonly policy
+	policyDefinition = &PolicyDefinition{
+		V1: PolicyDefinitionV1{
+			Name: "Policy Name",
+			Resources: PolicyResourcesV1{
+				Allowed: []string{fmt.Sprintf("kots/app/%s/read", app.ID), "kots/license/**", "user/token/**"},
+				Denied:  []string{},
+			},
+		},
+	}
+	policyDefinitionBytes, err = json.Marshal(policyDefinition)
+	if err != nil {
+		return errors.Wrap(err, "marshal definition body")
+	}
+	rbacBody = &Policy{
+		Name:        fmt.Sprintf("%s-readonly", e.getAppName()),
+		Description: fmt.Sprintf("%s-readonly", e.getAppName()),
+		Definition:  string(policyDefinitionBytes),
+	}
+
+	rbacBodyBytes, err = json.Marshal(rbacBody)
+	if err != nil {
+		return errors.Wrap(err, "marshal rbac body")
+	}
+	req, err = http.NewRequest(
+		"POST",
+		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
+		bytes.NewReader(rbacBodyBytes),
+	)
+	if err != nil {
+		return errors.Wrap(err, "build rbac request")
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, "send rbac request")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
 	}
 	return nil
 
 }
 
-func (e *EnvironmentManager) inviteUsers(envs []Environment, policies map[string]string) error {
-	for _, env := range envs {
-		if env.Email == "" {
-			continue
-		}
-		inviteBody := map[string]string{
-			"email":     env.Email,
-			"policy_id": policies[e.getAppName(env)],
-		}
-		inviteBodyBytes, err := json.Marshal(inviteBody)
-		if err != nil {
-			return errors.Wrap(err, "marshal invite body")
-		}
-		req, err := http.NewRequest(
-			"POST",
-			fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
-			bytes.NewReader(inviteBodyBytes),
-		)
-		if err != nil {
-			return errors.Wrap(err, "build invite request")
-		}
-		req.Header.Set("Authorization", e.Params.SessionToken)
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("Content-Type", "application/json")
+func (e *EnvironmentManager) updateRBAC(member MemberList, policyId string) error {
+	policyUpdateBody := &PolicyUpdate{
+		Id: policyId,
+	}
 
-		resp, err := http.DefaultClient.Do(req)
+	policyUpdateBytes, err := json.Marshal(policyUpdateBody)
+	if err != nil {
+		return errors.Wrap(err, "marshal policy update body")
+	}
+	url := fmt.Sprintf("%s/v1/team/member/%s", e.Params.APIOrigin, member.Id)
+	if member.Is_Pending_Invite {
+		url = fmt.Sprintf("%s/v1/team/invite/%s", e.Params.APIOrigin, member.Email)
+	}
+	req, err := http.NewRequest(
+		"PUT",
+		url,
+		bytes.NewReader(policyUpdateBytes),
+	)
+	if err != nil {
+		return errors.Wrap(err, "build update policy request")
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, "send update policy request")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 204 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("PUT /v1/team/member %d: %s", resp.StatusCode, body)
+	}
+	return nil
+}
+
+func (e *EnvironmentManager) inviteUser(members map[string]MemberList, policies map[string]string) error {
+	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+labs@", 1)
+	if _, memberExists := members[inviteEmail]; memberExists {
+		// Update RBAC policy TODO
+		err := e.updateRBAC(members[inviteEmail], policies[e.getAppName()])
 		if err != nil {
-			return errors.Wrap(err, "send invite request")
+			return errors.Wrap(err, "update rbac policy")
 		}
-		defer resp.Body.Close()
-		// rate limit returned when already invited
-		if resp.StatusCode == 429 {
-			e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", env.Email)
-			continue
-		}
-		if resp.StatusCode != 204 {
-			body, _ := ioutil.ReadAll(resp.Body)
-			return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
-		}
+		return nil
+	}
+	inviteBody := map[string]string{
+		"email":     inviteEmail,
+		"policy_id": policies[e.getAppName()],
+	}
+	inviteBodyBytes, err := json.Marshal(inviteBody)
+	if err != nil {
+		return errors.Wrap(err, "marshal invite body")
+	}
+	req, err := http.NewRequest(
+		"POST",
+		fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
+		bytes.NewReader(inviteBodyBytes),
+	)
+	if err != nil {
+		return errors.Wrap(err, "build invite request")
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, "send invite request")
+	}
+	defer resp.Body.Close()
+	// rate limit returned when already invited
+	if resp.StatusCode == 429 {
+		e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", inviteEmail)
+		return nil
+	}
+	if resp.StatusCode != 204 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
 	}
 	return nil
 }

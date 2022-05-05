@@ -30,3 +30,7 @@ type PolicyListItem struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }
+
+type PolicyUpdate struct {
+	Id string `json:"policy_id"`
+}
