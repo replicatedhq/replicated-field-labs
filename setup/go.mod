@@ -3,6 +3,7 @@ module github.com/replicatedhq/kots-field-labs/setup
 go 1.16
 
 require (
+	github.com/aws/aws-lambda-go v1.31.1
 	github.com/gocarina/gocsv v0.0.0-20210408192840-02d7211d929d
 	github.com/gosimple/slug v1.9.0
 	github.com/manifoldco/promptui v0.7.0

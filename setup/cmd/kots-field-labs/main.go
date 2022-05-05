@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/kots-field-labs/setup/pkg/fieldlabs"
 	"github.com/replicatedhq/replicated/cli/print"
@@ -12,18 +13,43 @@ import (
 )
 
 func main() {
-	if err := Run(); err != nil {
-		log.Fatal(err)
+	runInLambda := os.Getenv("RUN_IN_LAMBDA")
+	if runInLambda != "" {
+		lambda.Start(HandleRequest)
+	} else {
+		params, err := GetParams()
+		if err != nil {
+			log.Fatal(err, "get params")
+		}
+		if err := Run(params); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
-func Run() error {
-
-	params, err := GetParams()
-	if err != nil {
-		return errors.Wrap(err, "get params")
+func HandleRequest(event fieldlabs.LambdaEvent) error {
+	params := &fieldlabs.Params{
+		ParticipantEmail: event.ParticipantEmail,
+		LabsJSON:         "./labs/labs_all.json",
+		LabSlug:          event.LabSlug,
+		InviterEmail:     event.InviterEmail,
+		InviterPassword:  event.InviterPassword,
+		APIToken:         event.APIToken,
+		APIOrigin:        "https://api.replicated.com/vendor",
+		GraphQLOrigin:    "https://g.replicated.com/graphql",
+		KURLSHOrigin:     "https://kurl.sh",
+		IDOrigin:         "https://id.replicated.com",
 	}
 
+	err := getSessionTokenAndCheckInviteParams(params)
+	if err != nil {
+		return errors.Wrap(err, "validate invite user params")
+	}
+
+	return Run(params)
+}
+
+func Run(params *fieldlabs.Params) error {
 	labs, err := loadConfig(params)
 	if err != nil {
 		return errors.Wrap(err, "load config")

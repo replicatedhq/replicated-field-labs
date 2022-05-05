@@ -26,3 +26,12 @@ type Params struct {
 	// sessionToken
 	SessionToken string
 }
+
+type LambdaEvent struct {
+	Action           string `json:"action"`
+	ParticipantEmail string `json:"participant-email"`
+	LabSlug          string `json:"lab-slug"`
+	InviterEmail     string `json:"inviter-email"`
+	InviterPassword  string `json:"inviter-password"`
+	APIToken         string `json:"api-token"`
+}
