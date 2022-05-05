@@ -63,12 +63,17 @@ locals {
   }
   grouped_by_name = {
     for name in local.names :
-    name => [
-      for iname, ip in local.instance_ips :
-      "${ip}\tlab${split("lab", iname)[1]}\t# ${iname}"
-      if length(regexall(name, iname)) > 0
-    ]
-
+    name =>
+    {
+      ips = [ for iname, ip in local.instance_ips :
+        "${ip}\tlab${split("lab", iname)[1]}\t# ${iname}"
+        if length(regexall(name, iname)) > 0
+      ]
+      labnames = join(", ", [ for iname, ip in local.instance_ips :
+        regex("lab(\\d+)", iname)[0]
+        if length(regexall(name, iname)) > 0
+      ])
+    }
   }
 }
 
@@ -233,8 +238,33 @@ resource "local_file" "etc_hosts" {
 #     <PASTE>
 #     ' | sudo tee -a /etc/hosts
 
-${join("\n", each.value)}
+${join("\n", each.value.ips)}
 
+EOF
+
+}
+resource "local_file" "emails" {
+  for_each = local.grouped_by_name
+
+
+  filename = "${path.module}/emails/${each.key}"
+  content  = <<EOF
+Hi ${title(each.key)} - your labs have been provisioned and are ready!
+
+Labs ${each.value.labnames} have been provisioned.
+
+1. Check your email and accept the invite to create an account (subject will be "Invitation to join team on replicated" from "contact@replicated.com")
+2. Navigate to the first lab and start working from the readme: https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab00-hello-world
+3. You will see prompts to "insert your IP address here" -- those IPs for each participant are found below. The password for each SSH login will be "password" (or try "replicated" if that doesn't work) and the UI password for logging into the browser view will be "password" (or try "replicated" if that doesn't work).
+
+IPs for your instances are below — you can use them raw, or drop the snippet into /etc/hosts
+
+${join("\n", each.value.ips)}
+
+If if you get stuck, feel free to reach out. If all goes well, we could provision these same labs for folks on your team if you think it would help.
+
+Best,
+${title(var.user)}
 EOF
 
 }
