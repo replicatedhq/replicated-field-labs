@@ -11,6 +11,7 @@ tags: []
 owner: replicated
 developers:
 - joshd@replicated.com
-private: false
-published: false
-checksum: "14187941953254597191"
+private: true
+published: true
+show_timer: true
+checksum: "14799706204942789102"

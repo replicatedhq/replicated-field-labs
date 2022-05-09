@@ -41,6 +41,12 @@ func HandleRequest(event fieldlabs.LambdaEvent) error {
 		IDOrigin:         "https://id.replicated.com",
 	}
 
+	action, ok := actions[event.Action]
+	if !ok {
+		return errors.Errorf("unkown action %s", event.Action)
+	}
+	params.Action = action
+
 	err := getSessionTokenAndCheckInviteParams(params)
 	if err != nil {
 		return errors.Wrap(err, "validate invite user params")
