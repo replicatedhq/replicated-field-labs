@@ -1,118 +1,137 @@
-Lab 1.20: Sealed Secrets
+Lab 1.20: GitOps & Sealed Secrets
 =========================================
 
-TODO: intro
+Kubernetes makes it easy to describe the state of your system in manifests, and it's
+very convenient to be able to check those into a version control system or share them
+with your community, except for Secrets.
+
+Discover how KOTS can utilize the "Sealed Secrets" features of the [bitnami project](https://github.com/bitnami-labs/sealed-secrets#installation) to ensure that Secrets
+are encrypted and safe to store, even in a public repository!
 
 * **What you will do**:
-    * Learn to deploy a k8s application
-    * Learn to query, read, and understand support bundle analyzers
-    * Use the analyzers to fix a problem on the server and get the application up and running
-* **Who this is for**: This lab is for anyone who will deploy KOTS applications **plus** anyone who will be user-facing
+    * Learn how to deploy your application in GitOps mode for a `git`-driven deployment
+    * Learn to configure KOTS to automatically encrypt Secrets to make them safe to share, even publicly
+    * Learn how `kubeseal` can be used from your workstation to achieve the same
+* **Who this is for**: This lab is for anyone who will deploy KOTS applications, in particular if you may also be using the GitOps features of KOTS
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
     * Implementation / Field Engineers
     * Success / Sales Engineers
 * **Prerequisites**:
-    * Basic working knowledge of Linux (SSH, Bash)
+    * Basic working knowledge of Linux (SSH, bash)
+    * A cluster that has an application installed with KOTS
+    * A workstation (which may be the same as the cluster control plane node)
+    * some Kubernetes Secrets you want to protect
+    * a `git` repo hosted on a supported provider, such as GitHub, GitLab, or Bitbucket, and an associated Deploy key
 * **Outcomes**:
-    * You will be able to deploy k8s applications onto a kURL cluster using KOTS
-    * You will be ready to use KOTS's support bundle feature to diagnose first-line issues in end-user environments
-    * You will reduce escalations and expedite time to remediate for such issues
+    * You will be able to effectively utilize Sealed Secrets to prevent passwords, certificates, etc. from leaking out of your Kubernetes manifests, and build confidence in your automation workflow using `git`
 
-### Ground Rules
+### Deploy an application and enable GitOps mode
 
-In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
-It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
-If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
+1.
 
-### Installing the application
 
-#### 1. Vendor Portal
 
-You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
+### Prepare the workstation to use Sealed Secrets
 
-You will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
+#### 1. Install `helm` and, optionally, `kubeseal`
 
-<img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/1579188/136086041-0a8a6cd9-20c8-4627-83b3-c62223cbae44.png">
-
-In the vendor portal, the main concepts are [Channels](https://kots.io/vendor/packaging/channels-and-releases/), [Releases](https://kots.io/vendor/packaging/kots-custom-resources/), [Customers](https://kots.io/vendor/packaging/customers-and-licenses/) and [Kubernetes Installers](https://www.replicated.com/blog/kurl-with-replicated-kots/)
-
-We'll be using the lab10-demo channel.
-
-![lab10-demo-channel](img/lab10-demo-channel.png)
-
-The channel already has a release promoted to it.
-
-![lab10-demo-releases](img/lab10-demo-releases.png)
-
-And we'll be using the already defined kURL kubernetes installer
-
-![lab10-demo-kurl-installer](img/lab10-demo-kurl-installer.png)
-
-In order to install a k8s application using the Replicated application installer (KOTS), we have 2 options
-
-1. Existing cluster
-
-   ![lab10-demo-channel-existing-cluster](img/lab10-demo-channel-existing-cluster.png)
-
-1. Embedded cluster
-
-   ![lab10-demo-channel-embedded-cluster](img/lab10-demo-channel-embedded-cluster.png)
-
-We'll be using the embedded cluster throught the rest of the lab. The VM for this lab has the Embedded cluster already pre-installed, so all we will need is a Customer license to kick-of the installation process.
-
-Go to Customers and click the download button:
-
-   ![lab10-demo-download-license](img/lab10-demo-download-license.png)
-
-#### 2. Accessing the Application Installer
-
-1. You can open the KOTS admin console on your node by navigating to
-
-    ```
-    http://IP_ADDRESS:8800
-    ```
-
-    in a browser. For example, if your IP address is `34.134.22.12`, open your browser to
-    
-    ```
-    http://34.134.22.12:8800
-    ```
-    
-    **Advanced:** If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access the server at at [http://lab10-demo:8800](http://lab10-demo:8800).
-
-1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
-
-   ![kots-tls-wanring](img/kots-tls-warning.png)
-
-1. Click **Skip & continue** to accept the unsecure certificate in the admin console.
-    > **Note**: For production installations we recommend uploading a trusted certificate and key, but for this tutorial we will proceed with the self-signed certificate.
-
-   ![Console TLS](img/admin-console-tls.png)
-
-1. On the login screen use the password provided as part of the lab. or you can reset by SSHing the node and running
+- If using a Mac as your workstation, install with `homebrew`
 
     ```bash
-    export FIRST_NAME=...
-    export SERVER_IP=... 
-
-    ssh ${FIRST_NAME}@${SERVER_IP}
-
-    kubectl kots reset-password -n default
+    brew install helm
+    brew install kubeseal
     ```
 
-1. Upload the license (previously downloaded from the vendor portal)
+- If using a Linux workstation, install from binaries
 
-    ![lab10-demo-upload-license](img/lab10-demo-upload-license.png)
+    ```bash
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-1. Check the Preflights and click Continue
+    # navigate to https://github.com/bitnami-labs/sealed-secrets/releases and grab the latest
+    # release for your architecture, unpack it, and put it in your $PATH
+    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/kubeseal-0.17.5-linux-amd64.tar.gz
+    tar xvzf kubeseal-0.17.5-linux-arm64.tar.gz
+    chmod +x kubeseal
+    sudo mv kubeseal /usr/local/bin/kubeseal
+    ```
+#### 2.
 
-    ![lab10-demo-preflights](img/lab10-demo-preflights.png)
+#### 3. Prepare the cluster
 
-1. You'll notice the application stays in Status "Unavailable". Proceed to the next section to experience Day 2 of operations.
+1. Install the `sealed-secrets` CRDs, controller, etc. from the [bitnami project](https://github.com/bitnami-labs/sealed-secrets#installation) in the `kube-system` namespace
 
-    ![lab10-demo-status-unavailable](img/lab10-demo-status-unavailable.png)
+    ```bash
+    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+    helm repo update
+    helm install -n kube-system sealed-secrets sealed-secrets/sealed-secrets
+    ```
 
+1. Obtain the public key certificate from the `sealed-secrets` controller
+
+    - with `kubeseal`
+    ```bash
+    kubeseal \
+      --controller-name=sealed-secrets \
+      --controller-namespace=kube-system \
+      --fetch-cert > sealed-secrets-cert.pem
+    ```
+
+    - or copy the certificate from the `sealed-secrets` pod logs
+    and create a text file called `sealed-secrets-cert.yaml`
+    ```bash
+    kubectl logs -n kube-system sealed-secrets-7684c7b86c-6bhhw
+    # 2022/04/20 15:49:49 Starting sealed-secrets controller version: 0.17.5
+    # controller version: 0.17.5
+    # 2022/04/20 15:49:49 Searching for existing private keys
+    # 2022/04/20 15:49:58 New key written to kube-system/sealed-secrets-keyxmwv2
+    # 2022/04/20 15:49:58 Certificate is
+    # -----BEGIN CERTIFICATE-----
+    # MIIEzDCCArSgAwIBAgIQIkCjUuODpQV7zK44IB3O9TANBgkqhkiG9w0BAQsFADAA
+    # ...
+    # jCwIzOs3BKuiotGAWACaURFiKhyY+WiEpsIN1H6hswAwY0lcV1rrOeQgg9rfYvoN
+    # 0tXH/eHuyzyHdWt0BX6LLY4cqP2rP5QyP117Vt2i1jY=
+    # -----END CERTIFICATE-----
+    ```
+
+1. Create a Kubernetes Secret in the same namespace as KOTS that will hold the public key from `sealed-secrets` controller, and KOTS will use it to transform Secrets into SealedSecrets
+    
+    ```bash
+    kubectl create secret generic sealed-secrets-cert \
+      --dry-run=client \
+      -o yaml \
+      --from-file=cert.pem=sealed-secrets-cert.pem \
+      -n sentry-pro > sealed-secrets-cert.yaml
+    ```
+1. Edit the `sealed-secrets-cert.yaml` and add the following labels to the `.metadata.labels` field so KOTS knows it must use this certificate
+    - `kots.io/buildphase: secret`
+    - `kots.io/secrettype: sealedsecrets`
+    
+    Example:
+    ```yaml
+    ---
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: sealed-secrets-cert
+      namespace: sentry-pro
+      labels:
+        kots.io/buildphase: secret
+        kots.io/secrettype: sealedsecrets
+    data:
+      cert.pem: "..."
+    ```
+
+1. Apply the manifest to the cluster in the same namespace as KOTS
+
+    ```bash
+    kubectl apply -n sentry-pro -f sealed-secrets-cert.yaml
+    # secret/sealed-secrets-cert created
+    ```
+
+1. Enable GitOps and allow KOTS to push a release to the repo.  Observe that `Secrets` have been replaced with `SealedSecrets`
+
+1. Apply the finished manifest to the cluster and observe that the `SealedSecrets` have been decrypted by the SealedSecrets controller
 
 ### Support Bundle
 
