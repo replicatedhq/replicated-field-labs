@@ -1,4 +1,9 @@
 version: "3"
+containers:
+- name: cli
+  image: ubuntu
+  shell: /bin/bash
+  memory: 256
 virtualmachines:
   - name: jumpstation
     image: ubuntu-os-cloud/ubuntu-2004-lts
@@ -12,11 +17,3 @@ virtualmachines:
     image: ubuntu-os-cloud/ubuntu-2004-lts
     shell: /bin/bash
     machine_type: n1-standard-4
-  - name: cli
-    image: ubuntu-os-cloud/ubuntu-2004-lts
-    shell: /bin/bash
-    machine_type: n1-standard-1
-  - name: init
-    image: ubuntu-os-cloud/ubuntu-2004-lts
-    shell: /bin/bash
-    machine_type: n1-standard-1

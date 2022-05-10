@@ -8,9 +8,9 @@ notes:
 - type: text
   contents: Lab 5 - Airgap
 tabs:
-- title: Vendor Portal
-  type: website
-  url: https://vendor.replicated.com
+- title: CLI
+  type: terminal
+  hostname: cli
 difficulty: basic
 timelimit: 600
 ---
