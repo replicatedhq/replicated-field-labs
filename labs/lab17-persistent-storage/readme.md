@@ -71,6 +71,7 @@ The database needs somewhere to store its data, so let's define the Persistent V
 
 <details> 
 <summary>Expand to view file contents</summary>
+</details>  
 
 ```yaml
 #db-provider-pvc.yaml
