@@ -69,9 +69,6 @@ The StatefulSet definition will include references to the PVC and Service, we'll
 
 The database needs somewhere to store its data, so let's define the Persistent Volume Claim. Use the file located [here](./DBClientApp/manifests/db-provider-pvc.yaml) or create a new file in your manifests directory with the content included below:
 
-<details> 
-<summary>Expand to view file contents</summary>
-</details>  
 
 ```yaml
 #db-provider-pvc.yaml
