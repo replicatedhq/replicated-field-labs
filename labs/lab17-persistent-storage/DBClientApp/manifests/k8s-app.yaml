@@ -1,0 +1,9 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "lab17-Persistent-Storage"
+spec:
+  descriptor:
+    links:
+      - description: Open Lab 17
+        url: "http://repl-db-consumer-service"

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: repl-db-provider
+  labels:
+    app: repl-db-provider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: repl-db-provider
+  serviceName: repl-db-provider-service
+  template:
+    metadata:
+      labels:
+        app: repl-db-provider
+    spec:
+      containers:
+      - image: postgres:10
+        name: postgres
+        ports:
+        - name: postgres
+          containerPort: 5432
+          protocol: TCP 
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        # create a db called "postgres"
+        - name: POSTGRES_DB
+          value: postgres
+        # create admin user with name "postgres"
+        - name: POSTGRES_USER
+          value: postgres
+        # use admin password from secret
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP  
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: repl-db-pvc
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi  
+      volumes:
+      - name: repl-pvc-pvc  
+        persistentVolumeClaim:
+          claimName: repl-db-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: repl-db-pvc
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
