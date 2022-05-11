@@ -9,6 +9,8 @@ This guide will walk you through running all the labs for a team of people.
 
 + You should probably skim through [the architecture outline](./01-architecture.md) first.
 + You should be able to setup the labs in [single player mode](./02-single-player.md).
++ For Replicated folks, it is recommended to use a dedicated admin account in the production `Replicated Labs` team on https://vendor.replicated.com. But technically, any vendor web account will do. If you're not sure, try logging in with `yourname+replicatedlabs@replicated.com`.
++ Export a user or service account token in for that team with `export REPLICATED_API_TOKEN=...`
 
 ## 2. Create the files
 
