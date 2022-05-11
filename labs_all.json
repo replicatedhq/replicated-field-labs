@@ -171,5 +171,21 @@
     "post_install_sh": "",
     "use_public_ip": true,
     "use_jump_box": false
+  },
+  {
+    "name": "Lab 17: Persistent Datastores",
+    "slug": "lab17-persistent-storage",
+    "channel": "lab17-persistent-storage",
+    "channel_slug": "lab17-persistent-storage",
+    "customer": "lab17-persistent-storage",
+    "yaml_dir": "labs/lab17-persistent-storage/manifests",
+    "k8s_installer_yaml_path": "labs/lab17-persistent-storage/kurl-installer.yaml",
+    "skip_install_kots": false,
+    "skip_install_app": false,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "use_public_ip": true,
+    "use_jump_box": false
   }
 ]
