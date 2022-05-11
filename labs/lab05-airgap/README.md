@@ -142,7 +142,7 @@ curl -v https://kubernetes.io
 ***
 ## Moving Assets into place
 
-If you haven't already, you can log out of the Air Gap instance with `exit` or ctrl+D. 
+If you haven't already, log out of the Air Gap instance with `exit` or ctrl+D. 
 Our next step is to collect the assets we need for an Air Gap installation:
 
 1. A license with the Air Gap entitlement enabled
@@ -189,7 +189,7 @@ AIRGAP:
 </details>
 <br>
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace the <URl> with the URL from the command ran previously. 
+Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace <URL> with the URL from the `AIRGAP` output that you recorded in the previous step.
 
 ```text
 curl -o kurlbundle.tar.gz <URL>
@@ -289,7 +289,10 @@ At the end, you should see a `Installation Complete` message as shown below. Sin
 ## Accessing the UI via SSH tunnel, Configuring the instance
 
 You'll want to create a port forward from your local workstation in order to access to UI locally.
-Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
+
+Run `exit` or click ctrl+D to log out of the air gap instance. Run `exit` or click ctrl+D again to log out of the jump box.
+   
+On your local workstation, run the following (again, we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well):
 
 ```shell
 export JUMP_BOX_IP=... # your jumpbox IP

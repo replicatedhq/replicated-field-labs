@@ -30,7 +30,7 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 To start, you'll want to clone this repo somewhere. Optionally, you can fork it first (or you can do this later).
 
 ```shell script
-git clone git@github.com:replicatedhq/kots-field-labs
+git clone https://github.com/replicatedhq/kots-field-labs 
 cd kots-field-labs/labs/lab00-hello-world
 ```
 
@@ -49,7 +49,7 @@ brew install replicatedhq/replicated/cli
 
 ```shell script
 curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
-           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_amd64.tar.gz" \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_all.tar.gz" \
            | cut -d : -f 2,3 \
            | tr -d \" \
            | cat <( echo -n "url") - \
@@ -166,7 +166,7 @@ for this and all future labs in this program.
 make release
 ```
 
-You can verify the release was created with `release ls`:
+You can verify the release was created with `replicated release ls`:
 
 ```text
 $ replicated release ls

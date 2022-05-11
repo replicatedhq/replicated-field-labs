@@ -13,7 +13,7 @@ spec:
       labels:
         app: nginx
     spec:
-      serviceAccountName: kotsadm-operator
+      serviceAccountName: kotsadm
       initContainers:
         - name: check-file
           image: busybox

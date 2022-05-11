@@ -20,8 +20,7 @@ You should probably skim through [the architecture outline](./01-architecture.md
 ## 2. Create an environment JSON
 
 Copy the example file and edit it with your name and slug.
-Since single-player mode requires you to have server access to provision the boxes in the first place,
-so you can omit the SSH public key if you'd like. 
+You can ignore the `pub_key` and `password`. Those are currently not used, and a default password is used to ssh into the box. 
 You'll already have access to the vendor account, so email will be not be required either.
 
 ```
@@ -51,7 +50,9 @@ A simple invocation of the above two files might look like:
 make apps \
   prefix=dh-test \
   labs_json=labs-dh-test.json \
-  env_json=env-dh-test.json
+  env_json=env-dh-test.json \
+  inviter_password='YOUR_VENDORPORTAL_PASSWORD' \
+  inviter_email=you@vendorportal.com 
 ```
 
 The output of this will be a file at `terraform/provisioner_pairs.json`.
@@ -61,8 +62,11 @@ You should log into your vendor.replicated.com account to briefly review the app
 
 ## 5. Terraform Init
 
-* By default this procedure will deploy instances to the GCP Project `smart-proxy-839` in zone `us-central1-b`. To set an alternate project `export REPLICATED_GCP_PROJECT=...`. To set an alternate zone `export REPLICATED_GCP_ZONE=...`
+* By default this procedure will deploy instances to the GCP Project `kots-field-labs` in zone `us-central1-b`. To set an alternate project `export REPLICATED_GCP_PROJECT=...`. To set an alternate zone `export REPLICATED_GCP_ZONE=...`
 * By default this procedure will provision a user account on the GCP instances that matches your currently logged in local user. To override this in cases where your GCP username differs from your workstation, set `export REPLICATED_GCP_USER=...`
+* The provisioned instances will have the following labels set
+    * `expires-on`: Set for 14 days from the moment of creation.
+    * `owner`: Defaults to $USER. If you want to override, use `export OWNER=...`.
 * The terraform provisioners' connection settings leverage ssh-agent. If terraform errors with ssh timeouts, consider adding your local private key to ssh agent with `ssh-add -K ...`.
 
 If you haven't already, initialize the terraform dir. You can cd in and run `terraform init`, or there's a `make` wrapper for this.
@@ -120,4 +124,6 @@ make apps \
   prefix=dh-test \
   labs_json=labs-dh-test.json \
   env_json=env-dh-test.json
+  inviter_password='YOUR_VENDORPORTAL_PASSWORD' \
+  inviter_email=you@vendorportal.com 
 ```
