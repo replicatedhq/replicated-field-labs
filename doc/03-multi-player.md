@@ -52,13 +52,13 @@ Create a JSON file with the labs you'd like to run. You can use `labs_all.json` 
 
 ## 3. Initialization
 
-When provisioning for an actual training, the following is needed (to invite users):
+When provisioning for an actual training, the following should be used. Optionally, change `labs_all.json` to the subset of labs for which you created a JSON file above.
 
 ```shell
 make apps invite_users=1 \
-  env_csv=[CSV File with ssh public keys] \
+  env_csv=[CSV File with participant info] \
   labs_json=labs_all.json \
-  prefix=[PREFIX] \
+  prefix=[PREFIX you chose (see below)] \
   inviter_password=[Your Vendor web password] \
   inviter_email=[your Vendor web email]
 ```
