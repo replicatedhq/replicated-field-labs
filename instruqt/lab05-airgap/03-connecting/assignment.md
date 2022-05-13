@@ -23,7 +23,7 @@ timelimit: 600
 From the Jumpstation terminal, you can SSH into the Air Gap server using the following command:
 
 ```shell
-gcloud compute ssh airgap --zone us-central1-a
+ssh airgap
 ```
 
 Accept rsa key pair generation by accepting the defaults.
@@ -32,5 +32,5 @@ Once you're on the Air Gap server, you can verify that the server indeed does no
 can ctrl+C the command and proceed to the next section
 
 ```shell
-curl -v https://kubernetes.io
+curl https://kubernetes.io
 ```

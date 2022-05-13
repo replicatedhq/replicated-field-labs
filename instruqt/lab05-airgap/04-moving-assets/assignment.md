@@ -128,7 +128,7 @@ From your jumpbox, check that the download has finished, so you can copy it to t
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
 ```bash
-gcloud compute scp kurlbundle.tar.gz airgap:/root --zone us-central1-a
+scp kurlbundle.tar.gz airgap:/root
 ```
 
 > **Note**: -- we use SCP via an SSH tunnel in this case, but the Air Gap methods in this lab also extend to
@@ -137,7 +137,7 @@ more locked down environments where e.g. physical media is required to move asse
 Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
 
 ```bash
-gcloud compute ssh airgap --zone us-central1-a
+ssh airgap
 ```
 
 Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
