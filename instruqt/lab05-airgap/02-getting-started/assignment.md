@@ -35,11 +35,11 @@ Once you have the values,
 set them in your environment.
 
 ```
-export REPLICATED_APP=...
-export REPLICATED_API_TOKEN=...
+echo export REPLICATED_APP=... >> ~/.bashrc
+echo export REPLICATED_API_TOKEN=... >> ~/.bashrc
 ```
 
-Lastly before continuing make sure to clone this repo locally as we will be modifying `lab05` later during the workshop.
+Lastly before continuing make sure this repo is cloned locally as we will be modifying `lab05` later during the workshop. (should already be done for you)
 ```bash
 git clone https://github.com/replicatedhq/kots-field-labs
 cd kots-field-labs/labs/lab05-airgap

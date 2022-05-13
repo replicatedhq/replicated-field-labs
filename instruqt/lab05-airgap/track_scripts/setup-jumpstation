@@ -1,0 +1,33 @@
+#!/bin/bash
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+#!/bin/bash
+# Choose your zone and cluster name
+ZONE="us-central1-a"
+CLUSTERNAME="airgap"
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+# Fetch our Google Service Account credentials
+mkdir -p /root/.config/gcloud
+echo $INSTRUQT_GCP_PROJECT_GCPPROJECT_SERVICE_ACCOUNT_KEY | base64 -d > /root/.config/gcloud/credentials
+
+# Activate the service account
+gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials
+
+# Set our project
+gcloud config set project $INSTRUQT_GCP_PROJECT_GCPPROJECT_PROJECT_ID
+
+# Create the airgap instance
+gcloud compute instances create $CLUSTERNAME --boot-disk-size=200GB --boot-disk-type=pd-ssd --image-project=ubuntu-os-cloud \
+                                          --image-family=ubuntu-2004-lts --machine-type=n1-standard-8 \
+                                          --zone $ZONE
+
+gcloud compute instances delete-access-config $CLUSTERNAME --zone=$ZONE
+

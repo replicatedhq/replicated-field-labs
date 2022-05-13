@@ -15,3 +15,7 @@ curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
            | curl -fsSL -K- \
            | tar xvz replicated
 mv replicated /usr/local/bin/
+
+echo Clone labs repo
+git clone https://github.com/replicatedhq/kots-field-labs
+cd kots-field-labs/labs/lab05-airgap

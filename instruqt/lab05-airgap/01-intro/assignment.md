@@ -36,11 +36,7 @@ how to collect support bundles in Air Gap environments.
     * You will be ready to deliver a KOTS application into an Air Gap environment
     * You will build confidence in performing upgrades and troubleshooting in Air Gap environments
 
-* **Note** -- a more minimal Air Gap lab is in the works for non-dev teams to learn just the user-side installation
-    workflow without needing to understand the building/packaging of new Air Gap versions.
-    Until that is made available, this lab is also appropriate for
-    * Implementation / Field Engineers
-    * Support Engineers
+
 ## Overview
 
 In this case we'll start with a bare Air Gap server with no KOTS installation, so you can
