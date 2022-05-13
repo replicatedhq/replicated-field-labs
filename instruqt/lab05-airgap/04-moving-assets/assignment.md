@@ -84,7 +84,7 @@ be necessary.
 
 In this case, since we're working off the `lab05-airgap` channel, you'll want to enable Air Gap builds on that channel.
 
-You can check the build status by navigating to the "Release History" for the channel.
+You can check the build status by navigating to the "Release History" for the channel at https://vendor.replicated.com.
 
 ![release-history](../assets/channel-release-history.png)
 
@@ -123,7 +123,7 @@ Download the license file, but **don't download the kURL bundle** -- this is the
 
 You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
 
-From your jumpbox, check that the download has finished, so you can copy it to the Air Gap server. If you have not started the download, see the [Starting the kURL Bundle Download](#starting-the-kurl-bundle-download) instructions above.
+From your jumpbox (Instruqt browser tab), check that the download has finished, so you can copy it to the Air Gap server. If you have not started the download, see the [Starting the kURL Bundle Download](#starting-the-kurl-bundle-download) instructions in the previous step.
 
 You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
 
@@ -151,3 +151,5 @@ sudo bash install.sh airgap
 At the end, you should see a `Installation Complete` message as shown below. Since the instance is Air Gap, we'll need to create a port forward to access the UI via the jumpstation.
 
 ![kurl-password](../assets/kurl-password.png)
+
+Before proceding to the next step, copy the `kotsadm` password, and put it in your notes.

@@ -6,7 +6,7 @@ title: Deploy new version
 teaser: A short description of the challenge.
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Deploy a new version
 tabs:
 - title: CLI
   type: terminal
@@ -24,7 +24,7 @@ timelimit: 600
 
 ## Deploying a new version
 
-From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below.
+From the `labs/lab05-airgap` directory, update the `manifests/nginx-deployment.yaml` file to remove the command override as shown below. (You can do this in the Editor tab)
 
 
 ```diff
@@ -44,7 +44,7 @@ index fa29e8d..3a66405 100644
                name: html
 ```
 
-Once you're satisfied with your `nginx-deployment.yaml` create a new release with `make release`.
+Once you're satisfied with your `nginx-deployment.yaml` create a new release with `make release`. (Using the CLI terminal tab)
 You'll need to ensure you have your `REPLICATED_APP` and `REPLICATED_API_TOKEN` set. See the **Getting Started** section for information on how to obtain and set these.
 
 ```shell

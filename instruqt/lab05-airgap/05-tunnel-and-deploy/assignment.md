@@ -8,9 +8,6 @@ notes:
 - type: text
   contents: Setup ssh tunnel and deploy
 tabs:
-- title: CLI
-  type: terminal
-  hostname: cli
 - title: Jumpstation
   type: terminal
   hostname: jumpstation
@@ -20,11 +17,9 @@ timelimit: 600
 
 ## Accessing the UI via SSH tunnel, Configuring the instance
 
-You'll want to create a port forward from your local workstation in order to access to UI locally.
+You'll want to create a port forward from your jumpbox in order to access to UI locally.
 
-Run `exit` or click ctrl+D to log out of the air gap instance. Run `exit` or click ctrl+D again to log out of the jump box.
-
-On your local workstation, run the following (again, we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well):
+On your jumpbox terminal, run the following. You'll need the `AIRGAP_IP`. You can see it using a `ping airgap`.
 
 ```shell
 echo $HOSTNAME.$_SANDBOX_ID.instruqt.io # You'll need this output to browse to kotsadm
@@ -90,4 +85,4 @@ standard nginx entrypoint has been overriden:
             - "1"
 ```
 
-So we'll need to create a new release in order to fix this.
+So we'll need to create a new release in order to fix this. Continue to the next step.
