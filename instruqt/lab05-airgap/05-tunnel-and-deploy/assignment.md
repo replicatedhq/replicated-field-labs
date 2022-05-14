@@ -26,7 +26,7 @@ echo $HOSTNAME.$_SANDBOX_ID.instruqt.io # You'll need this output to browse to k
 
 export AIRGAP_IP=... # your airgap IP
 
-ssh -L 0.0.0.0:8800:$AIRGAP_IP:8800 airgap
+ssh -NTfL 0.0.0.0:8800:$AIRGAP_IP:8800 airgap
 ```
 
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
