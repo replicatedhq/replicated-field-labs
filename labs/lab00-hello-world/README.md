@@ -332,7 +332,7 @@ user@kots-guide:~$
 At this point, Kubernetes and the Admin Console are running, but the application isn't deployed yet.
 To complete the installation, visit the URL noted previously in your browser.  The URL is shown in the output from the installation script.
 
-Click "Continute and Setup" in the browser to continue to the secure Admin Console.
+Click "Continue to Setup" in the browser to continue to the secure Admin Console.
 
 <!-- TODO: insert picture of insecure landing page. -->
 
@@ -341,7 +341,8 @@ Accept the insecure certificate.
 
 <!-- TODO: Insert screenshot of certificate warning -->
 
-Click the "skip this step" button in the admin console.
+Click the "Skip & continue" link in the admin console.
+
 > Note, For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
 ![Console TLS](https://kots.io/images/guides/kots/admin-console-tls.png)
@@ -363,7 +364,7 @@ If you have failing checks, you can click continue -- the UI will show a warning
 ![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
 
 
-You will be presented with the application dashboard where you can see various information and metrics.
+You will be presented with the application dashboard where you can see various information and metrics. Click the Continue button to proceed to the dashboard.
 
 ![Cluster](https://kots.io/images/guides/kots/application.png)
 
@@ -374,7 +375,7 @@ kubectl get pods
 
 ### View the application
 
-Use the "Open Lab 0" button in the dashboard to open the NGINX server. 
+Click the "Open Lab 0" link in the dashboard to open the NGINX server. 
 
 Since this example uses the default nginx application, you should see a basic (perhaps familiar) nginx server running:
 
@@ -424,7 +425,7 @@ To install and test this new release, we need to connect to the Admin Console da
 At this point, it will likely show that our test application is "Up To Date" and that "No Updates Are Available".
 The Admin Console can be configured to check for new updates at regular intervals but for now we'll trigger a check manually by clicking "Check for Updates".
 You should see a new release in the history now.
-You can click the +/- diff numbers to review the diff, but for now let's click "Deploy" to roll out this new version.
+You can click the "View diff" link to open a modal comparing the releases. For now let's click "Deploy" to roll out this new version.
 
 ![View Update](https://kots.io/images/guides/kots/view-update.png)
 
