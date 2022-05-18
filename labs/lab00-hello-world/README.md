@@ -332,7 +332,7 @@ user@kots-guide:~$
 At this point, Kubernetes and the Admin Console are running, but the application isn't deployed yet.
 To complete the installation, visit the URL noted previously in your browser.  The URL is shown in the output from the installation script.
 
-Click "Continute and Setup" in the browser to continue to the secure Admin Console.
+Click "Continue to Setup" in the browser to continue to the secure Admin Console.
 
 <!-- TODO: insert picture of insecure landing page. -->
 
