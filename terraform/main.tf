@@ -65,11 +65,11 @@ locals {
     for name in local.names :
     name =>
     {
-      ips = [ for iname, ip in local.instance_ips :
+      ips = [for iname, ip in local.instance_ips :
         "${ip}\tlab${split("lab", iname)[1]}\t# ${iname}"
         if length(regexall(name, iname)) > 0
       ]
-      labnames = join(", ", [ for iname, ip in local.instance_ips :
+      labnames = join(", ", [for iname, ip in local.instance_ips :
         regex("lab(\\d+)", iname)[0]
         if length(regexall(name, iname)) > 0
       ])
