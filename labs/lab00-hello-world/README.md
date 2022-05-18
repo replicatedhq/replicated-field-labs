@@ -275,7 +275,7 @@ using the `EMBEDDED` version:
 curl -sSL ... | bash
 ```
 
-This script will install Docker, Kubernetes, and the KOTS admin console containers (kotsadm).
+This script will install Kubernetes, and the KOTS admin console containers (kotsadm).
 
 Installation should take about 5-10 minutes.
 
@@ -351,7 +351,7 @@ Paste in the password noted previously on the password screen. The password is s
 
 ![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
 
-Until this point, this server is just running Docker, Kubernetes, and the kotsadm containers.
+Until this point, this server is just running Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application. Use the license file we downloaded in step 5.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
 
