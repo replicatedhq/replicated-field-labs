@@ -36,6 +36,9 @@ set them in your environment.
 
 ```
 echo export REPLICATED_APP=... >> ~/.bashrc
+```
+
+```
 echo export REPLICATED_API_TOKEN=... >> ~/.bashrc
 ```
 
