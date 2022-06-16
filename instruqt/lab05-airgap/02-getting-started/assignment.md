@@ -42,8 +42,19 @@ echo export REPLICATED_APP=... >> ~/.bashrc
 echo export REPLICATED_API_TOKEN=... >> ~/.bashrc
 ```
 
-Lastly before continuing make sure this repo is cloned locally as we will be modifying `lab05` later during the workshop. (should already be done for you)
-```bash
-git clone https://github.com/replicatedhq/kots-field-labs
-cd kots-field-labs/labs/lab05-airgap
+You can check this with
+
 ```
+source ~/.bashrc
+replicated app ls
+```
+You should see an application listed.
+
+Lastly, before continuing make sure this repo is cloned locally as we will be modifying `lab05` later during the workshop.
+
+```bash
+cd kots-field-labs/labs/lab05-airgap
+ls
+```
+
+That's it - in the next step, we'll access our "airgapped" server and test some connectivity before kicking off the install.
