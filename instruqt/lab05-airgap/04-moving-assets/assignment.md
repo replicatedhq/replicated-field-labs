@@ -6,7 +6,7 @@ title: Assets
 teaser: A short description of the challenge.
 notes:
 - type: text
-  contents: Move some assets in place
+  contents: Move some assets across the Air Gap and install Kubernetes
 tabs:
 - title: CLI
   type: terminal
@@ -64,13 +64,7 @@ AIRGAP:
 
 
 
-Now, go to the JumpStation terminal and download the kurl bundle. Replace [URL] with the URL from the `AIRGAP` output that you recorded in the previous step.
-
-```text
-curl -o kurlbundle.tar.gz [URL]
-```
-
-This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
+Now, go to the JumpStation terminal and download the kurl bundle by running the first command from the `AIRGAP` section. This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
 
 #### Building an Airgap Release
 
@@ -125,10 +119,10 @@ You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to
 
 From your jumpbox (Instruqt browser tab), check that the download has finished, so you can copy it to the Air Gap server. If you have not started the download, see the [Starting the kURL Bundle Download](#starting-the-kurl-bundle-download) instructions in the previous step.
 
-You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
+You can use the DNS name of the airgapped server in this case, which will be `airgap`.
 
 ```bash
-scp kurlbundle.tar.gz airgap:/root
+scp *.tar.gz airgap:/root
 ```
 
 > **Note**: -- we use SCP via an SSH tunnel in this case, but the Air Gap methods in this lab also extend to
@@ -144,7 +138,7 @@ Once you're on the Air Gap node, untar the bundle and run the install script wit
 kURL install flags are documented [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
 
 ```shell
-tar xvf kurlbundle.tar.gz
+tar xvf *.tar.gz
 sudo bash install.sh airgap
 ```
 
