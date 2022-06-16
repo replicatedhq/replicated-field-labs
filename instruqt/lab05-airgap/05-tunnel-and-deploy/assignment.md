@@ -22,14 +22,25 @@ You'll want to create a port forward from your jumpbox in order to access to UI 
 On your jumpbox terminal, run the following. You'll need the `AIRGAP_IP`. You can see it using a `ping airgap`.
 
 ```shell
-echo $HOSTNAME.$_SANDBOX_ID.instruqt.io # You'll need this output to browse to kotsadm
+ping airgap -c 1
+```
 
+```
 export AIRGAP_IP=... # your airgap IP
+```
 
+```
 ssh -NTfL 0.0.0.0:8800:$AIRGAP_IP:8800 airgap
 ```
 
-This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
+The SSH command will run in the background, and you wont see any output. 
+Next, get your hostname for interacting with the App Manager admin console.
+
+```shell
+echo http://$HOSTNAME.$_SANDBOX_ID.instruqt.io:8800 # You'll need this output to browse to kotsadm
+```
+
+At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
 To complete the installation, visit http://jumpstation.[SANDBOX_ID].instruqt.io:8800 in your browser.
 
 Click "**Continue and Setup**" in the browser to continue to the secure Admin Console.
@@ -65,8 +76,7 @@ Once uploaded `Preflight Checks` will run. These are designed to ensure this ser
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
 If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
-
+<!-- TODO - need a non-broken image for preflight checks! -->
 
 We'll find that the application is unavailable.
 
