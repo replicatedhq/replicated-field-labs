@@ -416,7 +416,15 @@ Congrats! You've installed and then upgraded an Air Gap instance!
 
 As a final step, we'll review how to collect support bundles. However, what would we do in the case that the app installation itself was failing?
 We can try our `kots.io` support bundle from the Air Gap server.
+   
+Firstly, if you have not already been able to run kubectl commands already, you will need to export the location of the config file.
+   
+```shell
+export KUBECONFIG=/etc/kubernetes/admin.conf
+```
 
+With that config file located, you can now run kubectl commands on the airgap server.
+   
 ```shell
 kubectl support-bundle https://kots.io
 ```
