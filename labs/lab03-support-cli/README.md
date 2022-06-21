@@ -86,7 +86,7 @@ This brings us to our next key takeaway:
 
 <div align="center"><blockquote><h3>When the KOTS admin console is unavailable, the <code>kubectl support-bundle</code> command should be used to collect a support bundle.</h3></blockquote></div>
 
-The CLI bundle command can be grabbed from the UI on the "Analyze App" page.
+The CLI bundle command can be grabbed from the UI on the "Troubleshoot" page.
 Note that the `kubectl support-bundle` plugin will always be pre-installed on kURL instances, so the `curl https://krew.sh/support-bundle | bash` command can 
 and should be omitted in this case. 
 

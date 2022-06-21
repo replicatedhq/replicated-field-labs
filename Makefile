@@ -10,6 +10,7 @@ inviter_password := ""
 provisioner_json_out := "terraform/provisioner_pairs.json"
 REPLICATED_GCP_PROJECT ?= "kots-field-labs"
 REPLICATED_GCP_ZONE ?= "us-central1-b"
+OWNER ?= ${USER}
 
 .PHONY: install
 install:
@@ -35,6 +36,7 @@ apps: install
 .PHONY: instances
 instances:
 	TF_VAR_user=$(user) \
+	TF_VAR_owner=$(OWNER) \
 	TF_VAR_gcp_project=$(REPLICATED_GCP_PROJECT) \
 	TF_VAR_gcp_zone=$(REPLICATED_GCP_ZONE) \
 	TF_VAR_provisioner_pairs_json=$(provisioner_json_out) \
@@ -43,6 +45,7 @@ instances:
 .PHONY: tfdestroy
 tfdestroy:
 	TF_VAR_user=$(user) \
+	TF_VAR_owner=$(OWNER) \
 	TF_VAR_gcp_project=$(REPLICATED_GCP_PROJECT) \
 	TF_VAR_gcp_zone=$(REPLICATED_GCP_ZONE) \
 	TF_VAR_provisioner_pairs_json=$(provisioner_json_out) \
