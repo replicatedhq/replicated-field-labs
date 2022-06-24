@@ -70,10 +70,16 @@ Go to Customers and click the download button:
 1. You can open the KOTS admin console on your node by navigating to
 
     ```
-    https://$IP_ADDRESS:8800
+    http://IP_ADDRESS:8800
     ```
 
-    in a browser. If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access it at [https://lab10-demo:8800](https://lab10-demo:8800).
+    in a browser. For example, if your IP address is `34.134.22.12`, open your browser to
+    
+    ```
+    http://34.134.22.12:8800
+    ```
+    
+    **Advanced:** If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access the server at at [http://lab10-demo:8800](http://lab10-demo:8800).
 
 1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
 
@@ -87,9 +93,10 @@ Go to Customers and click the download button:
 1. On the login screen use the password provided as part of the lab. or you can reset by SSHing the node and running
 
     ```bash
-    export FIRST_NAME=... # your first name
+    export FIRST_NAME=...
+    export SERVER_IP=... 
 
-    ssh ${FIRST_NAME}@<server ip address>
+    ssh ${FIRST_NAME}@${SERVER_IP}
 
     kubectl kots reset-password -n default
     ```
