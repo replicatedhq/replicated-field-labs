@@ -9,7 +9,6 @@ In this lab, we'll cover the following:
 * Adding a Helm Chart to a Replicated Application Release
 * Map config fields to fields in the Values file
 * Deploy the Helm Chart using the Replicated Application Manager
-* Cover steps needed for airgap deployments
 * Cover how to manage private images
 * Cover how to manage multiple HelmCharts in a single Replicated Application Release
 
@@ -189,7 +188,7 @@ spec:
     name: wordpress
     chartVersion: "14.0.6"
   # helmVersion identifies the Helm Version used to render the chart. Default is v2.
-  helmVersion: v2
+  helmVersion: v3
 
   # useHelmInstall identifies whether this Helm chart will use the
   # Replicated Helm installation (false) or native Helm installation (true). Default is false.
@@ -233,18 +232,28 @@ We are going to make two changes:
 
 ### Copy the field name from the Values file
 
-For this lab we are going to use the `wordpressBlogName` field in the values file and expose it in the UI. After you have added the Wordpress Helm Chart, you should be able to access the values file as shown below:
+For this lab we are going to use the `wordpressBlogName` field in the values file and expose it in the UI. For reference, we are going to be referencing fields in the ../charts/bitnami/wordpress/values.yaml file.
 
-![to-do](link-to-image-showing-values-file)
-
-Scroll down a few lines until you locate the `wordpressBlogName` field, select the name and copy it.
+![Values File](./img/values-file.png)
 
 ### Create a field in the Config.yaml file
 
 Select the `kots-config.yaml` file. Replace the contents of this file with the following:
 
 ```yaml
-
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: wordpress-config
+spec:
+  groups:
+    - name: wordpress
+      title: Wordpress
+      description: Wordpress Defaults
+      items:
+        - name: wordpressBlogName
+          title: Wordpress Blog Name
+          type: text
 
 ```
 
@@ -253,7 +262,15 @@ As you can see, we are using the values field name as the config field name and 
 
 ### Map the Config file field with the field in the Values file
 
-Select the `wordpress.yaml` file and scroll down to the values section.
+Select the `wordpress.yaml` file and scroll down to the values section and make the following changes:
+
+```diff
+# values are used in the customer environment, as a pre-render step
+# these values will be supplied to helm template
+-- values: {}
+++ values:
+++   wordpressBlogName: '{{repl configOption "wordpressBlogName"}}'
+```
 
 ## Update the Application
 
@@ -275,12 +292,60 @@ Create a new release and go to the Config.yaml file we created earlier. We are n
 
 ```yaml
 # config.yaml
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: wordpress-config
+spec:
+  groups:
+    - name: wordpress
+      title: Wordpress
+      description: Wordpress Defaults
+      items:
+        - name: wordpressBlogName
+          title: Wordpress Blog Name
+          type: text
+        - name: wordpress-db-secret
+          hidden: true
+          type: password
+          value: "{{repl RandomString 16}}"
 ```
 
 Next, we need to map this value to the field in the Values file. Note that if this field was not exposed in the Values file, we would likely need to change the chart so the field would be exposed in the values file.
 
 ```yaml
 # wordpress.yaml
+
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: wordpress
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: wordpress
+    chartVersion: "14.0.6"
+  # helmVersion identifies the Helm Version used to render the chart. Default is v2.
+  helmVersion: v3
+
+  # useHelmInstall identifies whether this Helm chart will use the
+  # Replicated Helm installation (false) or native Helm installation (true). Default is false.
+  # Native Helm installations are only available for Helm v3 charts.
+  useHelmInstall: true
+
+  # weight determines the order that charts with "useHelmInstall: true" are applied, with lower weights first.
+  weight: 0
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values:
+    wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+    service:
+      port: 8080
+    mariadb:
+      auth:
+        rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
+
 ```
 
 ## Make Update to Access Wordpress UI
