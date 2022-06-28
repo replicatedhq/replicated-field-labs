@@ -87,11 +87,11 @@ In this lab, we have already created an application for you, but there are no re
 * Log in to the Vendor Portal using your email and password.
 * On the navigation menu, select **Releases**
 
-    ![vendor-ui](img/releases.png)
+    <p align="center"><img src="img/releases.png" alt="vendor-ui" width="1000" margin=auto/></img></p>
 
 * Click on **Create Release**
 
-    ![create-release](img/create-release.png)
+    <p align="center"><img src="img/create-release.png" alt="create-release" width="1000" margin=auto/></img></p>
 
 * We will not use the default nginx app, so let's delete the following files:
     * example-configmap.yaml
@@ -99,17 +99,22 @@ In this lab, we have already created an application for you, but there are no re
     * example-ingress.yaml
     * example-service.yaml
 
-    ![files-to-delete](img/delete-files.png)
+    <p align="center"><img src="img/delete-files.png" alt="files-to-delete" width="1000" margin=auto/></img></p>
 
 * Now we are ready to add the Chart! Open a window and browse to the directory where the Helm Chart we created is located.
 * Drag and Drop it where the Replicated Release Files navigator as shown below
-    ![drag-drop-files](img/drag-drop-chart.png)
+    <p align="center"><img src="img/drag-drop-chart.png" alt="drag and drop chart" width="1000" margin=auto/></img></p>
 
 * You will be prompted to select which method to use when deploying the Helm Chart:
+   
+    <p align="center"><img src="img/helm-opts.png" alt="helm options" width="600" margin=auto/></img></p>
+
    * **Native Helm** - This should be the default option and should be the one selected. With this option, App Manager will use Helm to deploy the Helm Chart in the customer's environment.
    * **Replicated** - This option will eventually be depecrated and should not be selected. With this option, App Manager will first generate Kubernetes Manifests from the Helm Chart (i.e., run `helm template`) before they are deployed to the cluster as manifests.
 
 * Note how a new file is created by Replicated that includes details about the chart we just added.
+
+<p align="center"><img src="img/helm-file.png" alt="helm file" width="600" margin=auto/></img></p>
 
 ### Using the CLI
 
@@ -121,7 +126,7 @@ Make sure to update your environment variables to interact with this application
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
 ahead of time.
 
-![Application Slug](img/application-slug.png)
+<p align="center"><img src="img/application-slug.png" alt="Application Slug" width="600" margin=auto/></img></p>
 
 
 `REPLICATED_API_TOKEN` should be set to the previously created user api token. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
@@ -340,8 +345,6 @@ spec:
   # these values will be supplied to helm template
   values:
     wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
-    service:
-      port: 8080
     mariadb:
       auth:
         rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
@@ -350,7 +353,19 @@ spec:
 
 ## Make Update to Access Wordpress UI
 
-Let's make an update to the application
+By default, Wordpress runs on port 80 but given that it is a pretty popular port it may already be in use. In the `values.yaml` file, the port is exposed like this:
+
+
+
+```diff
+    values:
+      wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+++    service:
+++      port: 8080
+      mariadb:
+        auth:
+          rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
+```
 
 ## Update and Test Change
 
