@@ -112,9 +112,12 @@ In this lab, we have already created an application for you, but there are no re
    * **Native Helm** - This should be the default option and should be the one selected. With this option, App Manager will use Helm to deploy the Helm Chart in the customer's environment.
    * **Replicated** - This option will eventually be depecrated and should not be selected. With this option, App Manager will first generate Kubernetes Manifests from the Helm Chart (i.e., run `helm template`) before they are deployed to the cluster as manifests.
 
-* Note how a new file is created by Replicated that includes details about the chart we just added.
+* Note how a new file is automatically created by Replicated that includes details about the chart we just added.
 
 <p align="center"><img src="img/helm-file.png" alt="helm file" width="600" margin=auto/></img></p>
+
+As a last step, save the release we've created 
+<p align="center"><img src="img/save release.png" alt="helm file" width="600" margin=auto/></img></p>
 
 ### Using the CLI
 
