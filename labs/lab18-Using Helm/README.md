@@ -160,7 +160,7 @@ We need to move the helm chart package we created previously to the manifests di
     $ mv ../charts/bitnami/wordpress/wordpress-14.2.2.tgz manifests
 ```
 
-Next, let's create a couple of manifests to finish our first release. Both of these manifests are Replicated [Custom Resources](https://docs.replicated.com/reference/custom-resource-about).
+Next, let's create a couple of manifests to finish our first release. Both of these manifests are Replicated [Custom Resources](https://docs.replicated.com/reference/custom-resource-about) and should be created in the `manifests` directory.
 
 #### Adding kots-app.yaml
 
