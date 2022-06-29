@@ -11,9 +11,10 @@ For more info, check out the [documentation](./doc).
 A set of different curricula and tracks based on the current set of working labs. Will evolve over time.
 
 
-#### Replicated intro for developers and field teams
+#### Replicated Intro for Developers and Field Teams
 
-If you're technical and getting hands on with Replicated
+If you're technical and getting hands on with Replicated, do these labs in order. More will be added here.
+Good for developers packaging an app as well as Support/Success/Solutions Engineers working with Replicated in customer environments.
 
 1. [Lab 0 - Hello World](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab00-hello-world)
 2. [Lab 1 - Using Analyzers](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab01-ui-analyzers)
@@ -32,15 +33,15 @@ Any can be omitted based on interest and needs.
 4. [Lab 11 - Monitoring](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab11-monitoring)
 
 
-#### A focused walkthrough of Airgap 
+#### A Focused Walkthrough of Airgap 
 
-A very targeted flow for folks who want to learn airgap install processes and nothing else.
-Ideal for field teams or for anyone who wants to learn airgap installations and updates without doing the developer setup in Lab 0.
+A very targeted walkthrough for folks who want to learn how to run an airgap install process in the field without doing the developer setup in Lab 0.
+If you will be working with Airgap installs a lot, you should prefer Lab 5 from the [intermediate track](#intermediate-replicated-topics).
 
 1. [Lab 8 - Airgap Lite](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab08-airgap-lite)
 
 #### A Gentle introduction to Replicated for less technical folks
 
-Walk through Replicated basics without needing to SSH or work with Git or CLIs
+Walk through Replicated basics without needing to know SSH, CLIs or Git
 
 1. [Lab 10 - Demo](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab10-demo)
