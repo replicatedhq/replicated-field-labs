@@ -364,7 +364,8 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
     values:
       wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
 ++    service:
-++      port: 8080
+++      ports:
+++        http: 8080
       mariadb:
         auth:
           rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
