@@ -171,5 +171,21 @@
     "post_install_sh": "",
     "use_public_ip": true,
     "use_jump_box": false
+  },
+  {
+    "name": "Lab 18: Packaging a Helm Chart",
+    "slug": "lab18-helm-chart",
+    "channel": "lab18-helm-chart",
+    "channel_slug": "lab18-helm-chart",
+    "customer": "lab18-helm-chart",
+    "yaml_dir": "labs/lab18-helm-chart/manifests",
+    "k8s_installer_yaml_path": "labs/lab18-helm-chart/kurl-installer.yaml",
+    "skip_install_kots": true,
+    "skip_install_app": true,
+    "config_values": "",
+    "pre_install_sh": "",
+    "post_install_sh": "",
+    "use_public_ip": true,
+    "use_jump_box": false
   }
 ]
