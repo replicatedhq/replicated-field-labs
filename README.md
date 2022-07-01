@@ -10,6 +10,8 @@ The labs are hands-on field training with KOTS and the KOTS troubleshooting tool
 
 Please let us know when you would like to schedule this!
 
+You can also check out [this 15-minute presentation](https://www.youtube.com/watch?v=6gLDp-_s93c) from Replicon 2022.
+
 For more info, check out the [documentation](./doc).
 
 
