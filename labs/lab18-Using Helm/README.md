@@ -25,7 +25,7 @@ You also should have received an invite to join Replicated. Make sure you accept
 
 ## Packaging Helm Chart
 
-For this lab we are going to use the WordPress [Helm Chart](https://github.com/bitnami/charts/tree/master/bitnami/wordpress) available from Bitnami. The Helm Chart includes a couple of sub charts (common and MariaDB) as dependencies.
+For this lab we are going to use the WordPress [Helm Chart](https://github.com/bitnami/charts/tree/master/bitnami/wordpress) available from Bitnami. The Helm Chart includes a couple of sub charts (common and MariaDB) as dependencies. In order to ensure that future updates won't break this lab, we are going to be using a specific version of the chart, 14.0.7
 
 ### 0. Get Dev Environment ready
 
@@ -40,10 +40,19 @@ Next, we are going to download the nescessary files to package our Helm Chart.
 
 ### 1. Clone the Bitnami Repo
 
-The repository we are about to clone contains multiple Helm Charts. While this lab will focus on one chart, you could follow the same steps covered in this lab with other charts.
+The repository we are about to clone contains multiple Helm Charts. While this lab will focus on one chart, you could follow the same steps covered in this lab with other charts. Since we want a specific release we are going to fetch using a commit hash.
 
 ```bash
 git clone https://github.com/bitnami/charts.git
+cd charts
+git fetch origin a5abff4d7406bb3874674b005205961b240b7dd3
+git reset --hard a5abff4d7406bb3874674b005205961b240b7dd3
+```
+
+The above commands should result in a message similar to:
+
+```bash
+HEAD is now at a5abff4d7 [bitnami/wordpress] Release 14.0.7 updating components versions
 ```
 
 This command will now download all the helm chart files. In order to include a Helm Chart in Replicated, we have to package it first.
@@ -53,10 +62,26 @@ This command will now download all the helm chart files. In order to include a H
 As mentioned above, this repo contains several Helm Charts, and we want to only package WordPress, so we need to change directory:
 
 ```bash
-cd charts/bitnami/wordpress/
+cd bitnami/wordpress/
 ```
 
 We are now at the root of the Wordpress Helm Chart. If you list the contents of this directory, you will see that it contains a `Chart.yaml` and `Values.yaml` file. The `Chart.yaml` contains details about the chart, and the `Values.yaml` contains fields that the end user can override with their own values. Fields in this file can also be passed as parameters when you run `helm install`.
+
+Let's verify that we are using the correct version of the chart by looking at the contents:
+```bash
+cat Chart.yaml
+```
+
+At the end of the file we should see the following:
+
+```bash
+...
+name: wordpress
+sources:
+  - https://github.com/bitnami/bitnami-docker-wordpress
+  - https://wordpress.org/
+version: 14.0.7
+```
 
 ### 3. Package the Helm Chart
 
@@ -70,7 +95,7 @@ helm package -u .
 The command may display some warnings, but ultimately should display an output similar to
 
 ```bash
-Successfully packaged chart and saved it to: /.../charts/bitnami/wordpress/wordpress-14.0.7.tgz
+Successfully packaged chart and saved it to: /Users/fernandocremer/test/tests/charts/bitnami/wordpress/wordpress-14.0.7.tgz
 
 ```
 
