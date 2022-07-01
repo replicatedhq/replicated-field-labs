@@ -128,7 +128,7 @@ In this lab, we have already created an application for you, but there are no re
 
 * Now we are ready to add the Chart! Open a window and browse to the directory where the Helm Chart we created is located.
 * Drag and Drop it where the Replicated Release Files navigator as shown below
-    <p align="center"><img src="img/drag-drop-chart.png" alt="drag and drop chart" width="1000" margin=auto/></img></p>
+    <p align="center"><img src="img/dragchart.png" alt="drag and drop chart" width="1000" margin=auto/></img></p>
 
 * You will be prompted to select which method to use when deploying the Helm Chart:
    
