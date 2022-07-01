@@ -3,6 +3,12 @@ KOTS Field Labs
 
 Resources for running a hands-on field training with KOTS and the KOTS troubleshooting toolset.
 
+**Why do we offer it?** Provides your team the quickest way to learn our technology. If your team decides it is not the right tech, it saves your team time that would otherwise be spent in a time consuming POC.
+
+**How do we do this?** We provision everything for your team, giving each participant their own environment to learn. We can schedule office hours/ onsite workshops to ensure we are there to answer any questions.
+
+Please let us know when you would like to schedule this!
+
 For more info, check out the [documentation](./doc).
 
 
