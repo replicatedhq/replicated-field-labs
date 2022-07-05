@@ -1,2 +1,4 @@
 *.csv
 terraform/etc_hosts
+terraform/etchosts
+terraform/emails
