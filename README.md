@@ -1,7 +1,16 @@
 KOTS Field Labs
 ========================
 
-Resources for running a hands-on field training with KOTS and the KOTS troubleshooting toolset.
+Labs resources are the fastest way to get you hands on learning Replicated technology.
+The labs are hands-on field training with KOTS and the KOTS troubleshooting toolset.
+
+**Why do we offer it?** Provides your team the quickest way to learn our technology. If your team decides it is not the right tech, it saves your team time that would otherwise be spent in a time consuming POC.
+
+**How do we do this?** We provision everything for your team, giving each participant their own environment to learn. We can schedule office hours/ onsite workshops to ensure we are there to answer any questions.
+
+Please let us know when you would like to schedule this!
+
+You can also check out [this 15-minute presentation](https://www.youtube.com/watch?v=6gLDp-_s93c) from Replicon 2022.
 
 For more info, check out the [documentation](./doc).
 
