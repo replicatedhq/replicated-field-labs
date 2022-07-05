@@ -212,7 +212,7 @@ An example of using `scp` is proivded below.
 This command should be run from your local workstation.
 
 ```bash
-scp ${FIST_NAME}@<Instance IP Address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
+scp ${FIRST_NAME}@<Instance IP Address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
 ```
 
 ![uploaded-bundle](img/uploaded-bundle.png)
