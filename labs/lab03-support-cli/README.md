@@ -86,7 +86,7 @@ This brings us to our next key takeaway:
 
 <div align="center"><blockquote><h3>When the KOTS admin console is unavailable, the <code>kubectl support-bundle</code> command should be used to collect a support bundle.</h3></blockquote></div>
 
-The CLI bundle command can be grabbed from the UI on the "Analyze App" page.
+The CLI bundle command can be grabbed from the UI on the "Troubleshoot" page.
 Note that the `kubectl support-bundle` plugin will always be pre-installed on kURL instances, so the `curl https://krew.sh/support-bundle | bash` command can 
 and should be omitted in this case. 
 
@@ -212,7 +212,7 @@ An example of using `scp` is proivded below.
 This command should be run from your local workstation.
 
 ```bash
-scp ${FIST_NAME}@<Instance IP Address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
+scp ${FIRST_NAME}@<Instance IP Address>:~/support-bundle-2021-04-13T15_43_47.tar.gz .
 ```
 
 ![uploaded-bundle](img/uploaded-bundle.png)

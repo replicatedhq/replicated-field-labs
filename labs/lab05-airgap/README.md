@@ -219,7 +219,7 @@ You can build invividual bundles on the Release History page, but you'll likely 
 
 ![auto-build](img/channel-enable-airgap.png)
 
-Now you should see all the bundles building or built on the release history page:
+Now you should see all the bundles building or built on the release history page. If you do not see "Airgap Built" for the release, click **Build**.
 
 ![airgap-built](img/airgap-builds.png)
 
@@ -289,7 +289,10 @@ At the end, you should see a `Installation Complete` message as shown below. Sin
 ## Accessing the UI via SSH tunnel, Configuring the instance
 
 You'll want to create a port forward from your local workstation in order to access to UI locally.
-Again we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well.
+
+Run `exit` or click ctrl+D to log out of the air gap instance. Run `exit` or click ctrl+D again to log out of the jump box.
+   
+On your local workstation, run the following (again, we'll use `REPLICATED_APP` to construct the DNS name but you can input it manually as well):
 
 ```shell
 export JUMP_BOX_IP=... # your jumpbox IP
@@ -413,7 +416,15 @@ Congrats! You've installed and then upgraded an Air Gap instance!
 
 As a final step, we'll review how to collect support bundles. However, what would we do in the case that the app installation itself was failing?
 We can try our `kots.io` support bundle from the Air Gap server.
+   
+Firstly, if you have not already been able to run kubectl commands already, you will need to export the location of the config file.
+   
+```shell
+export KUBECONFIG=/etc/kubernetes/admin.conf
+```
 
+With that config file located, you can now run kubectl commands on the airgap server.
+   
 ```shell
 kubectl support-bundle https://kots.io
 ```
