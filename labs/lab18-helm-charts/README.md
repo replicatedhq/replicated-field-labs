@@ -245,14 +245,19 @@ Before we create our release, let's initialize git. We will use a command line o
 Now we are ready to create our first release:
 
 ```bash
-    $ replicated release create --auto -y
+    $ replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 ## Deploy the Application
 
 We now have something we can deploy! As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
 
-Once you are on the terminal, copy the install command from the channel. 
+Once you are on the terminal, copy the "Embedded Cluster" install command from the channel (`lab18-helm-charts`). It should look like
+```
+curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
+```
+
+Go through the installation steps in kotsadm to install the application. You should have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), so this should be familiar.
 
 ## Mapping Field Values
 
@@ -270,7 +275,7 @@ For this lab we are going to use the `wordpressBlogName` field in the values fil
 
 ### Create a field in the Config.yaml file
 
-Select the `kots-config.yaml` file. Replace the contents of this file with the following:
+Create a file under `manifests` named `kots-config.yaml` file with the following contents:
 
 ```yaml
 apiVersion: kots.io/v1beta1
@@ -294,14 +299,20 @@ As you can see, we are using the values field name as the config field name and 
 
 ### Map the Config file field with the field in the Values file
 
-Select the `wordpress.yaml` file and scroll down to the values section and make the following changes:
+Edit the `wordpress.yaml` file and scroll down to the values section and make the following changes:
 
 ```diff
 # values are used in the customer environment, as a pre-render step
 # these values will be supplied to helm template
 -- values: {}
 ++ values:
-++   wordpressBlogName: '{{repl configOption "wordpressBlogName"}}'
+++   wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+```
+
+Now we are ready to create our next release:
+
+```bash
+    $ replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 ## Update the Application
@@ -314,13 +325,13 @@ Deploy the new version of our app
 
 ### Random Password Generation
 
-If you were paying close attention to the update we did in the previous step, you would have noticed that the credentials that are generated for MariaDB get generated again. When you peform an intial install or a subsequent upgrade, App Manager will use `helm upgrade -i` and will let Helm determine if there are any changes in the Chart.
+If you were paying close attention to the update we did in the previous step, you would have noticed that the credentials that are generated for MariaDB get generated again. When you perform an intial install or a subsequent upgrade, App Manager will use `helm upgrade -i` and will let Helm determine if there are any changes in the Chart.
 
 Obviously we don't want this password to be reset each time we do an upgrade, so to solve this we are going to create a hidden config field which will have a random string value. We will use this value for the password that is used with MariaDB.
 
 #### Create the field
 
-Create a new release and go to the Config.yaml file we created earlier. We are now going to create a field that will generate a random string.
+Update the `kots-config.yaml` file we created earlier with the content below. We are now going to create a field that will generate a random string.
 
 ```yaml
 # config.yaml
@@ -380,7 +391,7 @@ spec:
 
 ## Make Update to Access Wordpress UI
 
-By default, Wordpress runs on port 80 but given that it is a pretty popular port it may already be in use. In the `values.yaml` file, the port is exposed like this:
+By default, Wordpress runs on port 80 but given that it is a pretty popular port it may already be in use. Also, Wordpress by default uses a service of typy LoadBalancer. In the `values.yaml` file, this is exposed like this:
 
 
 
@@ -388,8 +399,11 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
     values:
       wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
 ++    service:
-++      ports:
-++        http: 8080
+++    type: NodePort
+++    ports:
+++      http: 8080
+++    nodePorts:
+++      http: "8080"
       mariadb:
         auth:
           rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
@@ -397,44 +411,21 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
 
 ## Update and Test Change
 
+Create our next release using the `replicated` cli:
+
+```bash
+    $ replicated release create --auto --promote lab18-helm-charts -y
+```
+
 Now that we have a new release available, let's update our deployed application to test the change.
 
-Click on **Check for Update** and click on **Deploy** once available.
+Click on **Check for Update** and click on **Deploy** once available. Once deployed, you should be able to browse to port `8080` and see Wordpress.
 
+# Additional Info
 
-## Managing Private Images
+## Airgap: Optional Images
 
-In this lab, we used publicly available images so we didn't have to worry about accessing images that may be hosted in a private registry. When it comes to Helm Charts, we need to look at if and how the images are avaialble to be modified via the Values file.
-
-When using private images, you must first configure the Vendor Portal to have access to those images. There are two options:
-
-* Use Replicated as a pull-through proxy - This is an option if you are using a private cloud registry like Elastic Container Registry (ECR). To link the registry you would need to provide the credentials of a user with `pull` permissions.
-
-* Push your images to the Replicated proxy - This option is for when your private container registry is behind a firewall or otherwise inaccessible to us or it's easier for you to push to our registry than to give Replicated access to your registry.
-
-Depending on the approach taken, we may need modify image tags. If you opted to push your private images to our registry, then you would need to override your image tags to point to the Replicated registry. Usually these are exposed as fields in the ```Values.yaml``` file.
-
-If you opt to use our registry, you should not have to change your image tags, as long as they are exposed in the `Values.yaml` as an `image` field. At deploy time, the App Manager will try to pull the images using your tags. When it receives an unauthorized response, it will append the image with our proxy path (i.e.,  `proxy.replicated.com.proxy/your-app/`)
-
-If you have a field with a different name, Replicated will not know that it references a registry, repository path or image tag and will not modify it. In those instances, you may need to override the value of that field and add the proxy prefix.
-
-## Preparing for Airgap
-
-### Managing Private Images
-
-When you go to build an airgap bundle, the Air Gap Builder will go through the `Values.yaml` and look for any `image` fields. If we find any, they are pulled and included in the bundle.
-
-### Manging Public Images
-
-Depending on the complexity of your application, you may rely on one or more containers that are pulled from Public Registries, like Docker hub. If these images are exposed in the `Values.yaml`, then the Air Gap Builder should include them in the bundle. If they are not, however, you should then add them to the `additionalImages` section of the `kots-app.yaml` file.
-
-### Optional Images
-
-Another thing to consider about images is making sure that all of them will be available in an airgap install. For example,  you may have a service like database that they customer has the option to deploy or connect to their own instance. In an airgap installation, you would need to make sure that the image is included in the bundle in case a user selects to deploy the service.
-
-### Base64 Icon
-
-By default, the icon used in the Admin Console is a publicly available image via the internet. In an airgap scenario, you will need to download the logo you are using and convert it to base64. There are several utilities out there to do this. Once you have the Base64 encoding (or in your clipboard), we recommend that you add this field to the bottom of the `kots-app.yaml` file for readability purposes
+Another thing to consider about images is making sure that all of them will be available in an airgap install. For example,  you may have a service like database that they customer has the option to deploy or connect to their own instance. In an airgap installation, you would need to make sure that the image is included in the bundle in case a user selects to deploy the service. You can include optional charts in the Airgap bundle, by using the `builder` attribute. For more details on how Replicated creates the airgap bundles automatically, see the [Helm Air Gap Builder](https://docs.replicated.com/vendor/helm-airgap-builder).
 
 
 ## Using Multiple Charts
