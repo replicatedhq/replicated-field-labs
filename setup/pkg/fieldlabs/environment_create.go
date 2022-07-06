@@ -294,29 +294,6 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			appLabSlug := fmt.Sprintf("%s-%s", lab.Status.App.Slug, lab.Spec.Slug)
 			e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
 
-			// load yaml for releases first to ensure directories exist
-			kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
-			if err != nil {
-				return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-			}
-
-			for _, extraRelease := range lab.Spec.ExtraReleases {
-				kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
-				if err != nil {
-					return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-				}
-				lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
-					Spec: extraRelease,
-					YAML: kotsYAML,
-				})
-
-			}
-
-			kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
-			if err != nil {
-				return nil, errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
-			}
-
 			channel, err := e.getOrCreateChannel(lab)
 			if err != nil {
 				return nil, errors.Wrapf(err, "get or create channel %q", lab.Spec.Channel)
@@ -329,40 +306,67 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			}
 			lab.Status.Customer = customer
 
-			release, err := e.Client.CreateRelease(app.ID, kotsYAML)
-			if err != nil {
-				return nil, errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
-			}
-
-			lab.Status.Release = release
-
-			err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
-			if err != nil {
-				return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
-			}
-
-			for _, extraRelease := range lab.Status.ExtraReleases {
-				releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+			// load yaml for releases first to ensure directories exist
+			if labSpec.YAMLDir != "" {
+				kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
 				if err != nil {
-					return nil, errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+					return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
 				}
-				extraRelease.Release = releaseInfo
 
-				if extraRelease.Spec.PromoteChannel != "" {
+				for _, extraRelease := range lab.Spec.ExtraReleases {
+					kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
+					if err != nil {
+						return nil, errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
+					}
+					lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
+						Spec: extraRelease,
+						YAML: kotsYAML,
+					})
 
-					continue
+				}
+
+				release, err := e.Client.CreateRelease(app.ID, kotsYAML)
+				if err != nil {
+					return nil, errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
+				}
+
+				lab.Status.Release = release
+
+				err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
+				if err != nil {
+					return nil, errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
+				}
+
+				for _, extraRelease := range lab.Status.ExtraReleases {
+					releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+					if err != nil {
+						return nil, errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+					}
+					extraRelease.Release = releaseInfo
+
+					if extraRelease.Spec.PromoteChannel != "" {
+
+						continue
+					}
 				}
 			}
 
-			installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
-			if err != nil {
-				return nil, errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
-			}
-			lab.Status.Installer = installer
+			if labSpec.K8sInstallerYAMLPath != "" {
+				kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
+				if err != nil {
+					return nil, errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
+				}
 
-			err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
-			if err != nil {
-				return nil, errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+				installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
+				if err != nil {
+					return nil, errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
+				}
+				lab.Status.Installer = installer
+
+				err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
+				if err != nil {
+					return nil, errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+				}
 			}
 
 			licenseContents, err := e.Client.DownloadLicense(app.ID, customer.ID)

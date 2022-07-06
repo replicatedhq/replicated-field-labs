@@ -121,7 +121,6 @@ In this lab, we have already created an application for you, but there are no re
 * We will not use the default nginx app, so let's delete the following files:
     * example-configmap.yaml
     * example-deployment.yaml
-    * example-ingress.yaml
     * example-service.yaml
 
     <p align="center"><img src="img/delete-files.png" alt="files-to-delete" width="1000" margin=auto/></img></p>
