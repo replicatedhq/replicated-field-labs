@@ -45,17 +45,17 @@ The repository we are about to clone contains multiple Helm Charts. While this l
 ```bash
 git clone https://github.com/bitnami/charts.git
 cd charts
-git fetch origin a5abff4d7406bb3874674b005205961b240b7dd3
-git reset --hard a5abff4d7406bb3874674b005205961b240b7dd3
+git fetch origin 5277d698528bc4a78389f83c7e6fa4c42a6e63ad
+git reset --hard 5277d698528bc4a78389f83c7e6fa4c42a6e63ad
 ```
 
 The above commands should result in a message similar to:
 
 ```bash
-HEAD is now at a5abff4d7 [bitnami/wordpress] Release 14.0.7 updating components versions
+HEAD is now at 5277d6985 [bitnami/wordpress] Release 14.0.7 (#10066)
 ```
 
-This command will now download all the helm chart files. In order to include a Helm Chart in Replicated, we have to package it first.
+This command will have downloaded all the bitnami helm chart files. In order to include a Helm Chart in Replicated, we have to package it first.
 
 ### 2. Change Directory to the Wordpress Chart
 
