@@ -65,11 +65,11 @@ locals {
     for name in local.names :
     name =>
     {
-      ips = [ for iname, ip in local.instance_ips :
+      ips = [for iname, ip in local.instance_ips :
         "${ip}\tlab${split("lab", iname)[1]}\t# ${iname}"
         if length(regexall(name, iname)) > 0
       ]
-      labnames = join(", ", [ for iname, ip in local.instance_ips :
+      labnames = join(", ", [for iname, ip in local.instance_ips :
         regex("lab(\\d+)", iname)[0]
         if length(regexall(name, iname)) > 0
       ])
@@ -261,7 +261,7 @@ IPs for your instances are below — you can use them raw, or drop the snippet i
 
 ${join("\n", each.value.ips)}
 
-If if you get stuck, feel free to reach out. If all goes well, we could provision these same labs for folks on your team if you think it would help.
+If you get stuck, feel free to reach out. If all goes well, we could provision these same labs for folks on your team if you think it would help.
 
 Best,
 ${title(var.user)}
