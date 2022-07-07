@@ -8,7 +8,7 @@ In this lab, we'll cover the following:
 * Packaging a Helm Chart from source
 * Adding a Helm Chart to a Replicated Application Release
 * Mapping config fields to fields in the Values file
-* Deploy the Helm Chart using the Replicated Application Manager
+* Deploying the Helm Chart using the Replicated Application Manager
 * Cover how to manage private images
 * Cover how to manage multiple HelmCharts in a single Replicated Application Release
 
