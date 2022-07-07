@@ -34,7 +34,7 @@ https://$IP_ADDRESS:8800
 in a browser. If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access it at
 
 
-[https://lab00-hello-world:8800](https://lab00-hello-world:8800)
+[https://lab01-ui-analyzers:8800](https://lab01-ui-analyzers:8800)
 
 
 The password to your instance UI will be provided as part of the lab, or you can reset by SSHing the node and running
