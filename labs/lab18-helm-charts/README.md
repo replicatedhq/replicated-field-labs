@@ -1,7 +1,7 @@
 Lab 18: Using Helm Charts
 =========================================
 
-In this lab, you will learn how to include a Helm Chart in your Replicated Application. For this lab we wil use a simpler HelmChart, but the concepts covered here should help you understand how to handle more complex and larger charts. 
+In this lab, you will learn how to include a Helm Chart in your Replicated Application. For this lab we wil use a simpler HelmChart, but the concepts covered here should help you understand how to handle larger and more complex charts. 
 
 In this lab, we'll cover the following:
 
