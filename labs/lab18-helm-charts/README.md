@@ -10,7 +10,7 @@ In this lab, we'll cover the following:
 * Mapping config fields to fields in the Values file
 * Deploying the Helm Chart using the Replicated Application Manager
 * Managing private images
-* Cover how to manage multiple HelmCharts in a single Replicated Application Release
+* Managing multiple HelmCharts in a single Replicated Application Release
 
 ## Prerequisites
 
