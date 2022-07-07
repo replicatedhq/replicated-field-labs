@@ -51,7 +51,7 @@ git reset --hard 5277d698528bc4a78389f83c7e6fa4c42a6e63ad
 
 The above commands should result in a message similar to:
 
-```bash
+```
 HEAD is now at 5277d6985 [bitnami/wordpress] Release 14.0.7 (#10066)
 ```
 
