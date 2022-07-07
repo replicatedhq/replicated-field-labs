@@ -14,7 +14,7 @@ In this lab, we'll cover the following:
 
 ## Prerequisites
 
-While not an absolute requirement, this lab is written with *nix systems in mind, not Windows. If you are following this lab on a Windows machine and find gaps, please let us know.
+While not an absolute requirement, this lab is written with *nix workstations in mind, not Windows. If you are following this lab on a Windows machine and find gaps, please let us know.
 
 You will need to have the following installed:
 
