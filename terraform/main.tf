@@ -91,7 +91,7 @@ resource "google_compute_instance" "shared_squid_proxy" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1804-lts"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
       size  = 10
     }
   }
@@ -155,7 +155,7 @@ resource "google_compute_instance" "airgapped-instance" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1804-lts"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
       size  = each.value.instance.boot_disk_gb
     }
   }
@@ -197,7 +197,7 @@ resource "google_compute_instance" "kots-field-labs" {
   }
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1804-lts"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
       size  = each.value.boot_disk_gb
     }
   }
