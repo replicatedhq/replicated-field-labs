@@ -87,7 +87,7 @@ version: 14.0.7
 
 To package the chart, we are going to run the `helm package` command.
 
-As mentioned above, this Helm Chart includes some dependencies. To ensure that these are included in this Chart, include the `-u` option. Also note that we are passing a `.` for the location of the chart. This is where the top level ```Chart.yaml``` file is located. For more details on this command, please refer to the [Helm Documentation](https://helm.sh/docs/helm/helm_package/#helm).
+As mentioned above, this Helm Chart includes some dependencies. To ensure that these are included in this Chart, include the `-u` option. Also note that we are passing a `.` for the location of the chart. This argument indicates the path to a directory containing the top level ```Chart.yaml``` file. For more details on `helm package`, please refer to the [Helm Documentation](https://helm.sh/docs/helm/helm_package/#helm).
 
 ```bash
 helm package -u .
