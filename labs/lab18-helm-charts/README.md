@@ -94,7 +94,7 @@ helm package -u .
 ```
 The command may display some warnings, but ultimately should display an output similar to
 
-```bash
+```
 Successfully packaged chart and saved it to: /Users/fernandocremer/test/tests/charts/bitnami/wordpress/wordpress-14.0.7.tgz
 
 ```
