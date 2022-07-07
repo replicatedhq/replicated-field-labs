@@ -51,7 +51,7 @@ An HTTP proxy has been provisioned to be shared by all lab participants.
 It will have a dynamic private IP but for simplicity we'll can use the DNS entry which is built from your application name.
 
 ```
-${REPLICATED_APP}-kots-field-labs-squid-proxy
+${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy
 ```
 
 ### The proxy environment
@@ -63,6 +63,7 @@ To start, let's SSH via the jump box and explore our server in the private netwo
 export JUMP_BOX_IP= # jump box ip address
 export REPLICATED_APP=... # your app slug
 export FIRST_NAME=... # your first name
+export REPLICATED_VENDOR_PREFIX=... # normally the first part of REPLICATED_APP slug
 
 ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab06-proxy
 ```
@@ -78,13 +79,13 @@ ping kubernetes.io
 However, we are able to tunnel out through the proxy server
 
 ```shell
-curl -x ${REPLICATED_APP}-kots-field-labs-squid-proxy:3128 https://kubernetes.io
+curl -x ${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128 https://kubernetes.io
 ```
 
 You can use an api.replicated.com endpoint to check the observed egress IP address of your request
 
 ```
-curl -x ${REPLICATED_APP}-kots-field-labs-squid-proxy:3128 https://api.replicated.com/market/v1/echo/ip
+curl -x ${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128 https://api.replicated.com/market/v1/echo/ip
 ```
 
 #### Question 1
@@ -93,14 +94,14 @@ Which IP address was printed by the above command?
 
 <details>
   <summary>Answer</summary>
-The IP above will be the public IP of the <code>${REPLICATED_APP}-kots-field-labs-squid-proxy</code> server.
+The IP above will be the public IP of the <code>${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy</code> server.
 </details>
 
 
 We can also use environment variables to configure a proxy. Let's try setting `HTTP_PROXY`. 
 
 ```shell
-export HTTP_PROXY=${REPLICATED_APP}-kots-field-labs-squid-proxy:3128
+export HTTP_PROXY=${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128
 curl https://api.replicated.com/market/v1/echo/ip
 ```
 
@@ -116,7 +117,7 @@ It looks like that didn't work -- what environment variable should we set to ena
 
 We can use <code>HTTPS_PROXY</code> in this case since we are making a call with HTTPS and not plain HTTP.
 
-    export HTTPS_PROXY=${REPLICATED_APP}-kots-field-labs-squid-proxy:3128
+    export HTTPS_PROXY=${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128
     curl https://api.replicated.com/market/v1/echo/ip
 
 For more details, explore https://everything.curl.dev/usingcurl/proxies#proxy-environment-variables
@@ -157,8 +158,8 @@ We'll use the environment variable method today, but you can also use a [kurl in
 
 
 ```shell
-export HTTP_PROXY=${REPLICATED_APP}-kots-field-labs-squid-proxy:3128
-export HTTPS_PROXY=${REPLICATED_APP}-kots-field-labs-squid-proxy:3128
+export HTTP_PROXY=${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128
+export HTTPS_PROXY=${REPLICATED_VENDOR_PREFIX}-kots-field-labs-squid-proxy:3128
 # use install script we grabbed above, adding a -E flag to sudo
 curl -sSL https://k8s.kurl.sh/dx411-dex-lab06-proxy | sudo -E bash
 ```
