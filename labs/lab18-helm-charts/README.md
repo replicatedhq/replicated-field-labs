@@ -33,7 +33,7 @@ We will be running some commands on the terminal and will download some files. L
 
 ```bash
 mkdir repl-helm-lab
-   $ cd repl-helm-lab
+cd repl-helm-lab
 
 ```
 Next, we are going to download the nescessary files to package our Helm Chart.
