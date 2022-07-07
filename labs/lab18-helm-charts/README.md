@@ -32,7 +32,7 @@ For this lab we are going to use the WordPress [Helm Chart](https://github.com/b
 We will be running some commands on the terminal and will download some files. Let's create a directory where we'll do our work
 
 ```bash
-   $ mkdir repl-helm-lab
+mkdir repl-helm-lab
    $ cd repl-helm-lab
 
 ```
