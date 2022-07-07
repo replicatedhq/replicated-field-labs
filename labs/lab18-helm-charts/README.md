@@ -25,7 +25,7 @@ You also should have received an invite to join Replicated. Make sure you accept
 
 ## Packaging Helm Chart
 
-For this lab we are going to use the WordPress [Helm Chart](https://github.com/bitnami/charts/tree/master/bitnami/wordpress) available from Bitnami. The Helm Chart includes a couple of sub charts (common and MariaDB) as dependencies. In order to ensure that future updates won't break this lab, we are going to be using a specific version of the chart, 14.0.7
+For this lab we are going to use the WordPress [Helm Chart](https://github.com/bitnami/charts/tree/master/bitnami/wordpress) available from Bitnami. The Helm Chart includes a couple of sub charts (common and MariaDB) as dependencies. In order to ensure that future updates won't break this lab, we are going to be using a specific version of the chart, 14.0.7.
 
 ### 0. Get Dev Environment ready
 
