@@ -125,7 +125,7 @@ In this lab, we have already created an application for you, but there are no re
 
     <p align="center"><img src="img/delete-files.png" alt="files-to-delete" width="1000" margin=auto/></img></p>
 
-* Now we are ready to add the Chart! Open a window and browse to the directory where the Helm Chart we created is located.
+* Now we are ready to add the Chart! Open a window and browse to the directory where the Helm Chart we created is located. From your terminal on macos, you can use `open .` to quickly get a Finder window open.
 * Drag and Drop it where the Replicated Release Files navigator as shown below
     <p align="center"><img src="img/dragchart.png" alt="drag and drop chart" width="1000" margin=auto/></img></p>
 
