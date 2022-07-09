@@ -163,7 +163,7 @@ Once you have the values, set them in your environment. If you are still in the 
 ```bash
 cd ../../..
 ```
-Now to set your environment variables:
+If you haven't already, set your environment variables:
 
 ```bash
 export REPLICATED_APP=...
