@@ -105,7 +105,7 @@ We will include this file in our Replicated Application Release.
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password. 
 
-In this lab, we have already created an application for you, but there are no releases created yet. We are going to cover creating the release with the UI and through the CLI. Going through the UI is easier and better if you just want to understand the basic concepts as it will automatically create resources for you. With the CLI, we'll take a more 'starting from scratch' approach. Later in the lab we'll be making changes to the application, and will only cover the CLI.
+In this lab, an application has already been created but there are no releases yet. We are going to cover creating the release with the UI and through the CLI. Attaching your chart through the UI is easier and better if you just want to understand the basic concepts as it will automatically create resources for you. Later in this lab, we'll cover using the Replicated CLI to create and update releases in a helm-based application.
 
 ### Using the UI
 
