@@ -173,7 +173,7 @@ export REPLICATED_API_TOKEN=...
 We need a directory that will contain the Helm Chart and the Replicated manifests. Let's create a directory for our application, and in there a `manifests` directory that will contain the manifests and helm chart.
 
 ```bash
-   $ mkdir helm-wordpress
+mkdir helm-wordpress
    $ cd helm-wordpress
    $ mkdir manifests
 ```
