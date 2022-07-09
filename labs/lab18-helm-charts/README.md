@@ -181,7 +181,7 @@ mkdir manifests
 We need to move the helm chart package we created previously to the manifests directory we just created. Depending on where your helm chart was created, the path in the example command below may be different.
 
 ```bash
-    $ mv ../charts/bitnami/wordpress/wordpress-14.0.7.tgz manifests
+mv ../charts/bitnami/wordpress/wordpress-14.0.7.tgz manifests
 ```
 
 Next, let's create a couple of manifests to finish our first release. Both of these manifests are Replicated [Custom Resources](https://docs.replicated.com/reference/custom-resource-about) and should be created in the `manifests` directory.
