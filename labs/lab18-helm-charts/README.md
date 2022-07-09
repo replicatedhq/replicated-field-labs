@@ -161,7 +161,7 @@ ahead of time.
 Once you have the values, set them in your environment. If you are still in the `charts` directory, let's get back to the root of the directory we created earlier
 
 ```bash
-    $ cd ../../..
+cd ../../..
 ```
 Now to set your environment variables:
 
