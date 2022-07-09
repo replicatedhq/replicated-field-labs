@@ -156,7 +156,7 @@ ahead of time.
 <p align="center"><img src="img/application-slug.png" alt="Application Slug" width="600" margin=auto/></img></p>
 
 
-`REPLICATED_API_TOKEN` should be set to the previously created user api token. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
+`REPLICATED_API_TOKEN` should be set to the previously created user api token. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md#2-configure-environment)
 
 Once you have the values, set them in your environment. If you are still in the `charts` directory, let's get back to the root of the directory we created earlier
 
