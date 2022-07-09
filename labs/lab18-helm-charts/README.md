@@ -145,7 +145,7 @@ As a last step, save the release we've created
 
 ### Using the CLI
 
-For the CLI, you should have already completed the [Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md) Lab, as it covers how to set up your local Dev environment with the Replicated CLI.
+Before working with the Replicated CLI, you should have already completed the [Hello World Lab](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md) which covers how to set up a local dev environment with the Replicated CLI.
 
 Make sure to update your environment variables to interact with this application. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
 
