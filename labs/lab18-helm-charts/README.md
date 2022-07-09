@@ -150,7 +150,7 @@ Before working with the Replicated CLI, you should have already completed the [H
 Make sure to update your environment variables to interact with this application. See [Get Started -> Steps 1 and 2](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md)
 
 
-`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
+`REPLICATED_APP` should be set to the app slug from the Settings page.
 ahead of time.
 
 <p align="center"><img src="img/application-slug.png" alt="Application Slug" width="600" margin=auto/></img></p>
