@@ -175,7 +175,7 @@ We need a directory that will contain the Helm Chart and the Replicated manifest
 ```bash
 mkdir helm-wordpress
 cd helm-wordpress
-   $ mkdir manifests
+mkdir manifests
 ```
 
 We need to move the helm chart package we created previously to the manifests directory we just created. Depending on where your helm chart was created, the path in the example command below may be different.
