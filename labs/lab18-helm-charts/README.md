@@ -174,7 +174,7 @@ We need a directory that will contain the Helm Chart and the Replicated manifest
 
 ```bash
 mkdir helm-wordpress
-   $ cd helm-wordpress
+cd helm-wordpress
    $ mkdir manifests
 ```
 
