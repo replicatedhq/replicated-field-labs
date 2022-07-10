@@ -375,7 +375,7 @@ func (e *EnvironmentManager) createVendorLabs(envs []Environment, labSpecs []Lab
 			}
 
 			kotsProvisionScript := fmt.Sprintf(`
-curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash &> kURL.output
+curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash -s exclude-builtin-host-preflights &> kURL.output
 `, lab.Status.App.Slug, lab.Spec.ChannelSlug)
 
 			appProvisioningScript := fmt.Sprintf(`

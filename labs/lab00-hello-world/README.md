@@ -99,7 +99,7 @@ Now, you'll need to set up environment variables to interact with vendor.replica
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
 ahead of time.
 
-<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
+<p align="center"><img src="./img/cli-setup-quickstart-settings.png" width=600></img></p>
 
 Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings) page:
 > Note: Ensure the token has "Write" access or you'll be unable create new releases.
@@ -334,7 +334,7 @@ To complete the installation, visit the URL noted previously in your browser.  T
 
 Click "Continue to Setup" in the browser to continue to the secure Admin Console.
 
-<!-- TODO: insert picture of insecure landing page. -->
+<p align="center"><img src="./img/bypass-browser-tls.png" width=600></img></p>
 
 Accept the insecure certificate.
 
@@ -345,28 +345,28 @@ Click the "Skip & continue" link in the admin console.
 
 > Note, For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
-![Console TLS](https://kots.io/images/guides/kots/admin-console-tls.png)
+<p align="center"><img src="./img/admin-console-tls.png" width=600></img></p>
 
 Paste in the password noted previously on the password screen. The password is shown in the output from the installation script.
 
-![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
+<p align="center"><img src="./img/admin-console-login.png" width=600></img></p>
 
 Until this point, this server is just running Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application. Use the license file we downloaded in step 5.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
 
-![Upload License](https://kots.io/images/guides/kots/upload-license.png)
+<p align="center"><img src="./img/upload-license.png" width=600></img></p>
 
 Preflight checks are designed to ensure this server has the minimum system and software requirements to run the application.
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
 If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
+<p align="center"><img src="./img/preflight.png" width=600></img></p>
 
 
 You will be presented with the application dashboard where you can see various information and metrics. Click the Continue button to proceed to the dashboard.
 
-![Cluster](https://kots.io/images/guides/kots/application.png)
+<p align="center"><img src="./img/application.png" width=600></img></p>
 
 Run the following in the console to show the nginx application we just deployed:
 ```shell script
@@ -379,7 +379,7 @@ Click the "Open Lab 0" link in the dashboard to open the NGINX server.
 
 Since this example uses the default nginx application, you should see a basic (perhaps familiar) nginx server running:
 
-![Cluster](https://kots.io/images/guides/kots/example-nginx.png)
+<p align="center"><img src="./img/example-nginx.png" width=600></img></p>
 
 Next, we'll walk through creating and delivering an update to the application we just installed.
 
@@ -427,7 +427,7 @@ The Admin Console can be configured to check for new updates at regular interval
 You should see a new release in the history now.
 You can click the "View diff" link to open a modal comparing the releases. For now let's click "Deploy" to roll out this new version.
 
-![View Update](https://kots.io/images/guides/kots/view-update.png)
+<p align="center"><img src="./img/view-update.png" width=800></img></p>
 
 Clicking the Deploy button will apply the new YAML which will change the number of nginx replicas, this should only take a few seconds.
 You can verify this on the server by running
