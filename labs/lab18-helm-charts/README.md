@@ -448,6 +448,6 @@ Another thing to consider about images is making sure that all of them will be a
 
 ## Using Multiple Charts
 
-In this lab we have used a single chart that contained two sub-charts. Note that a Replicated Application Release can contain more than one Helm chart. If you do need to include more than one Helm chart, it is important to understand the sequence by which these charts are deployed. 
+In this lab we have used a single chart that contained two sub-charts. Note that a Replicated Application Release can contain more than one Helm chart. If you do need to include more than one Helm chart, it is important to understand the sequence in which these charts are deployed. 
 
 Starting with version 1.69* of App Manager, charts are deployed in alphanumeric order. If this is not the sequence that you desire, you can use the `weight` field in the corresponding Replicated `kind:helmchart` file. The default value is 0 for any charts that do not have this field specified. Charts will be deployed in ascending numeric order based on this field. *For charts that have the same weight specified, then alpha numeric order takes precendence.
