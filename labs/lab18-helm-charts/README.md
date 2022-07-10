@@ -419,7 +419,7 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
       wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
 ++    service:
 ++      type: NodePort
-++    ports:
+++      ports:
 ++      http: 8080
 ++      nodePorts:
 ++        http: "8080"
