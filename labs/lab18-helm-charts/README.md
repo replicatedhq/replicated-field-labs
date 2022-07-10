@@ -331,7 +331,7 @@ Edit the `wordpress.yaml` file and scroll down to the values section and make th
 Now we are ready to create our next release:
 
 ```bash
-    $ replicated release create --auto --promote lab18-helm-charts -y
+replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 ## Update the Application
