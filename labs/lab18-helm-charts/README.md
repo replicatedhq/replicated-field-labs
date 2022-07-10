@@ -283,7 +283,7 @@ In the KOTS App Manager UI, you should see the App Status as reporting "Ready":
 Now that we've gotten the Wordpress chart running with the default configuration, we'll take some of the helm chart values and make them user-configurable in App Manager.
 
 We are going to make two changes:
-* Map the `wordpressBlogName` field in the Values.yaml file to a UI field.
+* Map the `wordpressBlogName` field in the Values.yaml file to a user-configurable field in the App Manager UI.
 * Override the default port of 80 to 8080.
 
 ### Copy the field name from the Values file
