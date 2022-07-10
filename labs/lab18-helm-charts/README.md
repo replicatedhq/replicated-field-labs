@@ -313,7 +313,7 @@ spec:
 
 ```
 
-As you can see, we are using the values field name as the config field name and used for the title, which is what the end user will see.
+While not required, it is generally recommended to match the `name` field in Config items to helm value key they'll be used to map, and then use a more descriptive name for the `title` which will be displayed in the UI.
 
 
 ### Map the Config file field with the field in the Values file
