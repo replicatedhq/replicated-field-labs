@@ -245,7 +245,7 @@ git init
 Now we are ready to create our first release:
 
 ```bash
-    $ replicated release create --auto --promote lab18-helm-charts -y
+replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 ## Deploy the Application
