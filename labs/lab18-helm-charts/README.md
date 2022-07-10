@@ -337,6 +337,7 @@ replicated release create --auto --promote lab18-helm-charts -y
 ## Update the Application
 
 Let's see our changes on the Admin Console. Click on Check for Update as shown below.
+<img width="880" alt="Screen Shot 2022-07-10 at 2 39 25 PM" src="https://user-images.githubusercontent.com/3730605/178159601-7ed76d10-46f7-4a8a-90cc-6f17a42e9284.png">
 
 
 Deploy the new version of our app
