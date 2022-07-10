@@ -263,6 +263,20 @@ curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
 Once this kicks off, consider grabbing a cup of coffee as the Kubernetes installation can take 5-10 minutes 🙂
 
 Once the install is complete, follow the IP provided and continue with the installation steps in the App Manager UI to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
+When the deployment is finished, you should be able to see the wordpress pods running with `1/1` containers Ready from the server:
+
+    $ kubectl get pod
+    
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    kotsadm-5679796d6b-gjzzm              1/1     Running   0          23m
+    kotsadm-postgres-0                    1/1     Running   0          23m
+    kurl-proxy-kotsadm-74994888d8-qm8nc   1/1     Running   0          23m
+    wordpress-7b77bfd7ff-tdck5            1/1     Running   0          2m10s
+    wordpress-mariadb-0                   1/1     Running   0          2m10s
+    
+In the KOTS App Manager UI, you should see the App Status as reporting "Ready":
+
+<img width="836" alt="Screen Shot 2022-07-10 at 2 21 02 PM" src="https://user-images.githubusercontent.com/3730605/178159032-78a043fd-5cb2-4dee-bba0-8bc5c6bd070e.png">
 
 ## Mapping Field Values
 
