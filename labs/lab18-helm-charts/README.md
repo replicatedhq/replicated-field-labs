@@ -439,6 +439,7 @@ Create our next release using the `replicated` cli:
 Now that we have a new release available, let's update our deployed application to test the change.
 
 Click on **Check for Update** and click on **Deploy** once available. Once deployed, you should be able to browse to port `8080` and see Wordpress.
+<img width="880" alt="Screen Shot 2022-07-10 at 3 02 51 PM" src="https://user-images.githubusercontent.com/3730605/178160342-bb7c897d-1baa-46f4-a5d1-1503921d50de.png">
 
 # Additional Info
 
