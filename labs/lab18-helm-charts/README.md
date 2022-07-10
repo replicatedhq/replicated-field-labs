@@ -236,6 +236,7 @@ spec:
 ```
 
 Before we create our release, let's initialize git. We will use a command line option that uses Git metadata to determine the version label, channel to promote to and more.
+From the `repl-helm-lab/helm-wordpress` directory, run the following.
 
 ```bash
 git init
