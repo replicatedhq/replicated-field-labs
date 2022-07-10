@@ -338,7 +338,6 @@ replicated release create --auto --promote lab18-helm-charts -y
 
 Let's see our changes on the Admin Console. Click on Check for Update as shown below.
 
-Before you click on Deploy, note that now you have a Config tab with our field in it.
 
 Deploy the new version of our app
 
