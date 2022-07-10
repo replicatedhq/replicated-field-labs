@@ -266,7 +266,7 @@ Once the install is complete, follow the IP provided and continue with the insta
 
 ## Mapping Field Values
 
-Let's take some of the field values and map them to the ui!
+Now that we've gotten the Wordpress chart running with the default configuration, we'll take some of the helm chart values and make them user-configurable in App Manager.
 
 We are going to make two changes:
 * Map the `wordpressBlogName` field in the Values.yaml file to a UI field.
