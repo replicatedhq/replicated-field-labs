@@ -255,7 +255,7 @@ We now have something we can deploy! Before you log into the server provided, us
     replicated channel inspect lab18-helm-charts
 As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
 
-Once you are on the terminal, copy the "Embedded Cluster" install command from the channel (`lab18-helm-charts`). It should look like
+Once you are on the terminal, use the the "Embedded Cluster" install command from the `replicated channel inspect` command you ran about. It should look like
 ```
 curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
 ```
