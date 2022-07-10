@@ -207,7 +207,7 @@ spec:
 #### Adding wordpress.yaml
 
 The second Custom Resource we'll create is [Helm Chart](https://docs.replicated.com/reference/custom-resource-helmchart). This file declares an instance of the Wordpress Helm Chart as part of your application. `spec.chart.name` and `spec.chart.version` instruct Replicated which tar.gz to use for the Helm Release. If your application contains multiple, separate charts, you will need a manifest with kind `HelmChart` for each Chart you want to include. You do not need to define a `HelmChart` kind for any chart included as a sub-chart.
-
+Add the following to `manifests/wordpress.yaml`:
 ```yaml
 #wordpress.yaml
 apiVersion: kots.io/v1beta1
