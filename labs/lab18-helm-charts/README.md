@@ -260,7 +260,9 @@ Once you are on the terminal, copy the "Embedded Cluster" install command from t
 curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
 ```
 
-Go through the installation steps in kotsadm to install the application. You should have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), so this should be familiar.
+Once this kicks off, consider grabbing a cup of coffee as the Kubernetes installation can take 5-10 minutes 🙂
+
+Once the install is complete, follow the IP provided and continue with the installation steps in the App Manager UI to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
 
 ## Mapping Field Values
 
