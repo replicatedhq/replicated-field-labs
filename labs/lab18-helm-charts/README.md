@@ -239,7 +239,7 @@ Before we create our release, let's initialize git. We will use a command line o
 
 ```bash
 git init
-    $ git add .
+ git add .
     $ git commit -m "this is my first commit"
 ```
 Now we are ready to create our first release:
