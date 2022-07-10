@@ -433,7 +433,7 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
 Create our next release using the `replicated` cli:
 
 ```bash
-    $ replicated release create --auto --promote lab18-helm-charts -y
+replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 Now that we have a new release available, let's update our deployed application to test the change.
