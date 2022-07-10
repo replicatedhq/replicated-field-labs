@@ -421,7 +421,7 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
 ++      type: NodePort
 ++    ports:
 ++      http: 8080
-++    nodePorts:
+++      nodePorts:
 ++        http: "8080"
       mariadb:
         auth:
