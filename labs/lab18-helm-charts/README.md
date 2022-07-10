@@ -403,7 +403,7 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
 ++    ports:
 ++      http: 8080
 ++    nodePorts:
-++      http: "8080"
+++        http: "8080"
       mariadb:
         auth:
           rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
