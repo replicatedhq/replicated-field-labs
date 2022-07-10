@@ -241,7 +241,7 @@ From the `repl-helm-lab/helm-wordpress` directory, run the following.
 ```bash
 git init
  git add .
-    $ git commit -m "this is my first commit"
+git commit -m "this is my first commit"
 ```
 Now we are ready to create our first release:
 
