@@ -253,7 +253,7 @@ replicated release create --auto --promote lab18-helm-charts -y
 We now have something we can deploy! Before you log into the server provided, use the same steps from [Lab 0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md#6-getting-an-install-command) to get an install command for the `lab18-helm-charts` channel:
 
     replicated channel inspect lab18-helm-charts
-We now have something we can deploy! As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
+As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
 
 Once you are on the terminal, copy the "Embedded Cluster" install command from the channel (`lab18-helm-charts`). It should look like
 ```
