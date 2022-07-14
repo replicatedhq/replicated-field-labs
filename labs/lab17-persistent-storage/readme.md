@@ -2,7 +2,7 @@ Lab 1.17 Persistent Storage
 ==============================
 
 In this lab, we'll review best practices for integrating persistent stores like databases, queues, and caches. 
-We'll explore ways to give your end user the option to either embed an instance with the application, or connect your appplication to an external instance that they will manage. x
+We'll explore ways to give your end user the option to either embed an instance with the application, or connect your appplication to an external instance that they will manage. 
 
 In this lab we will use a sample app that will consume data from a database, which in this lab will be PostgreSQL. The app displays the list of databases available on the instance that it is connected to.
 
