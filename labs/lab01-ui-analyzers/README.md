@@ -28,13 +28,13 @@ If you want to get the most of out these labs, use the presented debugging steps
 You can open the KOTS admin console on your node by navigating to
 
 ```
-https://$IP_ADDRESS:8800
+https://$IP_ADDRESS:30880
 ```
 
 in a browser. If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access it at
 
 
-[https://lab01-ui-analyzers:8800](https://lab01-ui-analyzers:8800)
+[https://lab01-ui-analyzers:30880](https://lab01-ui-analyzers:30880)
 
 
 The password to your instance UI will be provided as part of the lab, or you can reset by SSHing the node and running

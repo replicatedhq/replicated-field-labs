@@ -236,13 +236,13 @@ You must create a port forward from your workstation in order to access the UI l
 export FIRST_NAME=... # your firstname (lowercase)
 export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab08-airgap-lite:8800 -L 8888:${REPLICATED_APP}-lab08-airgap-lite:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
+ssh -NL 30880:${REPLICATED_APP}-lab08-airgap-lite:30880 -L 8888:${REPLICATED_APP}-lab08-airgap-lite:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 At this point, Kubernetes and the admin console are running inside the air gapped server, but the application is not deployed yet.
 
 To complete the installation:
-1. Visit http://localhost:8800 in your browser.
+1. Visit http://localhost:30880 in your browser.
 
 1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
 

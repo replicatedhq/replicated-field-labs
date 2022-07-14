@@ -283,7 +283,7 @@ You should expect output like this:
 
 ```text
 
-Kotsadm: http://[ip-address]:8800
+Kotsadm: http://[ip-address]:30880
 Login with password (will not be shown again): [password]
 
 
@@ -421,7 +421,7 @@ make release
 
 ### Update the Test Server
 
-To install and test this new release, we need to connect to the Admin Console dashboard on port :8800 using a web browser.
+To install and test this new release, we need to connect to the Admin Console dashboard on port :30880 using a web browser.
 At this point, it will likely show that our test application is "Up To Date" and that "No Updates Are Available".
 The Admin Console can be configured to check for new updates at regular intervals but for now we'll trigger a check manually by clicking "Check for Updates".
 You should see a new release in the history now.

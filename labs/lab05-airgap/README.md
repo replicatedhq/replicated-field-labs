@@ -299,11 +299,11 @@ export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
 export FIRST_NAME=... # your first name
 
-ssh -NL 8800:${REPLICATED_APP}-lab05-airgap:8800 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
+ssh -NL 30880:${REPLICATED_APP}-lab05-airgap:30880 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
-To complete the installation, visit http://localhost:8800 in your browser.
+To complete the installation, visit http://localhost:30880 in your browser.
 
 Click "**Continue and Setup**" in the browser to continue to the secure Admin Console.
 
