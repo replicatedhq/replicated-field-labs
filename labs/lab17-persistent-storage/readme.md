@@ -141,18 +141,25 @@ spec:
           value: /var/lib/postgresql/data/pgdata
         # create a db called "postgres"
         - name: POSTGRES_DB
-          value: postgres
+          value: "postgres"
         # create admin user with name "postgres"
         - name: POSTGRES_USER
-          value: postgres
+          value: "postgres"
+        - name: PGUSER
+          value: "postgres"
         # use admin password from secret
         - name: POSTGRES_PASSWORD
-          value: postgres
+          value: "postgres"
+        - name: POD_IP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        ports:
+        - name: postgresql
+          containerPort: 5432  
         image: postgres:10
         name: postgres
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
-          name: pgdata
+          name: postgres-pvc
       volumes:
       - name: postgres-pvc
         persistentVolumeClaim:
@@ -172,7 +179,9 @@ spec:
 
 Create a new release of the application with these changes, and update the deployed application in the Replicated Admin Console.
 
-Clicking on the 'Open Lab 17' button should now display the databases available in the instance deployed with the application.
+Clicking on the 'Open Lab 17' button should now display the databases available in the instance deployed with the application. It should display something similar to the screenshot below:
+
+<img src="./content/success.png" width=450></img>
 
 ### Best Practice: Use a Secret for the Postgres
 

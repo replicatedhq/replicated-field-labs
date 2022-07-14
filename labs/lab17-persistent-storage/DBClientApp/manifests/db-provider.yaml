@@ -16,61 +16,37 @@ spec:
         app: repl-db-provider
     spec:
       containers:
-      - image: postgres:10
-        name: postgres
-        ports:
-        - name: postgres
-          containerPort: 5432
-          protocol: TCP 
-        env:
+      - env:
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         # create a db called "postgres"
         - name: POSTGRES_DB
-          value: postgres
+          value: "postgres"
         # create admin user with name "postgres"
         - name: POSTGRES_USER
-          value: postgres
+          value: "postgres"
+        - name: PGUSER
+          value: "postgres"
         # use admin password from secret
         - name: POSTGRES_PASSWORD
-          value: postgres
+          value: "postgres"
         - name: POD_IP
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: status.podIP  
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        ports:
+        - name: postgresql
+          containerPort: 5432  
+        image: postgres:10
+        name: postgres
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
-          name: repl-db-pvc
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - exec pg_isready --host $POD_IP
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-          failureThreshold: 6
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - exec pg_isready --host $POD_IP
-          initialDelaySeconds: 5
-          timeoutSeconds: 3
-          periodSeconds: 5
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi  
+          name: postgres-pvc
       volumes:
-      - name: repl-pvc-pvc  
+      - name: postgres-pvc
         persistentVolumeClaim:
-          claimName: repl-db-pvc
+          claimName: postgres-pvc
   volumeClaimTemplates:
   - metadata:
-      name: repl-db-pvc
+      name: postgres-pvc
     spec:
       accessModes:
       - ReadWriteOnce
