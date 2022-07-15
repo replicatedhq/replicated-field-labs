@@ -55,11 +55,12 @@ As we can see, the application is not able to connect to a postgres service. Our
 
 To get the app to a 'working order', we need a database. We will start simple and throughout the lab, we will make modifications based on best practices and real world scenarios. 
 
-To start, we will add a database to our deployment and will hard code most values. To get us started we will add the following to our application:
+To start, we will add a database to our deployment and will hard code most of the values. To get us started we will add the following to our application:
 
-* A PVC for Postgres to use for storage
-* A Service that will allow our app to connect to Postgres
-* A Postgres StatefulSet Deployment
+* A [PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for Postgres to use for storage
+* A [secret](https://kubernetes.io/docs/concepts/configuration/secret/) to store a randomly generated password for Postgres
+* A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) that will allow our app to connect to Postgres
+* A Postgres [StatefulSet](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/) Deployment
 
 As covered in the [Hello World Lab](../lab00-Hello_World), we need to get our local dev environment set up. As mentioned earlier, use the files found [here](./manifests) as a starting point. Make sure to set your ```REPLICATED_API_TOKEN``` and ```REPLICATED_APP``` environment variables.
 
@@ -86,6 +87,47 @@ spec:
       storage: "100Gi"
 
 ```
+### Adding the Secret
+
+To add a little layer of security, we are going to randomly generate a string that we'll add to a secret which will be used by the Postgres StatefulSet and also the application as the password for the default `postgres` user.
+
+To generate a random string we'll take advantage of the [Random String](https://docs.replicated.com/reference/template-functions-static-context#randomstring) Template Function. While we could use this template function in the secret definition itself, we need to ensure that this value is persisted between upgrades so we need to store the generate the value and store it, an then have the secret reference the generated/stored value on upgrades.
+
+To do this, we'll add a [Config](https://docs.replicated.com/reference/custom-resource-config) resource to our application to include a hidden field which will we use to generate the random string and persist it between upgrades.
+
+Create a new file with the following contents:
+
+```yaml
+#kots-config.yaml
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: config-sample
+spec:
+  groups:
+    - name: database
+      title: Database
+      items:        
+        - name: embedded_postgres_password
+          type: password
+          hidden: true
+          value: "{{repl RandomString 32}}"
+```
+
+Now that we have defined our [hidden](https://docs.replicated.com/reference/custom-resource-config#hidden) field that generates the random string, we now need to reference this value in the secret definition.
+
+we'll create a secret to store the root password for our embedded postgres instance.
+
+```yaml
+# postgres-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres
+data:
+  DB_PASSWORD: '{{repl ConfigOption "embedded_postgres_password" | Base64Encode }}'
+```
+
 
 ### Adding the Service
 
@@ -108,7 +150,6 @@ spec:
     targetPort: postgresql
   selector:
     app: repl-db-provider
-
 ```
 
 ### Adding the StatefulSet
@@ -149,13 +190,16 @@ spec:
           value: "postgres"
         # use admin password from secret
         - name: POSTGRES_PASSWORD
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: DB_PASSWORD
         - name: POD_IP
           valueFrom: { fieldRef: { fieldPath: status.podIP } }
         ports:
         - name: postgresql
           containerPort: 5432  
-        image: postgres:10
+        image: postgres:9.6
         name: postgres
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
@@ -183,118 +227,6 @@ Clicking on the 'Open Lab 17' button should now display the databases available 
 
 <img src="./content/success.png" width=450></img>
 
-### Best Practice: Use a Secret for the Postgres
-
-In our initial deployment, we hard coded the password used to connect to Postgres. To add a little layer of security, we are going to randomly generate a string that we'll add to a secret which will be used by the Postgres StatefulSet and also the application.
-
-To generate a random string we'll take advantage of the `{{repl RandomString }}` Template Function.
-
-Create a new file to define the secret with the following contents:
-
-```yaml
-#kots-config.yaml
-apiVersion: kots.io/v1beta1
-kind: Config
-metadata:
-  name: config-sample
-spec:
-  groups:
-    - name: database
-      title: Database
-      items:        
-        - name: embedded_postgres_password
-          type: password
-          value: "{{repl RandomString 32}}"
-```
-
-We then need to reference this value in the secret definition.
-
-we'll create a secret to store the root password for our embedded postgres instance.
-
-```yaml
-# postgres-secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres
-data:
-  DB_PASSWORD: '{{repl ConfigOption "embedded_postgres_password" | Base64Encode }}'
-```
-
-Now that we have the secret defined, we need to let the database provider to use this as the password for the 'postgres' user.
-
-
-```yaml
-            - name: DB_PASSWORD
-              value: postgres
-```
-
-and replace it with
-
-```yaml
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres
-                  key: DB_PASSWORD
-```
-
-The full Deployment should now look like:
-
-```yaml
-# db-provider.yaml
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: repl-db-provider
-  labels:
-    app: repl-db-provider
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: repl-db-provider
-  serviceName: repl-db-provider-service
-  template:
-    metadata:
-      labels:
-        app: repl-db-provider
-    spec:
-      containers:
-      - env:
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
-        # create a db called "postgres"
-        - name: POSTGRES_DB
-          value: postgres
-        # create admin user with name "postgres"
-        - name: POSTGRES_USER
-          value: postgres
-        # use admin password from secret
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: DB_PASSWORD
-              name: postgres
-        image: postgres:10
-        name: postgres
-        volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: pgdata
-      volumes:
-      - name: postgres-pvc
-        persistentVolumeClaim:
-          claimName: postgres-pvc
-  volumeClaimTemplates:
-  - metadata:
-      name: postgres-pvc
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
-```
 
 ## Supporting An External Database
 
@@ -306,7 +238,6 @@ In many enterprises, you may be required to connect to their own database instan
 1. Update the workloads associated to the PostgreSQL `statefulset` so they will only be deployed when they select embedded.
 
 ### User-Facing Configuration
-
 
 The first step here is to present that option to the user, then we'll walk through implementing each scenario in KOTS. 
 The `kots.io/v1beta1` `Config` resource controls what configuration options are presented to the end user. 
