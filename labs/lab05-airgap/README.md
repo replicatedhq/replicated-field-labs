@@ -283,7 +283,18 @@ sudo bash install.sh airgap
 
 At the end, you should see a `Installation Complete` message as shown below. Since the instance is Air Gap, we'll need to create a port forward to access the UI from your workstation in the next step.
 
-![kurl-password](img/kurl-password.png)
+```text
+configmap/kurl-config created
+
+
+		Installation
+		  Complete ✔
+
+
+Kotsadm: http://10.128.1.47:30880
+Login with password (will not be shown again): iunIEfPyc
+This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
+```
 
 ***
 ## Accessing the UI via SSH tunnel, Configuring the instance
@@ -299,7 +310,7 @@ export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
 export FIRST_NAME=... # your first name
 
-ssh -NL 30880:${REPLICATED_APP}-lab05-airgap:30880 -L 8888:${REPLICATED_APP}-lab05-airgap:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
+ssh -NL 30880:${REPLICATED_APP}-lab05-airgap:30880 -L 30888:${REPLICATED_APP}-lab05-airgap:30888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 This will run in the foreground, and you wont see any output. At this point, Kubernetes and the Admin Console are running inside the air gapped server, but the application isn't deployed yet.
@@ -338,7 +349,7 @@ Once uploaded `Preflight Checks` will run. These are designed to ensure this ser
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
 If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
+![Preflight Checks](img/airgap-preflight.png)
 
 
 We'll find that the application is unavailable. 
@@ -407,7 +418,7 @@ preflight checks complete. Click **Deploy** to perform the upgrade.
 Click the **Application** button to navigate back to the main landing page. The app should now show as **Ready** status on the main dashboard.
 
 In order to access the application select **Open Lab 5**. 
-> **Note**: For this work successfully you'll need to ensure the SSH tunnel for the app's port (8888) was initialized.
+> **Note**: For this work successfully you'll need to ensure the SSH tunnel for the app's port (30888) was initialized.
 
 Congrats! You've installed and then upgraded an Air Gap instance!
 
@@ -416,14 +427,6 @@ Congrats! You've installed and then upgraded an Air Gap instance!
 
 As a final step, we'll review how to collect support bundles. However, what would we do in the case that the app installation itself was failing?
 We can try our `kots.io` support bundle from the Air Gap server.
-   
-Firstly, if you have not already been able to run kubectl commands already, you will need to export the location of the config file.
-   
-```shell
-export KUBECONFIG=/etc/kubernetes/admin.conf
-```
-
-With that config file located, you can now run kubectl commands on the airgap server.
    
 ```shell
 kubectl support-bundle https://kots.io
