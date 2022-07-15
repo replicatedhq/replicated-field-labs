@@ -746,11 +746,11 @@ annotations:
   kots.io/config-hash: '{{repl ConfigOption "external_postgres_confighash"}}'
 ```
 
-< notes title="Annotation" >
+**Notes**
 It's worth noting here that there's nothing special about the `kots.io/config-hash` annotation.
 We could have just as easily called this annotation `my-app-something-fake` instead.
 What matters here is that when the value in a Deployment annotation changes, it will cause Kubernetes to roll out a new version of the pod, stopping the old one and thus picking up our config changes.
-< /notes >
+
 
 
 Your full deployment should now look like
