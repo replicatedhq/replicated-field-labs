@@ -91,7 +91,7 @@ spec:
 
 To add a little layer of security, we are going to randomly generate a string that we'll add to a secret which will be used by the Postgres StatefulSet and also the application as the password for the default `postgres` user.
 
-To generate a random string we'll take advantage of the [Random String](https://docs.replicated.com/reference/template-functions-static-context#randomstring) Template Function. While we could use this template function in the secret definition itself, we need to ensure that this value is persisted between upgrades so we need to store the generate the value and store it, an then have the secret reference the generated/stored value on upgrades.
+To generate a random string we'll take advantage of the [Random String](https://docs.replicated.com/reference/template-functions-static-context#randomstring) Template Function. While we could use this template function in the secret definition itself, we need to ensure that this value is persisted between upgrades so we need to store it and then have the secret reference the generated/stored value on install and upgrades.
 
 To do this, we'll add a [Config](https://docs.replicated.com/reference/custom-resource-config) resource to our application to include a hidden field which will we use to generate the random string and persist it between upgrades.
 
