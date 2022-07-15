@@ -176,7 +176,7 @@ When the kURL script detects a proxy configuration in the environment, it will d
 - ensure the container runtime (docker or containerd) is configured to pull images via the proxy
 - ensure the KOTS admin console is configured to pull app updates and license metadata through the proxy
 
-Once the install skip completes, you can validate this by reviewing the environment variables on 
+Once the install step completes, you can validate this by reviewing the environment variables on 
 the `kotsadm` deployment.
 
 ***
@@ -186,7 +186,7 @@ As we did in the airgap scenario, we'll open two SSH tunnels to access the admin
 Run the following on your workstation.
 
 ```shell
-ssh -NL 30880:${REPLICATED_APP}-lab06-proxy:30880 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
+ssh -NL 8800:${REPLICATED_APP}-lab06-proxy:8800 -L 8888:${REPLICATED_APP}-lab06-proxy:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 From here, we can explore a few last things about our environment

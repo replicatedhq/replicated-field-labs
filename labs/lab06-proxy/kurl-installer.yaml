@@ -2,13 +2,23 @@ apiVersion: kurl.sh/v1beta1
 kind: Installer
 metadata:
   name: 'myapp'
-spec: 
-  k3s: 
-    version: "v1.23.3+k3s1"
-  registry: 
-    version: "latest"
-  kotsadm: 
-    version: "latest"
-    uiBindPort: 30880
-    disableS3: true
-
+spec:
+  kubernetes:
+    version: latest
+  containerd:
+    version: latest
+  weave:
+    version: latest
+  minio:
+    version: latest
+  openebs:
+    version: latest
+    namespace: "openebs"
+    isLocalPVEnabled: true
+    localPVStorageClassName: default
+  registry:
+    version: latest
+  kotsadm:
+    version: latest
+  prometheus:
+    version: latest
