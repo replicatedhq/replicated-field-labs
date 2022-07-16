@@ -251,7 +251,7 @@ spec:
       - name: service-port
         title: Port to expose the License Service UI
         type: text
-        default: '8080'
+        default: '30808'
 
 ```
 
@@ -317,11 +317,11 @@ First, we will add another `ports` entry to the `kots-app.yaml` file so App Mana
     ports:
       - serviceName: "nginx"
         servicePort: 80
-        localPort: 8888
+        localPort: 30888
         applicationUrl: "http://nginx"
 +     - serviceName: "license-app-service"
-+       servicePort: 8080
-+       localPort: 8080
++       servicePort: 30808
++       localPort: 30808
 +       applicationUrl: "http://license-app-service"  
     icon: data:image/png;base64,...
 
@@ -359,7 +359,18 @@ Create a new release that includes the above changes
 
 While we were creating our new release, the installation on the VM should have completed by now. In the output of the install, locate the `kotsadm` address and password as shown below:
 
-![kotsadm url](img/kotsadm-url.png)
+```text
+configmap/kurl-config created
+
+
+		Installation
+		  Complete ✔
+
+
+Kotsadm: http://34.135.97.192:30880
+Login with password (will not be shown again): cM3C1CrBj
+This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
+```
 
 Enter the password to login to the App Manager and upload the customer license `yaml` file. The next window should display the License Service options:
 
