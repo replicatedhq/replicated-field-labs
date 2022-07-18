@@ -46,7 +46,7 @@ make apps env_json=... labs_json=...
 
 It also accepts an alternative `env_csv` parameter for using exports from google forms/sheets.
 
-A `prefix` should always be passed, to help ensure unique app names/slugs and avoid slug deduplication via suffixing.
+A `prefix` should always be passed, to help ensure unique app names/slugs and avoid slug deduplication via suffixing.  (prefix should not include the word 'lab')
 
 A to-be-better-documented `invite_users` flag is also available, which will invite users to the chosen vendor.replicated.com 
 account based on user emails in the Environment list.
