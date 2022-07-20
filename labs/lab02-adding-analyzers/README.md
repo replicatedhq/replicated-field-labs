@@ -55,7 +55,7 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 > **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab02-adding-analyzers in place of the node IP address. 
 
-Open the KOTS admin console by navigating to https://lab02-adding-analyzers:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+Open the KOTS admin console by navigating to https://lab02-adding-analyzers:30880 in a browser. Otherwise use `https://<Instance IP Address>:30880`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default

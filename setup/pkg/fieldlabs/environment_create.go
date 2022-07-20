@@ -379,9 +379,13 @@ curl -fSsL https://k8s.kurl.sh/%s-%s | sudo bash -s exclude-builtin-host-preflig
 `, lab.Status.App.Slug, lab.Spec.ChannelSlug)
 
 			appProvisioningScript := fmt.Sprintf(`
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"acceptAnonymousUploads": "0"}}}'
+CONFIG=/etc/kubernetes/admin.conf
+if [ -f "$CONFIG" ]; then
+    export KUBECONFIG=$CONFIG
+fi
+kubectl patch secret kotsadm-tls -p '{"metadata": {"annotations": {"acceptAnonymousUploads": "0"}}}'
 
-KUBECONFIG=/etc/kubernetes/admin.conf kubectl kots install %s-%s \
+kubectl kots install %s-%s \
 	--license-file ./license.yaml \
 	--namespace default \
 	--shared-password %s			

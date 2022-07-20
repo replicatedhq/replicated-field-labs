@@ -20,7 +20,7 @@ In this lab, we'll learn how to debug and diagnose support problems when the KOT
 
 > **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab03-support-cli in place of the node IP address. 
 
-You can open the KOTS admin console for your node by navigating to https://lab03-support-cli:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command. 
+You can open the KOTS admin console for your node by navigating to https://lab03-support-cli:30880 in a browser. Otherwise use `https://<Instance IP Address>:30880`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running the below `kubectl kots` command. 
 
 
 ```bash
@@ -68,13 +68,11 @@ commands, we'll pause for a second here to do some very basic inspection of what
 ```text
 $ kubectl get pod 
 NAME                                  READY   STATUS        RESTARTS   AGE
-file-check-pod-5fb558b75b-djltv       1/1     Running       0          5m25s
-kotsadm-589555b5c7-6c96r              0/1     Init:0/4      0          2s
-kotsadm-589555b5c7-t78q8              1/1     Terminating   0          53s
-kotsadm-operator-674545cbb6-66xfp     1/1     Running       0          6m50s
-kotsadm-postgres-0                    1/1     Running       0          6m49s
-kurl-proxy-kotsadm-5bd9b6956d-c8xpn   1/1     Running       0          6m48s
-nginx-8b679cd99-zmv2w                 0/1     Init:2/3      0          5m25s
+kurl-proxy-kotsadm-6755fb9cdf-hhw7v   1/1     Running       0          149m
+kotsadm-postgres-0                    1/1     Running       0          149m
+file-check-pod-854566f588-8q9lc       1/1     Running       0          146m
+nginx-54794fffb5-8jkgz                0/1     Init:2/3      0          3m59s
+kotsadm-0                             1/1     Terminating   0          83s
 ```
 
 It appears that our app pod is stuck initializing, and the KOTS admin console is in the middle of terminating/re-initializing.
@@ -106,23 +104,18 @@ kubectl support-bundle \
 ```
 
 
-When running the support bundle command, you will likely see some warnings and deprecation errors. These can be ignored:
+When running the support bundle command, you will likely see some warnings and deprecation errors. You might also have to confirm the generation of the support-bundle if the connection is insecure. These can be ignored:
 
 ```text
-$ kubectl support-bundle secret/default/kotsadm-dx411-dex-supportbundle --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-dx411-dex-redact-spec/redact-spec
+$ kubectl support-bundle secret/default/kotsadm-jdw0711-josh-dewinne-supportbundle --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-jdw0711-josh-dewinne-redact-spec/redact-spec
 
+ * failed to run collector "logs/app=nginx": failed to get log stream: container "nginx" in pod "nginx-54794fffb5-8jkgz" is waiting to start: PodInitializing
  * failed to run collector "ceph": rook ceph tools pod not found
- * failed to parse collector spec "copy/spec-dx411-dex": extract copied files: unexpected EOF
- Collecting support bundle ⠴ cluster-resourcesW0413 15:48:43.411664   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.414900   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.417006   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.418910   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.420759   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.422549   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.424275   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.426010   12085 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:48:43.428156   12085 warnings.go:70] storage.k8s.io/v1beta1 StorageClass is deprecated in v1.19+, unavailable in v1.22+; use storage.k8s.io/v1 StorageClass
- Collecting support bundle ⠦ cluster-resourcesW0413 15:48:43.552917   12085 warnings.go:70] apiextensions.k8s.io/v1beta1 CustomResourceDefinition is deprecated in v1.16+, unavailable in v1.22+; use apiextensions.k8s.io/v1 CustomResourceDefinition
+ * failed to run collector "longhorn": list nodes.longhorn.io: the server could not find the requested resource (get nodes.longhorn.io)
+ Collecting support bundle ⠙ sysctl2022/07/15 00:53:01 An analyzer failed to run: failed to read collected ceph status: open /tmp/supportbundle1684135001/support-bundle-2022-07-15T00_51_46/ceph/status.json: no such file or directory
+Connection appears to be insecure. Would you like to attempt to create a support bundle anyway?: y
+A support bundle has been created and uploaded to your cluster for analysis. Please visit the Troubleshoot page to continue.
+A copy of this support bundle was written to the current directory, named "support-bundle-2022-07-15T00_51_46.tar.gz"
 
 ```
 
@@ -176,23 +169,19 @@ When you're done making changes, you should see the pods recover and stabilize
 
 ```text
 $ kubectl get pod
-NAME                                  READY   STATUS    RESTARTS   AGE
-file-check-pod-59d6bb74bd-j855b       1/1     Running   0          132m
-kotsadm-589555b5c7-2tlz4              1/1     Running   0          54s
-kotsadm-operator-674545cbb6-66xfp     1/1     Running   0          145m
-kotsadm-postgres-0                    1/1     Running   0          145m
-kurl-proxy-kotsadm-5bd9b6956d-c8xpn   1/1     Running   0          145m
-nginx-8b679cd99-zmv2w                 1/1     Running   0          144m
+NAME                                    READY   STATUS    RESTARTS   AGE
+kurl-proxy-kotsadm-6755fb9cdf-hhw7v     1/1     Running   0          160m
+kotsadm-postgres-0                      1/1     Running   0          160m
+file-check-pod-854566f588-8q9lc         1/1     Running   0          157m
+troubleshoot-copyfromhost-rqr5l-qq8qm   1/1     Running   0          11m
+kotsadm-0                               1/1     Running   0          111s
+nginx-54794fffb5-8jkgz                  1/1     Running   0          15m
 ```
 
 
 After a few minutes, we should see that the app becomes available
 
 ![app-ready](./img/app-ready.png)
-
-If you leave the instance for a while, you should also notice the CPU graphs settle down
-
-![stable-graphs](./img/stable-graphs.png)
 
 ***
 ## Additional exercise: Sharing the Bundle
@@ -208,7 +197,7 @@ total 1388
 ```
 
 Use `scp` or some other means to copy the bundle off the server to your workstation, upload it to vendor.replicated.com, and review the analyzers there as well. 
-An example of using `scp` is proivded below. 
+An example of using `scp` is provided below. 
 This command should be run from your local workstation.
 
 ```bash
@@ -249,17 +238,11 @@ Again, as before, you will see some warnings and failures that can be ignored:
 
 ```text
 $ kubectl support-bundle https://kots.io
- Collecting support bundle ⠴ cluster-resourcesW0413 15:43:50.339969   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.343939   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.346433   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.348449   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.350910   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.354544   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.356733   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.360514   25323 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
-W0413 15:43:50.363264   25323 warnings.go:70] storage.k8s.io/v1beta1 StorageClass is deprecated in v1.19+, unavailable in v1.22+; use storage.k8s.io/v1 StorageClass
- Collecting support bundle ⠦ cluster-resourcesW0413 15:43:50.505621   25323 warnings.go:70] apiextensions.k8s.io/v1beta1 CustomResourceDefinition is deprecated in v1.16+, unavailable in v1.22+; use apiextensions.k8s.io/v1 CustomResourceDefinition
+
  * failed to run collector "ceph": rook ceph tools pod not found
+ * failed to run collector "longhorn": list nodes.longhorn.io: the server could not find the requested resource (get nodes.longhorn.io)
+ Collecting support bundle ⠙ collectd2022/07/15 01:00:41 An analyzer failed to run: failed to read collected ceph status: open /tmp/supportbundle2523728313/support-bundle-2022-07-15T00_59_38/ceph/status.json: no such file or directory
+support-bundle-2022-07-15T00_59_38.tar.gz
 ```
 
 

@@ -283,30 +283,21 @@ You should expect output like this:
 
 ```text
 
-Kotsadm: http://[ip-address]:8800
+
+
+		Installation
+		  Complete ✔
+
+
+Kotsadm: http://[ip-address]:30880
 Login with password (will not be shown again): [password]
+This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
 
-
-To access the cluster with kubectl, reload your shell:
-
-    bash -l
-
-The UIs of Prometheus, Grafana and Alertmanager have been exposed on NodePorts 30900, 30902 and 30903 respectively.
-
-To access Grafana use the generated user:password of admin:[password] .
-
-To add worker nodes to this installation, run the following script on your other nodes
-    curl -sSL https://kurl.sh/rp415-dex-unstable/join.sh | sudo bash -s kubernetes-master-address=[ip-address]:6443 kubeadm-token=[token] kubeadm-token-ca-hash=sha256:[sha] kubernetes-version=1.16.4 docker-registry-ip=[ip-address]
 
 ```
 
 > **NOTE**: The Kotsadm URL and Password in the above output. We will use this later to complete the install of the application.
 
-Per the instructions, run the following to reload your shell so that you can run `kubectl`
-
-```shell script
-bash -l
-```
 
 Test `kubectl` with the following command:
 ```shell script
@@ -315,13 +306,11 @@ kubectl get pods
 
 Expect output like this:
 
-```bash
-NAME                                  READY   STATUS      RESTARTS   AGE
-kotsadm-585579b884-v4s8m              1/1     Running     0          4m47s
-kotsadm-migrations                    0/1     Completed   2          4m47s
-kotsadm-operator-fd9d5d5d7-8rrqg      1/1     Running     0          4m47s
-kotsadm-postgres-0                    1/1     Running     0          4m47s
-kurl-proxy-kotsadm-77c59cddc5-qs5bm   1/1     Running     0          4m46s
+```text
+NAME                                  READY   STATUS    RESTARTS   AGE
+kurl-proxy-kotsadm-6755fb9cdf-fjb7b   1/1     Running   0          3m1s
+kotsadm-0                             1/1     Running   0          3m3s
+kotsadm-postgres-0                    1/1     Running   0          3m3s
 user@kots-guide:~$
 ```
 
@@ -421,7 +410,7 @@ make release
 
 ### Update the Test Server
 
-To install and test this new release, we need to connect to the Admin Console dashboard on port :8800 using a web browser.
+To install and test this new release, we need to connect to the Admin Console dashboard on port :30880 using a web browser.
 At this point, it will likely show that our test application is "Up To Date" and that "No Updates Are Available".
 The Admin Console can be configured to check for new updates at regular intervals but for now we'll trigger a check manually by clicking "Check for Updates".
 You should see a new release in the history now.

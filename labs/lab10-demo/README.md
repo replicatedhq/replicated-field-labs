@@ -70,16 +70,16 @@ Go to Customers and click the download button:
 1. You can open the KOTS admin console on your node by navigating to
 
     ```
-    http://IP_ADDRESS:8800
+    http://IP_ADDRESS:30880
     ```
 
     in a browser. For example, if your IP address is `34.134.22.12`, open your browser to
     
     ```
-    http://34.134.22.12:8800
+    http://34.134.22.12:30880
     ```
     
-    **Advanced:** If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access the server at at [http://lab10-demo:8800](http://lab10-demo:8800).
+    **Advanced:** If you have [configured /etc/hosts](../../doc/01-architecture.md#terraform), you can access the server at at [http://lab10-demo:30880](http://lab10-demo:30880).
 
 1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
 
