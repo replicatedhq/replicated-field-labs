@@ -29,7 +29,11 @@ Good for developers packaging an app as well as Support/Success/Solutions Engine
 2. [Lab 1 - Using Analyzers](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab01-ui-analyzers)
 3. [Lab 2 - Support Bundle Basics and Authorizing Analyzers](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab02-adding-analyzers)
 4. [Lab 3 - Troubleshooting from the CLI](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab03-support-cli)
-3. [Lab 7 - Troubleshoot.sh Redactors](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab07-redactors)
+5. [Lab 7 - Troubleshoot.sh Redactors](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab07-redactors)
+
+And if your application uses Helm Charts, there is also a Helm specific Lab:
+
+6. [Lab 18 - Helm Charts](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab18-helm-charts)
 
 #### Intermediate Replicated Topics
 
@@ -40,7 +44,6 @@ Any can be omitted based on interest and needs.
 2. [Lab 6 - Proxy](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab06-proxy)
 3. [Lab 9 - Licenses](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab09-licenses)
 4. [Lab 11 - Monitoring](https://github.com/replicatedhq/kots-field-labs/tree/main/labs/lab11-monitoring)
-
 
 #### A Focused Walkthrough of Airgap 
 
