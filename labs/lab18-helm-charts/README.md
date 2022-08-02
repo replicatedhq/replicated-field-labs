@@ -326,7 +326,22 @@ Edit the `wordpress.yaml` file and scroll down to the values section and make th
 -- values: {}
 ++ values:
 ++   wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+++   initContainers:
+++     - name: reset-init
+++       image: busybox:1.35
+++       imagePullPolicy: Always
+++       command: ['rm','-f','/bitnami/wordpress/.user_scripts_initialized']
+++       volumeMounts:
+++         - mountPath: /bitnami/wordpress
+++           name: wordpress-data
+++           subPath: wordpress
+++   customPostInitScripts:
+++     update-blogname.sh: |
+++       #!/bin/bash
+++       wp option update blogname '{{repl ConfigOption "wordpressBlogName"}}'
 ```
+
+As you can see, we do have to make use of some special values for wordpress to pick up on the blog name change. This is specific to the Wordpress Helm Chart and how it initializes the backend.
 
 Now we are ready to create our next release:
 
