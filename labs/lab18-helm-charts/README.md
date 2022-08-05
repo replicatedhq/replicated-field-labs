@@ -262,25 +262,9 @@ curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
 
 Once this kicks off, consider grabbing a cup of coffee as the Kubernetes installation can take 5-10 minutes 🙂
 
-Once the install is complete, follow the IP provided and continue with the installation steps in the App Manager UI to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
-When the deployment is finished, you should be able to see the wordpress pods running with `1/1` containers Ready from the server:
-
-    $ kubectl get pod
-    
-    NAME                                  READY   STATUS    RESTARTS   AGE
-    kotsadm-5679796d6b-gjzzm              1/1     Running   0          23m
-    kotsadm-postgres-0                    1/1     Running   0          23m
-    kurl-proxy-kotsadm-74994888d8-qm8nc   1/1     Running   0          23m
-    wordpress-7b77bfd7ff-tdck5            1/1     Running   0          2m10s
-    wordpress-mariadb-0                   1/1     Running   0          2m10s
-    
-In the KOTS App Manager UI, you should see the App Status as reporting "Ready":
-
-<img width="836" alt="Screen Shot 2022-07-10 at 2 21 02 PM" src="https://user-images.githubusercontent.com/3730605/178159032-78a043fd-5cb2-4dee-bba0-8bc5c6bd070e.png">
-
 ## Mapping Field Values
 
-Now that we've gotten the Wordpress chart running with the default configuration, we'll take some of the helm chart values and make them user-configurable in App Manager.
+Before we will deploy the Helm chart, we'll take some of the helm chart values and make them user-configurable in App Manager.
 
 We are going to make two changes:
 * Map the `wordpressBlogName` field in the Values.yaml file to a user-configurable field in the App Manager UI.
@@ -326,22 +310,7 @@ Edit the `wordpress.yaml` file and scroll down to the values section and make th
 -- values: {}
 ++ values:
 ++   wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
-++   initContainers:
-++     - name: reset-init
-++       image: busybox:1.35
-++       imagePullPolicy: Always
-++       command: ['rm','-f','/bitnami/wordpress/.user_scripts_initialized']
-++       volumeMounts:
-++         - mountPath: /bitnami/wordpress
-++           name: wordpress-data
-++           subPath: wordpress
-++   customPostInitScripts:
-++     update-blogname.sh: |
-++       #!/bin/bash
-++       wp option update blogname '{{repl ConfigOption "wordpressBlogName"}}'
 ```
-
-As you can see, we do have to make use of some special values for wordpress to pick up on the blog name change. This is specific to the Wordpress Helm Chart and how it initializes the backend.
 
 Now we are ready to create our next release:
 
@@ -349,17 +318,28 @@ Now we are ready to create our next release:
 replicated release create --auto --promote lab18-helm-charts -y
 ```
 
-## Update the Application
+## Deploy the Application
 
-Let's see our changes on the Admin Console. Click on Check for Update as shown below.
-<img width="880" alt="Screen Shot 2022-07-10 at 2 39 25 PM" src="https://user-images.githubusercontent.com/3730605/178159601-7ed76d10-46f7-4a8a-90cc-6f17a42e9284.png">
+Once the kURL install is complete, follow the IP provided and continue with the installation steps in the App Manager UI to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
+When the deployment is finished, you should be able to see the wordpress pods running with `1/1` containers Ready from the server:
 
+    $ kubectl get pod
+    
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    kotsadm-5679796d6b-gjzzm              1/1     Running   0          23m
+    kotsadm-postgres-0                    1/1     Running   0          23m
+    kurl-proxy-kotsadm-74994888d8-qm8nc   1/1     Running   0          23m
+    wordpress-7b77bfd7ff-tdck5            1/1     Running   0          2m10s
+    wordpress-mariadb-0                   1/1     Running   0          2m10s
+    
+In the KOTS App Manager UI, you should see the App Status as reporting "Ready":
 
-Deploy the new version of our app
+<img width="836" alt="Screen Shot 2022-07-10 at 2 21 02 PM" src="https://user-images.githubusercontent.com/3730605/178159032-78a043fd-5cb2-4dee-bba0-8bc5c6bd070e.png">
+
 
 ### Random Password Generation
 
-If you were paying close attention to the update we did in the previous step, you would have noticed that the credentials that are generated for MariaDB get generated again. When you perform an intial install or a subsequent upgrade, App Manager will use `helm upgrade -i` and will let Helm determine if there are any changes in the Chart.
+If you were paying close attention to the install we did in the previous step, you would have noticed that the credentials that are generated for MariaDB are random and will change on each subsequent upgrade. When you perform an intial install or a subsequent upgrade, App Manager will use `helm upgrade -i` and will let Helm determine if there are any changes in the Chart.
 
 Obviously we don't want this password to be reset each time we do an upgrade, so to solve this we are going to create a hidden config field which will have a random string value. We will use this value for the password that is used with MariaDB. The value of this field will persist between releases.
 
@@ -425,7 +405,7 @@ spec:
 
 ## Make Update to Access Wordpress UI
 
-By default, Wordpress runs on port 80 but given that it is a pretty popular port it may already be in use. Also, Wordpress by default uses a service of typy LoadBalancer. In the `values.yaml` file, this is exposed like this:
+By default, Wordpress runs on port 80 but given that it is a pretty popular port it may already be in use. Also, Wordpress by default uses a service of type LoadBalancer. In the `values.yaml` file, this is exposed like this:
 
 
 
@@ -455,6 +435,47 @@ Now that we have a new release available, let's update our deployed application 
 
 Click on **Check for Update** and click on **Deploy** once available. Once deployed, you should be able to browse to port `8080` and see Wordpress.
 <img width="880" alt="Screen Shot 2022-07-10 at 3 02 51 PM" src="https://user-images.githubusercontent.com/3730605/178160342-bb7c897d-1baa-46f4-a5d1-1503921d50de.png">
+
+
+## Advanced
+
+You might have noticed that if you change the `Wordpress Blog Name` in the Application Installer Configuration and deploy the update, it doesn't reflect that change in the deployed Wordpress application. This is specific to the Wordpress Helm Chart and how it initializes the backend. But with some `initContainer` and `wp` cli command, we can update te blog name. Update the `HelmChart` custom resource `wordpress.yaml` with the following changes:
+
+```diff
+    values:
+      wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+++   initContainers:
+++     - name: reset-init
+++       image: busybox:1.35
+++       imagePullPolicy: Always
+++       command: ['rm','-f','/bitnami/wordpress/.user_scripts_initialized']
+++       volumeMounts:
+++         - mountPath: /bitnami/wordpress
+++           name: wordpress-data
+++           subPath: wordpress
+++   customPostInitScripts:
+++     update-blogname.sh: |
+++       #!/bin/bash
+++       wp option update blogname '{{repl ConfigOption "wordpressBlogName"}}'
+      service:
+        type: NodePort
+        ports:
+          http: 8080
+        nodePorts:
+          http: "8080"
+      mariadb:
+        auth:
+          rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
+```
+
+Create your next release using the `replicated` cli:
+
+```bash
+replicated release create --auto --promote lab18-helm-charts -y
+```
+
+Now that we have a new release available, let's update our deployed application and test the change of the blog name.
+
 
 # Additional Info
 
