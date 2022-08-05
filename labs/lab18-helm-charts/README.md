@@ -240,7 +240,7 @@ From the `repl-helm-lab/helm-wordpress` directory, run the following.
 
 ```bash
 git init
- git add .
+git add .
 git commit -m "this is my first commit"
 ```
 Now we are ready to create our first release:
@@ -249,26 +249,13 @@ Now we are ready to create our first release:
 replicated release create --auto --promote lab18-helm-charts -y
 ```
 
-## Deploy the Application
-We now have something we can deploy! Before you log into the server provided, use the same steps from [Lab 0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md#6-getting-an-install-command) to get an install command for the `lab18-helm-charts` channel:
-
-    replicated channel inspect lab18-helm-charts
-As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
-
-Once you are on the terminal, use the the "Embedded Cluster" install command from the `replicated channel inspect` command you ran about. It should look like
-```
-curl -sSL https://k8s.kurl.sh/YOUR-APP-NAME-lab18-helm-charts | sudo bash
-```
-
-Once this kicks off, consider grabbing a cup of coffee as the Kubernetes installation can take 5-10 minutes 🙂
-
 ## Mapping Field Values
 
 Before we will deploy the Helm chart, we'll take some of the helm chart values and make them user-configurable in App Manager.
 
 We are going to make two changes:
 * Map the `wordpressBlogName` field in the Values.yaml file to a user-configurable field in the App Manager UI.
-* Override the default port of 80 to 8080.
+* Override the default port of 80 to 30808 (Aand switch to using a NodePort instead of a LoadBalancer Service type).
 
 ### Copy the field name from the Values file
 
@@ -319,8 +306,16 @@ replicated release create --auto --promote lab18-helm-charts -y
 ```
 
 ## Deploy the Application
+We now have something we can deploy!
+As part of this lab, you were provided with the IP address of a Virtual Machine. Log in using `ssh kots@{IP-Address}` using the IP address provided. The password will be provided during this lab.
 
-Once the kURL install is complete, follow the IP provided and continue with the installation steps in the App Manager UI to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
+Once you are on the terminal, use the `kots reset-password` command to set your own password
+
+```bash
+kubectl kots reset-password -n default
+```
+
+Browse to the App Manager UI (https://[IP_ADDRESS]:30880) to upload a license install the application. Since you have already completed [Lab0: Hello World](https://github.com/replicatedhq/kots-field-labs/blob/main/labs/lab00-hello-world/README.md), this should be pretty familiar.
 When the deployment is finished, you should be able to see the wordpress pods running with `1/1` containers Ready from the server:
 
     $ kubectl get pod
@@ -415,9 +410,9 @@ By default, Wordpress runs on port 80 but given that it is a pretty popular port
 ++    service:
 ++      type: NodePort
 ++      ports:
-++        http: 8080
+++        http: 30808
 ++      nodePorts:
-++        http: "8080"
+++        http: "30808"
       mariadb:
         auth:
           rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
@@ -433,8 +428,8 @@ replicated release create --auto --promote lab18-helm-charts -y
 
 Now that we have a new release available, let's update our deployed application to test the change.
 
-Click on **Check for Update** and click on **Deploy** once available. Once deployed, you should be able to browse to port `8080` and see Wordpress.
-<img width="880" alt="Screen Shot 2022-07-10 at 3 02 51 PM" src="https://user-images.githubusercontent.com/3730605/178160342-bb7c897d-1baa-46f4-a5d1-1503921d50de.png">
+Click on **Check for Update** and click on **Deploy** once available. Once deployed, you should be able to browse to port `30808` and see Wordpress.
+<p align="center"><img src="img/wordpress-blog.png" alt="Wordpress Blog" width="600" margin=auto/></img></p>
 
 
 ## Advanced
@@ -460,9 +455,9 @@ You might have noticed that if you change the `Wordpress Blog Name` in the Appli
       service:
         type: NodePort
         ports:
-          http: 8080
+          http: 30808
         nodePorts:
-          http: "8080"
+          http: "30808"
       mariadb:
         auth:
           rootPassword: '{{ repl ConfigOption "wordpress-db-secret"}}'
