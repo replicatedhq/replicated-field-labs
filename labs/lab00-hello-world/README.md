@@ -265,7 +265,7 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 
 First, set your first name, all lowercase, that will be your ssh login to the server.
 
-**Note if you fail the login 3 times, you will be locked out for 5 minutes, so if you can't get in on the first attempt, please check with your lab proctor to confirm credentials**.
+**Note if you fail the login 3 times, you will be locked out for 10 minutes, so if you can't get in on the first attempt, please check with your lab proctor to confirm credentials**.
 
 ```bash
 export FIRST_NAME=dex
