@@ -97,7 +97,9 @@ Now, you'll need to set up environment variables to interact with vendor.replica
 
 
 `REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
-ahead of time.
+ahead of time. 
+
+**Note This page will suggest that you create a Service Account token - do not do this, we'll create a User Token instead in the next step**
 
 <p align="center"><img src="./img/cli-setup-quickstart-settings.png" width=600></img></p>
 
