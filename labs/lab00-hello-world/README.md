@@ -96,8 +96,7 @@ You will be in a shared account with all other lab participants -- once you log 
 Now, you'll need to set up environment variables to interact with vendor.replicated.com and instance.
 
 
-`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
-ahead of time.
+`REPLICATED_APP` should be set to the app slug from the Settings page.
 
 <p align="center"><img src="./img/cli-setup-quickstart-settings.png" width=600></img></p>
 
