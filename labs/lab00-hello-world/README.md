@@ -89,7 +89,9 @@ $ replicated version
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-You will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
+**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
+
+Once registered, you will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
 
 <img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/1579188/136086041-0a8a6cd9-20c8-4627-83b3-c62223cbae44.png">
 
