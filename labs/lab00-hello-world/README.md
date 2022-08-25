@@ -47,18 +47,40 @@ brew install replicatedhq/replicated/cli
 
 ##### Manual
 
-```shell script
-curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+* Mac
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
            | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_all.tar.gz" \
            | cut -d : -f 2,3 \
            | tr -d \" \
            | cat <( echo -n "url") - \
            | curl -fsSL -K- \
            | tar xvz replicated
-```
+  ```
+
+* Linux 64 bit
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_amd64.tar.gz" \
+           | cut -d : -f 2,3 \
+           | tr -d \" \
+           | cat <( echo -n "url") - \
+           | curl -fsSL -K- \
+           | tar xvz replicated
+  ```
+
+* Linux 32 bit
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_386.tar.gz" \
+           | cut -d : -f 2,3 \
+           | tr -d \" \
+           | cat <( echo -n "url") - \
+           | curl -fsSL -K- \
+           | tar xvz replicated
+  ```
+
 Then move `./replicated` to somewhere in your `PATH`:
-
-
 ```shell script
 mv replicated /usr/local/bin/
 ```
