@@ -68,7 +68,7 @@ Unfortunately, even though `config.txt` is present, the app is still not healthy
 Using what we learned in Lab 1.1, we can generate a support bundle to see what's wrong.
 Unfortunately, we'll find that the analyzers in "error" level, do not give us enough information to zero in on the problem as we shall see one we uncover the root cause.
 
-![analyzers-green](./img/analyzers-run.png)
+![analyzers-run](./img/analyzers-run.png)
 
 ***
 ## Investigating
