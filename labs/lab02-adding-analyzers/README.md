@@ -66,7 +66,7 @@ Unfortunately, even though `config.txt` is present, the app is still not healthy
 ![not-healthy](./img/not-healthy.png)
 
 Using what we learned in Lab 1.1, we can generate a support bundle to see what's wrong.
-Unfortunately, we'll find that the analyzers in "error" level, do not give us enough information to zero in on the problem as we shall see one we uncover the root cause.
+Unfortunately, while we find some analyzers in an "error" state, they do not give us enough information to zero in on the root cause or to fix the problem.
 
 ![analyzers-run](./img/analyzers-run.png)
 
