@@ -1,7 +1,7 @@
 Lab 18: Using Helm Charts
 =========================================
 
-In this lab, you will learn how to include a Helm Chart in your Replicated Application. For this lab we wil use a simpler HelmChart, but the concepts covered here should help you understand how to handle larger and more complex charts. 
+In this lab, you will learn how to include a Helm Chart in your Replicated Application. For this lab we will use a simpler HelmChart, but the concepts covered here should help you understand how to handle larger and more complex charts.
 
 In this lab, we'll cover the following:
 
@@ -36,7 +36,7 @@ mkdir repl-helm-lab
 cd repl-helm-lab
 
 ```
-Next, we are going to download the nescessary files to package our Helm Chart.
+Next, we are going to download the necessary files to package our Helm Chart.
 
 ### 1. Clone the Bitnami Repo
 
@@ -282,7 +282,7 @@ Now that we've gotten the Wordpress chart running with the default configuration
 
 We are going to make two changes:
 * Map the `wordpressBlogName` field in the Values.yaml file to a user-configurable field in the App Manager UI.
-* Override the default port of 80 to 30808 (Aand switch to using a NodePort instead of a LoadBalancer Service type).
+* Override the default port of 80 to 30808 (and switch to using a NodePort instead of a LoadBalancer Service type).
 
 ### Copy the field name from the Values file
 
@@ -443,11 +443,11 @@ Click on **Check for Update** and click on **Deploy** once available. Once deplo
 
 ## Airgap: Optional Images
 
-Another thing to consider about images is making sure that all of them will be available in an airgap install. For example,  you may have a service like database that they customer has the option to deploy or connect to their own instance. In an airgap installation, you would need to make sure that the image is included in the bundle in case a user selects to deploy the service. You can include optional charts in the Airgap bundle, by using the `builder` attribute. For more details on how Replicated creates the airgap bundles automatically, see the [Helm Air Gap Builder](https://docs.replicated.com/vendor/helm-airgap-builder).
+Another thing to consider about images is making sure that all of them will be available in an airgap install. For example,  you may have a service like database that the customer has the option to deploy or connect to their own instance. In an airgap installation, you would need to make sure that the image is included in the bundle in case a user selects to deploy the service. You can include optional charts in the Airgap bundle, by using the `builder` attribute. For more details on how Replicated creates the airgap bundles automatically, see the [Helm Air Gap Builder](https://docs.replicated.com/vendor/helm-airgap-builder).
 
 
 ## Using Multiple Charts
 
-In this lab we have used a single chart that contained two sub-charts. Note that a Replicated Application Release can contain more than one Helm chart. If you do need to include more than one Helm chart, it is important to understand the sequence in which these charts are deployed. 
+In this lab we have used a single chart that contained two sub-charts. Note that a Replicated Application Release can contain more than one Helm chart. If you do need to include more than one Helm chart, it is important to understand the sequence in which these charts are deployed.
 
 Starting with version 1.69* of App Manager, charts are deployed in alphanumeric order. If this is not the sequence that you desire, you can use the `weight` field in the corresponding Replicated `kind: HelmChart` file. The default `weight` is 0 for all charts. If an app contains multiple Charts with the same `weight`, those charts will be deployed in alphanumeric order.
