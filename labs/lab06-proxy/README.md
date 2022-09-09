@@ -47,8 +47,8 @@ and
 ${REPLICATED_APP}-lab06-proxy
 ```
 
-An HTTP proxy has been provisioned to be shared by all lab participants. 
-It will have a dynamic private IP but for simplicity we'll can use the DNS entry which is built from your application name.
+An HTTP proxy has been provisioned to be shared by all lab participants.
+It will have a dynamic private IP but for simplicity we can use the DNS entry which is built from your application name.
 
 ```
 ${REPLICATED_APP}-kots-field-labs-squid-proxy
