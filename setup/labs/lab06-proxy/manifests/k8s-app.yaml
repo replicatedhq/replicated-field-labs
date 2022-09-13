@@ -1,9 +1,0 @@
-apiVersion: app.k8s.io/v1beta1
-kind: Application
-metadata:
-  name: "lab06-proxy"
-spec:
-  descriptor:
-    links:
-      - description: Open Lab 6
-        url: "http://nginx"

@@ -56,7 +56,7 @@ func (e *EnvironmentManager) Destroy() error {
 	if err != nil {
 		return errors.Wrap(err, "get members")
 	}
-	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+labs@", 1)
+	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+replabs@", 1)
 	if err != nil {
 		return errors.Wrap(err, "get policies")
 	}

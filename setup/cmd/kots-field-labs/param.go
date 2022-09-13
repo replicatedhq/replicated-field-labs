@@ -24,8 +24,8 @@ func missingParam(s string) error {
 func GetParams() (*fieldlabs.Params, error) {
 	params := &fieldlabs.Params{
 		ParticipantEmail: os.Getenv("PARTICIPANT_EMAIL"),
-		LabsJSON:         os.Getenv("REPLICATED_LABS_JSON"),
-		LabSlug:          os.Getenv("REPLICATED_LABS_SLUG"),
+		Branch:           os.Getenv("REPLICATED_BRANCH"),
+		TrackSlug:        os.Getenv("REPLICATED_TRACK_SLUG"),
 		InviterEmail:     os.Getenv("REPLICATED_INVITER_EMAIL"),
 		InviterPassword:  os.Getenv("REPLICATED_INVITER_PASSWORD"),
 		APIToken:         os.Getenv("REPLICATED_API_TOKEN"),
@@ -39,8 +39,12 @@ func GetParams() (*fieldlabs.Params, error) {
 		return nil, missingParam("PARTICIPANT_EMAIL")
 	}
 
-	if params.LabsJSON == "" {
-		params.LabsJSON = "./labs/labs_all.json"
+	if params.Branch == "" {
+		params.Branch = "main"
+	}
+
+	if params.TrackSlug == "" {
+		return nil, missingParam("REPLICATED_TRACK_SLUG")
 	}
 
 	if params.APIToken == "" {

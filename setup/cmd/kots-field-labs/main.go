@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/pkg/errors"
@@ -30,8 +32,8 @@ func main() {
 func HandleRequest(event fieldlabs.LambdaEvent) error {
 	params := &fieldlabs.Params{
 		ParticipantEmail: event.ParticipantEmail,
-		LabsJSON:         "./labs/labs_all.json",
-		LabSlug:          event.LabSlug,
+		Branch:           event.Branch,
+		TrackSlug:        event.TrackSlug,
 		InviterEmail:     event.InviterEmail,
 		InviterPassword:  event.InviterPassword,
 		APIToken:         event.APIToken,
@@ -56,7 +58,13 @@ func HandleRequest(event fieldlabs.LambdaEvent) error {
 }
 
 func Run(params *fieldlabs.Params) error {
-	labs, err := loadConfig(params)
+	// clone git repo / subfolder
+	vendorLoc, err := gitSparseCheckout(params.TrackSlug, params.Branch)
+	defer os.RemoveAll(vendorLoc)
+	if err != nil {
+		return errors.Wrap(err, "git sparse checkout")
+	}
+	track, err := loadConfig(fmt.Sprintf("%s/instruqt/%s", vendorLoc, params.TrackSlug))
 	if err != nil {
 		return errors.Wrap(err, "load config")
 	}
@@ -69,16 +77,43 @@ func Run(params *fieldlabs.Params) error {
 		Client: &kotsclient.VendorV3Client{HTTPClient: platformClient},
 	}
 
-	if err := envManager.Validate(labs); err != nil {
-		return errors.Wrap(err, "validate labs")
+	if err := envManager.Validate(track); err != nil {
+		return errors.Wrap(err, "validate track")
 	}
 
 	switch params.Action {
 	case fieldlabs.ActionCreate:
-		return envManager.Ensure(labs)
+		return envManager.Ensure(track)
 	case fieldlabs.ActionDestroy:
 		return envManager.Destroy()
 	}
 
 	return nil
+}
+
+func gitSparseCheckout(trackSlug string, branch string) (string, error) {
+	// the caller of this function is repsonsible for deleting this folder
+	tempDir, err := os.MkdirTemp("", "instruqt")
+	if err != nil {
+		return "", errors.Wrap(err, "failed to create temp dir")
+	}
+
+	command := exec.Command("git", "clone", "--depth", "1", "--filter=blob:none", fmt.Sprintf("--branch=%s", branch), "--sparse", "git@github.com:replicatedhq/kots-field-labs.git")
+	command.Dir = tempDir
+	out, err := command.CombinedOutput()
+	if err != nil {
+		return tempDir, errors.Wrap(err, fmt.Sprintf("git clone in %s: %s", tempDir, command))
+	}
+	log.Println("Git clone", string(out))
+
+	command = exec.Command("git", "sparse-checkout", "set", fmt.Sprintf("instruqt/%s", trackSlug))
+	command.Dir = fmt.Sprintf("%s/%s", tempDir, "kots-field-labs")
+
+	out, err = command.CombinedOutput()
+	if err != nil {
+		return tempDir, errors.Wrap(err, "Git sparse checkout")
+	}
+	log.Println("Git sparse checkout", out)
+
+	return tempDir, nil
 }

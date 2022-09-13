@@ -34,10 +34,10 @@ type ExtraReleaseStatus struct {
 	Release *types.ReleaseInfo
 }
 
-type LabSpec struct {
-	// Name of the lab
+type TrackSpec struct {
+	// Name of the track
 	Name string `json:"name"`
-	// Slug of the lab
+	// Slug of the track
 	Slug string `json:"slug"`
 	// Channel name to create
 	Channel string `json:"channel"`
@@ -51,35 +51,18 @@ type LabSpec struct {
 	K8sInstallerYAMLPath string `json:"k8s_installer_yaml_path"`
 	// List of additional releases to promote
 	ExtraReleases []ExtraReleaseSpec `json:"extra_releases"`
-	// whether to include a license file and install KOTS
-	SkipInstallKots bool `json:"skip_install_kots"`
-	// whether to include a license file and install the app
-	SkipInstallApp bool `json:"skip_install_app"`
-	// kots config values to pass during install
-	ConfigValues string `json:"config_values"`
-	// bash source to run before installing KOTS
-	PreInstallSH string `json:"pre_install_sh"`
-	// bash source to run after installing KOTS
-	PostInstallSH string `json:"post_install_sh"`
-
-	// add a public ip?
-	UsePublicIP bool `json:"use_public_ip"`
-	// add a squid proxy?
-	UseProxy bool `json:"use_proxy"`
-	// add a jump box?
-	UseJumpBox bool `json:"use_jump_box"`
 }
 
 type Token struct {
 	AccessToken string `json:"access_token"`
 }
 
-type Lab struct {
-	Spec   LabSpec
-	Status LabStatus
+type Track struct {
+	Spec   TrackSpec
+	Status TrackStatus
 }
 
-type LabStatus struct {
+type TrackStatus struct {
 	App           types.App
 	Channel       *types.Channel
 	Customer      *types.Customer
@@ -95,24 +78,22 @@ type EnvironmentManager struct {
 	Client *kotsclient.VendorV3Client
 }
 
-func (e *EnvironmentManager) Validate(labs []LabSpec) error {
+func (e *EnvironmentManager) Validate(track *TrackSpec) error {
 	slug.CustomSub = map[string]string{"_": "-"}
 
-	for _, lab := range labs {
-		slugifiedChannel := slug.Make(lab.Channel)
+	slugifiedChannel := slug.Make(track.Channel)
 
-		if lab.ChannelSlug == "" {
-			lab.ChannelSlug = slugifiedChannel
-		}
+	if track.ChannelSlug == "" {
+		track.ChannelSlug = slugifiedChannel
+	}
 
-		if slugifiedChannel != lab.ChannelSlug {
-			return errors.Errorf("slugified form of Channel name %q was %q, did not match specified slug %q", lab.Channel, slugifiedChannel, lab.ChannelSlug)
-		}
+	if slugifiedChannel != track.ChannelSlug {
+		return errors.Errorf("slugified form of Channel name %q was %q, did not match specified slug %q", track.Channel, slugifiedChannel, track.ChannelSlug)
 	}
 
 	return nil
 }
-func (e *EnvironmentManager) Ensure(labSpecs []LabSpec) error {
+func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 	app, err := e.createApp()
 	if err != nil {
 		return errors.Wrap(err, "create apps")
@@ -143,111 +124,107 @@ func (e *EnvironmentManager) Ensure(labSpecs []LabSpec) error {
 		return errors.Wrap(err, "invite users")
 	}
 
-	err = e.createVendorLab(*app, labSpecs)
+	err = e.createVendorTrack(*app, *track)
 	if err != nil {
-		return errors.Wrap(err, "create vendor lab")
+		return errors.Wrap(err, "create vendor track")
 	}
 
 	return nil
 }
 
-func (e *EnvironmentManager) createVendorLab(app types.App, labSpecs []LabSpec) error {
-	for _, labSpec := range labSpecs {
-		if labSpec.Slug != e.Params.LabSlug {
-			continue
-		}
-		var lab Lab
-		lab.Spec = labSpec
-		lab.Status.App = app
-		appLabSlug := fmt.Sprintf("%s-%s", app.Slug, lab.Spec.Slug)
-		e.Log.ActionWithSpinner("Provision lab %s", appLabSlug)
+func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpec) error {
+	if trackSpec.Slug != e.Params.TrackSlug {
+		return errors.Errorf("Track with slug %q not found", e.Params.TrackSlug)
+	}
+	var track Track
+	track.Spec = trackSpec
+	track.Status.App = app
+	appTrackSlug := fmt.Sprintf("%s-%s", app.Slug, track.Spec.Slug)
+	e.Log.ActionWithSpinner("Provision track %s", appTrackSlug)
 
-		// load yaml for releases first to ensure directories exist
-		kotsYAML, err := readYAMLDir(labSpec.YAMLDir)
-		if err != nil {
-			return errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-		}
-
-		for _, extraRelease := range lab.Spec.ExtraReleases {
-			kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
-			if err != nil {
-				return errors.Wrapf(err, "read yaml dir %q", labSpec.YAMLDir)
-			}
-			lab.Status.ExtraReleases = append(lab.Status.ExtraReleases, ExtraReleaseStatus{
-				Spec: extraRelease,
-				YAML: kotsYAML,
-			})
-
-		}
-
-		kurlYAML, err := ioutil.ReadFile(labSpec.K8sInstallerYAMLPath)
-		if err != nil {
-			return errors.Wrapf(err, "read installer yaml %q", labSpec.K8sInstallerYAMLPath)
-		}
-
-		channel, err := e.getOrCreateChannel(lab)
-		if err != nil {
-			return errors.Wrapf(err, "get or create channel %q", lab.Spec.Channel)
-		}
-		lab.Status.Channel = channel
-
-		customer, err := e.getOrCreateCustomer(lab)
-		if err != nil {
-			return errors.Wrapf(err, "create customer for lab %q app %q", labSpec.Slug, app.Slug)
-		}
-		lab.Status.Customer = customer
-
-		release, err := e.Client.CreateRelease(app.ID, kotsYAML)
-		if err != nil {
-			return errors.Wrapf(err, "create release for %q", labSpec.YAMLDir)
-		}
-
-		lab.Status.Release = release
-
-		err = e.Client.PromoteRelease(app.ID, labSpec.Name, labSpec.Slug, release.Sequence, channel.ID)
-		if err != nil {
-			return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
-		}
-
-		for _, extraRelease := range lab.Status.ExtraReleases {
-			releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
-			if err != nil {
-				return errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
-			}
-			extraRelease.Release = releaseInfo
-
-			if extraRelease.Spec.PromoteChannel != "" {
-
-				continue
-			}
-		}
-
-		installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
-		if err != nil {
-			return errors.Wrapf(err, "create installer from %q", labSpec.K8sInstallerYAMLPath)
-		}
-		lab.Status.Installer = installer
-
-		err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, labSpec.Slug)
-		if err != nil {
-			return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
-		}
-
-		return nil
+	// load yaml for releases first to ensure directories exist
+	kotsYAML, err := readYAMLDir(trackSpec.YAMLDir)
+	if err != nil {
+		return errors.Wrapf(err, "read yaml dir %q", trackSpec.YAMLDir)
 	}
 
-	return errors.Errorf("Lab with slug %q not found", e.Params.LabSlug)
+	for _, extraRelease := range track.Spec.ExtraReleases {
+		kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
+		if err != nil {
+			return errors.Wrapf(err, "read yaml dir %q", trackSpec.YAMLDir)
+		}
+		track.Status.ExtraReleases = append(track.Status.ExtraReleases, ExtraReleaseStatus{
+			Spec: extraRelease,
+			YAML: kotsYAML,
+		})
+
+	}
+
+	kurlYAML, err := ioutil.ReadFile(trackSpec.K8sInstallerYAMLPath)
+	if err != nil {
+		return errors.Wrapf(err, "read installer yaml %q", trackSpec.K8sInstallerYAMLPath)
+	}
+
+	channel, err := e.getOrCreateChannel(track)
+	if err != nil {
+		return errors.Wrapf(err, "get or create channel %q", track.Spec.Channel)
+	}
+	track.Status.Channel = channel
+
+	customer, err := e.getOrCreateCustomer(track)
+	if err != nil {
+		return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+	}
+	track.Status.Customer = customer
+
+	release, err := e.Client.CreateRelease(app.ID, kotsYAML)
+	if err != nil {
+		return errors.Wrapf(err, "create release for %q", trackSpec.YAMLDir)
+	}
+
+	track.Status.Release = release
+
+	err = e.Client.PromoteRelease(app.ID, trackSpec.Name, trackSpec.Slug, release.Sequence, channel.ID)
+	if err != nil {
+		return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
+	}
+
+	for _, extraRelease := range track.Status.ExtraReleases {
+		releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+		if err != nil {
+			return errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+		}
+		extraRelease.Release = releaseInfo
+
+		if extraRelease.Spec.PromoteChannel != "" {
+
+			continue
+		}
+	}
+
+	installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
+	if err != nil {
+		return errors.Wrapf(err, "create installer from %q", trackSpec.K8sInstallerYAMLPath)
+	}
+	track.Status.Installer = installer
+
+	err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, trackSpec.Slug)
+	if err != nil {
+		return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+	}
+
+	return nil
 }
 
-func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(lab.Status.App.ID, lab.Status.App.Slug, lab.Spec.Channel)
+func (e *EnvironmentManager) getOrCreateChannel(track Track) (*types.Channel, error) {
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.Channel)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel %q for app %q", lab.Spec.Channel, lab.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.Channel, track.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
-		if channel.Name == lab.Spec.Channel || channel.Slug == lab.Spec.Channel {
+		if channel.Name == track.Spec.Channel || channel.Slug == track.Spec.Channel {
 			matchedChannels = append(matchedChannels, channel)
 		}
 	}
@@ -257,31 +234,31 @@ func (e *EnvironmentManager) getOrCreateChannel(lab Lab) (*types.Channel, error)
 	}
 
 	if len(matchedChannels) > 1 {
-		return nil, errors.Errorf("expected at most one channel to match %q, found %d", lab.Spec.Channel, len(matchedChannels))
+		return nil, errors.Errorf("expected at most one channel to match %q, found %d", track.Spec.Channel, len(matchedChannels))
 	}
 
-	channel, err := e.Client.CreateChannel(lab.Status.App.ID, lab.Spec.Slug, lab.Spec.Name)
+	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.Slug, track.Spec.Name)
 	if err != nil {
-		return nil, errors.Wrapf(err, "create channel for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
+		return nil, errors.Wrapf(err, "create channel for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
 	}
 	return channel, nil
 }
 
-func (e *EnvironmentManager) getOrCreateCustomer(lab Lab) (*types.Customer, error) {
-	customers, err := e.Client.ListCustomers(lab.Status.App.ID)
+func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, error) {
+	customers, err := e.Client.ListCustomers(track.Status.App.ID)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list customer %q for app %q", lab.Spec.Channel, lab.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list customer %q for app %q", track.Spec.Channel, track.Status.App.Slug)
 	}
 
 	for _, customer := range customers {
-		if customer.Name == lab.Spec.Customer {
+		if customer.Name == track.Spec.Customer {
 			return &customer, nil
 		}
 	}
 
-	customer, err := e.Client.CreateCustomer(lab.Spec.Customer, lab.Status.App.ID, lab.Status.Channel.ID, OneWeek)
+	customer, err := e.Client.CreateCustomer(track.Spec.Customer, track.Status.App.ID, track.Status.Channel.ID, OneWeek)
 	if err != nil {
-		return nil, errors.Wrapf(err, "create customer for lab %q app %q", lab.Spec.Slug, lab.Status.App.Slug)
+		return nil, errors.Wrapf(err, "create customer for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
 	}
 	return customer, nil
 }
@@ -523,7 +500,7 @@ func (e *EnvironmentManager) updateRBAC(member MemberList, policyId string) erro
 }
 
 func (e *EnvironmentManager) inviteUser(members map[string]MemberList, policies map[string]string) error {
-	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+labs@", 1)
+	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+replabs@", 1)
 	if _, memberExists := members[inviteEmail]; memberExists {
 		// Update RBAC policy TODO
 		err := e.updateRBAC(members[inviteEmail], policies[e.getAppName()])
