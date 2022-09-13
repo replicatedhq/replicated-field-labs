@@ -59,22 +59,24 @@ func HandleRequest(event fieldlabs.LambdaEvent) error {
 
 func Run(params *fieldlabs.Params) error {
 	// clone git repo / subfolder
-	vendorLoc, err := gitSparseCheckout(params.TrackSlug, params.Branch)
-	defer os.RemoveAll(vendorLoc)
+	tempDir, err := gitSparseCheckout(params.TrackSlug, params.Branch)
+	defer os.RemoveAll(tempDir)
 	if err != nil {
 		return errors.Wrap(err, "git sparse checkout")
 	}
-	track, err := loadConfig(fmt.Sprintf("%s/instruqt/%s", vendorLoc, params.TrackSlug))
+	vendorLoc := fmt.Sprintf("%s/kots-field-labs/instruqt/%s/vendor", tempDir, params.TrackSlug)
+	track, err := loadConfig(vendorLoc)
 	if err != nil {
 		return errors.Wrap(err, "load config")
 	}
 
 	platformClient := *platformclient.NewHTTPClient(params.APIOrigin, params.APIToken)
 	envManager := &fieldlabs.EnvironmentManager{
-		Log:    print.NewLogger(os.Stdout),
-		Writer: os.Stdout,
-		Params: params,
-		Client: &kotsclient.VendorV3Client{HTTPClient: platformClient},
+		Log:       print.NewLogger(os.Stdout),
+		Writer:    os.Stdout,
+		Params:    params,
+		Client:    &kotsclient.VendorV3Client{HTTPClient: platformClient},
+		VendorLoc: vendorLoc,
 	}
 
 	if err := envManager.Validate(track); err != nil {
@@ -113,7 +115,7 @@ func gitSparseCheckout(trackSlug string, branch string) (string, error) {
 	if err != nil {
 		return tempDir, errors.Wrap(err, "Git sparse checkout")
 	}
-	log.Println("Git sparse checkout", out)
+	log.Println("Git sparse checkout", string(out))
 
 	return tempDir, nil
 }

@@ -72,10 +72,11 @@ type TrackStatus struct {
 }
 
 type EnvironmentManager struct {
-	Log    *print.Logger
-	Writer io.Writer
-	Params *Params
-	Client *kotsclient.VendorV3Client
+	Log       *print.Logger
+	Writer    io.Writer
+	Params    *Params
+	Client    *kotsclient.VendorV3Client
+	VendorLoc string
 }
 
 func (e *EnvironmentManager) Validate(track *TrackSpec) error {
@@ -143,15 +144,15 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	e.Log.ActionWithSpinner("Provision track %s", appTrackSlug)
 
 	// load yaml for releases first to ensure directories exist
-	kotsYAML, err := readYAMLDir(trackSpec.YAMLDir)
+	kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
 	if err != nil {
-		return errors.Wrapf(err, "read yaml dir %q", trackSpec.YAMLDir)
+		return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
 	}
 
 	for _, extraRelease := range track.Spec.ExtraReleases {
-		kotsYAML, err := readYAMLDir(extraRelease.YAMLDir)
+		kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.YAMLDir))
 		if err != nil {
-			return errors.Wrapf(err, "read yaml dir %q", trackSpec.YAMLDir)
+			return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
 		}
 		track.Status.ExtraReleases = append(track.Status.ExtraReleases, ExtraReleaseStatus{
 			Spec: extraRelease,
@@ -160,9 +161,9 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	}
 
-	kurlYAML, err := ioutil.ReadFile(trackSpec.K8sInstallerYAMLPath)
+	kurlYAML, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
 	if err != nil {
-		return errors.Wrapf(err, "read installer yaml %q", trackSpec.K8sInstallerYAMLPath)
+		return errors.Wrapf(err, "read installer yaml %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
 	}
 
 	channel, err := e.getOrCreateChannel(track)
@@ -179,7 +180,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	release, err := e.Client.CreateRelease(app.ID, kotsYAML)
 	if err != nil {
-		return errors.Wrapf(err, "create release for %q", trackSpec.YAMLDir)
+		return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
 	}
 
 	track.Status.Release = release
@@ -192,7 +193,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	for _, extraRelease := range track.Status.ExtraReleases {
 		releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
 		if err != nil {
-			return errors.Wrapf(err, "create release for %q", extraRelease.Spec.YAMLDir)
+			return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.Spec.YAMLDir))
 		}
 		extraRelease.Release = releaseInfo
 
@@ -204,7 +205,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
 	if err != nil {
-		return errors.Wrapf(err, "create installer from %q", trackSpec.K8sInstallerYAMLPath)
+		return errors.Wrapf(err, "create installer from %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
 	}
 	track.Status.Installer = installer
 
