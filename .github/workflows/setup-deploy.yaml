@@ -1,4 +1,4 @@
-name: Deploy Solution
+name: setup-deploy
 
 on:
   push:
