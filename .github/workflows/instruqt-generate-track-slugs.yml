@@ -4,7 +4,7 @@
 # This workflow will generate the track-slugs.yml file
 #
 ##############################################################################
-name: generate
+name: instruqt-generate
 
 env:
   INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}

@@ -7,7 +7,7 @@
 # to the same organization.
 #
 ##############################################################################
-name: development
+name: instruqt-development-test
 
 env:
   # Set these values to match your environment. Your token should be 
