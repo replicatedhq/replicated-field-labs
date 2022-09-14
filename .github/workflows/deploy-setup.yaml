@@ -9,6 +9,9 @@ jobs:
   publish_lambda_function:
     name: Publish and Deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./setup
     permissions:
       id-token: write
       contents: read
@@ -40,7 +43,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ steps.meta.outputs.tags }}
         run: |
-          docker build -f setup/Dockerfile -t $IMAGE_TAG .
+          docker build -f Dockerfile -t $IMAGE_TAG .
           docker push $IMAGE_TAG
       - name: Update Lambda function with latest ECR image
         env:
