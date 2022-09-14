@@ -30,8 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: |
-            429114214526.dkr.ecr.us-west-1.amazonaws.com/replicatedlabs
+          images: ${{ steps.login-ecr.outputs.registry }}/replicatedlabs
           tags: |
             # minimal (short sha)
             type=sha
@@ -41,12 +40,10 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: replicatedlabs
           IMAGE_TAG: ${{ steps.meta.outputs.tags }}
         run: |
-          docker build -f setup/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -f setup/Dockerfile -t $IMAGE_TAG .
+          docker push $IMAGE_TAG
       - name: Update Lambda function with latest ECR image
         env:
           LAMBDA_NAME: createlab
