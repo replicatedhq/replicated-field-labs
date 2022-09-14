@@ -23,7 +23,7 @@ concurrency:
 on:
   push:
     branches:
-      - main
+      - instruqt
   workflow_dispatch:
 
 jobs:
