@@ -48,10 +48,8 @@ jobs:
       - name: Update Lambda function with latest ECR image
         env:
           LAMBDA_NAME: createlab
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: replicatedlabs
           IMAGE_TAG: ${{ steps.meta.outputs.tags }}
         run: |
           aws lambda update-function-code \
           --function-name $LAMBDA_NAME \
-          --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          --image-uri $IMAGE_TAG
