@@ -13,7 +13,7 @@ env:
   # Set these values to match your environment. Your token should be 
   # stored as a Github secret in your tracks repo. Also make sure you 
   # have a track-slugs.yml file in your tracks directory.
-  TRACK_DIR: instruqt-tracks
+  TRACK_DIR: instruqt
   INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 
 concurrency:
