@@ -3,6 +3,8 @@ name: Deploy Solution
 on:
   push:
     branches: [instruqt]
+    paths:
+      - 'setup/**'
   workflow_dispatch:
 
 jobs:
