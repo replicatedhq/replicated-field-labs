@@ -24,6 +24,8 @@ on:
   push:
     branches:
       - instruqt
+    paths:
+      - 'instruqt/**'
   workflow_dispatch:
 
 jobs:

@@ -1,5 +1,6 @@
 ---
 slug: setup
+id: lhcgdbms3swd
 type: challenge
 title: setup
 teaser: A short description of the challenge.
@@ -13,3 +14,5 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+
+Some simple thing to do

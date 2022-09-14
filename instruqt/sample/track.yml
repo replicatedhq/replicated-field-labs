@@ -1,4 +1,5 @@
 slug: sample
+id: rkh2x9nsexjs
 type: track
 title: sample
 teaser: A short description of the track.
@@ -13,3 +14,4 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
+checksum: "9888507816616733442"
