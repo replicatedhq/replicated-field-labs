@@ -1,0 +1,57 @@
+name: Deploy Solution
+
+on:
+  push:
+    branches: [instruqt]
+  workflow_dispatch:
+
+jobs:
+  publish_lambda_function:
+    name: Publish and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::429114214526:role/gh-action-iam-role-Role-16C5S7FD9ZO4T
+          aws-region: us-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            429114214526.dkr.ecr.us-west-1.amazonaws.com/replicatedlabs
+          tags: |
+            # minimal (short sha)
+            type=sha
+            # full length sha
+            type=sha,format=long
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: replicatedlabs
+          IMAGE_TAG: ${{ steps.meta.outputs.tags }}
+        run: |
+          docker build -f setup/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Update Lambda function with latest ECR image
+        env:
+          LAMBDA_NAME: createlab
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: replicatedlabs
+          IMAGE_TAG: ${{ steps.meta.outputs.tags }}
+        run: |
+          aws lambda update-function-code \
+          --function-name $LAMBDA_NAME \
+          --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
