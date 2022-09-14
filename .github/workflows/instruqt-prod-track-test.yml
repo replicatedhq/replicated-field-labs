@@ -7,7 +7,7 @@
 # to the same organization.
 #
 ##############################################################################
-name: production
+name: instruqt-production
 
 env:
   # Set these values to match your environment. Your token should be 
