@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup the kotsadm port-forward?
+# kubectl kots admin-console --namespace joshd-testing-replicated-com
 # TOKEN=$(kubectl -n kubernetes-dashboard describe secret admin-user-token | grep ^token | awk '{ print $2 }')
 # cat <<EOF > token.sh
 # echo ""

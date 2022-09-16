@@ -24,13 +24,16 @@ curl https://kots.io/install | bash
 kubectl kots install [YOUR-APP-NAME]/helloworld
 ```
 
-Run this command in the `Shell` tab and give it a `namespace` name of your choice:
+Run this command in the `Shell` tab. When asked for the `namespace`, you can just press enter and use the one suggested:
 
-```
-$> kubectl kots install [YOUR-APP-NAME]/helloworld
-Enter the namespace to deploy to:
-```
+![Namespace](../assets/namespace.png)
 
-When asked for a password, provide a secure password and remember it as it will be needed in the next Challenge.
+The installation will take a couple minutes, and ask to provide a secure password. Remember it as it will be needed in the next Challenge.
 
-Once finsihed, press **Check** to continue to the next challenge.
+![Password](../assets/password.png)
+
+Once finished you will see the following output:
+
+![Kots finished](../assets/kots-install-finished.png)
+
+Feel free to press `Ctrl+C` and press **Check** to continue to the next challenge.
