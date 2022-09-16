@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Setup the kotsadm port-forward?
+# TOKEN=$(kubectl -n kubernetes-dashboard describe secret admin-user-token | grep ^token | awk '{ print $2 }')
+# cat <<EOF > token.sh
+# echo ""
+# echo $TOKEN
+# echo ""
+# echo "This is your token. Use it to log in to the Kubernetes dashboard in the second tab ^"
+# EOF
+# chmod +x token.sh

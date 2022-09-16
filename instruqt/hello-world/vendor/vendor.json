@@ -1,0 +1,9 @@
+{
+    "name": "Hello World",
+    "slug": "hello-world",
+    "channel": "HelloWorld",
+    "channel_slug": "helloworld",
+    "customer": "Hola Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}
