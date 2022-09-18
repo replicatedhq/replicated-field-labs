@@ -4,12 +4,16 @@ id: 6qxrucass5to
 type: challenge
 title: Hello World install
 teaser: Install Hello World using Replicated Application Installer
+notes:
+- type: text
+  contents: Let's install the application installer
 tabs:
-- title: Appllication Installer
-  type: service
+- title: Application Installer
+  type: website
+  url: https://kubernetes-vm.${_SANDBOX_ID}.instruqt.io
+- title: Shell
+  type: terminal
   hostname: kubernetes-vm
-  path: /api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
-  port: 8001
 difficulty: basic
 timelimit: 600
 ---
@@ -38,6 +42,7 @@ Watch the preflights run
 Enjoy "Hello World" or "Hola" :smile: by clicking on `Open Hello World`
 
 
-## Step 06
+🏁 Finish
+=========
 
 If you've viewed the Hello World app, click **Check** to finish this track.

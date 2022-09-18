@@ -36,4 +36,7 @@ Once finished you will see the following output:
 
 ![Kots finished](../assets/kots-install-finished.png)
 
+🏁 Finish
+=========
+
 Feel free to press `Ctrl+C` and press **Check** to continue to the next challenge.
