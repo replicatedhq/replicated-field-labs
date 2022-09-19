@@ -41,6 +41,9 @@ spec:
               when: "== gke"
               message: GKE is a supported distribution.
           - pass:
+              when: "== k3s"
+              message: k3s is a supported distribution.
+          - pass:
               when: "== aks"
               message: AKS is a supported distribution.
           # Will be supported in the future

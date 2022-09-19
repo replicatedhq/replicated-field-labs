@@ -1,80 +1,80 @@
 #!/bin/bash
 
-# Setup the kotsadm port-forward
-# kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm2 --port=8800 --target-port=3000
+# Setup kotsadm - expose via loadbalancer
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm2 --port=8800 --target-port=3000
 
 # We need to expose kotsadm over https
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.8.0/cert-manager.yaml
+# kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.8.0/cert-manager.yaml
 
 # wait for cert-manager
-while true; do
-    if kubectl get pods -A -l app=cert-manager --no-headers -o custom-columns=":status.phase" | grep -q "Running"; then
-        echo "Yeah running"
-        break
-    else
-        kubectl get pods -A -l app=kotsadm
-        sleep 1
-        continue  
-    fi
-done
+# while true; do
+#     if kubectl get pods -A -l app=cert-manager --no-headers -o custom-columns=":status.phase" | grep -q "Running"; then
+#         echo "Yeah running"
+#         break
+#     else
+#         kubectl get pods -A -l app=kotsadm
+#         sleep 1
+#         continue  
+#     fi
+# done
 
-cat >> ~/letsencrypt-prod.yaml <<-EOF
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    email: joshd@replicated.com
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-    - http01:
-        ingress:
-          class: traefik
-EOF
+# cat >> ~/letsencrypt-prod.yaml <<-EOF
+# apiVersion: cert-manager.io/v1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-prod
+# spec:
+#   acme:
+#     email: joshd@replicated.com
+#     server: https://acme-v02.api.letsencrypt.org/directory
+#     privateKeySecretRef:
+#       name: letsencrypt-prod
+#     solvers:
+#     - http01:
+#         ingress:
+#           class: traefik
+# EOF
 
-cat ~/letsencrypt-prod.yaml | envsubst | kubectl apply -f -
+# cat ~/letsencrypt-prod.yaml | envsubst | kubectl apply -f -
 
-cat >> ~/traefik-https-redirect-middleware.yaml <<-EOF
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-https
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
-EOF
+# cat >> ~/traefik-https-redirect-middleware.yaml <<-EOF
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: redirect-https
+# spec:
+#   redirectScheme:
+#     scheme: https
+#     permanent: true
+# EOF
 
-cat traefik-https-redirect-middleware.yaml | envsubst | kubectl apply -f -
+# cat traefik-https-redirect-middleware.yaml | envsubst | kubectl apply -f -
 
-cat >> ~/kotsadm-ingress-tls.yaml <<-EOF
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: kotsadm-ingress-tls
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
-spec:
-  rules:
-    - host: kubernetes-vm.${_SANDBOX_ID}.instruqt.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: kotsadm
-                port:
-                  number: 3000
-  tls:
-    - secretName: kotsadm-tls
-      hosts:
-        - kubernetes-vm.${_SANDBOX_ID}.instruqt.io
-EOF
+# cat >> ~/kotsadm-ingress-tls.yaml <<-EOF
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: kotsadm-ingress-tls
+#   annotations:
+#     kubernetes.io/ingress.class: traefik
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+# spec:
+#   rules:
+#     - host: kubernetes-vm.${_SANDBOX_ID}.instruqt.io
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: kotsadm
+#                 port:
+#                   number: 3000
+#   tls:
+#     - secretName: kotsadm-tls
+#       hosts:
+#         - kubernetes-vm.${_SANDBOX_ID}.instruqt.io
+# EOF
 
-cat ~/kotsadm-ingress-tls.yaml | envsubst | kubectl apply -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) -f -
+# cat ~/kotsadm-ingress-tls.yaml | envsubst | kubectl apply -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) -f -
