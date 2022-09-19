@@ -161,11 +161,6 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	}
 
-	kurlYAML, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-	if err != nil {
-		return errors.Wrapf(err, "read installer yaml %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-	}
-
 	channel, err := e.getOrCreateChannel(track)
 	if err != nil {
 		return errors.Wrapf(err, "get or create channel %q", track.Spec.Channel)
@@ -203,15 +198,22 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 		}
 	}
 
-	installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
-	if err != nil {
-		return errors.Wrapf(err, "create installer from %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-	}
-	track.Status.Installer = installer
+	if trackSpec.K8sInstallerYAMLPath != "" {
+		kurlYAML, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+		if err != nil {
+			return errors.Wrapf(err, "read installer yaml %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+		}
 
-	err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, trackSpec.Slug)
-	if err != nil {
-		return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+		installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
+		if err != nil {
+			return errors.Wrapf(err, "create installer from %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+		}
+		track.Status.Installer = installer
+
+		err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, trackSpec.Slug)
+		if err != nil {
+			return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+		}
 	}
 
 	return nil

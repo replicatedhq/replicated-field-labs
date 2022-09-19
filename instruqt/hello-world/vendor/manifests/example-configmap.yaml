@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-content
+data:
+  index.html: |
+    <!doctype html>
+    <html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Demo Application</title>
+        <link href="styles.css" rel="stylesheet" type="text/css">
+      </head>
+      <body>
+        This is an example KOTS application.
+        <p>This is text from a user config value: '{{repl ConfigOption "example_default_value"}}' </p>
+        </br>
+        This is a hidden value: '{{repl ConfigOption "hidden_text"}}'
+      </body>
+    </html>
+  styles.css: |
+    body {
+      text-align: center;
+      background-color: rgb(224,224,224);
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+      font-size: 100%;
+    }

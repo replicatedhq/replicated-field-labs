@@ -1,0 +1,20 @@
+slug: hello-world
+id: otit0x2yl9ry
+type: track
+title: hello-world
+teaser: Learn how to deploy kubernetes applications using Replicated
+description: |-
+  Learn how to deploy kubernetes applications using Replicated.
+
+  **This track demonstrates how to:**
+    - Install Replicated's application installer
+    - Deploy a webserver (NGINX) on Kubernetes using Replicated
+    - Make a change in the webserver configuration and update the application
+icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+private: true
+published: false
+checksum: "1950410808679901067"
