@@ -60,8 +60,13 @@ Once you clicked on `Continue`, the Application Installer will deploy the Hello 
 
 If you want to check the "Hello World", you can do so by clicking on `Open App`
 
+![Open App](../assets/open-app.png)
+
+It will open a new tab and you should see something similar like the screenshot below:
+
+![Hola Result](../assets/hola-result.png)
 
 🏁 Finish
 =========
 
-If you've viewed the Hello World app, click **Check** to finish this track.
+If you've viewed the Hello World app, congratulations! You've deployed your first application using the Replicated Application Installer. You can click **Check** to finish this track.
