@@ -6,7 +6,7 @@ title: Hello World install
 teaser: Install Hello World using Replicated Application Installer
 notes:
 - type: text
-  contents: Let's install the application installer
+  contents: Let's install the Hello World Application
 tabs:
 - title: Application Installer
   type: website
