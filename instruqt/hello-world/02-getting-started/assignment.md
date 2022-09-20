@@ -21,6 +21,16 @@ timelimit: 120
 
 You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
+**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
+
+The email you received should look like the one below.
+
+![email](../assets/email.png)
+
+Click on the link, and set your password:
+
+![activate](../assets/activate-account.png)
+
 ### 1. Getting the install command
 
 Once you're logged in, go to `Channels > HelloWorld` and grab the existing cluster install command.
