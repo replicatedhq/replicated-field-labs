@@ -100,7 +100,7 @@ func gitSparseCheckout(trackSlug string, branch string) (string, error) {
 		return "", errors.Wrap(err, "failed to create temp dir")
 	}
 
-	command := exec.Command("git", "clone", "--depth", "1", "--filter=blob:none", fmt.Sprintf("--branch=%s", branch), "--sparse", "git@github.com:replicatedhq/kots-field-labs.git")
+	command := exec.Command("git", "clone", "--depth", "1", "--filter=blob:none", fmt.Sprintf("--branch=%s", branch), "--sparse", "https://github.com/replicatedhq/kots-field-labs.git")
 	command.Dir = tempDir
 	out, err := command.CombinedOutput()
 	if err != nil {
