@@ -1,7 +1,7 @@
 Lab 1.7: Redactors
 =========================================
 
-Redactors allow end users to promgramatically control which information is included in support bundles and which types of information are excluded.
+Redactors allow end users to programatically control which information is included in support bundles and which types of information are excluded.
 They can be used to prevent sensitive data like usernames, IP addresses, and password from being accidentally leaked in support bundles.
 
 In this lab, we'll explore how Redactors work and learn the workflows that end customers can use to review and customize redaction of support bundles.
