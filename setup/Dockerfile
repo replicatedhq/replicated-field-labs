@@ -9,7 +9,7 @@ WORKDIR /build
 RUN apk --update add --no-cache ca-certificates openssl git tzdata && update-ca-certificates
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main ./cmd/kots-field-labs
 
-FROM scratch
+FROM bitnami/git:2
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 # This line will copy all certificates to final image
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
