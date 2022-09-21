@@ -40,6 +40,8 @@ Customize the hello world application by adding some text examples like below:
 
 ![Configuration](../assets/config.png)
 
+For now, you can just ignore the `API token` and `Readonly text` fields.
+
 ## Step 04
 
 Click `Continue` and watch the Preflights run. These preflights will validate the application environment.
@@ -50,7 +52,9 @@ Once the preflights are finished, you can check the results which will look like
 
 ![Preflights Results](../assets/preflights-results.png)
 
-For now we will ignore the warnings and click `Continue`.
+For now we will ignore the warnings and click `Continue`. As there is an issue with one of the preflights, you will have to confirm that you want to `Deploy and continue`.
+
+![Preflights Deploy](../assets/preflights-deploy.png)
 
 ## Step 05
 
