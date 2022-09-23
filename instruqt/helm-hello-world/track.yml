@@ -1,7 +1,7 @@
 slug: helm-hello-world
 title: Deploying a Helm Based Application with Replicated
 teaser: Learn how to deploy an application that was packaged as a Helm Chart but distributed and installed via Replicated.
-description: |-
+description: 
 |-
   Learn how to deploy Helm based kubernetes applications using Replicated.
 

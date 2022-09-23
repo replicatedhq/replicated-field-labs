@@ -30,11 +30,11 @@ You should have received an invite via email to log into https://vendor.replicat
 
 The email should look like this:
 
-<p align="center"><img src="..\assets\email-invite.png" width=600></img></p>
+<p align="center"><img src="../assets/email-invite.png" width=600></img></p>
 
 Once you click on the button, it should open a browser to a page similar to this:
 
-<p align="center"><img src="..\assets\create-account.png" width=600></img></p>
+<p align="center"><img src="../assets/create-account.png" width=600></img></p>
 
 Fill in the rest of the form and click on the **Create Account** button to get started.
 
@@ -44,15 +44,15 @@ Once you have created your account you should land on the Channels. Channels all
 
 The default channels are `Stable`, `Beta` and `Unstable`. For this lab we have created a new channel `HelloHelm` and you may need to scroll down to see it, depending on your screen resolution.
 
-<p align="center"><img src="..\assets\hellohelmscroll.png" width=600></img></p>
+<p align="center"><img src="../assets/hellohelmscroll.png" width=600></img></p>
 
 On that channel card, click on **Release history** to get the list of releases. Here you can see all of the releases that have been promoted to this channel. 
 
-<p align="center"><img src="..\assets\hellohelmchannel.png" width=300></img></p>
+<p align="center"><img src="../assets/hellohelmchannel.png" width=300></img></p>
 
 We want to view the contents of the release, so to do that click on the icon as shown below:
 
-<p align="center"><img src="..\assets\releases-channel.png" width=600></img></p>
+<p align="center"><img src="../assets/releases-channel.png" width=600></img></p>
 
 You will see a file navigator similar to the one shown below. This view shows you the content of the current release. As you can see there are some files above the line and files below it. The files above are files used to configure some of the Replicated features. The files below are the ones needed to deploy the applicaiton, which in our case is Wordpress.
 
@@ -62,7 +62,7 @@ As you can see we are using the Wordpress Helm Chart, and in this view, the top 
 
 When installing from a Helm Chart, there are scenarios where the default values need to be overriden or preset for a given customer. Replicated allows map the values in the **Values.yaml** file with values that the end user can enter in a config UI or can also come from a Replicated License. Below is a screenshot of the **wordpress.yaml** file with some value overrides:
 
-<p align="center"><img src="..\assets\values-overide.png" width=600></img></p>
+<p align="center"><img src="../assets/values-overide.png" width=600></img></p>
 
 Note that for some values, teh value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field 
 
