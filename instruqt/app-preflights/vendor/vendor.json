@@ -1,8 +1,8 @@
 {
     "name": "Application Preflight Checks",
-    "slug": "app-preflights",
+    "slug": "apppreflights",
     "channel": "AppPreflights",
-    "channel_slug": "app-preflights",
+    "channel_slug": "apppreflights",
     "customer": "Hola Customer",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""

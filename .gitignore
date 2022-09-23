@@ -1,2 +1,3 @@
 *.csv
 terraform/etc_hosts
+make.sh
