@@ -1,6 +1,6 @@
 {
     "name": "Application Preflight Checks",
-    "slug": "apppreflights",
+    "slug": "app-preflights",
     "channel": "AppPreflights",
     "channel_slug": "apppreflights",
     "customer": "Hola Customer",
