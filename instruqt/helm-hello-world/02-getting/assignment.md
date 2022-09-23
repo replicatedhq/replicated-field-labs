@@ -14,7 +14,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: shell
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
