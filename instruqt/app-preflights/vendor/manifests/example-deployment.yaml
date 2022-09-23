@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      annotations:
+        backup.velero.io/backup-volumes: nginx-content
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+        - name: nginx-content
+          mountPath: /usr/share/nginx/html/
+        resources:
+          limits:
+            memory: '256Mi'
+            cpu: '500m'
+          requests:
+            memory: '32Mi'
+            cpu: '100m'
+      volumes:
+      - name: nginx-content
+        configMap:
+          name: nginx-content

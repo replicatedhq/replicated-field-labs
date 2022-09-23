@@ -1,0 +1,18 @@
+slug: app-preflights
+id: yv7w1owyqbeh
+title: app-preflights
+teaser: Application Preflight lab
+description: |-
+  In this lab you will learn about KOTS Application Preflights
+
+  ***The exercises will guide you through:***
+   - Configure various Application Preflight Checks
+   - View preflight checks in Kots Admin UI
+icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+tags: []
+owner: replicated
+developers:
+- graham@replicated.com
+private: true
+published: false
+checksum: "7857052381475087090"
