@@ -1,0 +1,98 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: wordpress-config
+spec:
+  groups:
+    - name: wordpress
+      title: Wordpress
+      description: Wordpress Defaults
+      items:
+        - name: wordpressBlogName
+          title: Wordpress Blog Name
+          type: text
+          when: '{{repl eq Sequence 1 }}'
+        - name: note
+          type: label
+          title: "This can only be set on intial install. This field will not be available after that."
+        - name: default_port
+          type: text
+          title: Default Port
+          when: 'repl{{ IsKurl }}'
+    - name: database options
+      title: Database Options
+      description: Deploy MariaDB with Wordpress or Connect to External Database
+      items:
+        - name: option_select
+          title: Select Database Option
+          type: select_one
+          default: embedded_db
+          items:
+          - name: embedded_db
+            title: Deploy Database with Wordpress
+          - name: external_db
+            title: Connect to my Database
+        - name: db_hostname
+          title: Database Hostname
+          type: text
+          default: "localhost"
+          when: '{{repl ConfigOptionEquals "option_select" "external_db" }}'
+        - name: db_port
+          title: Database Port
+          type: text
+          default: "3306"
+          when: '{{repl ConfigOptionEquals "option_select" "external_db" }}'
+        - name: db_username
+          title: Database Username
+          type: text
+          default: "bn_wordpress"
+          when: '{{repl ConfigOptionEquals "option_select" "external_db" }}'
+        - name: db_password
+          title: Database Password
+          type: password
+          default: ""
+          when: '{{repl ConfigOptionEquals "option_select" "external_db" }}'
+        - name: db_name
+          title: Database Name
+          type: text
+          default: "bitnami_wordpress"
+          when: '{{repl ConfigOptionEquals "option_select" "external_db" }}'  
+        - name: wordpress-db-secret
+          hidden: true
+          type: password
+          value: "{{repl RandomString 10}}"
+        - name: wordpress-secret
+          hidden: true
+          type: text
+          value: "{{repl RandomString 10}}" 
+    - name: smtp_options
+      title: SMTP Configuration
+      description: Configure SMTP mail delivery
+      items:
+        - name: enable_smtp
+          title: Enable SMTP mail delivery
+          type: bool
+          default: "0"
+        - name: smtp_host
+          title: SMTP Host
+          type: text
+          when: '{{repl ConfigOptionEquals "enable_smtp" "1"}}'
+        - name: smtp_port
+          title: SMTP Port
+          type: text
+          when: '{{repl ConfigOptionEquals "enable_smtp" "1"}}'
+        - name: smtp_user
+          title: SMTP User
+          type: text
+          when: '{{repl ConfigOptionEquals "enable_smtp" "1"}}'
+        - name: smtp_password
+          title: SMTP Password
+          type: password
+          when: '{{repl ConfigOptionEquals "enable_smtp" "1"}}'
+        - name: smtp_protocol
+          title: SMTP Protocol
+          type: text
+          default: ssl
+          help_text: ssl or tls
+          when: '{{repl ConfigOptionEquals "enable_smtp" "1"}}'    
+        

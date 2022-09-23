@@ -1,0 +1,18 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "wordpress"
+  labels:
+    app.kubernetes.io/name: "wordpress"
+    app.kubernetes.io/version: "14.0.6"
+spec:
+  selector:
+    matchLabels:
+     app.kubernetes.io/name: "wordpress"
+  componentKinds: []
+  descriptor:
+    version: "14.0.6"
+    description: "Open Source Blogging Platform."
+    links:
+      - description: Open Wordpress
+        url: "http://wordpress"

@@ -1,0 +1,62 @@
+apiVersion: kots.io/v1beta1
+kind: HelmChart
+metadata:
+  name: wordpress
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: wordpress
+    chartVersion: 14.0.6
+
+  # helmVersion identifies the Helm Version used to render the Chart. Default is v2.
+  helmVersion: v3
+
+  # useHelmInstall identifies whether this Helm chart will use the
+  # Replicated Helm installation (false) or native Helm installation (true). Default is false.
+  # Native Helm installations are only available for Helm v3 charts.
+  useHelmInstall: true
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values: 
+    wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+    wordpressPassword: '{{repl ConfigOption "wordpress-secret"}}'
+    mariadb:
+      auth:
+        rootPassword: '{{repl ConfigOption "wordpress-db-secret"}}'
+      enabled:  repl{{ if ConfigOptionEquals "option_select" "embedded_db"}}truerepl{{ else}}falserepl{{end}}
+     
+    
+      
+    
+  # builder values provide a way to render the chart with all images
+  # and manifests. this is used in replicated to create airgap packages
+  optionalValues:
+    - when: 'repl{{ IsKurl }}'
+      recursiveMerge: true
+      values:
+        service:
+          type: NodePort
+          ports:
+            http: 8100
+          nodePorts:
+            http: repl{{ ConfigOption "default_port" }}   
+    - when: 'repl{{ ConfigOptionEquals "enable_smtp" "1"}}'
+      recursiveMerge: true
+      values:
+        smtpHost: '{{repl ConfigOption "smtp_host"}}'
+        smtpPort: repl{{ ConfigOption "smtp_port" | ParseInt}}
+        smtpUser: '{{repl ConfigOption "smtp_user"}}'
+        smtpPassword: '{{repl ConfigOption "smtp_password"}}'
+        smtpProtocol: '{{repl ConfigOption "smtp_protocol"}}'
+    - when: 'repl{{ ConfigOptionEquals "option_select" "embedded_db" }}'
+      recursiveMerge: true
+      values:
+        externalDatabase:
+          host: '{{repl ConfigOption "db_hostname"}}'
+          port: repl{{ ConfigOption "db_port" | ParseInt}}
+          user: '{{repl ConfigOption "db_username"}}'
+          password: '{{repl ConfigOption "db_password"}}'
+          database: '{{repl ConfigOption "db_name"}}'     
+  
+  builder: {}
