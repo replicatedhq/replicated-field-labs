@@ -20,10 +20,10 @@ spec:
             - /bin/sh
             - -ec
             - |
-              perms=$(stat -c "%a" /etc/lab1/config.txt)
+              perms=$(stat -c "%a" /etc/support/config.txt)
               if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
           volumeMounts:
-            - mountPath: /etc/lab1
+            - mountPath: /etc/support
               name: config
       containers:
         - name: nginx
@@ -41,7 +41,7 @@ spec:
       volumes:
         - name: config
           hostPath:
-            path: /etc/lab1/
+            path: /etc/support/
         - name: html
           configMap:
             name: nginx-html

@@ -8,4 +8,4 @@
 
 echo "This is the check script"
 
-exit 0
+stat -c %a /etc/support/config.txt || fail-message "I expected a config.txt file..."  
