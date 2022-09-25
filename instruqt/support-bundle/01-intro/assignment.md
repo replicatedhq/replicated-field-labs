@@ -7,7 +7,7 @@ teaser: Introduction to using Support Bundles and Analyzers
 notes:
 - type: text
   contents: In this track, we'll use the Support Bundle analyzers feature to debug
-    an application, modifying the host in order to create the correct conditions for
+    an application and modifying the host in order to create the correct conditions for
     the application to start.
 tabs:
 - title: Shell
