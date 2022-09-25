@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/kots-field-labs/setup/pkg/fieldlabs"
-	"github.com/replicatedhq/replicated/cli/print"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
+	"github.com/replicatedhq/replicated/pkg/logger"
 	"github.com/replicatedhq/replicated/pkg/platformclient"
 )
 
@@ -72,7 +72,7 @@ func Run(params *fieldlabs.Params) error {
 
 	platformClient := *platformclient.NewHTTPClient(params.APIOrigin, params.APIToken)
 	envManager := &fieldlabs.EnvironmentManager{
-		Log:       print.NewLogger(os.Stdout),
+		Log:       logger.NewLogger(os.Stdout),
 		Writer:    os.Stdout,
 		Params:    params,
 		Client:    &kotsclient.VendorV3Client{HTTPClient: platformClient},

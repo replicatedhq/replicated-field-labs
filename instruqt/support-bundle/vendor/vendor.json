@@ -1,7 +1,7 @@
 {
     "name": "Support Bundle",
     "slug": "support-bundle",
-    "channel": "SupportBundle",
+    "channel": "Support Bundle",
     "channel_slug": "supportbundle",
     "customer": "Support Bundle Customer",
     "yaml_dir": "./manifests",
