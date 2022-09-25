@@ -6,7 +6,7 @@ title: Correcting the broken application
 teaser: Time to fix the problem
 notes:
 - type: text
-  contents: Time to fix the problem
+  contents: Time to fix the problem...
 tabs:
 - title: Shell
   type: terminal
@@ -36,17 +36,17 @@ sudo chmod 400 /etc/support/config.txt
 🏆  Validating
 ===============
 
-If we run another support bundle, we should now see this check passes:
+If we run another support bundle, we should now see this check passes. Go to the Application Installer tab and generate another support bundle.
 
 ![check-passes](../assets/check-passes.png)
 
 Once the fix is done, we can wait for the nginx pod to recover from CrashLoopBackoff, or we can give the pod a nudge to get it to retry immediately:
 
 ```text
-kubectl delete pod -l app=nginx
+kubectl delete pod -l app=nginx -n support
 ```
 
-Furthermore, we should now see that the application shows ready in the admin console, and we can open it via the link:
+Furthermore, we should now see that the application shows ready in the admin console, and we can open it via the link (`Open Nginx`):
 
 ![app-ready](../assets/app-ready.png)
 

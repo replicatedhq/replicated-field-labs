@@ -3,7 +3,7 @@ id: d2oeswgg5ra2
 title: Using Support Analyzers
 teaser: Using Support Analyzers
 description: |-
-  In this track, we'll use the Support Bundle analyzers feature to debug an application,
+  In this track, we'll use the Support Bundle analyzers feature to debug an application and
   modifying the host in order to create the correct conditions for the application to start.
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
 tags: []
@@ -12,4 +12,4 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
-checksum: "11586496311755107366"
+checksum: "7554750360322834910"

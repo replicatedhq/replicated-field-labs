@@ -16,6 +16,9 @@ tabs:
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
@@ -25,11 +28,19 @@ timelimit: 600
 
 In this case, the Applicatin Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
 
-1. Download the license
+### 1. Download the license
 
    ![Support Bundle Customer](../assets/support-bundle-customer.png)
 
-2. Install the app
+### 2. Install the application
+
+The password for the application installer is your `PARTICIPANT_ID`, which can be obtained running the following in the Shell tab:
+
+```
+echo $INSTRUQT_PARTICIPANT_ID
+```
+
+Go to the `Application Installer` tab (external window), login and upload the license that was downloaded from the Vendor Portal.
 
    ![Application installer](../assets/deploy.png)
 
@@ -56,7 +67,7 @@ Once the bundle is collected, you should see an informative error message in the
 ![failing-check](../assets/failing-check.png)
 
 
-> Could not find a file at /etc/lab1/config.txt with 400 permissions -- please ensure this file exists with any content
+> Could not find a file at /etc/support/config.txt with 400 permissions -- please ensure this file exists with any content
 
 🏁 Next
 =========
