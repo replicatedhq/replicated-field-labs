@@ -69,6 +69,61 @@ Once the bundle is collected, you should see an informative error message in the
 
 > Could not find a file at /etc/support/config.txt with 400 permissions -- please ensure this file exists with any content
 
+
+♠️ Under the hood
+===============
+
+To understand why the application won't work, we have to look a little more into how the application works. The `Deployment` resource, is making use of an `initContainer` which checks for the following:
+
+```yaml
+  initContainers:
+    - name: check-file
+      image: busybox
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          perms=$(stat -c "%a" /etc/support/config.txt)
+          if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
+      volumeMounts:
+        - mountPath: /etc/support
+          name: config
+```
+
+So this means that this file needs to present with the right permissions for the application pod to even start.
+
+In the support bundle specification, this is also what is being checked for:
+
+The collector:
+```yaml
+  - exec:
+      name: check-config
+      collectorName: check-config
+      selector:
+        - app=file-check-pod
+      namespace: '{{repl Namespace}}'
+      args:
+      - stat
+      - -c
+      - "%a"
+      - /etc/support/config.txt
+```
+
+The analyzer:
+```yaml
+  - textAnalyze:
+      checkName: Config Check
+      fileName: check-config/{{repl Namespace}}/*/check-config-*.txt
+      regex: '400'
+      outcomes:
+        - pass:
+            message: Found properly-restricted file at /etc/support/config.txt
+        - fail:
+            message: Could not find a file at /etc/support/config.txt with 400 permissions -- please ensure this file exists with any content
+```
+
+If you want to learn more about the power of Support Bundles, check out [https://troubleshoot.sh](https://troubleshoot.sh).
+
 🏁 Next
 =========
 
