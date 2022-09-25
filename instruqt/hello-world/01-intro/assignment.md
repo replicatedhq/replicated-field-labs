@@ -44,7 +44,9 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 
 * * *
 
-## Get started
+🐚 Get started
+===============
+
 Use the terminal to check if kubernetes is running:
 
 ```
