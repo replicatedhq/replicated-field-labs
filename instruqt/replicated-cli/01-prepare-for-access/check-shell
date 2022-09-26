@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform check the challenge.
 #
@@ -6,4 +6,6 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-kubectl get nodes || fail-message "I expected to see the nodes in your cluster"  
+[[ -n "${REPLICATED_API_TOKEN}" ]] || fail-message "You didn't set your 
+
+echo "export REPLICATED_API_TOKEN=${REPLICATED_API_TOKEN}" >> /home/replicant/.bashrc
