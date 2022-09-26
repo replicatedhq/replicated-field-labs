@@ -27,7 +27,7 @@ timelimit: 600
 
  * Access kotsadm ui, login and upload license
  * View the initial run of the preflights
- * After app is running view the preflight log for current deployment
+ * After the app is running view the preflight log for current deployment
 
 
 ### 1. Finish App Install
@@ -36,15 +36,15 @@ In the previous challenge the kots services were installed for the application o
 
 In this challenge the installation is completed and as part of that the application install pre-flight checks will be run.
 
-Launch the kotsadm console UI using the Open external window launch button in the KotsAdm tab
+Launch the kotsadm console UI using the **Open external window** launch button in the KotsAdm tab
 
 
 ### 2. KotsAdm web UI authentication and License upload
 
 ![preflight-login](../assets/preflight-login.png)
 
-Login to the kotsadm UI using the password you set in the previous challenge.
-After authenticating you will be prompted to upload an application license file, select the file that you downloaded earlier for the Hola Customer.
+Login to the kotsadm UI using the password you set in the previous challenge.  
+After authenticating you will be prompted to upload an application license file, select the file that you downloaded earlier for the **Hola Customer**.
 
 ![preflight-login](../assets/preflight-license-upload1.png)
 ![preflight-login](../assets/preflight-license-upload2.png)
@@ -52,7 +52,7 @@ After authenticating you will be prompted to upload an application license file,
 
 ### 3. Application Configuration Values
 
-One the license is uploaded you will be presented with the application configuration set in (kots-config.yaml), this data entry is made before the application is deployed for the first time.
+Once the license is uploaded you will be presented with the application configuration set in (kots-config.yaml), this data entry is made before the application is deployed for the first time.
 
 ![preflight-login](../assets/preflight-config.png)
 
@@ -89,9 +89,7 @@ When satisfied with the Preflight Check results, click **Continue** to carry on 
 
 ![preflight-login](../assets/preflight-deploy.png)
 
-Click **Deploy and continue**
-
-and the application resource status informer will turn to <font color="Green">Green</font> after a few moments
+Click **Deploy and continue** and the application resource status informer will turn to <font color="Green">Green</font> after a few moments
 
 ![preflight-login](../assets/preflight-app-running.png)
 ![preflight-login](../assets/preflight-app-deployed.png)
@@ -99,7 +97,7 @@ and the application resource status informer will turn to <font color="Green">Gr
 
 ### 6. View PreFlights post deployment
 
-The Application Preflights can be viewed post application deployment by selecting the PreFlights icon
+The Application Preflight results can be viewed post application deployment by selecting the PreFlights icon
 
 ![preflight-login](../assets/preflight-preflight-icon.png)
 ![preflight-login](../assets/preflight-preflight-checks2.png)

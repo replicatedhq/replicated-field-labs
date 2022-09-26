@@ -24,10 +24,8 @@ timelimit: 600
 
 * **In this exercise you will:**
 
- * Perform the app install on existing kubernetes cluster
- * paste kots install command from vendor portal with --no-port-forward option at the end
- * you can just accept the generated namespace name
- * entry a password for use with the kotsadm console used in the next challenge..
+ * Perform the app install on existing kubernetes cluster using the kots cli
+ * Check the kotsadm deployment using the kubernetes cli
 
 
 ### 1. Obtain the kots cli install command
@@ -47,10 +45,9 @@ curl https://kots.io/install | bash kubectl kots install me-myco-replicated-com/
 
 ### 2. Perform the existing cluster app install
 
-Paste the install command copied in the previous step into the Shell tab window, add ```--no-port-forward``` at the end.
-Hit ENTER
+Paste the install command copied in the previous step into the Shell tab window, add the ```--no-port-forward``` option at the end of the install command and hit ENTER
 
-The install will prompt to confirm or change the kubernetes namespace name to create and install in, you can accept the default.
+The installer will prompt to confirm or change the kubernetes namespace name to create and install in, you can accept the default.
 A password will be prompted for too, enter a value you can remember, you will use this later to login to the kotsadm console.
 
 Sample install output:
