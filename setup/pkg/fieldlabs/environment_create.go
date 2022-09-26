@@ -12,8 +12,8 @@ import (
 
 	"github.com/gosimple/slug"
 	"github.com/pkg/errors"
-	"github.com/replicatedhq/replicated/cli/print"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
+	"github.com/replicatedhq/replicated/pkg/logger"
 	"github.com/replicatedhq/replicated/pkg/types"
 )
 
@@ -72,7 +72,7 @@ type TrackStatus struct {
 }
 
 type EnvironmentManager struct {
-	Log       *print.Logger
+	Log       *logger.Logger
 	Writer    io.Writer
 	Params    *Params
 	Client    *kotsclient.VendorV3Client
@@ -180,7 +180,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	track.Status.Release = release
 
-	err = e.Client.PromoteRelease(app.ID, trackSpec.Name, trackSpec.Slug, release.Sequence, channel.ID)
+	err = e.Client.PromoteRelease(app.ID, release.Sequence, trackSpec.Name, trackSpec.Slug, false, channel.ID)
 	if err != nil {
 		return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 	}
@@ -220,14 +220,14 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 }
 
 func (e *EnvironmentManager) getOrCreateChannel(track Track) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.Channel)
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.ChannelSlug)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.Channel, track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.ChannelSlug, track.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
-		if channel.Name == track.Spec.Channel || channel.Slug == track.Spec.Channel {
+		if channel.Name == track.Spec.ChannelSlug || channel.Slug == track.Spec.ChannelSlug {
 			matchedChannels = append(matchedChannels, channel)
 		}
 	}
@@ -240,7 +240,7 @@ func (e *EnvironmentManager) getOrCreateChannel(track Track) (*types.Channel, er
 		return nil, errors.Errorf("expected at most one channel to match %q, found %d", track.Spec.Channel, len(matchedChannels))
 	}
 
-	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.Slug, track.Spec.Name)
+	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.ChannelSlug, track.Spec.Channel)
 	if err != nil {
 		return nil, errors.Wrapf(err, "create channel for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
 	}
