@@ -1,16 +1,15 @@
 ---
 slug: getting
+id: 7ytw5imobgpq
 type: challenge
 title: Getting Started
 teaser: Let's make sure you have access to vendor portal
 notes:
 - type: text
-  contents: 
-  |-
+  contents: |-
     Let's start by making sure you have access to the Vendor Portal, so we'll cover:
     - Accepting the Invite to Vendor Portal
     - Basic walkthrough of the Vendor Portal interface
-
 tabs:
 - title: Shell
   type: terminal
@@ -46,7 +45,7 @@ The default channels are `Stable`, `Beta` and `Unstable`. For this lab we have c
 
 <p align="center"><img src="../assets/hellohelmscroll.png" width=600></img></p>
 
-On that channel card, click on **Release history** to get the list of releases. Here you can see all of the releases that have been promoted to this channel. 
+On that channel card, click on **Release history** to get the list of releases. Here you can see all of the releases that have been promoted to this channel.
 
 <p align="center"><img src="../assets/hellohelmchannel.png" width=300></img></p>
 
@@ -56,7 +55,7 @@ We want to view the contents of the release, so to do that click on the icon as 
 
 You will see a file navigator similar to the one shown below. This view shows you the content of the current release. As you can see there are some files above the line and files below it. The files above are files used to configure some of the Replicated features. The files below are the ones needed to deploy the applicaiton, which in our case is Wordpress.
 
-As you can see we are using the Wordpress Helm Chart, and in this view, the top level **Chart.yaml** and **Values.yaml** file are exposed. The **wordpress.yaml** is a file that declares how Replicated will manage the Chart. For example, you can override the default values, set up rules for optional charts and more. 
+As you can see we are using the Wordpress Helm Chart, and in this view, the top level **Chart.yaml** and **Values.yaml** file are exposed. The **wordpress.yaml** is a file that declares how Replicated will manage the Chart. For example, you can override the default values, set up rules for optional charts and more.
 
 **Managing Values**
 
@@ -64,7 +63,7 @@ When installing from a Helm Chart, there are scenarios where the default values 
 
 <p align="center"><img src="../assets/values-overide.png" width=600></img></p>
 
-Note that for some values, teh value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field 
+Note that for some values, teh value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field
 
 **kots-app.yaml** This is a Replicated manifest that you can use to do things like configuring the icon, the application name, which ports to maybe exposse for the application UI, etc...
 

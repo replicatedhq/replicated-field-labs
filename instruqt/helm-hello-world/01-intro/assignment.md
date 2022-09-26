@@ -1,12 +1,12 @@
 ---
 slug: intro
+id: z273ux2hwcu2
 type: challenge
 title: Intro
 teaser: Introduction to Deploying a Helm Based Kubernetes Application
 notes:
 - type: text
-  contents: 
-  |-
+  contents: |-
     This track uses a single node Kubernetes cluster on a sandbox virtual machine.
     Please wait while we boot the VM for you and start Kubernetes.
 

@@ -1,5 +1,6 @@
 ---
 slug: kots-install
+id: qxdapcfsfg3o
 type: challenge
 title: kots-install
 teaser: A short description of the challenge.

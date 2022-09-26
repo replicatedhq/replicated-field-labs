@@ -1,5 +1,6 @@
 ---
 slug: wordpress-install
+id: k4hqsy7tfaft
 type: challenge
 title: wordpress-install
 teaser: A short description of the challenge.
