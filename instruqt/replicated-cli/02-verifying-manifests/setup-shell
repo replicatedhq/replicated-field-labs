@@ -6,6 +6,7 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the setup script"
-
-exit 0
+cp /root/.bashrc /home/replicant
+chown replicant:replicant /home/replicant/.bashrc
+echo "cd /home/replicant" >> /root/.bashrc
+echo "su - replicant" >> /root/.bashrc
