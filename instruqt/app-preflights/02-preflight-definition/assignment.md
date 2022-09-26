@@ -35,10 +35,14 @@ enter your name and a memorable password and click Register.
 
 The vendor portal has been pre-configured for this lab with a sample application and release channel for a sample end customer.
 
+![preflight-channel](../assets/preflight-channel.png)
+
 
 ### 2. View the application pre-flight details
 
 Navigate to the Releases tab and click on the latest active releases **View YAML**
+
+![preflight-release-yaml](../assets/preflight-view-yaml-link.png)
 
 The UI code editor has the file list down the left hand side, there is a line separating the kots feature config and the application itself.
 The file that contains the application preflights in this example is called **kots-preflights**, select this file and note the header type:
@@ -48,10 +52,16 @@ apiVersion: troubleshoot.sh/v1beta2
 kind: Preflight
 ```
 
+![preflight-release-yaml](../assets/preflight-release-yaml.png)
+
 Application pre-flight checks are defined as collectors and analyzers, note the various analyzer outcomes with messages, links.  The outcomes can have resultant actions; pass, warning and fail.  Fail will halt the installation process before it starts, this is desireable as continuing would most likely have failed and leave the application parially deployed.
 
-For mor information on application pre-flight checks see the Replicated documentaion here:
-![go](https://docs.replicated.com/reference/custom-resource-preflight#preflight){:target="_blank" rel="noopener"}
+The analyze phase can only use the output of the collect phase to perform analysis and provide results, however a large set of collectors are included automatically.
+
+For more information on application pre-flight checks see the Replicated docs:
+* <font color="LightBlue">[Configuring Preflight Checks](https://docs.replicated.com/vendor/preflight-support-bundle-creating)</font>
+* <font color="LightBlue">[Preflight Checks Reference docs](https://docs.replicated.com/reference/custom-resource-preflight#preflight)</font>
+
 
 ### 3. Download Application License
 
