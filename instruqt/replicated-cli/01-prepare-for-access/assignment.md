@@ -12,6 +12,7 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
+  workdir: /home/replicant
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -19,6 +20,26 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+
+👋 Introduction
+===============
+
+This exercise is designed to give you a sandbox to ensure you have a basic understanding how to work with the Replicated CLI.
+
+* **What you will do**:
+  * Use the Replicated CLI to vaidate and release your application
+  * Find your installation command and install to an existing cluster
+  * Iterate on your work and deploy an updated release
+* **Who this is for**: This lab is for anyone who works with app code, docker images, k8s yamls, or does field support for multi-prem applications
+  * Full Stack / DevOps / Product Engineers
+  * Support Engineers
+  * Implementation / Field Engineers
+* **Prerequisites**:
+  * Basic working knowledge of Kubernetes
+* **Outcomes**:
+  * You will build a working understanding of how to release and deploy a kubernetes application packaged with Replicated using kots.
+
+* * *
 
 🚀 Let's start
 ==============
@@ -57,5 +78,4 @@ You can ensure this is working with
 ```
 replicated release ls
 ```
-
 
