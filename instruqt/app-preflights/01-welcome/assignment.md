@@ -26,16 +26,30 @@ timelimit: 600
 👋 Introduction
 ===============
 
-This exercise will guide you through the core capabilities of the Replicated application preflight capabilities
+* **What you will do**:
+    * This exercise will guide you through the core capabilities of the Replicated application preflight capabilities
+    * Configure various Application Preflight tests and view and view resulant output on application deployment
+* **Who this is for**: This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing
+    * Full Stack / DevOps / Product Engineers
+    * Support Engineers
+    * Implementation / Field Engineers
+    * Success / Sales Engineers
+* **Prerequisites**:
+    * Basic working knowledge of Linux (Bash)
+* **Outcomes**:
+    * You will be ready to use KOTS's support bundle feature to diagnose first-line issues in end-user environments
+    * You will reduce escalations and expedite time to remediate for such issues
 
-## Initial Check
+
+## Get Started
+
 Use the terminal to check that kubernetes is running:
 
 ```
 kubectl get nodes
 ```
 
-🏁 Finish
-=========
+🏁 Next
+=======
 
 To complete this challenge, press **Check**.

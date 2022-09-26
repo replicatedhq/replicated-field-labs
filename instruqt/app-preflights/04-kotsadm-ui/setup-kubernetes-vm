@@ -6,6 +6,7 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the setup script"
+# Setup kotsadm - expose via loadbalancer
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm2 --port=8800 --target-port=3000
 
 exit 0
