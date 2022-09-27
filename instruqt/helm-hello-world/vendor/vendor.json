@@ -1,6 +1,6 @@
 {
     "name": "Wordpress",
-    "slug": "wordpress",
+    "slug": "helm-hello-world",
     "channel": "HelloHelm",
     "channel_slug": "hellohelm",
     "customer": "Wordpress Customer",

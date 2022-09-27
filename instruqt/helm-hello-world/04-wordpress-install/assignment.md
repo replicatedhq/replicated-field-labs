@@ -18,17 +18,19 @@ timelimit: 600
 
 Go to the Application Installer tab, and login using the password you used in the previous step.
 
+<p align="center"><img src="../assets/helm-login.png" width=600></img></p>
 
 ## Step 02
 
 Upload the license for the `Helm Customer` you downloaded in Challenge #2
 
+<p align="center"><img src="../assets/helm-license.png" width=600></img></p>
 
 ## Step 03
 
 Set the initial blog name in Wordpress
 
-
+<p align="center"><img src="../assets/helm-config.png" width=600></img></p>
 
 ## Step 04
 
