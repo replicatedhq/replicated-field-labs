@@ -8,6 +8,10 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
+- title: Application Installer
+  type: website
+  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  new_window: true
 - title: Shell
   type: terminal
   hostname: kubernetes-vm

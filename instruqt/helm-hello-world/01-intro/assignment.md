@@ -16,7 +16,7 @@ notes:
     - Install Replicated's application installer
     - Deploy Wordpress on Kubernetes using Replicated
     - Provide the Initial Blog's name during the installation
-    - Make a change in the webserver configuration and update the application
+    - Open Wordpress from the Admin Console
 tabs:
 - title: Shell
   type: terminal
