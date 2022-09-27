@@ -17,3 +17,4 @@ USER $USERNAME
 COPY vendor/manifests /home/$USERNAME/manifests
 WORKDIR /home/$USERNAME
 
+ENTRYPOINT [ "su", "-", $USERNAME ]
