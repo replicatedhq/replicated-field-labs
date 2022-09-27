@@ -27,8 +27,8 @@ timelimit: 600
 
 ### 1. Access Replicated Vendor portal
 
-Use the **Vendor** to launch a new tab to the vendor portal.
-You should have received a Registration Activation email, use this email to access the vendor portal,
+Use the **Vendor** tab to launch a new tab in the browser to the vendor portal.
+If this is your first track with Instruqt: You should have received a Registration Activation email, use this email to access the vendor portal,
 enter your name and a memorable password and click Register.
 
 **Note:** ensure logged out of vendor portal from any other Replicated account before clicking on activate account link
@@ -50,7 +50,7 @@ Navigate to the Releases tab and click on the latest active releases **View YAML
 The UI code editor has the file list down the left hand side, there is a line separating the kots feature config and the application itself.
 The file that contains the application preflights in this example is called **kots-preflights**, select this file and note the header type:
 
-```
+```yaml
 apiVersion: troubleshoot.sh/v1beta2
 kind: Preflight
 ```
@@ -69,7 +69,7 @@ For more information on application pre-flight checks see the Replicated docs:
 
 ### 5. Download Application License
 
-A sample end customer has been pre-created and associated with the AppPreflights release channel where the test application release has been Promoted to.  View this customer by navigating to the Customers tab on the left hand side of the UI, the customer name is *Hola Preflight Customer*.
+A sample end customer has been pre-created and associated with the AppPreflights release channel where the test application release has been promoted to.  View this customer by navigating to the Customers tab on the left hand side of the UI, the customer name is *Hola Preflight Customer*.
 
 Click on the download license icon on the right of the customer entry as you'll use that in the next challenge.
 
