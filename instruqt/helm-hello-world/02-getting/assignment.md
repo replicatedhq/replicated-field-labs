@@ -57,6 +57,8 @@ We want to view the contents of the release, so to do that click on the icon as 
 
 You will see a file navigator similar to the one shown below. This view shows you the content of the current release. As you can see there are some files above the line and files below it. The files above are files used to configure some of the Replicated features. The files below are the ones needed to deploy the applicaiton, which in our case is Wordpress.
 
+<p align="center"><img src="../assets/release-contents.png" width=600></img></p>
+
 As you can see we are using the Wordpress Helm Chart, and in this view, the top level **Chart.yaml** and **Values.yaml** file are exposed. The **wordpress.yaml** is a file that declares how Replicated will manage the Chart. For example, you can override the default values, set up rules for optional charts and more.
 
 **Managing Values**
@@ -65,13 +67,15 @@ When installing from a Helm Chart, there are scenarios where the default values 
 
 <p align="center"><img src="../assets/values-overide.png" width=600></img></p>
 
-Note that for some values, teh value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field
+Note that for some values, the value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field
 
-**kots-app.yaml** This is a Replicated manifest that you can use to do things like configuring the icon, the application name, which ports to maybe exposse for the application UI, etc...
+## 3. Copy Install Command
 
-**kots-config.yaml**
+Go back to **Channels** and scroll down to the `hellohelm` channel. On the bottom of the channel card, select to copy the install command for `existing install`
 
-## 3. Download Customer File
+<p align="center"><img src="../assets/install-command.png" width=600></img></p>
+
+## 4. Download Customer File
 
 A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
 To create a customer license, go to `Customers > Wordpress Customer` by selecting the "Customers" link on the left in the Vendor Portal. Customers for each lab have already been created for you.

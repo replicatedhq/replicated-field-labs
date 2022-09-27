@@ -41,24 +41,17 @@ Set the initial blog name in Wordpress
 
 ## Step 04
 
-Click `Continue` and watch the Preflights run. These preflights will validate the application environment.
-
-
-Once the preflights are finished, you can check the results which will look like below
-
-
-For now we will ignore the warnings and click `Continue`.
-
-## Step 05
 
 Once you clicked on `Continue`, the Application Installer will deploy the Wordpress Application.
 
+If you want to check the Wordpress App, wait for the Status Informers to show `Ready` and then click on the `Open Wordpress` link.
 
-
-If you want to check the Wordpress App, you can do so by clicking on `Open Wordpress`
+<p align="center"><img src="../assets/helm-admin-console.png" width=600></img></p>
 
 
 It will open a new tab and you should see something similar like the screenshot below:
+
+<p align="center"><img src="../assets/wordpress.png" width=600></img></p>
 
 
 🏁 Finish
