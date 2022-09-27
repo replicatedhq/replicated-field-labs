@@ -40,7 +40,16 @@ spec:
           ports:
             http: 8100
           nodePorts:
-            http: repl{{ ConfigOption "default_port" }}   
+            http: repl{{ ConfigOption "default_port" }} 
+    - when: 'repl{{ eq Distribution "k3s" }}'
+      recursiveMerge: true
+      values:
+        service:
+          type: NodePort
+          ports:
+            http: 8100
+          nodePorts:
+            http: repl{{ ConfigOption "default_port" }}                 
     - when: 'repl{{ ConfigOptionEquals "enable_smtp" "1"}}'
       recursiveMerge: true
       values:
