@@ -3,7 +3,7 @@
     "slug": "app-preflights",
     "channel": "AppPreflights",
     "channel_slug": "apppreflights",
-    "customer": "Hola Customer",
+    "customer": "Hola Preflight Customer",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""
 }
