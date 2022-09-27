@@ -28,7 +28,7 @@ timelimit: 600
 ### 1. Access Replicated Vendor portal
 
 Use the **Vendor** tab to launch a new tab in the browser to the vendor portal.
-You should have received a Registration Activation email, use this email to access the vendor portal,
+If this is your first track with Instruqt: You should have received a Registration Activation email, use this email to access the vendor portal,
 enter your name and a memorable password and click Register.
 
 **Note:** ensure logged out of vendor portal from any other Replicated account before clicking on activate account link
