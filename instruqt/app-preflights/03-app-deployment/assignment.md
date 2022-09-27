@@ -77,7 +77,7 @@ Enter a new password to be used for the Admin Console: ••••••••�
 Once complete you can check the install using the available kubernetes cli:
 
 ```
-iroot@kubernetes-vm:~# kubectl get all -n preflights
+root@kubernetes-vm:~# kubectl get all -n preflights
 NAME                           READY   STATUS    RESTARTS   AGE
 pod/kotsadm-minio-0            1/1     Running   0          5m12s
 pod/kotsadm-postgres-0         1/1     Running   0          5m12s
@@ -100,7 +100,7 @@ statefulset.apps/kotsadm-postgres   1/1     5m12s
 
 ```
 
-Note: Subsitute in the value of the namespace you chose when installing, the above example uses a namespace called 'preflights'
+Note: Subsitute in the value of the namespace you chose when installing, the above example uses a namespace called `preflights`
 
 
 Once done, move onto the next challenge.
