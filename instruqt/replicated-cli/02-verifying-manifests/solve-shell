@@ -6,6 +6,6 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the solve script"
+yq -i '.spec.template.spec.containers[0].resources.requests.cpu = "100m"' /home/replicant/manifests/deployment.yaml
+yq -i '.spec.template.spec.containers[0].resources.requests.memory = "64Mi"' /home/replicant/manifests/deployment.yaml
 
-exit 0
