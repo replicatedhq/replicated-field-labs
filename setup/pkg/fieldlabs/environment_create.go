@@ -134,9 +134,6 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 }
 
 func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpec) error {
-	if trackSpec.Slug != e.Params.TrackSlug {
-		return errors.Errorf("Track with slug %q not found", e.Params.TrackSlug)
-	}
 	var track Track
 	track.Spec = trackSpec
 	track.Status.App = app
