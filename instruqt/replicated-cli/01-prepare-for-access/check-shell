@@ -6,18 +6,16 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-env
-replicated release ls
+# if [ -z "$REPLICATED_API_TOKEN" ] ; then
+# fail-message "You didn't set your API token"
+#  exit 1
+#fi
 
-if [ -z "$REPLICATED_API_TOKEN" ] ; then
-  fail-message "You didn't set your API token"
-  exit 1
-fi
+#if [ -z "$REPLICATED_APP" ] ; then
+#  fail-message "You didn't set your application slug"
+#  exit 1
+#fi
 
-if [ -z "$REPLICATED_APP" ] ; then
-  fail-message "You didn't set your application slug"
-  exit 1
-fi
-
-echo "export REPLICATED_API_TOKEN=$REPLICATED_API_TOKEN" >> /home/replicant/.bashrc
-echo "export REPLICATED_APP=$REPLICATED_APP" >> /home/replicant/.bashrc
+#echo "export REPLICATED_API_TOKEN=$REPLICATED_API_TOKEN" >> /home/replicant/.bashrc
+#echo "export REPLICATED_APP=$REPLICATED_APP" >> /home/replicant/.bashrc
+exit 0
