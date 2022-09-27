@@ -12,8 +12,8 @@ spec:
   requireMinimalRBACPrivileges: false
   ports:
     - serviceName: wordpress
-      servicePort: 8100
-      localPort: 8100
+      servicePort: 31000
+      localPort: 31000
       applicationUrl: "http://wordpress"
   statusInformers:
     - deployment/wordpress

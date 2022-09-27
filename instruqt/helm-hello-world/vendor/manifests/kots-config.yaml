@@ -18,7 +18,7 @@ spec:
         - name: default_port
           type: text
           title: Default Port
-          default: "8100"
+          default: "31000"
           when: 'repl{{ IsKurl }}'
     - name: database options
       title: Database Options
