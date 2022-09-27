@@ -44,7 +44,7 @@ Launch the kotsadm console UI using the **Open external window** launch button i
 ![preflight-login](../assets/preflight-login.png)
 
 Login to the kotsadm UI using the password you set in the previous challenge.  
-After authenticating you will be prompted to upload an application license file, select the file that you downloaded earlier for the **Hola Customer**.
+After authenticating you will be prompted to upload an application license file, select the file that you downloaded earlier for the **Hola Preflight Customer**.
 
 ![preflight-login](../assets/preflight-license-upload1.png)
 ![preflight-login](../assets/preflight-license-upload2.png)
