@@ -1,2 +1,5 @@
 *.csv
 terraform/etc_hosts
+make.sh
+*.DS_Store
+*.DS_Store?
