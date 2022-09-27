@@ -43,7 +43,7 @@ drwxr-xr-x. 4 root root   94 Apr 12 18:27 ..
 ```
 Since you're shipping them to you customers, you want to make
 sure they'll install cleanly. Replicated includes a linter
-to check that your installation files are correct. It also 
+to check that your installation files are correct. It also
 checks for best practices for installing into customer clusters.
 
 Let's verify these manifests with the linter, which is part of
@@ -60,11 +60,11 @@ capture more best practices.
 
 ```text
 RULE                           TYPE    FILENAME                     LINE    MESSAGE
-container-resource-requests    info    manifests/deployment.yaml    20      Missing resource requests 
+container-resource-requests    info    manifests/deployment.yaml    20      Missing resource requests
 ```
 
 The command will also exit with a `0` status since there were no
-errors. This helps you include linting in your CI/CD process or 
+errors. This helps you include linting in your CI/CD process or
 local build commands and fail on an error. You can verify this if
 you want.
 
@@ -75,9 +75,9 @@ echo $?
 ### 2. Following the linter's advice
 
 Let's make a quick change to the manifests to follow the advice
-that the linter gave us. We're going to specify the resource 
+that the linter gave us. We're going to specify the resource
 requests for our deployment so that it's clear what we expect
-to have as available resources in the cluster. We have a pretty 
+to have as available resources in the cluster. We have a pretty
 simple application, so we won't ask for much.
 
 Most times, you'll do this interactively in your favorite editor.
@@ -98,7 +98,7 @@ replicated release lint --yaml-dir=manifests
 ```
 
 You should get a list that returns no errors. It should no longer
-show the information message we saw before. Like before, it's OK if 
+show the information message we saw before. Like before, it's OK if
 you have additional info or warning messages.
 
 ```
