@@ -25,6 +25,8 @@ timelimit: 600
 
 ### 1. Check Your Email! ###
 
+If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to section 2.
+
 You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
 **Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
