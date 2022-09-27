@@ -27,7 +27,7 @@ timelimit: 600
 
 ### 1. Access Replicated Vendor portal
 
-Use the **Vendor** to launch a new tab to the vendor portal.
+Use the **Vendor** tab to launch a new tab in the browser to the vendor portal.
 You should have received a Registration Activation email, use this email to access the vendor portal,
 enter your name and a memorable password and click Register.
 
