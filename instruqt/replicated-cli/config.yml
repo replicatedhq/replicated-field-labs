@@ -11,6 +11,6 @@ virtualmachines:
   - high-ports
 containers:
 - name: shell
-  image: gcr.io/kots-field-labs/shell
+  image: gcr.io/kots-field-labs/replicated-cli
   shell: /bin/bash
   memory: 256
