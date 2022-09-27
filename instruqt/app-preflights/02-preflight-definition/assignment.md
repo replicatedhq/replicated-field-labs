@@ -69,7 +69,7 @@ For more information on application pre-flight checks see the Replicated docs:
 
 ### 5. Download Application License
 
-A sample end customer has been pre-created and associated with the AppPreflights release channel where the test application release has been Promoted to.  View this customer by navigating to the Customers tab on the left hand side of the UI, the customer name is *Hola Customer*.
+A sample end customer has been pre-created and associated with the AppPreflights release channel where the test application release has been promoted to.  View this customer by navigating to the Customers tab on the left hand side of the UI, the customer name is *Hola Customer*.
 
 Click on the download license icon on the right of the customer entry as you'll use that in the next challenge.
 
