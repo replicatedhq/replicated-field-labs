@@ -1,0 +1,44 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: helm-wordpress-supportbundle
+spec:
+  collectors:
+    - mysql:
+        exclude: repl{{ ConfigOptionEquals "option_select" "embedded_db" }}
+        collectorName: mariadb
+        uri: '{{repl ConfigOption "db_username"}}:{{repl ConfigOption "db_password"}}@tcp({{repl "db_hostname"}}:{{repl ConfigOption "db_port"}})/{{repl ConfigOption "db_name"}}'
+    - run:
+        exclude: repl{{ ConfigOptionEquals "enable_smtp" "0" }}
+        collectorName: "run-ping"
+        image: busybox:1
+        name: ping.txt
+        namespace: default
+        command: ["ping"]
+        args: ["-w", "10", "-c", "10", "-i", "0.3", '{{repl ConfigOption "smtp_host"}}']
+        imagePullPolicy: IfNotPresent 
+    - data:
+        name: static/data.txt
+        data: '{{repl Distribution}}'   
+  analyzers:
+    - mysql:
+        exclude: repl{{ ConfigOptionEquals "option_select" "embedded_db" }}
+        checkName: External MariaDB Connection Check
+        collectorName: mariadb
+        outcomes:
+          - fail:
+              when: connected == false
+              message: Cannot connect to the MariaDB server, please check [this article](https://mariadb.com/kb/en/troubleshooting-connection-issues) for more help.
+          - pass:
+              message: The MariaDB server is ready
+    - textAnalyze:
+        exclude: repl{{ ConfigOptionEquals "enable_smtp" "0" }}
+        checkName: "run-ping"
+        fileName: ping.txt/run-ping.log
+        regexGroups: '(?P<Transmitted>\d+) packets? transmitted, (?P<Received>\d+) packets? received, (?P<Loss>\d+)(\.\d+)?% packet loss'
+        outcomes:
+          - pass:
+              when: "Loss < 5"
+              message: Able to connecto to SMTP host
+          - fail:
+              message: Unable to establish connectin with SMTP host
