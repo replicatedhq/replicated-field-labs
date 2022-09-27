@@ -9,7 +9,8 @@ notes:
   contents: |-
     Let's start by making sure you have access to the Vendor Portal, so we'll cover:
     - Accepting the Invite to Vendor Portal
-    - Basic walkthrough of the Vendor Portal interface
+    - Walkthrough of the Application
+    - Download the customer license
 tabs:
 - title: Vendor
   type: website
@@ -70,3 +71,19 @@ Note that for some values, teh value is not a hard coded value, rather it has so
 
 **kots-config.yaml**
 
+## 3. Download Customer File
+
+A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
+To create a customer license, go to `Customers > Wordpress Customer` by selecting the "Customers" link on the left in the Vendor Portal. Customers for each lab have already been created for you.
+
+<p align="center"><img src="../assets/helm-customer-list.png" width=600></img></p>
+
+You can view the customer details by clicking the row.
+For this Hello World exercise we'll use `Wordpress Customer`.
+You'll notice that the customer is assigned to the the "HelloWorld" channel on the right hand side, and the Customer Type is set to "Development".
+When you've reviewed these, you can click the "Download License" link in the top right corner.
+
+<p align="center"><img src="../assets/helm-cust-details.png" width=600></img></p>
+
+This will download the file with your customer name and a `.yaml` extension.
+This is the license file a customer would need to install your application.

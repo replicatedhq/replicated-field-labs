@@ -6,7 +6,12 @@ title: kots-install
 teaser: A short description of the challenge.
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: 
+  |-
+  Now that we have reviewed how the application is packaged, let's install it!
+
+  In this challenge we will install the Admin Console which will help us manage the deployment of the application.
+ 
 tabs:
 - title: Shell
   type: terminal
