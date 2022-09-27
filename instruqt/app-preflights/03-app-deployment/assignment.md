@@ -22,7 +22,7 @@ timelimit: 600
 👋 Deploy App using kots cli
 ============================
 
-* **In this exercise you will:**
+**In this exercise you will:**
 
  * Perform the app install on existing kubernetes cluster using the kots cli
  * Check the kotsadm deployment using the kubernetes cli
@@ -39,8 +39,9 @@ Copy the code for the Existing Cluster install.
 
 This will take the form of:
 
-```
-curl https://kots.io/install | bash kubectl kots install me-myco-replicated-com/app-preflights --no-port-forward
+```bash
+curl https://kots.io/install | bash 
+kubectl kots install me-myco-replicated-com/app-preflights --no-port-forward
 ```
 
 ### 2. Perform the existing cluster app install
