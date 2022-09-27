@@ -23,7 +23,7 @@ timelimit: 600
 👋 Kotsadm UI
 =============
 
-* **In this exercise you will:**
+**In this exercise you will:**
 
  * Access kotsadm ui, login and upload license
  * View the initial run of the preflights
