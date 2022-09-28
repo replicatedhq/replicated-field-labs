@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8080)
+
+if [[ $HTTP_RESPONSE -ne "200" ]] ; then
+  fail-message "Your application was not installed correctly"
+  exit 1
+fi
+
+exit 0

@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+curl -fsSL https://kots.io/install | bash
+
+curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+         | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_amd64.tar.gz" \
+         | cut -d : -f 2,3 \
+         | tr -d \" \
+         | cat <( echo -n "url") - \
+         | curl -fsSL -K- \
+         | tar xvz replicated
+mv replicated /usr/local/bin
+
+exit 0
