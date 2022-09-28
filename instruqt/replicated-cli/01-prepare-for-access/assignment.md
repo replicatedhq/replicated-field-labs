@@ -18,7 +18,7 @@ tabs:
   url: https://vendor.replicated.com
   new_window: true
 difficulty: basic
-timelimit: 600
+timelimit: 300
 ---
 
 👋 Introduction
@@ -79,3 +79,13 @@ You can ensure this is working with
 replicated release ls
 ```
 
+### 2. Saving your lab setup
+
+The lab environment you are working in is a little bit different
+than your own workstation. Because of the lab structure, we need
+to take an extra step to support the next challenges. You would
+not need to do this in a real-world environment.
+
+```
+save_lab_setup
+```
