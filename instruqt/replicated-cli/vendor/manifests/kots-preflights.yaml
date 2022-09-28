@@ -47,7 +47,7 @@ spec:
           - pass:
               when: "== k3s"
               message: k3s is a supported distribution.
-           - pass:
+          - pass:
               when: "== kurl"
               message: kURL is a supported distribution.
           - pass:
