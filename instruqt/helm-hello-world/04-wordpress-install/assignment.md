@@ -35,14 +35,14 @@ Upload the license for the `Helm Customer` you downloaded in Challenge #2
 
 ## Step 03
 
-Set the initial blog name in Wordpress
+Set the initial blog name in Wordpress in the text field as shown below.
 
 <p align="center"><img src="../assets/helm-config.png" width=600></img></p>
 
 ## Step 04
 
 
-Once you clicked on `Continue`, the Application Installer will deploy the Wordpress Application.
+Once you click on `Continue`, the Application Installer will deploy the Wordpress Application.
 
 If you want to check the Wordpress App, wait for the Status Informers to show `Ready` and then click on the `Open Wordpress` link.
 

@@ -51,7 +51,7 @@ On that channel card, click on **Release history** to get the list of releases. 
 
 <p align="center"><img src="../assets/hellohelmchannel.png" width=300></img></p>
 
-We want to view the contents of the release, so to do that click on the icon as shown below:
+We want to view the contents of the latest release, so to do that click on the **View Release YAML** icon as shown below:
 
 <p align="center"><img src="../assets/releases-channel.png" width=600></img></p>
 
@@ -63,11 +63,11 @@ As you can see we are using the Wordpress Helm Chart, and in this view, the top 
 
 **Managing Values**
 
-When installing from a Helm Chart, there are scenarios where the default values need to be overriden or preset for a given customer. Replicated allows map the values in the **Values.yaml** file with values that the end user can enter in a config UI or can also come from a Replicated License. Below is a screenshot of the **wordpress.yaml** file with some value overrides:
+When installing from a Helm Chart, there are scenarios where the default values need to be overridden or preset for a given customer. With Replicated, you can map the values in the **Values.yaml** file with values that an end user can enter in a config UI or from a Replicated License file. Below is a screenshot of the **wordpress.yaml** file with some value overrides:
 
 <p align="center"><img src="../assets/values-overide.png" width=600></img></p>
 
-Note that for some values, the value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}` . This templating that allows you map a field
+Note that for some values, the value is not a hard coded value, rather it has something like `repl{{ ConfigOption ... }}`. Replicated supports [templating](https://docs.replicated.com/vendor/packaging-template-functions) which is how you can dynamically assign values.
 
 ## 3. Copy Install Command
 
