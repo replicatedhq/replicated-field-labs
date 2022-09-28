@@ -55,6 +55,9 @@ RUN curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | \
   xargs curl --location --output /usr/local/bin/yq && \
   chmod 755 /usr/local/bin/yq
 
+# add  KOTS
+RUN curl -fsSL https://kots.io/install | bash
+
 # add Troubleshoot plugins
 COPY --from=krew /root/.krew/bin/kubectl-preflight /usr/local/bin
 COPY --from=krew /root/.krew/bin/kubectl-support_bundle /usr/local/bin
