@@ -3,10 +3,10 @@ slug: releasing-your-updates
 id: vtwciot9j8bb
 type: challenge
 title: Releasing Your Updates
-teaser: A short description of the challenge.
+teaser: Cut a new release for your customers
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Releasing your changes to your customer
 tabs:
 - title: Shell
   type: terminal
@@ -57,9 +57,11 @@ Let's create a release with our improved YAML files. We're going
 to create our release and make it available on the `Unstable` channel
 for internal user. After we review  the release, we'll promote
 it to our `replicated-cli` channel to simulate releasing to the customer.
+Make sure to change the version number (in my case, I'll go from
+`0.0.1` to `0.0.2`).
 
 ```
-replicated release create --version 0.0.2 --release-notes "Adds resource requests to our deployment" \
+replicated release create --version [NEW VERSION] --release-notes "Adds resource requests to our deployment" \
   --promote Unstable --yaml-dir manifests
 ```
 
@@ -95,7 +97,8 @@ for your latest release (sequence `4` in my case). You're going to
 promote that release in the next command.
 
 ```
-replicated release promote 4 replicated-cli
+replicated release promote [SEQUENCE] replicated-cli \
+  --version [NEW VERSION] --release-notes "Adds resource requests to our deployment"
 ```
 
 After promoting the release, take a look at your releases again
