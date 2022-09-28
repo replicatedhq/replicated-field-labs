@@ -12,7 +12,7 @@ tabs:
   type: terminal
   hostname: kubernetes-vm
 difficulty: basic
-timelimit: 300
+timelimit: 600
 ---
 
 💡 Install kots

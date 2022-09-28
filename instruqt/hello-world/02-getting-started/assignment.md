@@ -13,7 +13,7 @@ tabs:
   url: https://vendor.replicated.com
   new_window: true
 difficulty: basic
-timelimit: 120
+timelimit: 300
 ---
 
 🚀 Let's start

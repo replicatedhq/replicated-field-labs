@@ -16,7 +16,7 @@ tabs:
   type: terminal
   hostname: kubernetes-vm
 difficulty: basic
-timelimit: 600
+timelimit: 900
 ---
 
 👋 Install Hello World
