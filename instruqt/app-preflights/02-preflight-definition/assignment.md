@@ -89,8 +89,5 @@ Click on the download license icon on the right of the customer entry as you'll 
 ![license-dlicon](../assets/license-download-icon.png)
 
 
-🏁 Next
-=======
-
 To complete this challenge, press **Check**.
 

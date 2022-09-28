@@ -107,9 +107,3 @@ statefulset.apps/kotsadm-postgres   1/1     5m12s
 ```
 
 Once done, move onto the next challenge.
-
-
-🏁 Next
-=======
-
-To complete this challenge, press **Check**.

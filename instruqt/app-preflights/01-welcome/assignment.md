@@ -49,7 +49,4 @@ Use the terminal to check that kubernetes is running:
 kubectl get nodes
 ```
 
-🏁 Next
-=======
-
 To complete this challenge, press **Check**.

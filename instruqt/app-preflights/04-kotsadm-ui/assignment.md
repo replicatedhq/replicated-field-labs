@@ -112,10 +112,8 @@ The Application Preflight results can be viewed post application deployment by s
 Note that the preflights can be run at any time from this screen
 
 
-### Congratulations you have finished the Applications Pre-Flights Lab!!
-
-
 🏁 Finish
 =========
 
-To complete this challenge, press **Check**.
+Congratulations you have finished the Applications Pre-Flights Lab!!  You can click **Check** to finish this track.
+
