@@ -37,6 +37,8 @@ Once you're logged in, go to `Channels > HelloWorld` and grab the existing clust
 
 ![HelloWorld channel](../assets/hello-world-channel.png)
 
+We will use this command in the next challenge to kick off the installation process.
+
 ### 2. Download a Customer License
 
 A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.

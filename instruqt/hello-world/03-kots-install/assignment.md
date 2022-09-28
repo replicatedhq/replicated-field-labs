@@ -11,6 +11,10 @@ tabs:
 - title: Shell
   type: terminal
   hostname: kubernetes-vm
+- title: Vendor
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -18,11 +22,13 @@ timelimit: 600
 💡 Install kots
 ================
 
-In the previous challenge you already copied the installation command for an existing cluster:
+In the previous challenge you already copied the installation command for an existing cluster. It looked like:
 ```bash
 curl https://kots.io/install | bash
 kubectl kots install [YOUR-APP-NAME]/helloworld
 ```
+
+If you don't have the command anymore, you can always go back to the `Vendor` tab and copy it from `Channels > HelloWorld` (the existing cluster install command).
 
 Run this command in the `Shell` tab. When asked for the `namespace`, you can just press enter and use the one suggested:
 
