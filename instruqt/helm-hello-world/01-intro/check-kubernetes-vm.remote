@@ -1,0 +1,5 @@
+#!/bin/bash
+
+kubectl get nodes || fail-message "I expected an nginx deployment"  
+
+
