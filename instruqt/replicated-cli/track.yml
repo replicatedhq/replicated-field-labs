@@ -1,0 +1,20 @@
+slug: replicated-cli
+id: pur3nyzcbryg
+title: The Replicated CLI
+teaser: Iterate quickly with the Replicated CLI
+description: |-
+  Learn how to quicky iterate on your work with the Replicated CLI
+
+   **This track demonstrates how to:**
+    - Validate and release your application from the command line
+    - Find your download URL without leaving your shell
+    - Begin and installation using `kubectl` and the KOTS plugin
+    - Put it together to iterate on your work
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- chuck@replicated.com
+private: false
+published: false
+checksum: "5553718278320775590"

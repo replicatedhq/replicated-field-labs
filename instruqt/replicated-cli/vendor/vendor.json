@@ -1,0 +1,9 @@
+{
+    "name": "The Replicated CLI",
+    "slug": "replicated-cli",
+    "channel": "Replicated CLI",
+    "channel_slug": "replicated-cli",
+    "customer": "CLI Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}

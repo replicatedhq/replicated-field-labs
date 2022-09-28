@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if ! grep -qE "REPLICATED_API_TOKEN=[[:alnum:]]+" /home/replicant/.bashrc ; then
+  fail-message "Please make sure you've set your API token and run save_lab_setup"
+  exit 1
+fi
+
+if ! grep -qE "REPLICATED_APP=\w+" /home/replicant/.bashrc ; then
+  fail-message "Please make sure you've set your Replicated app slug and run save_lab_setup"
+  exit 1
+fi
+
+exit 0
