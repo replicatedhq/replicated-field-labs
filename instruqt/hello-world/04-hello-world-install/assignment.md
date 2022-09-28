@@ -28,6 +28,8 @@ Go to the Application Installer tab, and login using the password you used in th
 
 ![Login](../assets/login.png)
 
+If you forgot the password, enter the shell and run `kubectl kots reset-password -n <yournamespace>`
+
 ## Step 02
 
 Upload the license for the `Hola Customer` you downloaded in Challenge #2
