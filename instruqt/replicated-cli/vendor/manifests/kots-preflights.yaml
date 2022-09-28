@@ -45,6 +45,9 @@ spec:
               message: AKS is a supported distribution.
           # Will be supported in the future
           - pass:
+              when: "== k3s"
+              message: k3s is a supported distribution.
+           - pass:
               when: "== kurl"
               message: kURL is a supported distribution.
           - pass:
@@ -53,7 +56,7 @@ spec:
           - warn:
               message: Unable to determine the distribution of Kubernetes.
     - nodeResources:
-        checkName: Total CPU Cores
+        checkName: Cluster node memory
         outcomes:
           - fail:
               when: "min(memoryCapacity) < 1Gi"
