@@ -23,7 +23,7 @@ timelimit: 600
 🚀 Let's start
 ==============
 
-### 1. Check Your Email! ###
+### 1. Check Your Email!
 
 If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to section 2.
 
@@ -41,7 +41,7 @@ Once you click on the button, it should open a browser to a page similar to this
 
 Fill in the rest of the form and click on the **Create Account** button to get started.
 
-Once you have created your account you should land on the Channels. Channels allow you to mange who has access to the which releases of your application.
+Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 ### 2. Review the Application
 

@@ -44,11 +44,28 @@ This exercise is designed to give you a sandbox to ensure you have a basic under
 🚀 Let's start
 ==============
 
+### 1. Check Your Email!
+
+If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to section 2.
+
 You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-### 1. Configure environment
-
 **Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
+
+The email should look like this:
+
+<p align="center"><img src="../assets/email-invite.png" width=600></img></p>
+
+Once you click on the button, it should open a browser to a page similar to this:
+
+<p align="center"><img src="../assets/create-account.png" width=600></img></p>
+
+Fill in the rest of the form and click on the **Create Account** button to get started.
+
+Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+
+
+### 2. Configure environment
 
 Once registered, your application will be automatically selected:
 

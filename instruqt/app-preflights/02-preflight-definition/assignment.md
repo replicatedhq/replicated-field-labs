@@ -25,13 +25,26 @@ timelimit: 600
  * Use vendor portal invite email to register and set password for temporary account
  * Grab the kots install command from the app-preflights channel Existing cluster
 
-### 1. Access Replicated Vendor portal
 
-Use the **Vendor** tab to launch a new tab in the browser to the vendor portal.
-If this is your first track with Instruqt: You should have received a Registration Activation email, use this email to access the vendor portal,
-enter your name and a memorable password and click Register.
+### 1. Check Your Email!
 
-**Note:** ensure logged out of vendor portal from any other Replicated account before clicking on activate account link
+If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to section 2.
+
+You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
+
+**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
+
+The email should look like this:
+
+<p align="center"><img src="../assets/email-invite.png" width=600></img></p>
+
+Once you click on the button, it should open a browser to a page similar to this:
+
+<p align="center"><img src="../assets/create-account.png" width=600></img></p>
+
+Fill in the rest of the form and click on the **Create Account** button to get started.
+
+Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 
 ### 2. Replicated Vendor portal

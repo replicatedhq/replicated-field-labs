@@ -19,19 +19,26 @@ timelimit: 300
 🚀 Let's start
 ==============
 
+### 1. Check Your Email!
+
 You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
 **Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
 
-The email you received should look like the one below.
+The email should look like this:
 
-![email](../assets/email.png)
+<p align="center"><img src="../assets/email.png" width=600></img></p>
 
-Click on the link, and set your password:
+Once you click on the button, it should open a browser to a page similar to this:
 
-![activate](../assets/activate-account.png)
+<p align="center"><img src="../assets/activate-account.png" width=600></img></p>
 
-### 1. Getting the install command
+Fill in the rest of the form and click on the **Create Account** button to get started.
+
+Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+
+
+### 2. Getting the install command
 
 Once you're logged in, go to `Channels > HelloWorld` and grab the existing cluster install command.
 
@@ -39,7 +46,7 @@ Once you're logged in, go to `Channels > HelloWorld` and grab the existing clust
 
 We will use this command in the next challenge to kick off the installation process.
 
-### 2. Download a Customer License
+### 3. Download a Customer License
 
 A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
 To create a customer license, go to `Customers > Hola Customer` by selecting the "Customers" link on the left in the Vendor Portal. Customers for each lab have already been created for you.
