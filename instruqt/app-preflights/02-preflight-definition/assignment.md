@@ -70,7 +70,7 @@ kind: Preflight
 
 ![preflight-release-yaml](../assets/preflight-release-yaml.png)
 
-Application pre-flight checks are defined as collectors and analyzers, note the various analyzer outcomes with messages, links.
+Application pre-flight checks are defined as collectors and analyzers. Note the various analyzer outcomes with messages, links.
 The outcomes can have resultant actions; pass, warning and fail.  Fail will halt the installation process before it starts, this is desireable as continuing would most likely have failed and leave the application parially deployed.
 
 The analyze phase can only use the output of the collect phase to perform analysis and provide results, however a large set of collectors are included automatically.

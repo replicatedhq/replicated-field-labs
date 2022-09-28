@@ -68,20 +68,24 @@ Next the Application Pre-Flights checks will be run for the first time:
 
 Notice that the Total CPU Cores check hit the **warn** outcome
 
-Extract from kots-preflights.yaml in the Vendor portal:
-```    - nodeResources:
-        checkName: Total CPU Cores
-        outcomes:
-          - fail:
-              when: "sum(cpuCapacity) < 2"
-              message: The cluster must contain at least 2 cores, and should contain at least 4 cores.
-          - warn:
-              when: "sum(cpuCapacity) < 4"
-              message: The cluster should contain at least 4 cores.
-          - pass:
-              message: There are at least 4 cores in the cluster.
+Validating the environment before doing the actual installation is a very important step in the installation and upgrade process. In this case, we're trying to install the application on a single node cluster that has 2 cpu cores. In Challenge 2 we already showed the `kots-preflight.yaml` that defines all the different preflight checks. Below is the specific analyzer that checks the number of cpu cores for this demo application:
+
+
+```yaml
+   - nodeResources:
+     checkName: Total CPU Cores
+     outcomes:
+      - fail:
+          when: "sum(cpuCapacity) < 2"
+          message: The cluster must contain at least 2 cores, and should contain at least 4 cores.
+      - warn:
+          when: "sum(cpuCapacity) < 4"
+          message: The cluster should contain at least 4 cores.
+      - pass:
+          message: There are at least 4 cores in the cluster.
 ```
 
+In the above snippet, we make use of the `nodeResources` analyzer that gives us access to the `cpuCapacity`. In practice, you should always make sure you have the right Collectors and Analyzers defined for your Application preflight checks. At least they should check your Appication minimum system requirements.
 
 ### 5. Application Deployment
 
@@ -91,8 +95,11 @@ When satisfied with the Preflight Check results, click **Continue** to carry on 
 
 Click **Deploy and continue** and the application resource status informer will turn to <font color="Green">Green</font> after a few moments
 
-![preflight-login](../assets/preflight-app-running.png)
 ![preflight-login](../assets/preflight-app-deployed.png)
+
+If you click on Details, you'll see the detailed status informer result.
+
+![preflight-login](../assets/preflight-app-running.png)
 
 
 ### 6. View PreFlights post deployment

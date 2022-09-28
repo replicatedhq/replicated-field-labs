@@ -41,12 +41,12 @@ This will take the form of:
 
 ```bash
 curl https://kots.io/install | bash 
-kubectl kots install me-myco-replicated-com/app-preflights --no-port-forward
+kubectl kots install me-myco-replicated-com/app-preflights
 ```
 
 ### 2. Perform the existing cluster app install
 
-Paste the install command copied in the previous step into the Shell tab window, add the ```--no-port-forward``` option at the end of the install command and hit ENTER
+Paste the install command copied in the previous step into the Shell tab window, add the `--no-port-forward` flag at the end of the install command and hit ENTER. The `--no-port-forward` flag will disable automatic port forwarding for the application installer, as we don't need this for this exercise. If you want to know all available flags for the `kots install` command, check out the [reference documentation](https://docs.replicated.com/reference/kots-cli-install). 
 
 The installer will prompt to confirm or change the kubernetes namespace name to create and install in, you can accept the default.
 A password will be prompted for too, enter a value you can remember, you will use this later to login to the kotsadm console.
@@ -74,10 +74,16 @@ Enter a new password to be used for the Admin Console: ••••••••�
 
 ### 3. Check the deployment using the kubernetes cli
 
-Once complete you can check the install using the available kubernetes cli:
+Once complete you can check the install using `kubectl`:
+
+```bash
+kubectl get all -n <your-namespace>
+```
+
+Note: Subsitute `<your-namespace>` with the namespace you chose when installing.
+
 
 ```
-root@kubernetes-vm:~# kubectl get all -n preflights
 NAME                           READY   STATUS    RESTARTS   AGE
 pod/kotsadm-minio-0            1/1     Running   0          5m12s
 pod/kotsadm-postgres-0         1/1     Running   0          5m12s
@@ -99,9 +105,6 @@ statefulset.apps/kotsadm-minio      1/1     5m12s
 statefulset.apps/kotsadm-postgres   1/1     5m12s
 
 ```
-
-Note: Subsitute in the value of the namespace you chose when installing, the above example uses a namespace called `preflights`
-
 
 Once done, move onto the next challenge.
 
