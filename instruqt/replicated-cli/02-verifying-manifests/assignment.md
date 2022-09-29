@@ -54,7 +54,7 @@ replicated release lint --yaml-dir=manifests
 ```
 
 You should get a list that returns no errors. It should have at least
-one info meessage look something like this. It's OK if you have more
+one info message that looks something like the output. It's OK if you have more
 info or warning messages, since we often updatea our linting rules to
 capture more best practices.
 

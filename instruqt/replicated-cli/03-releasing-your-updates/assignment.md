@@ -34,7 +34,7 @@ look at what channels are available.
 replicated channel ls
 ```
 
-You should get a list that has four channels in it. Our
+You should get a list that has four or more channels in it. Our
 application has the default release channels as well as one
 channel we created for the lab. The names of your channels
 should be the same as you see here. The other fields may
@@ -89,7 +89,7 @@ and the active channels for older releases differ.
 
 To make the release available for customers, let's use our customer
 release channel `replicated-cli`. In a real use case, you might promote
-through other channles like `Beta` before going to customers, but we'll
+through other channels like `Beta` before going to customers, but we'll
 skip ahead this time.
 
 Look back at your list of releases and take note of the sequence number
