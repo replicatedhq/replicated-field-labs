@@ -27,7 +27,7 @@ timelimit: 300
 This exercise is designed to give you a sandbox to ensure you have a basic understanding how to work with the Replicated CLI.
 
 * **What you will do**:
-  * Use the Replicated CLI to vaidate and release your application
+  * Use the Replicated CLI to validate and release your application
   * Find your installation command and install to an existing cluster
   * Iterate on your work and deploy an updated release
 * **Who this is for**: This lab is for anyone who works with app code, docker images, k8s yamls, or does field support for multi-prem applications
@@ -39,7 +39,6 @@ This exercise is designed to give you a sandbox to ensure you have a basic under
 * **Outcomes**:
   * You will build a working understanding of how to release and deploy a kubernetes application packaged with Replicated using kots.
 
-* * *
 
 🚀 Let's start
 ==============

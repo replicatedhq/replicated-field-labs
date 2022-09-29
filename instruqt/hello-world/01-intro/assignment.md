@@ -42,7 +42,6 @@ The README and the YAML sources draw from https://github.com/replicatedhq/replic
 * **Outcomes**:
   * You will build a working understanding of how to deploy a kubernetes application packaged with Replicated using kots.
 
-* * *
 
 🐚 Get started
 ===============
