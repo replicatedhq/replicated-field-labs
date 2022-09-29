@@ -32,7 +32,7 @@ steps to install using Replicated's command line tooling.
 
 ### 0. Configuring API access
 
-We're running this install from a different than our other
+We're running this install from a different shell than our other
 challenges, so we'll need to make sure we can connect to the
 Replicated API. Let's set that up like we did in the early
 challenge.
