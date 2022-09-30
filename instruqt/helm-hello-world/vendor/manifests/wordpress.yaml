@@ -19,7 +19,7 @@ spec:
   # values are used in the customer environment, as a pre-render step
   # these values will be supplied to helm template
   values: 
-    wordpressBlogName: '{{repl ConfigOption "wordpressBlogName"}}'
+    wordpressBlogName: repl{{ ConfigOption "wordpressBlogName" }}
     wordpressPassword: '{{repl ConfigOption "wordpress-secret"}}'
     mariadb:
       auth:
