@@ -133,7 +133,7 @@ a reminder not to leak secrets in the real world.
 kubectl kots install ${REPLICATED_APP}/replicated-cli --namespace kuard \
   --shared-password this-is-unsafe --license-file ~/license.yaml \
   --no-port-forward
-``` 
+```
 
 #### 4. Check your application
 
