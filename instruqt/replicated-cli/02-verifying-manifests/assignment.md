@@ -55,7 +55,7 @@ replicated release lint --yaml-dir=manifests
 
 You should get a list that returns no errors. It should have at least
 one info message that looks something like the output. It's OK if you have more
-info or warning messages, since we often updatea our linting rules to
+info or warning messages, since we often update our linting rules to
 capture more best practices.
 
 ```text
@@ -81,8 +81,8 @@ to have as available resources in the cluster. We have a pretty
 simple application, so we won't ask for much.
 
 Most times, you'll do this interactively in your favorite editor.
-To simplify for the lab, we're going to copy in a file where
-we've already made the changes.
+To simplify for the lab, we're going use some command-line fu to
+keep things moving.
 
 ```
 yq -i '.spec.template.spec.containers[0].resources.requests.cpu = "100m"' manifests/deployment.yaml
