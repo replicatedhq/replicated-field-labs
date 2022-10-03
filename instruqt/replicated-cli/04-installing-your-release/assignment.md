@@ -138,9 +138,9 @@ kubectl kots install ${REPLICATED_APP}/replicated-cli --namespace kuard \
 #### 4. Check your application
 
 Click on the "Example Application" tab to see you application running.
-Be prepare, it gives a giant security warning because it shows a bunch
+_Be prepared, it gives a giant security warning because it shows a bunch
 of details about the cluster it's running in. Nothing is wrong and your
-browser/laptop/workstation is completely safe.
+browser/laptop/workstation is completely safe._
 
 ![Application Homepage](../assets/kuard-homepage.png)
 
