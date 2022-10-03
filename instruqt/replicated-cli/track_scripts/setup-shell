@@ -15,5 +15,5 @@ EOF
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
+yq -i '.clusters[0].cluster.server = "https://kubernetes-vm:6443"' /home/replicant/.kube/config
 chown -R replicant /home/replicant/.kube
