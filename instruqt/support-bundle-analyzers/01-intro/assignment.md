@@ -5,7 +5,8 @@ title: intro
 teaser: Create your own collectors and analyzers
 notes:
 - type: text
-  contents: In this track we will learn how to capture the logs of our application and add automated analyzers to them.
+  contents: In this track we will learn how to capture the logs of our application
+    and add automated analyzers to them.
 tabs:
 - title: Shell
   type: terminal
