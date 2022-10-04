@@ -1,0 +1,16 @@
+slug: support-bundle-analyzers
+title: Support Bundle Analyzers
+teaser: Add analyzers to your application
+description: |-
+  Learn how to add Collectors and Analyzers to your Application's Support Bundle
+
+  What you will do:
+  * Learn to download and manage support bundles when analyzers cannot immediately resolve the issue
+  * Learn to write new analyzers to detect more complex issues as they arise
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+private: false
+published: false
