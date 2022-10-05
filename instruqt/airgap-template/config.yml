@@ -1,0 +1,11 @@
+version: "3"
+containers:
+- name: jumpbox
+  image: gcr.io/kots-field-labs/replicated-cli
+  shell: su - replicant
+  memory: 256
+virtualmachines:
+- name: airgap
+  image: instruqt/k3s-v1-25-0
+  shell: /bin/bash
+  machine_type: n1-standard-1
