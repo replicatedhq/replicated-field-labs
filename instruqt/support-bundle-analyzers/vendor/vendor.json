@@ -1,0 +1,9 @@
+{
+    "name": "Support Bundle Analyzers",
+    "slug": "support-bundle-analyzers",
+    "channel": "Support Bundle Analyzers",
+    "channel_slug": "support-bundle-analyzers",
+    "customer": "Support Bundle Analyzers Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}
