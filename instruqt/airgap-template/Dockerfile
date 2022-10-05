@@ -1,14 +1,16 @@
 FROM gcr.io/kots-field-labs/shell
+# First we update the apt package manager cache
 
-ARG USERNAME=replicant
-ARG USER_UID=1001
-ARG USER_GID=$USER_UID
+RUN apt-get update && apt-get -y install curl apt-transport-https ca-certificates gnupg
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME && \
-  useradd --uid $USER_UID --gid $USER_GID --shell /bin/bash --create-home $USERNAME
+# Use the gcloud installation process described in the docs:
+# https://cloud.google.com/sdk/docs/install#deb
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
-COPY vendor/manifests /home/$USERNAME/manifests
-WORKDIR /home/$USERNAME
-RUN chmod -R 755 /home/$USERNAME/manifests && \
-  chown -R $USERNAME /home/$USERNAME/manifests
+# Update apt again and install gcloud, kubectl and helm
+RUN apt -y update && \
+  apt -y install google-cloud-sdk && \
+  apt -y clean
+
+
