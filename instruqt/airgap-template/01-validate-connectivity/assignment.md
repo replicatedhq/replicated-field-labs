@@ -12,9 +12,6 @@ tabs:
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
-- title: Cluster
-  type: terminal
-  hostname: airgap
 difficulty: basic
 timelimit: 3000
 ---
