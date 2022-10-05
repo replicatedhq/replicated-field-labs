@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html-contrived
+  annotations:
+    "kots.io/exclude": '{{repl ConfigOptionNotEquals "k8slove" "2Pac" }}'
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Broken</title>
+    </head>
+    <body>
+      <h2>Broken!</h2>
+      Snap, something isn't right. Check with your Application Provider for next steps.
+    </body>
+    </html>

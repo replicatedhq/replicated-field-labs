@@ -1,0 +1,16 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: config-sample
+spec:
+  groups:
+  - name: Support Bundle Analyzers
+    title: My Example Config
+    description: Some k8slove
+    items:
+    - name: k8slove
+      title: Customize Text Inputs
+      help_text: "Show custom user text inputs"
+      type: text
+      default: "yes"
+      recommended: true
