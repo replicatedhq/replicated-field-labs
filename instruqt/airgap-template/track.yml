@@ -1,0 +1,24 @@
+slug: airgap-template
+id: 8p7434ifnsyd
+title: Airgap Template
+teaser: Template track for a jumpbox connecting to an airgaped K3s cluster
+description: |-
+  This track is a template track to build any lab that requires
+  an airgaped cluster. To use it, run:
+
+  ```
+  instruqt track create --title [NEW TRACK TITLE] \
+    --from airgap-template
+  ```
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+level: beginner
+tags:
+- template
+- airgap
+- customer
+owner: replicated
+developers:
+- chuck@replicated.com
+private: true
+published: false
+checksum: "1509284736909809446"
