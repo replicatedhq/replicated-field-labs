@@ -1,4 +1,4 @@
-participant_email := "joshd+testing@replicated.com"
+participant_id := ${USER}
 branch := "main"
 track_slug := "sample"
 inviter_email := "dexter+training415@replicated.com"
@@ -15,7 +15,7 @@ test:
 .PHONY: create
 create: install
 	REPLICATED_ACTION=create \
-    PARTICIPANT_EMAIL=$(participant_email) \
+    PARTICIPANT_ID=$(participant_id) \
 	REPLICATED_BRANCH=$(branch) \
 	REPLICATED_TRACK_SLUG=$(track_slug) \
 	REPLICATED_INVITER_EMAIL=$(inviter_email) \
@@ -25,7 +25,7 @@ create: install
 .PHONY: destroy
 destroy: install
 	REPLICATED_ACTION=destroy \
-	PARTICIPANT_EMAIL=$(participant_email) \
+	PARTICIPANT_ID=$(participant_id) \
 	REPLICATED_BRANCH=$(branch) \
 	REPLICATED_TRACK_SLUG=$(track_slug) \
 	REPLICATED_INVITER_EMAIL=$(inviter_email) \
