@@ -79,10 +79,6 @@ func Run(params *fieldlabs.Params) error {
 		VendorLoc: vendorLoc,
 	}
 
-	if err := envManager.Validate(track); err != nil {
-		return errors.Wrap(err, "validate track")
-	}
-
 	switch params.Action {
 	case fieldlabs.ActionCreate:
 		return envManager.Ensure(track)
