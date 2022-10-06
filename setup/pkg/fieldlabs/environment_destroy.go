@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (e *EnvironmentManager) Destroy() error {
+func (e *EnvironmentManager) Destroy(track *TrackSpec) error {
 	policies, err := e.getPolicies()
 	if err != nil {
 		return errors.Wrap(err, "get policies")
@@ -30,7 +30,7 @@ func (e *EnvironmentManager) Destroy() error {
 		return errors.Wrapf(err, "list apps")
 	}
 	for _, app := range apps {
-		if app.App.Name == e.Params.ParticipantId {
+		if app.App.Name == track.Name+" "+e.Params.ParticipantId {
 			err = e.Client.DeleteKOTSApp(app.App.ID)
 			if err != nil {
 				return errors.Wrapf(err, "delete app")

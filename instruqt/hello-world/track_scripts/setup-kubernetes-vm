@@ -15,3 +15,9 @@ done
 # Enable bash completion for kubectl
 echo "source /usr/share/bash-completion/bash_completion" >> /root/.bashrc
 echo "complete -F __start_kubectl k" >> /root/.bashrc
+
+
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> /root/.bashrc
+echo "echo Username: $PARTICIPANT_ID@replicated-labs.com" >> /root/.bashrc
+echo "echo Password: $PARTICIPANT_ID" >> /root/.bashrc
