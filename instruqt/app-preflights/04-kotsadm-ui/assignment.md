@@ -85,7 +85,7 @@ Validating the environment before doing the actual installation is a very import
           message: There are at least 4 cores in the cluster.
 ```
 
-In the above snippet, we make use of the `nodeResources` analyzer that gives us access to the `cpuCapacity`. In practice, you should always make sure you have the right Collectors and Analyzers defined for your Application preflight checks. At least they should check your Appication minimum system requirements.
+In the above snippet, we make use of the `nodeResources` analyzer that gives us access to the `cpuCapacity`. In practice, you should always make sure you have the right Collectors and Analyzers defined for your Application preflight checks. At least they should check your Application minimum system requirements.
 
 ### 5. Application Deployment
 
