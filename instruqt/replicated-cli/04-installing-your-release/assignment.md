@@ -41,7 +41,7 @@ using the `replicated` command line tool. Let's get it using the
 CLI.
 
 ```
-replicated channel inspect replicated-cli
+replicated channel inspect Stable
 ```
 
 We're going to install into an existing Kubernetes cluster.
@@ -50,24 +50,24 @@ You'll find that one listed first, with the label `EXISTING`.
 
 ```
 ID:             2FKLzwElQOFuHs6YlYEvZ6ncNEo
-NAME:           replicated-cli
+NAME:           Stable
 DESCRIPTION:
 RELEASE:        4
 VERSION:        0.0.1
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install chuck-instruqt-replicon-2022q3-replabs-replicated-com/replicated-cli
+    kubectl kots install the-replicated-cli-abcdefgh
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/chuck-instruqt-replicon-2022q3-replabs-replicated-com-replicated-cli | sudo bash
+    curl -fsSL https://k8s.kurl.sh/the-replicated-cli-abcdefgh | sudo bash
 
 AIRGAP:
 
-    curl -fSL -o chuck-instruqt-replicon-2022q3-replabs-replicated-com-replicated-cli.tar.gz https://k8s.kurl.sh/bundle/chuck-instruqt-replicon-2022q3-replabs-replicated-com-replicated-cli.tar.gz
-    # ... scp or sneakernet chuck-instruqt-replicon-2022q3-replabs-replicated-com-replicated-cli.tar.gz to airgapped machine, then
-    tar xvf chuck-instruqt-replicon-2022q3-replabs-replicated-com-replicated-cli.tar.gz
+    curl -fSL -o the-replicated-cli-abcdefgh.tar.gz https://k8s.kurl.sh/bundle/the-replicated-cli-abcdefgh.tar.gz
+    # ... scp or sneakernet the-replicated-cli-abcdefgh.tar.gz to airgapped machine, then
+    tar xvf the-replicated-cli-abcdefgh.tar.gz
     sudo bash ./install.sh airgap
 ```
 
@@ -78,7 +78,7 @@ The command you'll use will look like this:
 
 ```
 curl -fsSL https://kots.io/install | bash
-kubectl kots install [YOUR APP NAME]/replicated-cli
+kubectl kots install [YOUR APP NAME]
 ```
 
 We'll come back to that in a later step.
@@ -90,7 +90,7 @@ to install any KOTS application. We're going to use the command-line
 to both create a customer and to download their license file.
 
 ```
-replicated customer create --name "Replicant" --channel replicated-cli
+replicated customer create --name "Replicant" --channel Stable
 ```
 
 once the customer is created, we'll download their license file to use
@@ -108,7 +108,7 @@ because we've done some setup ahead of time.
 
 ```
 curl -fsSL https://kots.io/install | bash
-kubectl kots install [YOUR APP NAME]/replicated-cli
+kubectl kots install [YOUR APP NAME]
 ```
 
 This command installs the `kots` plugin to `kubectl` and then
