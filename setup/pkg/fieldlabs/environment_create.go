@@ -154,7 +154,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	track.Status.Release = release
 
-	err = e.Client.PromoteRelease(app.ID, release.Sequence, trackSpec.Name, trackSpec.Slug, false, channel.ID)
+	err = e.Client.PromoteRelease(app.ID, release.Sequence, "0.1.0", trackSpec.Slug, false, channel.ID)
 	if err != nil {
 		return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 	}
