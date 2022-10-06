@@ -72,7 +72,7 @@ type EnvironmentManager struct {
 }
 
 func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
-	app, err := e.createApp()
+	app, err := e.createApp(track.Name)
 	if err != nil {
 		return errors.Wrap(err, "create apps")
 	}
@@ -232,8 +232,8 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 	return customer, nil
 }
 
-func (e *EnvironmentManager) createApp() (*types.App, error) {
-	appName := e.Params.ParticipantId
+func (e *EnvironmentManager) createApp(trackName string) (*types.App, error) {
+	appName := trackName + " " + e.Params.ParticipantId
 	app, err := e.getOrCreateApp(appName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "get or create app %q", appName)

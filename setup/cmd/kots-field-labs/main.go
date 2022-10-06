@@ -83,7 +83,7 @@ func Run(params *fieldlabs.Params) error {
 	case fieldlabs.ActionCreate:
 		return envManager.Ensure(track)
 	case fieldlabs.ActionDestroy:
-		return envManager.Destroy()
+		return envManager.Destroy(track)
 	}
 
 	return nil
