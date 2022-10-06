@@ -1,16 +1,12 @@
 package fieldlabs
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
-	"net/http"
 	"strings"
 	"time"
 
-	"github.com/gosimple/slug"
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
 	"github.com/replicatedhq/replicated/pkg/logger"
@@ -39,10 +35,6 @@ type TrackSpec struct {
 	Name string `json:"name"`
 	// Slug of the track
 	Slug string `json:"slug"`
-	// Channel name to create
-	Channel string `json:"channel"`
-	// Slug of channel name
-	ChannelSlug string `json:"channel_slug"`
 	// Customer Name to Create
 	Customer string `json:"customer"`
 	// Dir of YAML sources to promote to channel
@@ -79,21 +71,6 @@ type EnvironmentManager struct {
 	VendorLoc string
 }
 
-func (e *EnvironmentManager) Validate(track *TrackSpec) error {
-	slug.CustomSub = map[string]string{"_": "-"}
-
-	slugifiedChannel := slug.Make(track.Channel)
-
-	if track.ChannelSlug == "" {
-		track.ChannelSlug = slugifiedChannel
-	}
-
-	if slugifiedChannel != track.ChannelSlug {
-		return errors.Errorf("slugified form of Channel name %q was %q, did not match specified slug %q", track.Channel, slugifiedChannel, track.ChannelSlug)
-	}
-
-	return nil
-}
 func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 	app, err := e.createApp()
 	if err != nil {
@@ -120,9 +97,9 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 		return errors.Wrap(err, "get members")
 	}
 
-	err = e.addUser(members, policies)
+	err = e.addMember(members, policies)
 	if err != nil {
-		return errors.Wrap(err, "invite users")
+		return errors.Wrap(err, "add member")
 	}
 
 	err = e.createVendorTrack(*app, *track)
@@ -158,9 +135,9 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	}
 
-	channel, err := e.getOrCreateChannel(track)
+	channel, err := e.getChannel(track)
 	if err != nil {
-		return errors.Wrapf(err, "get or create channel %q", track.Spec.Channel)
+		return errors.Wrapf(err, "get Stable channel")
 	}
 	track.Status.Channel = channel
 
@@ -216,38 +193,30 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	return nil
 }
 
-func (e *EnvironmentManager) getOrCreateChannel(track Track) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.ChannelSlug)
+func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, "Stable")
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.ChannelSlug, track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list channel Stable for app %q", track.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
-		if channel.Name == track.Spec.ChannelSlug || channel.Slug == track.Spec.ChannelSlug {
+		if channel.Name == "Stable" {
 			matchedChannels = append(matchedChannels, channel)
 		}
 	}
 
-	if len(matchedChannels) == 1 {
-		return &matchedChannels[0], nil
+	if len(matchedChannels) != 1 {
+		return nil, errors.Errorf("expected one channel to match Stable, found %d", len(matchedChannels))
 	}
+	return &matchedChannels[0], nil
 
-	if len(matchedChannels) > 1 {
-		return nil, errors.Errorf("expected at most one channel to match %q, found %d", track.Spec.Channel, len(matchedChannels))
-	}
-
-	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.ChannelSlug, track.Spec.Channel)
-	if err != nil {
-		return nil, errors.Wrapf(err, "create channel for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
-	}
-	return channel, nil
 }
 
 func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, error) {
 	customers, err := e.Client.ListCustomers(track.Status.App.ID)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list customer %q for app %q", track.Spec.Channel, track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list customer for app %q", track.Status.App.Slug)
 	}
 
 	for _, customer := range customers {
@@ -305,353 +274,4 @@ func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) 
 
 func (e *EnvironmentManager) isNotFound(err error) bool {
 	return strings.Contains(err.Error(), "App not found")
-}
-
-func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
-	req, err := http.NewRequest(
-		"GET",
-		fmt.Sprintf("%s/v1/policies", e.Params.IDOrigin),
-		nil,
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build policies request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send policies request")
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err.Error())
-	}
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("GET /v1/policies %d: %s", resp.StatusCode, body)
-	}
-	var policies []PolicyListItem
-	err = json.Unmarshal([]byte(body), &policies)
-	if err != nil {
-		return nil, errors.Wrap(err, "list policies unmarshal")
-	}
-
-	policiesMap := make(map[string]string)
-	for i := 0; i < len(policies); i += 1 {
-		policiesMap[policies[i].Name] = policies[i].Id
-	}
-	return policiesMap, nil
-}
-
-func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
-	members, err := e.GetMembers()
-	if err != nil {
-		return nil, errors.Wrap(err, "get members")
-	}
-
-	membersMap := make(map[string]MemberList)
-	for i := 0; i < len(members); i += 1 {
-		membersMap[members[i].Email] = members[i]
-	}
-	return membersMap, nil
-}
-
-func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]string) error {
-	if _, policyExists := policies[e.Params.ParticipantId]; policyExists {
-		// Policy already exists, not recreating
-		return nil
-	}
-	//read + write policy
-	policyDefinition := &PolicyDefinition{
-		V1: PolicyDefinitionV1{
-			Name: "Policy Name",
-			Resources: PolicyResourcesV1{
-				Allowed: []string{fmt.Sprintf("kots/app/%s/**", app.ID), "kots/license/**", "user/token/**"},
-				Denied:  []string{},
-			},
-		},
-	}
-	policyDefinitionBytes, err := json.Marshal(policyDefinition)
-	if err != nil {
-		return errors.Wrap(err, "marshal definition body")
-	}
-	rbacBody := &Policy{
-		Name:        e.Params.ParticipantId,
-		Description: e.Params.ParticipantId,
-		Definition:  string(policyDefinitionBytes),
-	}
-
-	rbacBodyBytes, err := json.Marshal(rbacBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal rbac body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
-		bytes.NewReader(rbacBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build rbac request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send rbac request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
-	}
-	return nil
-
-}
-
-func (e *EnvironmentManager) addUser(members map[string]MemberList, policies map[string]string) error {
-	inviteEmail := e.Params.ParticipantId + "@replicated-labs.com"
-	err := e.inviteUser(inviteEmail, members, policies)
-	if err != nil {
-		return err
-	}
-
-	// Signup
-	sr, err := e.signupUser(inviteEmail)
-	if err != nil {
-		return err
-	}
-
-	// Verify
-	vr, err := e.verifyUser(sr)
-	if err != nil {
-		return err
-	}
-
-	// Capture Invite Id
-	invite, err := e.captureInvite(vr)
-	if err != nil {
-		return err
-	}
-
-	// Accept Invite
-	err = e.acceptInvite(invite, e.Params.ParticipantId, vr)
-	if err != nil {
-		return err
-	}
-	return nil
-
-}
-
-type AcceptBody struct {
-	InviteId          string `json:"invite_id"`
-	FirstName         string `json:"first_name"`
-	LastName          string `json:"last_name"`
-	Password          string `json:"password"`
-	ReplaceAccount    bool   `json:"replace_account"`
-	FromTeamSelection bool   `json:"from_team_selection"`
-}
-
-func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
-	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: participantId, ReplaceAccount: false, FromTeamSelection: true}
-	acceptBodyBytes, err := json.Marshal(ab)
-	if err != nil {
-		return errors.Wrap(err, "marshal accept body")
-	}
-	e.Log.ActionWithSpinner(fmt.Sprintf("Sending bodyr %s", string(acceptBodyBytes)))
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/signup/accept-invite", e.Params.IDOrigin),
-		bytes.NewReader(acceptBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build accept request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send accept request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/signup/accept-invite %d: %s", resp.StatusCode, body)
-	}
-	return nil
-}
-
-type InvitedTeams struct {
-	Teams []struct {
-		Id       string `json:"id"`
-		Name     string `json:"name"`
-		InviteId string `json:"invite_id"`
-	} `json:"invited_teams"`
-}
-
-func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
-	req, err := http.NewRequest(
-		"GET",
-		fmt.Sprintf("%s/v1/signup/teams", e.Params.IDOrigin),
-		nil,
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build signup teams request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", vr.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send signup teams request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/teams %d: %s", resp.StatusCode, body)
-	}
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.Wrap(err, "read body")
-	}
-	var body InvitedTeams
-	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
-		return nil, errors.Wrap(err, "decode body")
-	}
-	return &body, nil
-}
-
-type VerifyResponse struct {
-	Token string `json:"token"`
-}
-
-func (e *EnvironmentManager) verifyUser(sr *SignupResponse) (*VerifyResponse, error) {
-	verifyBody := map[string]string{
-		"token": sr.Token,
-	}
-	verifyBodyBytes, err := json.Marshal(verifyBody)
-	if err != nil {
-		return nil, errors.Wrap(err, "marshal verify body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/signup/verify", e.Params.IDOrigin),
-		bytes.NewReader(verifyBodyBytes),
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build verify request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send verify request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/verify %d: %s", resp.StatusCode, body)
-	}
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.Wrap(err, "read body")
-	}
-	var body VerifyResponse
-	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
-		return nil, errors.Wrap(err, "decode body")
-	}
-	return &body, nil
-}
-
-type SignupResponse struct {
-	Token string `json:"token"`
-}
-
-func (e *EnvironmentManager) signupUser(inviteEmail string) (*SignupResponse, error) {
-	signupBody := map[string]string{
-		"email": inviteEmail,
-	}
-	signupBodyBytes, err := json.Marshal(signupBody)
-	if err != nil {
-		return nil, errors.Wrap(err, "marshal signup body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/signup", e.Params.IDOrigin),
-		bytes.NewReader(signupBodyBytes),
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build signup request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send signup request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup %d: %s", resp.StatusCode, body)
-	}
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.Wrap(err, "read body")
-	}
-	var body SignupResponse
-	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
-		return nil, errors.Wrap(err, "decode body")
-	}
-	return &body, nil
-
-}
-
-func (e *EnvironmentManager) inviteUser(inviteEmail string, members map[string]MemberList, policies map[string]string) error {
-	if _, memberExists := members[inviteEmail]; memberExists {
-		// This should never happen?
-		return nil
-	}
-	inviteBody := map[string]string{
-		"email":     inviteEmail,
-		"policy_id": policies[e.Params.ParticipantId],
-	}
-	inviteBodyBytes, err := json.Marshal(inviteBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal invite body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
-		bytes.NewReader(inviteBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build invite request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send invite request")
-	}
-	defer resp.Body.Close()
-	// rate limit returned when already invited
-	if resp.StatusCode == 429 {
-		e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", inviteEmail)
-		return nil
-	}
-	if resp.StatusCode != 204 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
-	}
-	return nil
 }

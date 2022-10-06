@@ -1,8 +1,6 @@
 {
     "name": "Sample Track",
     "slug": "sample",
-    "channel": "Unstable",
-    "channel_slug": "unstable",
     "customer": "Sample Customer",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": "./kurl-installer.yaml"
