@@ -31,16 +31,16 @@ func main() {
 
 func HandleRequest(event fieldlabs.LambdaEvent) error {
 	params := &fieldlabs.Params{
-		ParticipantEmail: event.ParticipantEmail,
-		Branch:           event.Branch,
-		TrackSlug:        event.TrackSlug,
-		InviterEmail:     event.InviterEmail,
-		InviterPassword:  event.InviterPassword,
-		APIToken:         event.APIToken,
-		APIOrigin:        "https://api.replicated.com/vendor",
-		GraphQLOrigin:    "https://g.replicated.com/graphql",
-		KURLSHOrigin:     "https://kurl.sh",
-		IDOrigin:         "https://id.replicated.com",
+		ParticipantId:   event.ParticipantId,
+		Branch:          event.Branch,
+		TrackSlug:       event.TrackSlug,
+		InviterEmail:    event.InviterEmail,
+		InviterPassword: event.InviterPassword,
+		APIToken:        event.APIToken,
+		APIOrigin:       "https://api.replicated.com/vendor",
+		GraphQLOrigin:   "https://g.replicated.com/graphql",
+		KURLSHOrigin:    "https://kurl.sh",
+		IDOrigin:        "https://id.replicated.com",
 	}
 
 	action, ok := actions[event.Action]

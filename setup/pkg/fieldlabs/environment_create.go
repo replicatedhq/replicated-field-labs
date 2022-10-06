@@ -120,7 +120,7 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 		return errors.Wrap(err, "get members")
 	}
 
-	err = e.inviteUser(members, policies)
+	err = e.addUser(members, policies)
 	if err != nil {
 		return errors.Wrap(err, "invite users")
 	}
@@ -263,14 +263,8 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 	return customer, nil
 }
 
-func (e *EnvironmentManager) getAppName() string {
-	appName := strings.Replace(e.Params.ParticipantEmail, "@", "-", 1)
-	appName = strings.Replace(appName, "+", "-", -1)
-	return strings.Replace(appName, ".", "-", -1)
-}
-
 func (e *EnvironmentManager) createApp() (*types.App, error) {
-	appName := e.getAppName()
+	appName := e.Params.ParticipantId
 	app, err := e.getOrCreateApp(appName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "get or create app %q", appName)
@@ -363,7 +357,7 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 }
 
 func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]string) error {
-	if _, policyExists := policies[e.getAppName()]; policyExists {
+	if _, policyExists := policies[e.Params.ParticipantId]; policyExists {
 		// Policy already exists, not recreating
 		return nil
 	}
@@ -382,8 +376,8 @@ func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]strin
 		return errors.Wrap(err, "marshal definition body")
 	}
 	rbacBody := &Policy{
-		Name:        e.getAppName(),
-		Description: e.getAppName(),
+		Name:        e.Params.ParticipantId,
+		Description: e.Params.ParticipantId,
 		Definition:  string(policyDefinitionBytes),
 	}
 
@@ -412,106 +406,222 @@ func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]strin
 		body, _ := ioutil.ReadAll(resp.Body)
 		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
 	}
+	return nil
 
-	//readonly policy
-	policyDefinition = &PolicyDefinition{
-		V1: PolicyDefinitionV1{
-			Name: "Policy Name",
-			Resources: PolicyResourcesV1{
-				Allowed: []string{fmt.Sprintf("kots/app/%s/read", app.ID), "kots/license/**", "user/token/**"},
-				Denied:  []string{},
-			},
-		},
-	}
-	policyDefinitionBytes, err = json.Marshal(policyDefinition)
+}
+
+func (e *EnvironmentManager) addUser(members map[string]MemberList, policies map[string]string) error {
+	inviteEmail := e.Params.ParticipantId + "@replicated-labs.com"
+	err := e.inviteUser(inviteEmail, members, policies)
 	if err != nil {
-		return errors.Wrap(err, "marshal definition body")
-	}
-	rbacBody = &Policy{
-		Name:        fmt.Sprintf("%s-readonly", e.getAppName()),
-		Description: fmt.Sprintf("%s-readonly", e.getAppName()),
-		Definition:  string(policyDefinitionBytes),
+		return err
 	}
 
-	rbacBodyBytes, err = json.Marshal(rbacBody)
+	// Signup
+	sr, err := e.signupUser(inviteEmail)
 	if err != nil {
-		return errors.Wrap(err, "marshal rbac body")
+		return err
 	}
-	req, err = http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
-		bytes.NewReader(rbacBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build rbac request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
 
-	resp, err = http.DefaultClient.Do(req)
+	// Verify
+	vr, err := e.verifyUser(sr)
 	if err != nil {
-		return errors.Wrap(err, "send rbac request")
+		return err
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
+
+	// Capture Invite Id
+	invite, err := e.captureInvite(vr)
+	if err != nil {
+		return err
+	}
+
+	// Accept Invite
+	err = e.acceptInvite(invite, e.Params.ParticipantId, vr)
+	if err != nil {
+		return err
 	}
 	return nil
 
 }
 
-func (e *EnvironmentManager) updateRBAC(member MemberList, policyId string) error {
-	policyUpdateBody := &PolicyUpdate{
-		Id: policyId,
-	}
+type AcceptBody struct {
+	InviteId          string `json:"invite_id"`
+	FirstName         string `json:"first_name"`
+	LastName          string `json:"last_name"`
+	Password          string `json:"password"`
+	ReplaceAccount    bool   `json:"replace_account"`
+	FromTeamSelection bool   `json:"from_team_selection"`
+}
 
-	policyUpdateBytes, err := json.Marshal(policyUpdateBody)
+func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
+	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: participantId, ReplaceAccount: false, FromTeamSelection: true}
+	acceptBodyBytes, err := json.Marshal(ab)
 	if err != nil {
-		return errors.Wrap(err, "marshal policy update body")
+		return errors.Wrap(err, "marshal accept body")
 	}
-	url := fmt.Sprintf("%s/v1/team/member/%s", e.Params.APIOrigin, member.Id)
-	if member.Is_Pending_Invite {
-		url = fmt.Sprintf("%s/v1/team/invite/%s", e.Params.APIOrigin, member.Email)
-	}
+	e.Log.ActionWithSpinner(fmt.Sprintf("Sending bodyr %s", string(acceptBodyBytes)))
 	req, err := http.NewRequest(
-		"PUT",
-		url,
-		bytes.NewReader(policyUpdateBytes),
+		"POST",
+		fmt.Sprintf("%s/v1/signup/accept-invite", e.Params.IDOrigin),
+		bytes.NewReader(acceptBodyBytes),
 	)
 	if err != nil {
-		return errors.Wrap(err, "build update policy request")
+		return errors.Wrap(err, "build accept request")
 	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return errors.Wrap(err, "send update policy request")
+		return errors.Wrap(err, "send accept request")
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 204 {
+
+	if resp.StatusCode != 201 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("PUT /v1/team/member %d: %s", resp.StatusCode, body)
+		return fmt.Errorf("POST /v1/signup/accept-invite %d: %s", resp.StatusCode, body)
 	}
 	return nil
 }
 
-func (e *EnvironmentManager) inviteUser(members map[string]MemberList, policies map[string]string) error {
-	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+replabs@", 1)
+type InvitedTeams struct {
+	Teams []struct {
+		Id       string `json:"id"`
+		Name     string `json:"name"`
+		InviteId string `json:"invite_id"`
+	} `json:"invited_teams"`
+}
+
+func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
+	req, err := http.NewRequest(
+		"GET",
+		fmt.Sprintf("%s/v1/signup/teams", e.Params.IDOrigin),
+		nil,
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "build signup teams request")
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", vr.Token)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "send signup teams request")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("POST /v1/signup/teams %d: %s", resp.StatusCode, body)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "read body")
+	}
+	var body InvitedTeams
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
+		return nil, errors.Wrap(err, "decode body")
+	}
+	return &body, nil
+}
+
+type VerifyResponse struct {
+	Token string `json:"token"`
+}
+
+func (e *EnvironmentManager) verifyUser(sr *SignupResponse) (*VerifyResponse, error) {
+	verifyBody := map[string]string{
+		"token": sr.Token,
+	}
+	verifyBodyBytes, err := json.Marshal(verifyBody)
+	if err != nil {
+		return nil, errors.Wrap(err, "marshal verify body")
+	}
+	req, err := http.NewRequest(
+		"POST",
+		fmt.Sprintf("%s/v1/signup/verify", e.Params.IDOrigin),
+		bytes.NewReader(verifyBodyBytes),
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "build verify request")
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "send verify request")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("POST /v1/signup/verify %d: %s", resp.StatusCode, body)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "read body")
+	}
+	var body VerifyResponse
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
+		return nil, errors.Wrap(err, "decode body")
+	}
+	return &body, nil
+}
+
+type SignupResponse struct {
+	Token string `json:"token"`
+}
+
+func (e *EnvironmentManager) signupUser(inviteEmail string) (*SignupResponse, error) {
+	signupBody := map[string]string{
+		"email": inviteEmail,
+	}
+	signupBodyBytes, err := json.Marshal(signupBody)
+	if err != nil {
+		return nil, errors.Wrap(err, "marshal signup body")
+	}
+	req, err := http.NewRequest(
+		"POST",
+		fmt.Sprintf("%s/v1/signup", e.Params.IDOrigin),
+		bytes.NewReader(signupBodyBytes),
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "build signup request")
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "send signup request")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("POST /v1/signup %d: %s", resp.StatusCode, body)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "read body")
+	}
+	var body SignupResponse
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
+		return nil, errors.Wrap(err, "decode body")
+	}
+	return &body, nil
+
+}
+
+func (e *EnvironmentManager) inviteUser(inviteEmail string, members map[string]MemberList, policies map[string]string) error {
 	if _, memberExists := members[inviteEmail]; memberExists {
-		// Update RBAC policy TODO
-		err := e.updateRBAC(members[inviteEmail], policies[e.getAppName()])
-		if err != nil {
-			return errors.Wrap(err, "update rbac policy")
-		}
+		// This should never happen?
 		return nil
 	}
 	inviteBody := map[string]string{
 		"email":     inviteEmail,
-		"policy_id": policies[e.getAppName()],
+		"policy_id": policies[e.Params.ParticipantId],
 	}
 	inviteBodyBytes, err := json.Marshal(inviteBody)
 	if err != nil {
