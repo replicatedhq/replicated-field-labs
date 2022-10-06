@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> /home/replicant/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /home/replicant/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc
