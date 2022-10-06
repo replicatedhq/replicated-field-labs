@@ -145,7 +145,6 @@ func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId st
 	if err != nil {
 		return errors.Wrap(err, "marshal accept body")
 	}
-	e.Log.ActionWithSpinner(fmt.Sprintf("Sending bodyr %s", string(acceptBodyBytes)))
 	req, err := http.NewRequest(
 		"POST",
 		fmt.Sprintf("%s/v1/signup/accept-invite", e.Params.IDOrigin),

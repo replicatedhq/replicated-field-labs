@@ -30,13 +30,13 @@ username: [PARTICIPANT_ID]@replicated-labs.com
 password: [PARTICIPANT_ID]
 ```
 
-Once you have the credential, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 ### 2. Getting the install command
 
-Once you're logged in, go to `Channels > HelloWorld` and grab the existing cluster install command.
+Once you're logged in, go to `Channels > Stable` and grab the existing cluster install command.
 
-![HelloWorld channel](../assets/hello-world-channel.png)
+![Stable channel](../assets/stable-channel.png)
 
 We will use this command in the next challenge to kick off the installation process.
 
@@ -49,7 +49,7 @@ To create a customer license, go to `Customers > Hola Customer` by selecting the
 
 You can view the customer details by clicking the row.
 For this Hello World exercise we'll use `Hola Customer`.
-You'll notice that the customer is assigned to the the "HelloWorld" channel on the right hand side, and the Customer Type is set to "Development".
+You'll notice that the customer is assigned to the "Stable" channel on the right hand side, and the Customer Type is set to "Development".
 When you've reviewed these, you can click the "Download License" link in the top right corner.
 
 ![View Customer](../assets/view-customer.png)
