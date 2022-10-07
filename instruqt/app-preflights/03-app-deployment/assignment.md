@@ -30,7 +30,7 @@ timelimit: 600
 
 ### 1. Obtain the kots cli install command
 
-In the Replicated Vendor portal navigate to the Channels page and view the app-preflights channel.
+In the Replicated Vendor portal navigate to the Channels page and view the Stable channel.
 At the bottom of the channel definition there is a code box with the one line install commands for Existing and Embedded clusters.
 
 ![preflight-channel](../assets/preflight-channel.png)
@@ -41,7 +41,7 @@ This will take the form of:
 
 ```bash
 curl https://kots.io/install | bash 
-kubectl kots install me-myco-replicated-com/app-preflights
+kubectl kots install application-preflight-checks-abcdefgh
 ```
 
 ### 2. Perform the existing cluster app install
@@ -54,7 +54,7 @@ A password will be prompted for too, enter a value you can remember, you will us
 Sample install output:
 ```
 root@kubernetes-vm:~# curl https://kots.io/install | bash
-kubectl kots install me-myco-replicated-com/app-preflights --no-port-forward
+kubectl kots install application-preflight-checks-abcdefgh --no-port-forward
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  3697  100  3697    0     0   5032      0 --:--:-- --:--:-- --:--:--  5029

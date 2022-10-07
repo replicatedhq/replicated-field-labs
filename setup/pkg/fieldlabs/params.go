@@ -8,10 +8,10 @@ const (
 )
 
 type Params struct {
-	Action           Action
-	ParticipantEmail string
-	Branch           string
-	TrackSlug        string
+	Action        Action
+	ParticipantId string
+	Branch        string
+	TrackSlug     string
 
 	APIToken      string
 	APIOrigin     string
@@ -28,11 +28,11 @@ type Params struct {
 }
 
 type LambdaEvent struct {
-	Action           string `json:"action"`
-	ParticipantEmail string `json:"participant-email"`
-	Branch           string `json:"branch"`
-	TrackSlug        string `json:"track-slug"`
-	InviterEmail     string `json:"inviter-email"`
-	InviterPassword  string `json:"inviter-password"`
-	APIToken         string `json:"api-token"`
+	Action          string `json:"action"`
+	ParticipantId   string `json:"participant-id"`
+	Branch          string `json:"branch"`
+	TrackSlug       string `json:"track-slug"`
+	InviterEmail    string `json:"inviter-email"`
+	InviterPassword string `json:"inviter-password"`
+	APIToken        string `json:"api-token"`
 }
