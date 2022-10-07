@@ -1,6 +1,6 @@
 ---
 slug: deploy-new-version
-id: zll9xufs3mbq
+id: m0ozpw71anfy
 type: challenge
 title: Deploy new version
 teaser: A short description of the challenge.
