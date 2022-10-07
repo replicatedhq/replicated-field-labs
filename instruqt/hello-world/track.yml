@@ -1,6 +1,5 @@
 slug: hello-world
 id: otit0x2yl9ry
-type: track
 title: Deploy a Hello World Application with Replicated
 teaser: Learn how to deploy kubernetes applications using Replicated
 description: |-
@@ -16,4 +15,4 @@ developers:
 - joshd@replicated.com
 private: true
 published: false
-checksum: "1950410808679901067"
+checksum: "2465052297948668731"
