@@ -10,3 +10,5 @@ echo "This is the solve script"
 
 sudo touch /etc/support/config.txt
 sudo chmod 400 /etc/support/config.txt
+
+exit 0
