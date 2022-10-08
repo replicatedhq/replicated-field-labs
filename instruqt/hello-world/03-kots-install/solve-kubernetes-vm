@@ -12,5 +12,3 @@ kubectl kots install hello-world \
   --shared-password ${INSTRUQT_PARTICIPANT_ID} \
   --namespace hello \
   --no-port-forward
-
-exit 0
