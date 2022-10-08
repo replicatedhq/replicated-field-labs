@@ -95,4 +95,4 @@ jobs:
         uses: ./.github/actions/track-test
         with:
           path: ${{ env.TRACK_DIR }}/${{ matrix.tracks.slug }}
-        if: ${{ false }}
+        if: steps.check-ci.outcome == 'success'
