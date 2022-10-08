@@ -8,7 +8,6 @@
 echo "This is the solve script"
 
 
-curl https://kots.io/install | bash
 kubectl kots install hello-world \
   --shared-password ${INSTRUQT_PARTICIPANT_ID} \
   --namespace hello \
