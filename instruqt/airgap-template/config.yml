@@ -1,8 +1,8 @@
 version: "3"
 containers:
 - name: jumpbox
-  image: gcr.io/kots-field-labs/replicated-cli
-  shell: /bin/bash
+  image: gcr.io/kots-field-labs/airgap-jumpbox
+  shell: su - replicant
   memory: 256
 gcp_projects:
 - name: airgap
