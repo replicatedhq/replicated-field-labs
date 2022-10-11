@@ -30,7 +30,7 @@ spec:
               cpu: '100m'
         - name: k8slove
           image: busybox
-          command: ["sh","-c","while true; echo Artist {{repl ConfigOption `k8slove`}}; sleep 10; done"]
+          command: ["sh","-c","while true; do echo Artist {{repl ConfigOption `k8slove`}}; sleep 10; done"]
           resources:
             limits:
               memory: '256Mi'

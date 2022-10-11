@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: nginx-html
   annotations:
-    "kots.io/exclude": '{{repl ConfigOptionEquals "k8slove" "2Pac" }}'
+    "kots.io/exclude": '{{repl ConfigOptionNotEquals "k8slove" "2Pac" }}'
 data:
   index.html: |
     <!doctype html>
