@@ -9,8 +9,8 @@ spec:
     description: Some k8slove
     items:
     - name: k8slove
-      title: Customize Text Inputs
-      help_text: "Show custom user text inputs"
+      title: k8slove Artist
+      help_text: "Who is the creator for k8slove"
       type: text
       default: "yes"
       recommended: true
