@@ -62,4 +62,4 @@ You may need to clear your cache or do a hard refresh to see the change
 
 If you receive the above result, pat yourself on the back for a great job done!
 
-This lab is not complete.
+This track is now complete.
