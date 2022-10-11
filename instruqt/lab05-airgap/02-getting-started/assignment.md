@@ -1,6 +1,6 @@
 ---
 slug: getting-started
-id: dwkmxoxunztv
+id: cqq1xl5eltug
 type: challenge
 title: Getting Started
 teaser: Time to setup the Replicated CLI

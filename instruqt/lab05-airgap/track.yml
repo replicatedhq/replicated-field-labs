@@ -1,6 +1,5 @@
 slug: lab05-airgap
-id: orakg61xczwz
-type: track
+id: 7erl3lsyiybk
 title: lab05 airgap
 teaser: Deploy your application in an airgapped environment
 description: |-
@@ -14,4 +13,4 @@ developers:
 private: true
 published: true
 show_timer: true
-checksum: "5765492097977920641"
+checksum: "8489981484503228337"

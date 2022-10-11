@@ -64,7 +64,7 @@ Once you clicked on `Continue`, the Application Installer will deploy the Hello 
 
 ![Dashboard](../assets/dashboard.png)
 
-If you want to check the "Hello World", you can do so by clicking on `Open App`
+If you want to check the "Hello World" application, you can do so by clicking on `Open App`
 
 ![Open App](../assets/open-app.png)
 

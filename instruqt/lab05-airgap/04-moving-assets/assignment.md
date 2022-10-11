@@ -1,6 +1,6 @@
 ---
 slug: moving-assets
-id: qri2ydezkgtf
+id: qzfmyli3tpeo
 type: challenge
 title: Assets
 teaser: A short description of the challenge.
