@@ -33,7 +33,6 @@ Navigate back to **Customers** and open the customer created earler and set the 
 
 Save the changes. The feature is now available for the customer. If the customer has an online installation you do not need to download the license again.
 
-Congratulations on completing this challenge, we'll look at updating the application on the next challenge.
 
 ## Update Deployed App
 
