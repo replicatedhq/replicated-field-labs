@@ -6,7 +6,6 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-curl https://kots.io/install | bash
 kubectl kots install support-bundle \
   --shared-password ${INSTRUQT_PARTICIPANT_ID} \
   --namespace support \
