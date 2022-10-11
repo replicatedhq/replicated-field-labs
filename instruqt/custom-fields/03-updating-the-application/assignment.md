@@ -37,16 +37,7 @@ You should see results similar to this:
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-10          2022-10-05T15:32:40Z    0001-01-01T00:00:00Z    CustomFields
-9           2022-10-05T13:26:25Z    0001-01-01T00:00:00Z    hellohelm,License100
-8           2022-10-04T20:46:30Z    0001-01-01T00:00:00Z
-7           2022-10-04T20:33:16Z    0001-01-01T00:00:00Z    support-bundle
-6           2022-10-04T20:06:59Z    0001-01-01T00:00:00Z
-5           2022-10-04T20:01:59Z    0001-01-01T00:00:00Z
-4           2022-10-04T18:57:23Z    0001-01-01T00:00:00Z
-3           2022-10-03T18:32:48Z    0001-01-01T00:00:00Z
-2           2022-09-28T13:54:29Z    0001-01-01T00:00:00Z
-1           2022-09-20T19:53:57Z    0001-01-01T00:00:00Z    hello-world
+1           2022-09-20T19:53:57Z    0001-01-01T00:00:00Z    stable
 ```
 
 We want to update the release currently on the **CustomFields** channel. Note the **SEQUENCE** associated to that channel as that is what we are going to use in the next command.
@@ -71,7 +62,7 @@ replicated release download [The SEQUENCE number from above] -d ./manifests
 As an exmaple, if I wanted to download the manifests associated to the release in the **CustomFields** example above, I would run:
 
 ```
-replicated release download 10 -d ./manifests
+replicated release download 1 -d ./manifests
 ```
 
 We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled.
