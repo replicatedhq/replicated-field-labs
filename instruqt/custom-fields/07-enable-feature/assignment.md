@@ -2,11 +2,14 @@
 slug: enable-feature
 id: 0ql5zjsxwew6
 type: challenge
-title: Enable Feature
-teaser: A short description of the challenge.
+title: Enable the Feature
+teaser: Next, we'll change the feature flag and update the application!
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: |- 
+    In this challenge we'll cover:
+    - Updating the Custom License Field
+    - updating the deployed application
 tabs:
 - title: Shell
   type: terminal
@@ -33,7 +36,6 @@ Navigate back to **Customers** and open the customer created earler and set the 
 
 Save the changes. The feature is now available for the customer. If the customer has an online installation you do not need to download the license again.
 
-Congratulations on completing this challenge, we'll look at updating the application on the next challenge.
 
 ## Update Deployed App
 
@@ -63,4 +65,4 @@ You may need to clear your cache or do a hard refresh to see the change
 
 If you receive the above result, pat yourself on the back for a great job done!
 
-This lab is not complete.
+This track is now complete.

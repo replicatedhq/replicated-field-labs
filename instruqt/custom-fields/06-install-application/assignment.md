@@ -24,9 +24,9 @@ Enter the password you set during the installation of the Admin Console in the p
 
 <p align="center"><img src="../assets/custom-fields-login.png" width=600></img></p>
 
-Upload the license file we downloaded a couple of challanges ago.
+Upload the license file we downloaded a couple of challenges ago.
 
-<p align="center"><img src="../assets/custom-field-supload-license.png" width=600></img></p>
+<p align="center"><img src="../assets/custom-fields-upload-license.png" width=600></img></p>
 
 Wait until the application is `ready` to click on the `Open License Custom Fields App` link
 
