@@ -1,5 +1,6 @@
 ---
 slug: introduction
+id: dszujgorm55c
 type: challenge
 title: Introduction
 teaser: Learn what this lab is about!
