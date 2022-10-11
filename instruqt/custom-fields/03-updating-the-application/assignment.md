@@ -24,7 +24,7 @@ Before we update the application we need to make sure we have a dev environment 
 
 Make sure to set the `REPLICATED_APP` and `REPLICATED_API_TOKEN` environment variables. This is covered in the Replicated CLI track in more detail.
 
-We also need to download the manifests we want to update. To download the latest version of the applicaiton, we'll employ the [release download](https://docs.replicated.com/reference/replicated-cli-release-download) command.
+We also need to download the manifests we want to update. To download the latest version of the application, we'll employ the [release download](https://docs.replicated.com/reference/replicated-cli-release-download) command.
 
 First, we need to get the latest sequence number. To do this run the following command
 
