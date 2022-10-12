@@ -9,6 +9,11 @@ echo "Starting challenge 02 setup-kubernetes-vm"
 
 set -eux
 
+# set up troubleshoot deployment blocker files
+mkdir /etc/support
+echo blocker > /etc/support/restraining-bolt.txt
+chmod 400 /etc/support/restraining-bolt.txt
+
 # pre-install the kots app
 echo INSTRUQT_PARTICIPANT_ID: $INSTRUQT_PARTICIPANT_ID
 echo INSTALL COMMAND: kubectl kots install support-cli-$INSTRUQT_PARTICIPANT_ID --name support-cli-$INSTRUQT_PARTICIPANT_ID --namespace default --shared-password $INSTRUQT_PARTICIPANT_ID --no-port-forward 
@@ -18,7 +23,9 @@ kubectl kots install support-cli-grahamh --name support-cli-grahamh --namespace 
 # expose kotsadm
 kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
 
+#placeholder to move to next challenge (after app license upload has been done and app exists..)
 #kubectl expose deployment nginx -n $(kubectl get pods -A -l app=nginx --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=nginx-ingress --port=30888 --target-port=80
+
 
 echo "exiting challenge 02 setup-kubernetes-vm"
 exit 0
