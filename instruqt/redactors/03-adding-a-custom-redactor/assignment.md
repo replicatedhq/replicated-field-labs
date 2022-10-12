@@ -1,5 +1,6 @@
 ---
 slug: adding-a-custom-redactor
+id: xvg5u21wl0w8
 type: challenge
 title: Adding a Custom Redactor
 teaser: A short description of the challenge.
@@ -10,7 +11,7 @@ tabs:
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
-  new_window: true  
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---

@@ -1,4 +1,5 @@
 slug: redactors
+id: gmiwrds3jmuy
 title: Redactors
 teaser: A short description of the track.
 description: |-
@@ -12,3 +13,4 @@ developers:
 - fernando@replicated.com
 private: false
 published: false
+checksum: "10022151346628099301"

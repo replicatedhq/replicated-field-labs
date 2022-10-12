@@ -1,5 +1,6 @@
 ---
 slug: redactors-overview
+id: oqega3xpqtwq
 type: challenge
 title: Redactors Overview
 teaser: Familiarize yourself with Redactors!
@@ -16,7 +17,7 @@ tabs:
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
-  new_window: true  
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
