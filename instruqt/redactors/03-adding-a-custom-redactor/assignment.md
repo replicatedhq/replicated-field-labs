@@ -3,10 +3,10 @@ slug: adding-a-custom-redactor
 id: xvg5u21wl0w8
 type: challenge
 title: Adding a Custom Redactor
-teaser: A short description of the challenge.
+teaser: Learn how to add a custom redactor
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Now that you are familiar with redactors, let's define a custom one!
 tabs:
 - title: Application Installer
   type: website
