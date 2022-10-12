@@ -1,0 +1,14 @@
+slug: redactors
+title: Redactors
+teaser: A short description of the track.
+description: |-
+  A long description of the track.
+
+  You can use any GitHub flavoured markdown.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- fernando@replicated.com
+private: false
+published: false
