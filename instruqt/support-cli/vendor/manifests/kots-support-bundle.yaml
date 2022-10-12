@@ -1,7 +1,7 @@
 apiVersion: troubleshoot.sh/v1beta2
 kind: SupportBundle
 metadata:
-  name: support-cli
+  name: support-cli-supportbundle
 spec:
   collectors:
     - logs:
