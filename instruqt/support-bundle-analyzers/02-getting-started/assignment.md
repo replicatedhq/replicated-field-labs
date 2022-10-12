@@ -40,7 +40,7 @@ Once you have the credentials, you can login into the Vendor tab and you should 
 👋 Install Nginx
 ===============
 
-In this case, the Applicatin Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Analyzers Customer`), upload the license in the Application Installer and go through the initial installation.
+In this case, the Application Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Analyzers Customer`), upload the license in the Application Installer and go through the initial installation.
 
 ### 1. Download the license
 
@@ -61,10 +61,12 @@ Go to the `Application Installer` tab (external window), login and upload the li
 🐛 The Issue
 ===============
 
-Once the app is deployed, you can browse to the application, using the `Open App` link.
+Once the app is deployed, you can browse to the application, using the `Open Nginx` link.
 
 ![Open App](../assets/open-app.png)
 
 You'll notice that in this case the application is running, but the content it is showing is not what you would expect. You'll see that it is a bit of a contrived use case, but a great way to learn more about support bundles.
+
+![Broken App](../assets/broken-app.png)
 
 Let's move to the next challenge and see if Support Bundles can help!
