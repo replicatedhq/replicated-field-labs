@@ -1,9 +1,16 @@
 slug: redactors
 id: gmiwrds3jmuy
 title: Redactors
-teaser: A short description of the track.
-description: Learn how to use redactors to prevent sensitive information from being
-  included in a support bundle
+teaser: Learn how to use redactors to prevent sensitive information from being included in a support bundle
+  
+description: |-
+  Learn how to use redactors to prevent sensitive information from being included in a support bundle
+
+  **This Lab Covers the Following:**
+      - How to view redacted information in a support bundle
+      - How to add a custom redactor
+      - Testing the custom redactor
+
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags: []
 owner: replicated
