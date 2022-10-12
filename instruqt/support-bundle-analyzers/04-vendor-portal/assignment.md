@@ -16,10 +16,6 @@ tabs:
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
-- title: Upload
-  type: code
-  hostname: shell
-  path: /home/replicant
 - title: Shell
   type: terminal
   hostname: shell
