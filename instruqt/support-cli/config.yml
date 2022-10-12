@@ -10,7 +10,8 @@ virtualmachines:
   - https
   - high-ports
 containers:
-- name: shell
-  image: ubuntu
+containers:
+- name: vendor-cli
+  image: gcr.io/kots-field-labs/replicated-cli
   shell: /bin/bash
   memory: 256
