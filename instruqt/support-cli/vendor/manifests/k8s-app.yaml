@@ -5,5 +5,5 @@ metadata:
 spec:
   descriptor:
     links:
-      - description: Open Lab 3
+      - description: Open nginx app
         url: "http://nginx"
