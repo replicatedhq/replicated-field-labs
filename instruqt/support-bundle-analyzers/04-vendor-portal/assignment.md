@@ -6,7 +6,7 @@ title: vendor-portal
 teaser: Work with support bundles received from a customer
 notes:
 - type: text
-  contents: How can a customer share a support bundle with you.
+  contents: How can a customer share a support bundle with you?
 tabs:
 - title: Vendor Portal
   type: website
@@ -27,24 +27,28 @@ difficulty: basic
 timelimit: 600
 ---
 
-Download the support bundle
+⬇️ Download the support bundle
 ===========================
 
 The key lesson of this track is around what to do if analyzers don't provide any useful information. So far we've been mainly assuming we always have access to the Application Installer. But that will not be the case for many customers. So let's walk through downloading the bundle, collaborating with your team to diagnose the error, and preventing it in the future.
 
 <div align="center"><blockquote><h3>If support analyzers don't surface any issues, the bundle should be downloaded and sent to the vendor team</h3></blockquote></div>
 
-In this case, even though we're wearing a "customer" hat for parts of these exercises, "the vendor" is also you in this case :slightly_smiling_face:
+In this case, even though we're wearing a "customer" hat for parts of these exercises, the "vendor" is also you in this case 🙂 
 
 Let's grab the bundle using the "download bundle" option so we can upload it to https://vendor.replicated.com to collaborate with the team:
 
 ![download-bundle](../assets/download-bundle.png)
 
 
-Upload in Vendor Portal
+⬆️ Upload in Vendor Portal
 =======================
 
-Next, we'll navigate to https://vendor.replicated.com/troubleshoot and choose "upload bundle", then drag and drop the bundle you downloaded from the instance.
+Next, we'll navigate to the Vendor Portal tab and go to Troubleshoot.
+
+![Vendor Portal Troubleshoot](../assets/vendor-portal-troubleshoot.png)
+
+choose "upload bundle", then drag and drop the bundle you downloaded from the instance.
 Having access to the instance to download the bundle simplifies things for us in this case.
 In the real world, you can receive the bundle from a customer by whatever means is most secure/convenient for them.
 
