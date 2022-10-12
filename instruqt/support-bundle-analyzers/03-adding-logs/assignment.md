@@ -1,5 +1,6 @@
 ---
 slug: adding-logs
+id: xgwejyrmg8yf
 type: challenge
 title: adding-logs
 teaser: Create a Support Bundle
@@ -57,7 +58,7 @@ The application consists of an nginx deployment. So let's add a [logs collector]
 Once the release is saved, you can promote it to the `Stable` channel.
 In the Application installer tab, click `Check for update` and deploy the new version. Once deployed, go to the "Troubleshoot" and generate another support bundle.
 
-Of course nothing changed in the analyzers view (as we only added a collector), but let's go to the file inspector to see if our logs collector can tell us something. 
+Of course nothing changed in the analyzers view (as we only added a collector), but let's go to the file inspector to see if our logs collector can tell us something.
 
 ![file-inspector](../assets/files.png)
 

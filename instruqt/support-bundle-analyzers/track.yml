@@ -1,4 +1,5 @@
 slug: support-bundle-analyzers
+id: ustszdcffvmg
 title: Support Bundle Analyzers
 teaser: Add analyzers to your application
 description: |-
@@ -14,3 +15,4 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
+checksum: "14673724540497661007"
