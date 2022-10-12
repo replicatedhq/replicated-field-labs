@@ -1,5 +1,6 @@
 ---
 slug: getting-started
+id: zef2d0wz43kh
 type: challenge
 title: Getting Started
 teaser: Install the application and check if it is working.

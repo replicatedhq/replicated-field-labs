@@ -1,5 +1,6 @@
 ---
 slug: vendor-portal
+id: pxcgks564wye
 type: challenge
 title: vendor-portal
 teaser: Work with support bundles received from a customer
@@ -16,7 +17,7 @@ tabs:
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 - title: Upload
-  type: editor
+  type: code
   hostname: shell
   path: /home/replicant
 - title: Shell
@@ -55,7 +56,7 @@ Once it's uploaded, you should see a similar view of the analyzers.
 
 This view is identical to what your customer will see!
 
-Next we'll dig into the logs by navigating to the file inspector tab. 
+Next we'll dig into the logs by navigating to the file inspector tab.
 We can use the line-level deep linking in the UI to highlight and share specific errors and log lines.
 
 **Exercise** navigate to `cluster-info/cluster_version.json`, and determine the version of Kubernetes that is running on the server side.
@@ -102,7 +103,7 @@ kubectl get pods -n kube-system
 ```
 
 ```bash
-kubectl describe deployment nginx -n support-bundle 
+kubectl describe deployment nginx -n support-bundle
 ```
 
 Congratulations! You have completed this track!

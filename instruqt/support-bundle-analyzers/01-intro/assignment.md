@@ -1,5 +1,6 @@
 ---
 slug: intro
+id: o4sqhgi0lx2g
 type: challenge
 title: intro
 teaser: Create your own collectors and analyzers
@@ -32,7 +33,7 @@ timelimit: 300
     * You will be ready to use support bundles to collaborate with your team when escalating issues from the field
     * You will be confident in the process for adding new analyzers, evolving your support tooling over time to continuously
       reduce unnecessary escalations
-    * You will understand how to escalate issues to the Replicated support team  
+    * You will understand how to escalate issues to the Replicated support team
 
 
 🐚 Get started
