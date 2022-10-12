@@ -1,5 +1,6 @@
 ---
 slug: intro
+id: avboyvmliqxk
 type: challenge
 title: Intro
 teaser: Learn how to use Redactors
