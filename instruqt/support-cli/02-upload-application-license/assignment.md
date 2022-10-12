@@ -6,7 +6,7 @@ title: Upload application license
 teaser: Kotsadm Load Application Licence
 notes:
 - type: text
-  contents: Please wait while kotsadm is deployed
+  contents: Please wait while kotsadm is deployed..
 tabs:
 - title: Shell
   type: terminal
