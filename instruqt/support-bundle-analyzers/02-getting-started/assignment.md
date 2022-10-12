@@ -64,4 +64,6 @@ Once the app is deployed, you can browse to the application, using the `Open App
 
 ![Open App](../assets/open-app.png)
 
-You'll notice that in this case the application is running, but the content it is showing is not what you would expect. Let's move to the next challenge and see if Support Bundles can help!
+You'll notice that in this case the application is running, but the content it is showing is not what you would expect. You'll see that it is a bit of a contrived use case, but a great way to learn more about support bundles.
+
+Let's move to the next challenge and see if Support Bundles can help!

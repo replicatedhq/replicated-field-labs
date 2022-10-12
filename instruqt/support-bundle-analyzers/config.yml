@@ -1,4 +1,9 @@
 version: "3"
+containers:
+- name: shell
+  image: gcr.io/kots-field-labs/shell
+  shell: su - replicant
+  memory: 256
 virtualmachines:
 - name: kubernetes-vm
   image: instruqt/k3s-v1-25-0
