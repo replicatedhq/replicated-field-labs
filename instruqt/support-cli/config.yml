@@ -9,9 +9,3 @@ virtualmachines:
   - http
   - https
   - high-ports
-containers:
-containers:
-- name: vendor-cli
-  image: gcr.io/kots-field-labs/replicated-cli
-  shell: /bin/bash
-  memory: 256
