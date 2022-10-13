@@ -1,0 +1,15 @@
+slug: custom-fields
+id: 9ixa2iyrggut
+title: Managing Features with Custom License Fields
+teaser: Learn how to use Custom License Fields to manage which features to enable
+  to your customers
+description: In this track we take a deeper look at Licensing, specifically, how to
+  manage features with Custom License Field.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- fernando@replicated.com
+private: false
+published: false
+checksum: "15461483467786460242"
