@@ -10,9 +10,10 @@ echo "Starting challenge 02 setup-kubernetes-vm"
 set -eux
 
 # set up troubleshoot deployment blocker files
-mkdir /etc/support
-echo blocker > /etc/support/restraining-bolt.txt
-chmod 400 /etc/support/restraining-bolt.txt
+# not creating the config.txt so it can be created during execrise
+mkdir -p /etc/support
+touch /etc/support/{restraining-bolt.txt,secretkey.txt}
+chmod 400 /etc/support/{restraining-bolt.txt,secretkey.txt}
 
 # pre-install the kots app
 echo INSTRUQT_PARTICIPANT_ID: $INSTRUQT_PARTICIPANT_ID
