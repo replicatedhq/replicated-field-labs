@@ -3,7 +3,7 @@ slug: upload-application-license
 id: nvzqmncvbscc
 type: challenge
 title: Upload application license
-teaser: Kotsadm Load Application Licence
+teaser: Kotsadm load application licence
 notes:
 - type: text
   contents: Please wait while kotsadm is deployed..
