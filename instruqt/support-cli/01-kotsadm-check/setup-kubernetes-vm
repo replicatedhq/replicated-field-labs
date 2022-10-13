@@ -7,7 +7,7 @@
 #
 echo "This is challenge 01 setup script"
 
-set -eux
+#set -eux
 
 
 # kubernetes k3s is running

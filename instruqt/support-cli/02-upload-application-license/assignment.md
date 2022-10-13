@@ -27,6 +27,8 @@ timelimit: 1200
  * Login to the kotsadm portal
  * Load the application license download from the vendor portal
 
+***
+
 ### 1. Kotsadm UI Login
 
 Launch the kotsadm and authenticate using PARTICIPANT_ID value from the Shell tab output as the password.
@@ -46,8 +48,11 @@ The application will then fully deploy, running the pre-flight checks for the fi
 ![supportcli-kotsadm-dash-broken1](../assets/supportcli-kotsadm-dash-broken1.png)
 ![supportcli-kotsadm-status-broken](../assets/supportcli-kotsadm-status-broken.png)
 
+
+***
 Progress to the next challenge to investigate further.
 
+Note: the application needs to be deployed before the challenge allows you to progress.
 
 To complete this challenge, press **Check**.
 
