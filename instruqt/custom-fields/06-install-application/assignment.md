@@ -1,6 +1,6 @@
 ---
 slug: install-application
-id: zrvs6rylpetz
+id: ctn8z4xu0a9l
 type: challenge
 title: Install Application
 teaser: Use the Admin Console to install the sample application.

@@ -1,6 +1,6 @@
 ---
 slug: creating-custom-fields
-id: 6bxfmgbssjzk
+id: 0efpwhe3qy3q
 type: challenge
 title: Creating Custom Fields
 teaser: Learn how to create Custom License Fields

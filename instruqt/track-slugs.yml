@@ -3,8 +3,8 @@ tracks:
   - { slug: lab05-airgap, id: 7erl3lsyiybk }
   - { slug: sample, id: rkh2x9nsexjs }
   - { slug: hello-world, id: otit0x2yl9ry }
-  - { slug: helm-hello-world, id:nbxtqf3fllg8 }
+  - { slug: helm-hello-world, id: nbxtqf3fllg8 }
   - { slug: app-preflights, id: yv7w1owyqbeh }
   - { slug: replicated-cli, id: pur3nyzcbryg }
   - { slug: support-bundle, id: d2oeswgg5ra2 }
-  - { slug: custom-fields, id: cxasxyjj7aoi }
+  - { slug: custom-fields, id: 9ixa2iyrggut }
