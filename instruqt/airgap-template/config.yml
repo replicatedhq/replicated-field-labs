@@ -1,7 +1,7 @@
 version: "3"
 containers:
 - name: jumpbox
-  image: gcr.io/kots-field-labs/airgap-jumpbox
+  image: gcr.io/kots-field-labs/shell
   shell: su - replicant
   memory: 256
 gcp_projects:
