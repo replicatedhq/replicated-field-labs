@@ -38,7 +38,7 @@ Launch the kotsadm and authenticate using `PARTICIPANT_ID` value from the Shell 
 
 ### 2. Upload application license
 
-Once authenticated to kotsadm, you will be promoted to upload a license, select or drag and drop a file and click Upload.
+Once authenticated to kotsadm, you will be prompted to upload a license, select or drag and drop a file and click Upload.
 
 ![supportcli-kotsadm-lic-ul1](../assets/supportcli-kotsadm-lic-ul1.png)
 ![supportcli-kotsadm-lic-ul2](../assets/supportcli-kotsadm-lic-ul2.png)
