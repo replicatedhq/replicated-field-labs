@@ -2,7 +2,7 @@ version: "3"
 containers:
 - name: shell
   image: gcr.io/kots-field-labs/shell
-  shell: su - replicant
+  shell: /bin/bash
   memory: 256
 virtualmachines:
 - name: kubernetes-vm
