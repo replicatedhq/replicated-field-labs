@@ -16,8 +16,8 @@ difficulty: basic
 timelimit: 300
 ---
 
-#### Let's check our connectivity
+#### Let's check our air gap
 
 ```
-kubectl get nodes
+ssh curl https://google.com
 ```
