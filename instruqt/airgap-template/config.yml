@@ -9,5 +9,5 @@ gcp_projects:
   services:
   - compute.googleapis.com
   roles:
-  - roles/compute.networkAdmin
-  - roles/compute.securityAdmin
+  - roles/compute.admin
+  - roles/iam.serviceAccountUser
