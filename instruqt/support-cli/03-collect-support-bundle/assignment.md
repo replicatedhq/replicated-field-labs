@@ -41,7 +41,7 @@ Notice the status of the nginx pod is in Init:CrashLoopBackoff status
 
 ![supportcli-kubectl-broken1](../assets/supportcli-kubectl-broken1.png)
 
-Rather than diagnosing using kubectl, follow the steps to analysing using the troubleshoot.io tools..
+Rather than diagnosing using kubectl, follow the steps to analyse using the troubleshoot.io tools.
 
 
 ### 2. Support Bundle Collection
