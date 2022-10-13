@@ -99,7 +99,7 @@ Here is some sample output similar to what you should see in your environment:
 
 ### 4. Diagnose issues and fix application
 
-Based on the advice presented in the support bundle content, perform corrective action on the cluster..
+Based on the advice presented in the support bundle content, perform corrective action on the cluster.
 
 <details>
   <summary>Open for a hint on config file issue</summary>
