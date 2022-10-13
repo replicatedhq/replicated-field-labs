@@ -147,7 +147,7 @@ Check the status of the application services via the cli
 kubectl get all
 ```
 
-The nginx pod should be in *Running* state, it can take some time for it to loop after it has backed off so it can be deleted and the replica set will replace with a new one.
+The nginx pod should be in *Running* state, it can take some time for it to loop after it has backed off so it can be deleted and the replicaset will replace with a new one.
 ```
 kubectl get pod/$(kubectl get pod | grep nginx | awk '{print $1}')
 kubectl delete pod/$(kubectl get pod | grep nginx | awk '{print $1}')
