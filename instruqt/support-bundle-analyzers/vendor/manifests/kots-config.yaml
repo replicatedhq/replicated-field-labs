@@ -1,0 +1,16 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: config-sample
+spec:
+  groups:
+  - name: Support Bundle Analyzers
+    title: My Example Config
+    description: Some k8slove
+    items:
+    - name: k8slove
+      title: k8slove Artist
+      help_text: "Who is the creator for k8slove"
+      type: text
+      default: "yes"
+      recommended: true
