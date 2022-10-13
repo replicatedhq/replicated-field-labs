@@ -12,24 +12,24 @@ do
     sleep 1 
 done
 
+# Local environment
+echo "export PATH=${PATH}:${HOME}/.krew/bin" >> /root/.bashrc
+
 # Enable bash completion for kubectl
 echo "source /usr/share/bash-completion/bash_completion" >> /root/.bashrc
 echo "complete -F __start_kubectl k" >> /root/.bashrc
-
-# Aliases
-echo "alias l='ls -latFrh'" >> /root/.bash_aliases
 
 # Display PARTICIPANT_ID info for Vendor Portal
 echo "echo Credentials for https://vendor.replicated.com" >> /root/.bashrc
 echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /root/.bashrc
 echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
 
-# Packages
-apt-get install -y mlocate net-tools curl git gzip
-apt-get install -y curl gzip
+# Aliases
+echo "alias l='ls -latFrh'" >> /root/.bash_aliases
 
-# Enable bash completion for kubectl
-echo "source /usr/share/bash-completion/bash_completion" >> /root/.bashrc
-echo "complete -F __start_kubectl k" >> /root/.bashrc
+# Packages
+#apt-get install -y mlocate net-tools curl git gzip
+#apt-get install -y curl gzip
+
 
 echo "exiting track_scripts/setup-kubernetes-vm with $?"

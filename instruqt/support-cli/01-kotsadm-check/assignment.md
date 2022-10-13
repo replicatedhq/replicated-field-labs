@@ -2,8 +2,8 @@
 slug: kotsadm-check
 id: rxsy3qldj4b2
 type: challenge
-title: kotsadm check
-teaser: Initial application check via kotsadm
+title: Download Application License
+teaser: Initial kubernetes cluster check and download app license
 notes:
 - type: text
   contents: Please wait while your environment is provisioned..
@@ -16,7 +16,7 @@ tabs:
   url: https://vendor.replicated.com
   new_window: true
 difficulty: basic
-timelimit: 1200
+timelimit: 900
 ---
 
 👋 Initial Application Check
@@ -24,10 +24,18 @@ timelimit: 1200
 
 **In this exercise you will:**
 
- * Check the application status via the kotsadm web console
+ * Check the kubernetes cluster
  * Complete the deployment of the application by proving a license file
  * Access the Replicated Vendor portal to download customer license
 
+***
+## Ground Rules
+
+In this lab and most of those that follow it, some of the failure scenarios are quite contrived.
+It is very possible to reverse-engineer the solution by reading the Kubernetes YAML instead of following the lab steps.
+If you want to get the most of out these labs, use the presented debugging steps to get experience with the toolset.
+
+***
 
 ### 1. Check Kubernetes environment
 
@@ -52,12 +60,12 @@ Once you have the credentials, you can login into the Vendor tab and you should 
 
 ### 3. Download Application License
 
-A sample end customer has been pre-created and associated with the Stable release channel where the test application release has been promoted to.  View this customer by navigating to the Customers tab on the left hand side of the UI, the customer name is *Hola SupportCLI Customer*.
+A sample end customer has been pre-created and associated with the Stable release channel where the test application release has been promoted to.  View this customer by navigating to the *Customers* tab on the left hand side of the UI, the customer name is *Hola SupportCLI Customer*.
 
 Click on the download license icon on the right of the customer entry as you'll use that in the next challenge.
 
 ![license-dlicon](../assets/license-download-icon.png)
 
 
-
+***
 To complete this challenge, press **Check**.

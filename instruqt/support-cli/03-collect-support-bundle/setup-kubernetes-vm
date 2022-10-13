@@ -7,7 +7,7 @@
 #
 echo "Starting challenge 03 setup-kubernetes-vm"
 
-set -eux
+#set -eux
 
 # expose nginx application
 kubectl expose deployment nginx -n $(kubectl get pods -A -l app=nginx --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=nginx-ingress --port=30888 --target-port=80
