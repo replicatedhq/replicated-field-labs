@@ -6,14 +6,14 @@ title: validate-connectivity
 teaser: Validates connectivity between the jumpbox and the airgap
 notes:
 - type: text
-  contents: Let's check that we can connect
+  contents: Let's check that we can't connect
 tabs:
 - title: Jumpbox
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
 difficulty: basic
-timelimit: 3000
+timelimit: 300
 ---
 
 #### Let's check our connectivity
