@@ -10,14 +10,14 @@ do
   sleep 1
 done
 
-### Setup the gcloud CLI
-### TO DO: Move to a base image
-apt -y update
-DEBIAN_FRONTEND=noninteractive apt -y install apt-transport-https gnupg
+### install Google Cloud CLI
+apt -y update && apt -y install apt-transport-https gnupg
 
 # Use the gcloud installation process described in the docs:
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
+  tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+  apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
 # Update apt again and install gcloud
 apt -y update
