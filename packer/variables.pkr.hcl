@@ -5,7 +5,7 @@ variable "project" {
 
 variable "image_name" {
   type    = string
-  default = "k3s-kurl-latest"
+  default = "kubeadm-kurl-latest"
 }
 
 variable "zone" {
@@ -20,7 +20,7 @@ variable "source_image_family" {
 
 variable "machine_type" {
   type    = string
-  default = "n1-standard-1"
+  default = "n1-standard-2"
 }
 
 variable "disk_size" {
