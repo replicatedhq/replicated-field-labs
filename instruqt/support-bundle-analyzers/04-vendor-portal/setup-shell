@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+
+
+json=$( jq -n -c --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
+token=$(curl -H "Content-Type: application/json" --request POST -d "$json" http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800/api/v1/login | jq -r ".token")
+
+bundleid=$(curl -s -H "Authorization: $token" http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800/api/v1/troubleshoot/app/support-bundle-analyzers-$INSTRUQT_PARTICIPANT_ID/supportbundles | jq -r ".supportBundles[0].id")
+
+curl -s -H "Authorization: $token" http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800/api/v1/troubleshoot/supportbundle/$bundleid/download -o supportbundle.tar.gz
