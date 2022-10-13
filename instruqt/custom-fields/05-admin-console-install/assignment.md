@@ -1,6 +1,6 @@
 ---
 slug: admin-console-install
-id: wytshutl43hm
+id: beo1zan4ozx3
 type: challenge
 title: Install Admin Console
 teaser: Install the Admin Console, which we'll use to deploy our sample app

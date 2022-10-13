@@ -1,12 +1,12 @@
 ---
 slug: enable-feature
-id: 0ql5zjsxwew6
+id: yeoizusn3ybg
 type: challenge
 title: Enable the Feature
 teaser: Next, we'll change the feature flag and update the application!
 notes:
 - type: text
-  contents: |- 
+  contents: |-
     In this challenge we'll cover:
     - Updating the Custom License Field
     - updating the deployed application
