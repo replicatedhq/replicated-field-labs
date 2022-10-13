@@ -3,7 +3,7 @@ slug: collect-support-bundle
 id: em5ownshn4bh
 type: challenge
 title: Collect Support Bundle
-teaser: Collect an application support bundle and diagnose
+teaser: Collect an application support bundles and diagnose
 notes:
 - type: text
   contents: Your next challenge is being initialised..
@@ -69,12 +69,15 @@ Note that the commands are in two parts.  Firstly install the support-bundle kub
 curl https://krew.sh/support-bundle | bash
 ```
 
-Then the bundle generation itself:
+Note: If the kubernetes cluster was kURL then the support-bundle plugin would have been pre-installed.
+
+Then the bundle generation command:
 ```
 kubectl support-bundle secret/default/kotsadm-support-cli-${INSTRUQT_PARTICIPANT_ID}-supportbundle --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-support-cli-${INSTRUQT_PARTICIPANT_ID}-redact-spec/redact-spec
 ```
 
-Note the above support-bundle command launches a console ui on the bundle contents
+Run both of the above commands now to generate the CLI support bundle.
+Note that the support-bundle cli command launches a console ui to view the bundle contents
 
 
 ### 3. CLI Support Bundle Analysis
@@ -91,13 +94,52 @@ In the support bundle console UI, step through the issues and address them one b
 
 Here is some sample output similar to what you should see in your environment:
 ![supportcli-supbundle1](../assets/supportcli-supbundle1.png)
-![supportcli-supbundle2](../assets/supportcli-supbundle2.png)
-![supportcli-supbundle3](../assets/supportcli-supbundle3.png)
 ![supportcli-supbundle4](../assets/supportcli-supbundle4.png)
+
+
+### 4. Diagnose issues and fix application
 
 Based on the advice presented in the support bundle content, perform corrective action on the cluster..
 
-### 4. Status Check - CLI
+<details>
+  <summary>Open for a hint on config file issue</summary>
+
+Scrolling to the failing check, we can review the error message:
+![supportcli-supbundle2](../assets/supportcli-supbundle2.png)
+
+Specifically, you'll see the error message:
+```shell
+Could not find a file at /etc/support/config.txt with 400 permissions
+```
+
+To fix this, run:
+```shell
+chmod 400 /etc/support/config.txt
+```
+
+</details>
+
+<details>
+  <summary>Open for a hint on the restraining-bolt issue</summary>
+
+Scrolling to the failing check, we can review the error message:
+![supportcli-supbundle3](../assets/supportcli-supbundle3.png)
+
+Specifically, you'll see the error message:
+```shell
+Restraining bolt in /etc/support has short circuited the startup process. If you remove it, we might be able to launch the application.
+```
+
+We can remove this file with
+
+```shell
+rm /etc/support/restraining-bolt.txt
+```
+
+</details>
+
+
+### 5. App Status Check - CLI
 
 Check the status of the application services via the cli
 
@@ -112,8 +154,11 @@ kubectl delete pod/$(kubectl get pod | grep nginx | awk '{print $1}')
 watch "kubectl get pod/$(kubectl get pod | grep nginx | awk '{print $1}')"
 ```
 
+Note: the new pod does take a bit of time to step through the initialisation steps.
 
-### 3. Status Check - UI
+
+
+### 6. App Status Check - UI
 
 Once the application is confirmed to be running on the CLI, check in the UI
 

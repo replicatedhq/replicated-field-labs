@@ -19,7 +19,7 @@ difficulty: basic
 timelimit: 900
 ---
 
-👋 Initial Application Check
+👋 Initial Environment Check
 ============================
 
 **In this exercise you will:**
