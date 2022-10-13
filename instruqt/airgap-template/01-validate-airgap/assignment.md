@@ -1,9 +1,9 @@
 ---
-slug: validate-connectivity
+slug: validate-airgap
 id: zwgjxayvrlqk
 type: challenge
-title: validate-connectivity
-teaser: Validates connectivity between the jumpbox and the airgap
+title: validate-airgap
+teaser: Validates the cluster is air-gapped and we can connect over SSH
 notes:
 - type: text
   contents: Let's check that we can't connect
@@ -19,5 +19,5 @@ timelimit: 300
 #### Let's check our air gap
 
 ```
-ssh curl https://google.com
+ssh cluster curl --connect-timeout 30 https://google.com
 ```
