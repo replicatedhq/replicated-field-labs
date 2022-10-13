@@ -7,4 +7,5 @@ tracks:
   - { slug: app-preflights, id: yv7w1owyqbeh }
   - { slug: replicated-cli, id: pur3nyzcbryg }
   - { slug: support-bundle, id: d2oeswgg5ra2 }
+  - { slug: support-bundle-analyzers, id: ustszdcffvmg }
   - { slug: custom-fields, id: 9ixa2iyrggut }
