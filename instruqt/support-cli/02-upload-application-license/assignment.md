@@ -31,7 +31,7 @@ timelimit: 1200
 
 ### 1. Kotsadm UI Login
 
-Launch the kotsadm and authenticate using PARTICIPANT_ID value from the Shell tab output as the password.
+Launch the kotsadm and authenticate using `PARTICIPANT_ID` value from the Shell tab output as the password.
 
 ![supportcli-kotsadm-login1](../assets/supportcli-kotsadm-login.png)
 
