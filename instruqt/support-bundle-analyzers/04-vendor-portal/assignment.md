@@ -84,12 +84,17 @@ In the `Vendor Portal` tab, you can easily browse all the collected output if yo
 
 Although the collected information is all `json`, there is a lot of information in it that can be very helpfull! And there is even an easy way to interact with it using [sbctl](https://github.com/replicatedhq/sbctl): a command line tool for examining K8s resources in Troubleshoot's support bundles.
 
-The `Shell` tab already has the `sbctl` cli installed. So all we have to do is upload the previously downloaded support bundle into it. Go the the `Upload` tab, and upload the `.tar.gz` file into it.
+The `Shell` tab already has the `sbctl` cli installed. So all we have to do is download the support bundle into it. Go to the `Shell` tab and run the following:
+
+```bash
+download_support_bundle
+export SHELL=/bin/bash
+```
 
 Next, you can go to the `Shell` tab and run:
 
 ```bash
-sbctl shell -s /home/replicant/[YOUR_TAR_GZ_FILE]
+sbctl shell -s ./supportbundle.tar.gz
 ```
 
 This will allow you to interact with the support bundle, using `kubectl`. Try some of the following commands, and see what info you get back:
@@ -103,7 +108,7 @@ kubectl get pods -n kube-system
 ```
 
 ```bash
-kubectl describe deployment nginx -n support-bundle
+kubectl describe deployment nginx -n support
 ```
 
 Congratulations! You have completed this track!
