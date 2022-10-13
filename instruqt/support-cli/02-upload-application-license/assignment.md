@@ -43,7 +43,7 @@ Once authenticated to kotsadm, you will be prompted to upload a license, select 
 ![supportcli-kotsadm-lic-ul1](../assets/supportcli-kotsadm-lic-ul1.png)
 ![supportcli-kotsadm-lic-ul2](../assets/supportcli-kotsadm-lic-ul2.png)
 
-The application will then fully deploy, running the pre-flight checks for the first time.  Click *Continue* on the Preflight checks screen and you will land on the dashboard and can see the application is not healthy.
+The application will then fully deploy and you will land on the dashboard and can see the application is not healthy.
 
 ![supportcli-kotsadm-dash-broken1](../assets/supportcli-kotsadm-dash-broken1.png)
 ![supportcli-kotsadm-status-broken](../assets/supportcli-kotsadm-status-broken.png)
