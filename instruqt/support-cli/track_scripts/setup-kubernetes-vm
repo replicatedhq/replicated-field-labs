@@ -27,9 +27,6 @@ echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
 # Aliases
 echo "alias l='ls -latFrh'" >> /root/.bash_aliases
 
-# Packages
-#apt-get install -y mlocate net-tools curl git gzip
-#apt-get install -y curl gzip
 
 
 echo "exiting track_scripts/setup-kubernetes-vm with $?"
