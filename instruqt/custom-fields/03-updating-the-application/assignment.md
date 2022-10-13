@@ -14,6 +14,10 @@ tabs:
   type: terminal
   hostname: shell
   workdir: /home/replicant
+- title: Code Editor
+  type:code
+  hostname: shell
+  path: /home/replicant/
 difficulty: basic
 timelimit: 600
 ---
