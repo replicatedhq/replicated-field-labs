@@ -10,6 +10,9 @@ notes:
     In this next challenge we are going to get our hands dirty with some YAML!
     We are going to update the application manifests to support turning on/off the Super Duper Feature.
 tabs:
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 - title: Dev
   type: terminal
   hostname: shell
@@ -18,40 +21,56 @@ tabs:
   type: code
   hostname: shell
   path: /home/replicant/
+- title: Vendor
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true  
 difficulty: basic
 timelimit: 600
 ---
 
-## Setting Up Dev Environment ##
+## Setting Up the Dev Environment ##
 
-Before we update the application we need to make sure we have a dev environment set up. We have provided a dev environment for you to use but you could also run the `replicated` command line from other Linux or Mac machine like your laptop. To use the dev environment we provided for you click on the **Dev** tab.
+Before we update the application, let's set up our dev environment. In this lab, you will notice some new tabs:
 
-Make sure to set the `REPLICATED_APP` and `REPLICATED_API_TOKEN` environment variables. This is covered in the Replicated CLI track in more detail.
+* **Dev:** This is a Linux environment preloaded with some handy tools, like the `replicated` command line. This will be our dev enviornment.
+* **Code Editor:** This is a code editor provided by Instruqt. We will use this edit manifests.
 
-We also need to download the manifests we want to update. To download the latest version of the application, we'll employ the [release download](https://docs.replicated.com/reference/replicated-cli-release-download) command.
+Let's start by setting our environment variables in our dev environment. The two environment variables are `REPLICATED_APP` and `REPLICATED_API_TOKEN` which tell the `replicated` command line where to push changes. This is covered in the Replicated CLI track in more detail.
 
-First, we need to get the latest sequence number. To do this run the following command
+Both values for these are in the Vendor Portal. Click on the **Vendor** tab to go to the Vendor Portal, and if you are prompted to log in, use the credentials in the **Shell** tab.
 
-```
-replicated release ls
+Set the `REPLICATED_APP` to be the **application slug** found in the setting in the vendor portal. 
 
-```
+<p align="center"><img src="../assets/cf-app-slug.png" width=450></img></p>
 
-You should see results similar to this:
+Set the `Replicated_API_TOKEN` to your user token, which you can create under your Account Settings.
 
+<p align="center"><img src="../assets/cf-acc-set.png" width=450></img></p>
+
+Navigate all the way down until you see **User API Tokens** and create one with read & write access.
+
+Once you have set your environment variables, you can rul `replicated release ls` to see if you get any results. Below is a screenshot of a past participant setting the environment variables and then running the command:
+
+<p align="center"><img src="../assets/cf-set-vars.png" width=600></img></p>
+
+If you receive the same result then we have our dev environment ready!
+
+## Downloading the Application Manifests
+
+Next, we are going to download the manifests from the vendor portal. To download the latest version of the application, we'll employ the [release download](https://docs.replicated.com/reference/replicated-cli-release-download) command.
+
+The command needs the `SEQUENCE` we want to download, which was displayed in the results of the `release ls` command:
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 1           2022-09-20T19:53:57Z    0001-01-01T00:00:00Z    stable
 ```
-
-We want to update the release currently on the **CustomFields** channel. Note the **SEQUENCE** associated to that channel as that is what we are going to use in the next command.
-
 Let's create a directory structure before we start dowloading files. Create a directory for this lab in your environment and a `manifests` sub directory to store the manifests.
 
 ```
-mkdir custom-fields-track
+mkdir custom-fields-app
 
-cd custom-fields-track
+cd custom-fields-app
 
 mkdir manifests
 
@@ -59,19 +78,46 @@ mkdir manifests
 To download the contents of the release run the following command
 
 ```
-replicated release download [The SEQUENCE number from above] -d ./manifests
-
-```
-
-As an exmaple, if I wanted to download the manifests associated to the release in the **CustomFields** example above, I would run:
-
-```
 replicated release download 1 -d ./manifests
+
+```
+A succesful download will yield results similar to this:
+
+```shell
+  • Fetching Release 1 ✓  
+  • Writing files to ./manifests
+    • k8s-app.yaml
+    • kots-app.yaml
+    • kots-support-bundle.yaml
+    • nginx-deployment.yaml
+    • nginx-feature-off.yaml
+    • nginx-service.yaml
+
 ```
 
-We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled.
+Now we are ready to update the application.
 
-Create a new file in the **./manifests** directory called `cp-feature-on.yaml` with the following content
+## Making Updates to the Application
+
+We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled. 
+
+Head over to the **Code Editor** tab, which contains a director tree that shouls look similar to this
+
+<p align="center"><img src="../assets/cf-code-edit-init.png" width=450></img></p>
+
+You can expand the **custom-fields-app** directory to see its contents:
+
+<p align="center"><img src="../assets/cf-app-dir.png" width=350></img></p>
+
+Use the **New File** icon (highlighted in red below) to create a new file in the **manifests** directory
+
+<p align="center"><img src="../assets/cf-new-file-icon.png" width=350></img></p>
+
+Enter `cp-feature-on.yaml` as the file name in the dialog 
+
+<p align="center"><img src="../assets/cf-new-file.png" width=350></img></p>
+
+Copy and paste the content below:
 
 ```yaml
 apiVersion: v1
@@ -93,7 +139,21 @@ data:
     </body>
     </html>
 ```
-Now we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use. To do this, we will use sprig in the `volumes` section to determine the `ConfigMap` at run time.
+
+To save the changes, click on the **Save** icon (highlighted in red below):
+
+<p align="center"><img src="../assets/cf-save-file-icon.png" width=450></img></p>
+
+Next, we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use. To do this, we will use sprig in the `volumes` section to determine the `ConfigMap` at run time.
+
+Replace the name of the ConfigMap with the following:
+
+```yaml
+
+'{{repl if (eq (LicenseFieldValue "enable-feature") "true") }}nginx-feature-on{{repl else}}nginx-feature-off{{repl end}}'
+
+```
+Below is what a diff would look like after the change:
 
 ```diff
       volumes:
@@ -105,11 +165,17 @@ Now we are going to update the `nginx-deployment.yaml` file to choose which Conf
 
 The above basically states that if the Custom License Field is set to true, the value of the `name` key is `nginx-feature-on`, otherwise the value will be `nginx-feature-off`
 
-Save changes and create a new release:
+To save changes, click on the save icon on the file tab in the editor. To create a new release head back to the **Dev** tab and run the following command (make sure you are on the `custom-fields-app` directory):
 
 ```
-replicated release create --version [NEW VERSION] --release-notes "Update for Super Duper feature" \
-  --promote stable --yaml-dir manifests
+replicated release create --version 0.1.1 --release-notes "Update for Super Duper feature" \
+  --promote Stable --yaml-dir manifests
 ```
 
-Let's verify our release we indeed created and promoted to the channel by running `replicated release ls`. There should ne a new SEQUENCE associated to the **CustomFields** channel. If that is the case, you have completed this challenge and ready to move to the next one!
+The output should look very similar to the output below
+
+<p align="center"><img src="../assets/cf-new-release.png" width=450></img></p>
+
+Let's verify our release we indeed created and promoted to the channel by running `replicated release ls`. There should ne a new SEQUENCE associated to the **CustomFields** channel.
+
+If that is the case, you have completed this challenge and ready to move to the next one!

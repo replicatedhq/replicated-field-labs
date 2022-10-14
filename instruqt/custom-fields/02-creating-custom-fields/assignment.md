@@ -48,6 +48,6 @@ Leave the **Required** and **Hidden** boxes unchecked. Below is a screenshot of 
 
 <p align="center"><img src="../assets/create-field.png" width=450></img></p>
 
-Click on the **Create** button to create the field.
+Click on the **Create** button to create the field. Stay logged in to the Vendor Portal as we will need it in the next challege.
 
 Congratulations! You have completed this challenge.
