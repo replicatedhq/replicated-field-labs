@@ -19,15 +19,17 @@ difficulty: basic
 timelimit: 600
 ---
 
+## Create Customer ##
+
 Now that we have created our Custom License Field and updated the application, we are ready to put this into motion.
 
 Let's create a new Customer, set the feature flag to `false` and install the application. We will take a look at the applicaiton without the Super Duper feature turned on. Then, we'll update the field to `true` and update the application we deployed and verify that the feature is now on.
 
-## Create Customer ##
-
-Login to Vendor Portal by clicking on the **Open External Window** button.
+Go back to your browser that has the Vendor Portal open. If you closed it, no worries, click on the **Open External Window** button on the **Vendor** tab.
 
 <p align="center"><img src="../assets/external-window.png" width=600></img></p>
+
+If your session expired, go to the **Shell** tab to get your credentials.
 
 Let's create a customer, which will create the license file we need to install our sample application. To do this, navigate to **Customers** and click on the **Create Customer** button highlighted below.
 
