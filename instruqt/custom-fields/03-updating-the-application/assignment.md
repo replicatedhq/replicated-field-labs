@@ -15,7 +15,7 @@ tabs:
   hostname: shell
   workdir: /home/replicant
 - title: Code Editor
-  type:code
+  type: code
   hostname: shell
   path: /home/replicant/
 difficulty: basic
