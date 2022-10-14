@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+### install Google Cloud CLI
+apt -y update && apt -y install apt-transport-https gnupg
+
+# Use the gcloud installation process described in the docs:
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
+  tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+  apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+# Update apt again and install gcloud
+apt -y update && apt -y install google-cloud-sdk && sudo apt -y clean
+
+### authenticate to gcloud
+mkdir -p /root/.config/gcloud
+echo $INSTRUQT_GCP_PROJECT_AIRGAP_SERVICE_ACCOUNT_KEY | base64 -d > /root/.config/gcloud/credentials.json
+
+# Activate the service account
+gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials.json
+
+# Set our project
+gcloud config set project $INSTRUQT_GCP_PROJECT_AIRGAP_PROJECT_ID
+
+### Create airgap network
+JUMPBOX_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+gcloud compute networks create airgap
+
+# allow SSH accesss from the jumpbox
+gcloud compute firewall-rules create allow-jumpbox-ssh \
+    --priority 1000 --network airgap --allow tcp:22 \
+    --source-ranges ${JUMPBOX_IP}/32
+# explicitly deny all opther ingress and egress
+gcloud compute firewall-rules create deny-ingress \
+    --priority 2000 --network airgap --action deny --rules tcp,udp,icmp \
+    --direction ingress --source-ranges 0.0.0.0/0
+gcloud compute firewall-rules create deny-egress \
+    --priority 2000 --network airgap --action deny --rules tcp,udp,icmp \
+    --direction egress --destination-ranges 0.0.0.0/0
+
+### create cluster VM
+CLUSTER_IP=$(gcloud compute instances create cluster \
+  --image-project ubuntu-os-cloud --image-family ubuntu-2204-lts \
+  --machine-type n1-standard-8 --network airgap --zone europe-west1-b \
+  --boot-disk-size=200GB --boot-disk-type=pd-ssd \
+  --metadata "ssh-keys=replicant:$(cat /opt/instruqt/ssh/participant-ssh-key/public_key)" \
+  --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+
+echo "${CLUSTER_IP}   cluster   # airgapped cluster" >> /etc/hosts
+gcloud compute config-ssh
+mv ${HOME}/.ssh/* /home/replicant/.ssh
+/bin/chown -R replicant:replicant /home/replicant/.ssh

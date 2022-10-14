@@ -1,0 +1,27 @@
+slug: airgap-embedded
+id: 0zxhhnehsgua
+title: Installing in an Air-Gapped Environment
+teaser: Template track for a jumpbox connecting to an airgaped host
+description: |-
+  This track is a template track to build any lab that requires
+  an airgaped host. To use it, run:
+
+  ```
+  instruqt track create --title [NEW TRACK TITLE] \
+    --from airgap-template
+  ```
+
+  This template does not provide a Kubernetes cluster in the air-gapped
+  network, so it is best used with embedded cluster installs.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+level: intermediate
+tags:
+- airgap
+- customer
+- embedded
+owner: replicated
+developers:
+- chuck@replicated.com
+private: true
+published: false
+checksum: "8626884877360440451"
