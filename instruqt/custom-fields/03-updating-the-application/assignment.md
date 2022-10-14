@@ -34,7 +34,7 @@ timelimit: 600
 Before we update the application, let's set up our dev environment. In this lab, you will notice some new tabs:
 
 * **Dev:** This is a Linux environment preloaded with some handy tools, like the `replicated` command line. This will be our dev environment.
-* **Code Editor:** This is a code editor provided by Instruqt. We will use this edit the manifests.
+* **Code Editor:** This is a code editor provided by Instruqt. We will use this to edit the manifests.
 
 Let's start by setting our environment variables in our dev environment. The two environment variables are `REPLICATED_APP` and `REPLICATED_API_TOKEN` which tell the `replicated` command line where to push changes. This is covered in the Replicated CLI track in more detail.
 
