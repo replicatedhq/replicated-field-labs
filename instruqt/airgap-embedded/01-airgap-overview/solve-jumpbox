@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+### Deliberately empty solve script to allow skipping this step
+#
+# The learner can only skip the challange if there's a solve script.
+# I'm putting in a no-op solve script here to allow them to skip this
+# purely informational challenge.
+# 
+
+exit 0
