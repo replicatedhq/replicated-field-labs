@@ -8,15 +8,16 @@
 
 echo "This is the check script"
 
+# Disabled till we figure out how to get a license using the API.
 # Check if nginx pod is in Running state yet
-/usr/local/bin/kubectl get pod | grep nginx | grep Running
-NGINX_POD_STATUS=$?
-echo nginx pod status: $NGINX_POD_STATUS
+# /usr/local/bin/kubectl get pod | grep nginx | grep Running
+# NGINX_POD_STATUS=$?
+# echo nginx pod status: $NGINX_POD_STATUS
 # return status of 1 is error, ie not Running state
-if '[' $NGINX_POD_STATUS -eq 1 ']'
-then
-  exit 1
-else
-  exit 0
-fi
+# if '[' $NGINX_POD_STATUS -eq 1 ']'
+# then
+#   exit 1
+# else
+#   exit 0
+# fi
 

@@ -8,5 +8,6 @@
 
 echo "This is the check script"
 
-/usr/local/bin/kubectl get all | grep -v kotsadm | grep nginx
+# Disabled till we figure out how to get a license using the API.
+# /usr/local/bin/kubectl get all | grep -v kotsadm | grep nginx
 
