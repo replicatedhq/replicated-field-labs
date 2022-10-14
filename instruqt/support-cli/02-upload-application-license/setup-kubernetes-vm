@@ -20,11 +20,7 @@ chmod 400 /etc/support/secretkey.txt
 
 
 # pre-install the kots app
-echo INSTRUQT_PARTICIPANT_ID: $INSTRUQT_PARTICIPANT_ID
-echo INSTALL COMMAND: kubectl kots install support-cli-$INSTRUQT_PARTICIPANT_ID --name support-cli-$INSTRUQT_PARTICIPANT_ID --namespace default --shared-password $INSTRUQT_PARTICIPANT_ID --no-port-forward 
-#kubectl kots install support-cli-grahamh --name support-cli-grahamh --namespace default --shared-password $INSTRUQT_PARTICIPANT_ID --no-port-forward 
 kubectl kots install support-cli-$INSTRUQT_PARTICIPANT_ID --name support-cli-$INSTRUQT_PARTICIPANT_ID --namespace default --shared-password $INSTRUQT_PARTICIPANT_ID --no-port-forward 
-#--license-file ~/License.yaml - not available to download with Instrqut currently so need participant to perform workflow..
 
 # expose kotsadm
 kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
