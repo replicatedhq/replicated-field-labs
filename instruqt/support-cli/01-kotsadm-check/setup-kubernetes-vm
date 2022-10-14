@@ -13,14 +13,5 @@ echo "This is challenge 01 setup script"
 # kubernetes k3s is running
 kubectl get nodes 
 
-# install kots cli
-curl https://kots.io/install -o /root/kots-install
-TAR=`grep kots_linux_amd64 /root/kots-install | awk -F"=" '{print $2}' | sed 's/\"//g'`
-echo kots url: $TAR
-curl -# -L $TAR -o /root/kots.tar.gz
-tar -xvf /root/kots.tar.gz
-chmod +x /root/kots
-mv /root/kots /usr/local/bin/kubectl-kots
-
 echo "exiting 01-challenge/setup-kubernetes-vm"
 exit 0
