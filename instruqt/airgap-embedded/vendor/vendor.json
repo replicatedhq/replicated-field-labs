@@ -1,7 +1,9 @@
 {
     "name": "Installing in an Air-Gapped Environment",
     "slug": "airgap-embedded",
-    "customer": "Replicnt",
+    "channel": "Development",
+    "channel_slug": "development",
+    "customer": "Replicant",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""
 }
