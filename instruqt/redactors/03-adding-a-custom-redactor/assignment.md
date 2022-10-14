@@ -41,7 +41,7 @@ spec:
         regex:
           - redactor: (the secret code is )(?P<mask>.*)
 ```
-Save the redactor, and should see a green check confirming the redactor has been saved.
+Save the redactor, and you should see a green check confirming the redactor has been saved.
 
 ## Testing
 
