@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+### copy the participant SSH key to the user `replicant`
+if [ -d /opt/instruqt/ssh/participant-ssh-key ]; then
+  SSH_DIR=/home/replicant/.ssh
+  mkdir -p "${SSH_DIR}"
+  /bin/chmod 0700 "${SSH_DIR}"
+  cat /opt/instruqt/ssh/participant-ssh-key/public_key >> ${SSH_DIR}/authorized_keys
+  cat /opt/instruqt/ssh/participant-ssh-key/public_key  > ${SSH_DIR}/id_rsa.pub
+  cat /opt/instruqt/ssh/participant-ssh-key/private_key > ${SSH_DIR}/id_rsa
+  /bin/chmod 0600 ${SSH_DIR}/*
+  /bin/chown -R replicant ${SSH_DIR}
+fi
+
