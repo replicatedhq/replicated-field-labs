@@ -2,7 +2,7 @@ version: "3"
 containers:
 - name: jumpbox
   image: gcr.io/kots-field-labs/shell
-  shell: su - replicant
+  shell: tmux new-session -A -s airgap su - replicant
   memory: 256
 gcp_projects:
 - name: airgap
