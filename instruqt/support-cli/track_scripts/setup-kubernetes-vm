@@ -29,4 +29,4 @@ echo "alias l='ls -latFrh'" >> /root/.bash_aliases
 
 
 
-echo "exiting track_scripts/setup-kubernetes-vm with $?"
+echo "exiting track_scripts/setup-kubernetes-vm"
