@@ -18,7 +18,9 @@ if [ -d /opt/instruqt/ssh/participant-ssh-key ]; then
   cat /opt/instruqt/ssh/participant-ssh-key/public_key >> ${SSH_DIR}/authorized_keys
   cat /opt/instruqt/ssh/participant-ssh-key/public_key  > ${SSH_DIR}/id_rsa.pub
   cat /opt/instruqt/ssh/participant-ssh-key/private_key > ${SSH_DIR}/id_rsa
+  ssh-keyscan -H cluster >> ${SSH_DIR}/known_hosts
   /bin/chmod 0600 ${SSH_DIR}/*
   /bin/chown -R replicant ${SSH_DIR}
 fi
+
 
