@@ -50,7 +50,7 @@ Set the `Replicated_API_TOKEN` to your user token, which you can create under yo
 
 Navigate all the way down until you see **User API Tokens** and create one with read & write access.
 
-Once you have set your environment variables, you can rul `replicated release ls` to see if you get any results. Below is a screenshot of a past participant setting the environment variables and then running the command:
+Once you have set your environment variables, you can run `replicated release ls` to see if you get any results. Below is a screenshot of a past participant setting the environment variables and then running the command:
 
 <p align="center"><img src="../assets/cf-set-vars.png" width=600></img></p>
 
