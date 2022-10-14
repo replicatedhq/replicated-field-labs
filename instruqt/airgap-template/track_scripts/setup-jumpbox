@@ -51,7 +51,8 @@ gcloud compute firewall-rules create deny-egress \
 ### create cluster VM
 CLUSTER_IP=$(gcloud compute instances create cluster \
   --image-project ubuntu-os-cloud --image-family ubuntu-2204-lts \
-  --machine-type n1-standard-2 --network airgap --zone europe-west1-b \
+  --machine-type n1-standard-8 --network airgap --zone europe-west1-b \
+  --boot-disk-size=200GB --boot-disk-type=pd-ssd \
   --metadata "ssh-keys=replicant:$(cat /opt/instruqt/ssh/participant-ssh-key/public_key)" \
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 

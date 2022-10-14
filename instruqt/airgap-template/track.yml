@@ -12,7 +12,7 @@ description: |-
   ```
 
   This template does not provide a Kubernetes cluster in the air-gapped
-  network, so it is best used with a embedded cluster installs.
+  network, so it is best used with embedded cluster installs.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 level: beginner
 tags:
