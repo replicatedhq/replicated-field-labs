@@ -176,6 +176,6 @@ The output should look very similar to the output below
 
 <p align="center"><img src="../assets/cf-new-release.png" width=450></img></p>
 
-Let's verify our release we indeed created and promoted to the channel by running `replicated release ls`. There should ne a new SEQUENCE associated to the **CustomFields** channel.
+Let's verify our release was indeed created and promoted to the channel by running `replicated release ls`. There should be a new SEQUENCE associated to the **CustomFields** channel.
 
 If that is the case, you have completed this challenge and ready to move to the next one!
