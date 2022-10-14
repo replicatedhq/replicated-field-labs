@@ -113,7 +113,7 @@ Use the **New File** icon (highlighted in red below) to create a new file in the
 
 <p align="center"><img src="../assets/cf-new-file-icon.png" width=350></img></p>
 
-Enter `cp-feature-on.yaml` as the file name in the dialog 
+Enter `nginx-featue-on.yaml` as the file name in the dialog 
 
 <p align="center"><img src="../assets/cf-new-file.png" width=350></img></p>
 
