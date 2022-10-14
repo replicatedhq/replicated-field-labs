@@ -1,18 +1,16 @@
 ---
-slug: prepare-your-environment
-id: oxmjwa2nm04e
+slug: prepare-your-jumpbox
+id: ztordyohaj5l
 type: challenge
 title: Prepare Your Environment
 teaser: Prepare your jumpbox environment for interacting with Replicated
 notes:
 - type: text
   contents: Making sure you have access to vendor.replicated.com from your jumpbox
-    command line
 tabs:
 - title: Shell
   type: terminal
-  hostname: shell
-  workdir: /home/replicant
+  hostname: jumpbox
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
