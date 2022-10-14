@@ -10,8 +10,12 @@ do
   sleep 1
 done
 
+
 ### install Google Cloud CLI
 apt -y update && apt -y install apt-transport-https gnupg
+
+# temporary, move to base image if lab flow makes sense (also putting her so it's before the later clean)
+apt-get -y install tmux
 
 # Use the gcloud installation process described in the docs:
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
@@ -57,6 +61,3 @@ CLUSTER_IP=$(gcloud compute instances create cluster \
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 echo "${CLUSTER_IP}   cluster   # airgapped cluster" >> /etc/hosts
-gcloud compute config-ssh
-mv ${HOME}/.ssh/* /home/replicant/.ssh
-/bin/chown -R replicant:replicant /home/replicant/.ssh
