@@ -101,7 +101,7 @@ Now we are ready to update the application.
 
 We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled. 
 
-Head over to the **Code Editor** tab, which contains a director tree that shouls look similar to this
+Head over to the **Code Editor** tab, which contains a directory tree that should look similar to this
 
 <p align="center"><img src="../assets/cf-code-edit-init.png" width=450></img></p>
 
