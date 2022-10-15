@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "export REPLICATED_API_TOKEN=yourapitoken" >> /home/replicant/.bashrc
-echo "export REPLICATED_APP=your-app" >> /home/replicant/.bashrc
-
-exit 0

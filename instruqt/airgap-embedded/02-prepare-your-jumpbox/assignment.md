@@ -22,8 +22,7 @@ timelimit: 300
 🚀 Let's start
 ==============
 
-
-### Configure environment
+### Connecting to the Replicated Vendor Portal
 
 Log into the Replicated Vendor Portal in the "Vendor Portal" tab using the username
 and password printed to your screen in the "Shell" tab.
@@ -40,16 +39,21 @@ Once you have the credentials, you can login into the Vendor tab and you should 
 After logging in, you're going to identify your application and create an API token to use with the
 Replicated command-line, then set up some environment variables in your shell to store them.
 
+### Configure environment
+
 When you log in, you'll be on our release channels page.
 
 ![Release Channels on the Vendor Portal](../assets/vendor-portal-login.png)
 
-Go from your
+Go from the channels page to the settings page to see the application slug. The slug is how the
+Replicated CLI and API uniquely identify applications. We'll need to know the slug to use the
+CLI later in the lab.
 
 ![Finding Your Application Slug](../assets/cli-setup-quickstart-settings.png)
 
-When you go back to the "Shell" tab you'll set the variable `REPLICATED_APP` to the app slug from the Settings page.
-
+When you go back to the "Shell" tab you'll set the variable `REPLICATED_APP` to the app slug. This tells
+the `replicated` command which application you are working on without you having to passing it as
+an argument to every command.
 
 Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings)
 page:
@@ -58,7 +62,7 @@ page:
 
 Note: Ensure the token has "Write" access or you'll be unable create new releases.
 
-Once you have the values, set them in your environment.
+Once you have the values, go back to the "Shell" tab and set them in your environment.
 
 ```
 export REPLICATED_APP=...
@@ -69,4 +73,15 @@ You can ensure this is working with
 
 ```
 replicated release ls
+```
+
+### 2. Saving your lab setup
+
+The lab environment you are working in is a little bit different
+than your own workstation. Because of the lab structure, we need
+to take an extra step to support the next challenges. You would
+not need to do this in a real-world environment. If you run the below command, it will persist the environment variables between challenges.
+
+```bash
+save_lab_setup
 ```
