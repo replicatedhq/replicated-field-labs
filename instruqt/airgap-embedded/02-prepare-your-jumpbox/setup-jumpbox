@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# clear the tmux pane and scrollback to look like a fresh shell
-tmux clear-history -t airgap 
-tmux send-keys clear ENTER
-
