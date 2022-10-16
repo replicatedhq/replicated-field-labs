@@ -3,10 +3,10 @@ slug: moving-assets-into-place
 id: cqt3rfjrlyp8
 type: challenge
 title: Moving Assets into Place
-teaser: A short description of the challenge.
+teaser: Preparing the files you need to deploy your air-gapped instance
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Let's prepare the files we need for our deployment
 tabs:
 - title: Jumpbox
   type: terminal
@@ -20,21 +20,26 @@ difficulty: basic
 timelimit: 800
 ---
 
-***
 ## Moving Assets into place
 
-If you haven't already, log out of the Air Gap instance with `exit` or ctrl+D.
 Our next step is to collect the assets we need for an Air Gap installation:
 
 1. A license with the Air Gap entitlement enabled
 2. An Air Gap bundle containing the kURL cluster components
 3. An Air Gap bundle containing the application components
 
-(2) and (3) are separate artifacts to cut down on bundle size during upgrade scenarios where only the application version
+(2) and (3) are separate artifacts to cut down on bundle size during upgrade 
+scenarios where only the application version
 is changing and no changes are needed to the underlying cluster.
 
-
 #### Starting the kURL Bundle Download
+
+We're going to start with downloading the bundle for kURL cluster. This will
+turn our air-gapped instance into as single-node Kubernetes cluster which in
+turn will run our application. We start with the cluster download since it's
+the largest of the thres assets and we can download the others while its 
+download is running.
+
 From your local system run the command below and record the `AIRGAP` section output.
 
 ```
