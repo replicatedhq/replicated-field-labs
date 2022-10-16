@@ -1,15 +1,6 @@
 #!/bin/sh
-#
-# This script runs when the platform setup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
-cat <<'SAVE_SCRIPT' >> /home/replicant/.bashrc
-function save_lab_setup () {
-  echo "export REPLICATED_API_TOKEN=${REPLICATED_API_TOKEN}" >> /home/replicant/.bashrc
-  echo "export REPLICATED_APP=${REPLICATED_APP}" >> /home/replicant/.bashrc
-}
-SAVE_SCRIPT
 
-exit 0
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t airgap 
+tmux send-keys clear ENTER
+

@@ -1,11 +1,9 @@
 #!/bin/sh
-#
-# This script runs when the platform setup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
 
-echo "This is the setup script"
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t airgap 
+tmux send-keys clear ENTER
+
+
 
 exit 0
