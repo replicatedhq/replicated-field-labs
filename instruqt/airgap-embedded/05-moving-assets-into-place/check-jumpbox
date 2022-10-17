@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
+# ssh-keyscan -H cluster >> /root/known-hosts
+REMOTE_FILES=$(ssh -o StrictHostKeyChecking=no replicant@cluster ls)
 
-REMOTE_FILES=$(ssh cluster ls)
-
+echo $REMOTE_FILES
 if ! grep -q "-replicated-labs-com-development.tar.gz" <(echo ${REMOTE_FILES}) ; then
   fail-message "Please make sure to copy the kURL bundle to the air-gapped host."
   exit 1
