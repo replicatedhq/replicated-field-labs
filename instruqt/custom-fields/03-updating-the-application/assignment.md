@@ -31,7 +31,7 @@ timelimit: 600
 
 ## Setting Up the Dev Environment ##
 
-The application that has been provisioned for you does not currently have the new feature added. So in this challenge we will update the application to include the new feature, which will be in a new `ConfigMap`. We'll then update the application to use the right `ConfigMap` based on the value of the Custom License Fiele we created in the previous challenge.
+The application that has been provisioned for you does not currently have the new feature added. So in this challenge we will update the application to include the new feature, which will be in a new `ConfigMap`. We'll then update the application to use the right `ConfigMap` based on the value of the Custom License File we created in the previous challenge.
 
 Before we update the application, let's set up our dev environment. In this lab, you will notice some new tabs:
 
