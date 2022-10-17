@@ -33,7 +33,7 @@ To access the Vendor Portal, click on the **Vendor** tab and login to the Vendor
 
 Let's create the [Custom License Field](https://docs.replicated.com/vendor/licenses-adding-custom-fields) that we will use as a switch for our Super Duper Feature:
 
-Navite to **License Fields** on the left hand side navigator.
+Navigate to **License Fields** on the left hand side navigator.
 
 <p align="center"><img src="../assets/nav-lic-fields.png" width=600></img></p>
 
