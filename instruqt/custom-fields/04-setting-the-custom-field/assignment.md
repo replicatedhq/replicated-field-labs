@@ -2,11 +2,12 @@
 slug: setting-the-custom-field
 id: cg4lxsjdfb3n
 type: challenge
-title: Setting the Custom Field
-teaser: A short description of the challenge.
+title: Preparing the Install
+teaser: Let's create a customer license and get the install command
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: -|
+    In this challenge we will create a customer license and get the install command.
 tabs:
 - title: Shell
   type: terminal
