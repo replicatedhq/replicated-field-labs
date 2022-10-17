@@ -20,20 +20,20 @@ timelimit: 600
 ---
 ### Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+In this lab, we'll use your partipant ID for your credentials in the Vendor Portal. The credentials are included in the **Shell** tab and are displayed in the following format:
 
 ```
 username: [PARTICIPANT_ID]@replicated-labs.com
 password: [PARTICIPANT_ID]
 ```
 
-Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+To access the Vendor Portal, click on the **Vendor** tab and login to the Vendor Portal. Once you log in, you should land on the Channels, which allow you to manage who has access to which releases of your application.
 
 ### Create Custom Field
 
 Let's create the [Custom License Field](https://docs.replicated.com/vendor/licenses-adding-custom-fields) that we will use as a switch for our Super Duper Feature:
 
-Navite to **License Fields** on the Left hand side navigator.
+Navigate to **License Fields** on the left hand side navigator.
 
 <p align="center"><img src="../assets/nav-lic-fields.png" width=600></img></p>
 

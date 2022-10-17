@@ -23,7 +23,7 @@ This exercise is designed to give you a sandbox to ensure you have a basic under
 * **What you will do**:
   * Learn how to create a Custom License Field
   * Learn how to use the field in a sample application
-  * Deploy the sample app and then update the field to see the change
+  * Deploy the sample app and then update the field to enable a feature in the sample application
 * **Who this is for**: This lab is for anyone who works with app code, docker images, k8s yamls, or does field support for multi-prem applications
   * Full Stack / DevOps / Product Engineers
   * Support Engineers
