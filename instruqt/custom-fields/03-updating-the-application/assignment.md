@@ -50,7 +50,7 @@ Set the `Replicated_API_TOKEN` to your user token, which you can create under yo
 
 Navigate all the way down until you see **User API Tokens** and create one with read & write access.
 
-Once you have set your environment variables, you can run `replicated release ls` to see if you get any results. Below is a screenshot of a past participant setting the environment variables and then running the command:
+Once you have set your environment variables, you can run `replicated release ls` to see if you get any results. If you are not sure how to set the Environment Variables, see screenshot below:
 
 <p align="center"><img src="../assets/cf-set-vars.png" width=600></img></p>
 
@@ -109,7 +109,7 @@ You can expand the **custom-fields-app** directory to see its contents:
 
 <p align="center"><img src="../assets/cf-app-dir.png" width=350></img></p>
 
-Use the **New File** icon (highlighted in red below) to create a new file in the **manifests** directory
+Use the **New File** icon (highlighted in red below) to create a new file in the **manifests** directory. Make sure the file is created in the **manifests** directory, otherwise it will not be included in our new release.
 
 <p align="center"><img src="../assets/cf-new-file-icon.png" width=350></img></p>
 
@@ -148,11 +148,11 @@ Next, we are going to update the `nginx-deployment.yaml` file to choose which Co
 
 Replace the name of the ConfigMap with the following:
 
+
 ```yaml
-
 '{{repl if (eq (LicenseFieldValue "enable-feature") "true") }}nginx-feature-on{{repl else}}nginx-feature-off{{repl end}}'
-
 ```
+
 Below is what a diff would look like after the change:
 
 ```diff
@@ -165,7 +165,9 @@ Below is what a diff would look like after the change:
 
 The above basically states that if the Custom License Field is set to true, the value of the `name` key is `nginx-feature-on`, otherwise the value will be `nginx-feature-off`
 
-To save changes, click on the save icon on the file tab in the editor. To create a new release head back to the **Dev** tab and run the following command (make sure you are on the `custom-fields-app` directory):
+To save changes, click on the save icon on the file tab in the editor. 
+
+Now we are ready to create a new release. Head back to the **Dev** tab and run the following command (make sure you are on the `custom-fields-app` directory):
 
 ```
 replicated release create --version 0.1.1 --release-notes "Update for Super Duper feature" \
@@ -176,6 +178,6 @@ The output should look very similar to the output below
 
 <p align="center"><img src="../assets/cf-new-release.png" width=450></img></p>
 
-Let's verify our release was indeed created and promoted to the channel by running `replicated release ls`. There should be a new SEQUENCE associated to the **CustomFields** channel.
+Let's verify our release was indeed created and promoted to the channel by running `replicated release ls`. There should be a new SEQUENCE associated to the **stable** channel.
 
 If that is the case, you have completed this challenge and ready to move to the next one!
