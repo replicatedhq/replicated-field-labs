@@ -33,22 +33,20 @@ the release history page for a channel. If you have a channel that
 you'll want regular airgap bundles on, you'll likely want to edit
 that channel to enable auto builds.
 
-![release-history](../assets/channel-release-history.png)
+![Release History for the development Channel](../assets/channel-release-history.png)
 
 Let's go through setting that up for our `development` channel we're 
 using for this lab. Start by editing the channel info
 
-![edit-channel](../assets/channel-edit-info-btn.png)
+![Editing Channel Details](../assets/channel-edit-info-btn.png)
 
 then enable auto-builds by flipping the toggle labeled "Automatically
 create airgap builds for newly promoted release in this channel"
 
-![auto-build](../assets/channel-enable-airgap.png)
+![Enabling Automatic Airgap Builds](../assets/channel-enable-airgap.png)
 
 Now you should see all the bundles building or built on the release 
-history page. If you do not see "Airgap Built" for the release, click **Build**.
-
-![airgap-built](../assets/airgap-builds.png)
+history page. 
 
 #### Enabling Airgap for a customer
 
@@ -58,7 +56,7 @@ Let's enable air-gap downloads for the example customer we're using
 for the lab. Go to "Customers" in the Vendor portal and select the
 "Replicant" customer to enable the airgap.
 
-![enable-airgap](../assets/airgap-customer-enable.png)
+![Enabling Airgap Downloads for a Custtomer](../assets/airgap-customer-enable.png)
 
 Click the checkbox next to "Airgap Download Enabled" and make sure
 you "Save Changes" with the bottom on the bottom right.
@@ -68,7 +66,7 @@ you "Save Changes" with the bottom on the bottom right.
 After saving the customer, scroll to the bottom of the page to the 
 `Download Portal` section.
 
-![download-portal](../assets/airgap-customer-portal.png)
+![Customer Download Portal Section](../assets/airgap-customer-portal.png)
 
 Generate a new password and save it somewhere in your notes. Next, 
 click the link to open the download portal. This is a link you would 
@@ -78,7 +76,7 @@ our Jumpbox and working wearing our "end user" hat.
 Navigate to the "embedded cluster" option and review the three 
 downloadable assets.
 
-![download-portal-view](../assets/download-portal-view.png)
+![Viewing the Customer Download Portal](../assets/download-portal-view.png)
 
 This is where your customer downloads the assets they neeed for an
 air gap install: the kURL bundle, their license file, and the airgap 
@@ -87,4 +85,12 @@ once for the initial install.
 
 We're only going to download the license file right now. We started
 downloading the kURL bundle in the previous step, and we'll use the
-command-line to download the application bundle in the next step.
+command-line to download the application bundle in the next step.  
+
+You will need the URL for the application bundle in order to download
+it, so let's copy it while we're here. 
+
+![Copying the Application Bundle Download Link](../assets/application-bundle-link.png)
+
+Don't copy anything else onto your clipboard before you paste it into
+your Jumpbox terminal in the next step.
