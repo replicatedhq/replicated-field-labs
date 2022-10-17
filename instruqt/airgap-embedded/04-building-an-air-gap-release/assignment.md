@@ -3,15 +3,11 @@ slug: building-an-air-gap-release
 id: uppk7yks93gg
 type: challenge
 title: Building an Air Gap Release
-teaser: A short description of the challenge.
+teaser: Creating the air-gap deployment bundle for your releaese
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Let's build an your airgap release
 tabs:
-- title: Jumpbox
-  type: terminal
-  hostname: jumpbox
-  workdir: /home/replicant
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -22,99 +18,73 @@ timelimit: 600
 
 #### Building an Airgap Release
 
-By default, only the Stable and Beta channels will automatically build Air Gap bundles
+While the kURL download continues, let's build the air-gap bundle for
+our current application release. You can see your download status in
+the "Jumpbox" tab. We'll mostly be working in the "Vendor Portal" for
+this lab.
 
-- manually build
-- set channel to auto build
+Since air-gapped bundles can be quite large, not all release channels
+build them automatically. Two of the default channels, `Stable` and
+`Beta` are are configured to do it. Other channels can be set to auto
+build, or you can manually build a bundle when needed.
 
-For a production application, Air Gap releases will be built automatically on the Stable channel, so this won't
-be necessary.
-
-In this case, since we're working off the `lab05-airgap` channel, you'll want to enable Air Gap builds on that channel.
-
-You can check the build status by navigating to the "Release History" for the channel.
+You can build air-gap bundles for any of your releases by looking at
+the release history page for a channel. If you have a channel that 
+you'll want regular airgap bundles on, you'll likely want to edit
+that channel to enable auto builds.
 
 ![release-history](../assets/channel-release-history.png)
 
-You can build invividual bundles on the Release History page, but you'll likely want to edit the channel and enable "build all releases for this channel".
+Let's go through setting that up for our `development` channel we're 
+using for this lab. Start by editing the channel info
 
 ![edit-channel](../assets/channel-edit-info-btn.png)
 
+then enable auto-builds by flipping the toggle labeled "Automatically
+create airgap builds for newly promoted release in this channel"
+
 ![auto-build](../assets/channel-enable-airgap.png)
 
-Now you should see all the bundles building or built on the release history page. If you do not see "Airgap Built" for the release, click **Build**.
+Now you should see all the bundles building or built on the release 
+history page. If you do not see "Airgap Built" for the release, click **Build**.
 
 ![airgap-built](../assets/airgap-builds.png)
 
 #### Enabling Airgap for a customer
 
-The first step will be to enable Air Gap for the `lab5` customer:
+Customers are automatically enabled for air gap deployment. This 
+gives you flexibility in terms of product packaging and deployment.
+Let's enable air-gap downloads for the example customer we're using 
+for the lab. Go to "Customers" in the Vendor portal and select the
+"Replicant" customer to enable the airgap.
 
 ![enable-airgap](../assets/airgap-customer-enable.png)
 
+Click the checkbox next to "Airgap Download Enabled" and make sure
+you "Save Changes" with the bottom on the bottom right.
 
 #### Download Airgap Assets
-After saving the customer, scroll to the bottom of the page to the `Download Portal` section.
+
+After saving the customer, scroll to the bottom of the page to the 
+`Download Portal` section.
 
 ![download-portal](../assets/airgap-customer-portal.png)
 
-Generate a new password and save it somewhere in your notes.
-Next, click the link to open the download portal.
-This is a link you would usually send to your customer, so from here on we'll be wearing our "end user" hat.
+Generate a new password and save it somewhere in your notes. Next, 
+click the link to open the download portal. This is a link you would 
+usually send to your customer. The rest of the lab we'll be back on
+our Jumpbox and working wearing our "end user" hat.
 
-
-Navigate to the "embedded cluster" option and review the three downloadable assets.
+Navigate to the "embedded cluster" option and review the three 
+downloadable assets.
 
 ![download-portal-view](../assets/download-portal-view.png)
 
-Download the license file, but **don't download the kURL bundle** -- this is the download we already started on the server.
+This is where your customer downloads the assets they neeed for an
+air gap install: the kURL bundle, their license file, and the airgap 
+bundle for your application. They will usually download all three at
+once for the initial install.
 
-You'll also want to download the other bundle `Latest Lab 1.5: Airgap Bundle` to your workstation.
-
-From your jumpbox, check that the download has finished, so you can copy it to the Air Gap server. If you have not started the download, see the [Starting the kURL Bundle Download](#starting-the-kurl-bundle-download) instructions above.
-
-You can use the DNS name in this case, as described in [Instance Overview](#instance-overview).
-
-```bash
-export REPLICATED_APP=... # your app slug
-export FIRST_NAME=... # your first name
-scp kurlbundle.tar.gz ${REPLICATED_APP}-lab05-airgap:/home/${FIRST_NAME}
-```
-
-> **Note**: -- we use SCP via an SSH tunnel in this case, but the Air Gap methods in this lab also extend to
-more locked down environments where e.g. physical media is required to move assets into the datacenter.
-
-Now we'll SSH all the way to Air Gap node. If you still have a shell on your jump box, you can use the instance name.
-
-```bash
-ssh ${REPLICATED_APP}-lab05-airgap
-```
-
-Otherwise, from your local system you can use the one below
-
-```shell
-ssh -J ${FIRST_NAME}@${JUMP_BOX_IP} ${FIRST_NAME}@${REPLICATED_APP}-lab05-airgap
-```
-
-Once you're on the Air Gap node, untar the bundle and run the install script with the `airgap` flag.
-kURL install flags are documented [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
-
-```shell
-tar xvf kurlbundle.tar.gz
-sudo bash install.sh airgap
-```
-
-At the end, you should see a `Installation Complete` message as shown below. Since the instance is Air Gap, we'll need to create a port forward to access the UI from your workstation in the next step.
-
-```text
-configmap/kurl-config created
-
-
-		Installation
-		  Complete ✔
-
-
-Kotsadm: http://10.128.1.47:30880
-Login with password (will not be shown again): iunIEfPyc
-This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
-```
+We're only going to download the license file right now. We started
+downloading the kURL bundle in the previous step, and we'll use the
+command-line to download the application bundle in the next step.
