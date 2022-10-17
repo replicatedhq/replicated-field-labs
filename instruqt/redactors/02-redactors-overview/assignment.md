@@ -88,7 +88,7 @@ Clicking into each file will show you where data was redacted
 
 <p align="center"><img src="../assets/red-ac-redacted-details.png" width=600></img></p>
 
-On our same support bundle, navigate to the **File Inspector** tab and find the application logs.
+Now that you are on the **File Inspector** tab, scroll the file navigator until you see an entry for the `password-logger-...` and find the application logs.
 
 <p align="center"><img src="../assets/red-ac-applogs.png" width=600></img></p>
 
