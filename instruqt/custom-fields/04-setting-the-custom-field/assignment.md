@@ -2,12 +2,13 @@
 slug: setting-the-custom-field
 id: cg4lxsjdfb3n
 type: challenge
-title: Preparing the Install
+title: Setting the Initial Value
 teaser: Let's create a customer license and get the install command
 notes:
 - type: text
   contents: -|
-    In this challenge we will create a customer license and get the install command.
+    In this challenge we will create a customer license and set the value of our custom field to `false`. 
+    While in the Vendor Portal, we'll also grab the install command.
 tabs:
 - title: Shell
   type: terminal
