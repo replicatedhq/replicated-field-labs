@@ -24,7 +24,7 @@ Our next step is to collect the assets we need for an Air Gap installation:
 2. An Air Gap bundle containing the kURL cluster components
 3. An Air Gap bundle containing the application components
 
-Items (2) and (3) are separate artifacts to cut down on bundle size during 
+Items (2) and (3) are separate artifacts to cut down on bundle size during
 upgrade scenarios where only the application version is changing and the
 underlying cluster does not need to change.
 
