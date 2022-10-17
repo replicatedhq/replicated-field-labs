@@ -28,7 +28,7 @@ Our next step is to collect the assets we need for an Air Gap installation:
 2. An Air Gap bundle containing the kURL cluster components
 3. An Air Gap bundle containing the application components
 
-(2) and (3) are separate artifacts to cut down on bundle size during upgrade 
+(2) and (3) are separate artifacts to cut down on bundle size during upgrade
 scenarios where only the application version
 is changing and no changes are needed to the underlying cluster.
 
@@ -37,48 +37,56 @@ is changing and no changes are needed to the underlying cluster.
 We're going to start with downloading the bundle for kURL cluster. This will
 turn our air-gapped instance into as single-node Kubernetes cluster which in
 turn will run our application. We start with the cluster download since it's
-the largest of the thres assets and we can download the others while its 
+the largest of the thres assets and we can download the others while its
 download is running.
 
-From your local system run the command below and record the `AIRGAP` section output.
+From the "Jumpbox" tab, run the command below:
 
 ```
-replicated channel inspect lab05-airgap
+replicated channel inspect development
 ```
-<details>
-  <summary>Example Output:</summary>
 
-```bash
-❯ replicated channel inspect lab05-airgap
-ID:             1wyFvAQANNcga1zkRoMIPpQpb9q
-NAME:           lab05-airgap
-DESCRIPTION:
-RELEASE:        1
-VERSION:        0.0.1
+This command shows you the details of the `development` release channel, 
+which we'll use for the air-gap install.
+
+The channel details include the information you need to install the
+application in one of three ways: into an existing (connected) cluster, 
+onto a connected machine without a pre-existing clsuter available (the
+install includes its own "embedded" cluster"), and onto an
+air-gapped machine. The air-gapped install method also includes it's  
+own cluster.
+
+```text
+ID:             2G8bwopWjbBhyGqKut11tpMcTz6
+NAME:           development
+DESCRIPTION:    
+RELEASE:        2
+VERSION:        Installing in an Air-Gapped Environment
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install lab05-airgap
+    kubectl kots install uws24vkeurcz-replicated-labs-com/development
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/lab05-airgap | sudo bash
+    curl -fsSL https://k8s.kurl.sh/uws24vkeurcz-replicated-labs-com-development | sudo bash
 
 AIRGAP:
 
-    curl -fSL -o lab05-airgap.tar.gz https://k8s.kurl.sh/bundle/lab05-airgap.tar.gz
-    # ... scp or sneakernet lab05-airgap.tar.gz to airgapped machine, then
-    tar xvf lab05-airgap.tar.gz
+    curl -fSL -o uws24vkeurcz-replicated-labs-com-development.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-development.tar.gz
+    # ... scp or sneakernet uws24vkeurcz-replicated-labs-com-development.tar.gz to airgapped machine, then
+    tar xvf uws24vkeurcz-replicated-labs-com-development.tar.gz
     sudo bash ./install.sh airgap
 ```
 
-</details>
-<br>
+The file download we're interested in is in the `AIRGAP` section of the 
+output. We're going to run the first command in that list to get the bundle 
+onto our jumpbox.
 
-Now, let's SSH to our jump box (the one with the public IP) `ssh ${FIRST_NAME}@${JUMP_BOX_IP}` and download the kurl bundle. Replace <URL> with the URL from the `AIRGAP` output that you recorded in the previous step.
+In my case:
 
 ```text
-curl -o kurlbundle.tar.gz <URL>
+curl -fSL -o uws24vkeurcz-replicated-labs-com-development.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-development.tar.gz
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
