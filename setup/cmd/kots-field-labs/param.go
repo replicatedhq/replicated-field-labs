@@ -23,20 +23,20 @@ func missingParam(s string) error {
 
 func GetParams() (*fieldlabs.Params, error) {
 	params := &fieldlabs.Params{
-		ParticipantEmail: os.Getenv("PARTICIPANT_EMAIL"),
-		Branch:           os.Getenv("REPLICATED_BRANCH"),
-		TrackSlug:        os.Getenv("REPLICATED_TRACK_SLUG"),
-		InviterEmail:     os.Getenv("REPLICATED_INVITER_EMAIL"),
-		InviterPassword:  os.Getenv("REPLICATED_INVITER_PASSWORD"),
-		APIToken:         os.Getenv("REPLICATED_API_TOKEN"),
-		APIOrigin:        os.Getenv("REPLICATED_API_ORIGIN"),
-		GraphQLOrigin:    os.Getenv("REPLICATED_GRAPHQL_ORIGIN"),
-		KURLSHOrigin:     os.Getenv("REPLICATED_KURLSH_ORIGIN"),
-		IDOrigin:         os.Getenv("REPLICATED_ID_ORIGIN"),
+		ParticipantId:   os.Getenv("PARTICIPANT_ID"),
+		Branch:          os.Getenv("REPLICATED_BRANCH"),
+		TrackSlug:       os.Getenv("REPLICATED_TRACK_SLUG"),
+		InviterEmail:    os.Getenv("REPLICATED_INVITER_EMAIL"),
+		InviterPassword: os.Getenv("REPLICATED_INVITER_PASSWORD"),
+		APIToken:        os.Getenv("REPLICATED_API_TOKEN"),
+		APIOrigin:       os.Getenv("REPLICATED_API_ORIGIN"),
+		GraphQLOrigin:   os.Getenv("REPLICATED_GRAPHQL_ORIGIN"),
+		KURLSHOrigin:    os.Getenv("REPLICATED_KURLSH_ORIGIN"),
+		IDOrigin:        os.Getenv("REPLICATED_ID_ORIGIN"),
 	}
 
-	if params.ParticipantEmail == "" {
-		return nil, missingParam("PARTICIPANT_EMAIL")
+	if params.ParticipantId == "" {
+		return nil, missingParam("PARTICIPANT_ID")
 	}
 
 	if params.Branch == "" {

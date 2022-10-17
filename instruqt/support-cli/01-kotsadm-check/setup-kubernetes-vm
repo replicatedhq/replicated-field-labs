@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+echo "This is challenge 01 setup script"
+
+#set -eux
+
+
+# kubernetes k3s is running
+kubectl get nodes 
+
+echo "exiting 01-challenge/setup-kubernetes-vm"
+exit 0

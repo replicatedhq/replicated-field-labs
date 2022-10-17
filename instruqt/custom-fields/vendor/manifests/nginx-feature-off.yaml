@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-feature-off
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Learning Custom License Fields</title>
+    </head>
+    <body>
+      <h2>Congrats!</h2>
+      This is the default NGINX
+    </body>
+    </html>

@@ -1,0 +1,13 @@
+version: "3"
+containers:
+- name: jumpbox
+  image: gcr.io/kots-field-labs/shell
+  shell: su - replicant
+  memory: 256
+gcp_projects:
+- name: airgap
+  services:
+  - compute.googleapis.com
+  roles:
+  - roles/compute.admin
+  - roles/iam.serviceAccountUser
