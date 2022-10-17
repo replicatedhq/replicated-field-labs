@@ -69,7 +69,7 @@ In order to look at redactors, we need to generate a support bundle. Click on th
 
 When it's done, head over to the **Redactor Report** tab.
 
-<p align="center"><img src="../assets/red-ac-redactors.png" width=600></img></p>
+<p align="center"><img src="../assets/red-ac-default-redactors.png" width=600></img></p>
 
 You'll notice the following redaction rules are applied automatically
 
@@ -82,13 +82,13 @@ You'll notice the following redaction rules are applied automatically
 
 Clicking on **Show details** will show you where redactions were perfomed
 
-<p align="center"><img src="../assets/red-ac-files.png" width=600></img></p>
+<p align="center"><img src="../assets/red-ac-redacted-files.png" width=600></img></p>
 
 Clicking into each file will show you where data was redacted
 
-<p align="center"><img src="../assets/red-ac-redacted-value.png" width=600></img></p>
+<p align="center"><img src="../assets/red-ac-redacted-details.png" width=600></img></p>
 
-On our same support bundle, navigate to the File Inspector tab and find the application logs.
+On our same support bundle, navigate to the **File Inspector** tab and find the application logs.
 
 <p align="center"><img src="../assets/red-ac-applogs.png" width=600></img></p>
 
