@@ -8,7 +8,7 @@
 
 kubectl kots install redactors-${INSTRUQT_PARTICIPANT_ID} \
   --shared-password ${INSTRUQT_PARTICIPANT_ID} \
-  --namespace redactor \
+  --namespace redactors \
   --no-port-forward
 
 # Setup kotsadm - expose via loadbalancer
