@@ -17,7 +17,7 @@ spec:
   - registryImages:
       namespace: '{{repl Namespace }}'
       images:
-      - gcr.io/kuar-demo/kuard-amd64:{{repl ConfigOption "color"}}
+      - gcr.io/kuar-demo/kuard-amd64:blue
   analyzers:
   - deploymentStatus:
       name: kuard

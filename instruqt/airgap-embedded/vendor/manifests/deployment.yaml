@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: kuard
-        image: gcr.io/kuar-demo/kuard-amd64:{{repl ConfigOption "color"}}
+        image: gcr.io/kuar-demo/kuard-amd64:blue
         resources:
           limits:
-            cpu: "1000m"
-            memory: "256Mi"
+            cpu: '{{repl ConfigOption "cpu"}}'
+            memory: '{{repl ConfigOption "memory"}}'

@@ -4,14 +4,21 @@ kind: Config
 metadata:
   name: kuard
 spec:
-  groups:
-  - name: ui
-    title: User Interfacec
-    description: Customize the user interface
+  groups: 
+  - name: resources
+    title: Resource Limits
+    description: Specify application resource limits
     items:
-    - name: color
-      title: Color
-      help_text: "Change the color of the application"
+    - name: cpu
+      title: CPU
+      help_text: "CPU limit in megahertz, e.g. 1000m"
       type: text
-      default: blue
+      default: 1000m
       recommended: true
+    - name: memory
+      title: Memory
+      help_text: "Memory limits, e.g. 256Mi"
+      type: text
+      default: 256mi
+      recommended: true
+
