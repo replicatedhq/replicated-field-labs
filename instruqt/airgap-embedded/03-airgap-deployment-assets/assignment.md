@@ -1,26 +1,22 @@
 ---
-slug: moving-assets-into-place
+slug: airgap-deployment-assets
 id: cqt3rfjrlyp8
 type: challenge
-title: Moving Assets into Place
-teaser: Preparing the files you need to deploy your air-gapped instance
+title: Air Gap Deployment Assets
+teaser: The files you need to deploy your air-gapped instance
 notes:
 - type: text
-  contents: Let's prepare the files we need for our deployment
+  contents: The assets that make up your air-gapped deployment
 tabs:
 - title: Jumpbox
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
-- title: Vendor
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
 difficulty: basic
 timelimit: 800
 ---
 
-## Moving Assets into place
+## Air Gap Deployment Assets
 
 Our next step is to collect the assets we need for an Air Gap installation:
 
