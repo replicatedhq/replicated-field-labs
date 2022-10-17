@@ -148,7 +148,11 @@ To save the changes, click on the **Save** icon (highlighted in red below):
 
 <p align="center"><img src="../assets/cf-save-file-icon.png" width=450></img></p>
 
-Next, we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use. To do this, we will use sprig in the `volumes` section to determine the `ConfigMap` at run time.
+Next, we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use.
+
+To do this, we will use [templating](https://docs.replicated.com/vendor/packaging-template-functions), specifically, the [License Context](https://docs.replicated.com/reference/template-functions-license-context).
+
+In the `volumes` section of the file, we will use an `if statement` to determine the `ConfigMap` at run time.
 
 Replace the name of the ConfigMap with the following:
 
