@@ -1,9 +1,15 @@
 #!/bin/sh
 
-REPLICANT_HOME=/home/replicant
 
-if ! find ${REPLICANT_HOME} -name "*-replicated-labs-com-development.tar.gz" > /dev/null 2>&1 ; then
-  fail-message "Please make sure you've set your API token and run save_lab_setup"
+REMOTE_FILES=$(ssh cluster ls)
+
+if ! grep -q "-replicated-labs-com-development.tar.gz" <(echo ${REMOTE_FILES}) ; then
+  fail-message "Please make sure to copy the kURL bundle to the air-gapped host."
+  exit 1
+fi
+
+if ! grep -q "application-bundle.tar.gz" <(echo ${REMOTE_FILES}) ; then
+  fail-message "Please make sure to copy the application bundle to the air-gapped host."
   exit 1
 fi
 
