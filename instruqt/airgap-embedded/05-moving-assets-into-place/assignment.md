@@ -32,7 +32,8 @@ customer gets access to all three assets from the Replicated download
 portal, then grapped their license file. Now we're going to grab the
 application bundle using the command line.
 
-### Downloading the Application Bundle
+Downloading the Application Bundle
+==================================
 
 At this point, your download the kURL bundle should be completed. If
 not, wait for it to complete before you continue.
@@ -50,7 +51,8 @@ curl -fSL -o application-bundle.tar.gz '[PASTE URL HERE]'
 Wait for this download to finish, then we'll move our two bundles onto
 the air-gapped host.
 
-### Copying the Airgap Bundles to the Air-Gapped Host
+Copying the Airgap Bundles to the Air-Gapped Host
+=================================================
 
 In the wild, this step could take many forms. Customers may have a "soft"
 airgap like the one we us in this lab, which means you can copy the
@@ -67,7 +69,9 @@ copy the two bundle files to the instance using `scp`, then we'll use
 an SSH tunnel to configure the application and complete the install.
 
 Let's copy the kURL bundle first. Take a look at the files in your
-current directory. There should be two:
+current directory. There should be two (the name of your kURL bundle
+will different but have the same ending after the random identifier
+at the beginning).
 
 ```
 replicant@jumpbox:~$ ls
@@ -76,12 +80,14 @@ application-bundle.tar.gz  uws24vkeurcz-replicated-labs-com-development.tar.gz
 ```
 
 We're going to move both files, so let's be efficient and use a
-wildcard.
+wildcard. We're copying them to the machine named `cluster` which
+will become a single-node Kubernetes cluster running our application.
 
 ```
 scp *.tar.gz cluster:
 ```
 
-### Ready to Install
+Ready to Install
+================
 
 Now that the assets are in place, we're ready to start the install.
