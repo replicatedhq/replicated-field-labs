@@ -1,27 +1,20 @@
 slug: airgap-embedded
 id: 0zxhhnehsgua
 title: Installing in an Air-Gapped Environment
-teaser: Template track for a jumpbox connecting to an airgaped host
+teaser: |- 
+  Using Replicated to install your application into an air-gapped environment
 description: |-
-  This track is a template track to build any lab that requires
-  an airgaped host. To use it, run:
-
-  ```
-  instruqt track create --title [NEW TRACK TITLE] \
-    --from airgap-template
-  ```
-
-  This template does not provide a Kubernetes cluster in the air-gapped
-  network, so it is best used with embedded cluster installs.
+  In this exercise you will learn the Replicated workflow for installing and
+  supporting your application when it's installed into an air-gapped network.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 level: intermediate
 tags:
 - airgap
-- customer
+- vendor
 - embedded
 owner: replicated
 developers:
 - chuck@replicated.com
 private: true
 published: false
-checksum: "11162958230151158347"
+checksum: "16116693771924450570"
