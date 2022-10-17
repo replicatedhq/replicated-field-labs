@@ -1,5 +1,6 @@
 ---
 slug: beginning-the-install
+id: bsgw1cyzyjgd
 type: challenge
 title: Beginning the Install
 teaser: Kicking of your air-gapped install`
@@ -11,7 +12,7 @@ tabs:
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
-ifficulty: basic
+difficulty: basic
 timelimit: 600
 ---
 
@@ -31,8 +32,8 @@ We're using our jumpbox's SSH connection into the air-gap network.
 ssh cluster
 ```
 
-Once you're on the node, untar the bundle and run the install script 
-with the `airgap` flag. kURL install flags are documented 
+Once you're on the node, untar the bundle and run the install script
+with the `airgap` flag. kURL install flags are documented
 [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
 Your bundle name will vary, but end with the `-replicated-labs-com-development.tar.gz`
 suffix like mine does.
@@ -42,9 +43,9 @@ tar xvzf uws24vkeurcz-replicated-labs-com-development.tar.gz
 sudo bash install.sh airgap
 ```
 
-At the end, you should see a `Installation Complete` message as shown below. 
+At the end, you should see a `Installation Complete` message as shown below.
 Since the instance is Air Gap, we'll need to use a port forward and proxy for
-the UI in the next step. Note that the IP address and password you see will 
+the UI in the next step. Note that the IP address and password you see will
 differ from mine.
 
 ```text
