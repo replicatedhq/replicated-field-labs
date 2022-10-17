@@ -19,8 +19,6 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
-## Check the Environment
-
 💡 Install kots
 ================
 
@@ -32,7 +30,7 @@ kubectl kots install [YOUR-APP-NAME]
 
 If you don't have the command anymore, you can always go back to the `Vendor` tab and copy it from `Channels > Stable` (the existing cluster install command).
 
-Run this command in the `Shell` tab. When asked for the `namespace`, you can just press enter and use the one suggested:
+Run this command in the `Shell` tab. If propmted for an installation path, leave it blank to use the default. When asked for the `namespace`, you can just press enter and use the one suggested:
 
 <p align="center"><img src="../assets/lic-namespace.png" width=600></img></p>
 
