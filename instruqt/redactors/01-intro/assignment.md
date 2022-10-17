@@ -18,6 +18,8 @@ timelimit: 600
 👋 Introduction
 ===============
 
+This lab is designed to provide you with a sandbox where you can learn about redactors.
+
 * **What you will do**:
     * Learn how redactors work
     * Create a custom redactor and check the results
