@@ -14,6 +14,7 @@ tabs:
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
+  new_window: true
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
