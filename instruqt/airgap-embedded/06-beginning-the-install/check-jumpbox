@@ -6,6 +6,16 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
+NODES=$(ssh -o StrictHostKeyChecking=no replicant@cluster kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes)
+if ! grep -q "Ready" <(echo ${NODES}) ; then
+  fail-message "Kubernetes cluster is not Ready, please make sure the install has completed"
+  exit 1
+fi
+
+ADMIN_STATUS=$(ssh -o StrictHostKeyChecking=no replicant@cluster curl -s -o /dev/null -w "%{http_code}" http://cluster:8800)
+if [[ $ADMIN_STATUS <> "200" ]] ; then
+  fail-message "Admin Console is not running, please make sure the install has completed"
+  exit 1
+fi
 
 exit 0
