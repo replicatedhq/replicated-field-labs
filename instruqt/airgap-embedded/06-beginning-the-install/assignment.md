@@ -60,3 +60,12 @@ Kotsadm: http://10.128.1.47:30880
 Login with password (will not be shown again): iunIEfPyc
 This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
 ```
+
+You'll need the password in next step, so be sure to copy it and put it
+in your notes.
+
+Disconnect
+==========
+
+Make sure you disconnect from the cluster node before moving on to the
+next step. Press "control-D" to log out.

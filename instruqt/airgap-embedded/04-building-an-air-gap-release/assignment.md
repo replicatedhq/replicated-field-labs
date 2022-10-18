@@ -84,6 +84,6 @@ bundle for your application. They will usually download all three at
 once for the initial install.
 
 We're only going to download the license file and the application
-bundle right now. We started downloading the kURL bundle in the previous 
+bundle right now. We started downloading the kURL bundle in the previous
 step, so we don't need to do that again.
 
