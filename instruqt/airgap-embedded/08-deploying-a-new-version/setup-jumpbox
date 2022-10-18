@@ -4,4 +4,5 @@
 tmux clear-history -t airgap 
 tmux send-keys clear ENTER
 
-exit 0
+git clone --depth 1 --filter=blob:none --branch=instruqt-airgap-embedded --sparse https://github.com/replicatedhq/kots-field-labs.git
+git sparse-checkoutt instruqt/airgap-embedded
