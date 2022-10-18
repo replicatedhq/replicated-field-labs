@@ -3,18 +3,19 @@ slug: configuring-the-application
 id: igbszqdl9ylb
 type: challenge
 title: Configuring the Application
-teaser: A short description of the challenge.
+teaser: Completing your application installation
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Time to configure your application and finish the installation
 tabs:
 - title: Jumpbox
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
 - title: Application Installer
-  type: website
-  url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
+  type: service
+  hostname: jumpbox
+  port: 8443
   new_window: true
 difficulty: basic
 timelimit: 600
@@ -30,10 +31,11 @@ a port on the Jumpbox to the Application installer running on your
 cluster.
 
 ```
-ssh -NTfL 0.0.0.0:8800:$AIRGAP_IP:8800 airgap
+ssh -NTfL 0.0.0.0:8443:cluster:8800 cluster
 ```
 
-The SSH command will run in the background, and you wont see any output.
+The SSH command will run in the background, and you won't see any
+output.
 
 Running the Installer
 =====================
@@ -47,7 +49,7 @@ which is self-signed and thus not signed by a trusted authority.
 ![Application Installer Certificate Warning](assets/kots-tls-warning.png)
 
 For the Lab, we're going to leave the self-signed certificate in place.
-Click the "**Skip and continue**" to accept the self-signed certificate.
+Click the "Skip and continue" to accept the self-signed certificate.
 
 ![Console TLS](assets/admin-console-tls.png)
 
