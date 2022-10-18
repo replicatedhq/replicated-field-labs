@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
 # ssh-keyscan -H cluster >> /root/known-hosts
 REMOTE_FILES=$(ssh -o StrictHostKeyChecking=no replicant@cluster ls)
 
