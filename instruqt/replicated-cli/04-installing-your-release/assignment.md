@@ -120,7 +120,7 @@ the command line.
 Our shell already has the `kots` plugin installed, so we can
 skip the first line. We are also going to embelish the second
 line a little bit to provide a password and license files so
-that you customer would generally enter into the admin console.
+that your customer would generally enter into the admin console.
 Most customers won't install from the command line, but since
 this is the command line lab let's see how it would go.
 

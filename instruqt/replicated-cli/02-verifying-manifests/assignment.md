@@ -41,7 +41,7 @@ drwxr-xr-x. 4 root root   94 Apr 12 18:27 ..
 -rw-r--r--. 1 root root  447 Apr 12 18:27 nginx-deployment.yaml
 -rw-r--r--. 1 root root  438 Apr 12 18:27 nginx-service.yaml
 ```
-Since you're shipping them to you customers, you want to make
+Since you're shipping them to your customers, you want to make
 sure they'll install cleanly. Replicated includes a linter
 to check that your installation files are correct. It also
 checks for best practices for installing into customer clusters.
@@ -81,7 +81,7 @@ to have as available resources in the cluster. We have a pretty
 simple application, so we won't ask for much.
 
 Most times, you'll do this interactively in your favorite editor.
-To simplify for the lab, we're going use some command-line fu to
+To simplify for the lab, we're going to fix it from the CLI to 
 keep things moving.
 
 ```
