@@ -12,6 +12,10 @@ tabs:
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
+- title: Application Installer
+  type: website
+  url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
