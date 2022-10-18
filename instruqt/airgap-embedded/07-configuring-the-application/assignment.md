@@ -15,7 +15,7 @@ tabs:
 - title: Application Installer
   type: service
   hostname: jumpbox
-  port: 8443
+  port: 8800
   new_window: true
 difficulty: basic
 timelimit: 600
@@ -31,7 +31,7 @@ a port on the Jumpbox to the Application installer running on your
 cluster.
 
 ```
-ssh -NTfL 0.0.0.0:8443:cluster:8800 cluster
+ssh -NTfL 0.0.0.0:8800:cluster:8800 cluster
 ```
 
 The SSH command will run in the background, and you won't see any

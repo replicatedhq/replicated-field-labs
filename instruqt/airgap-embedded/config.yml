@@ -6,6 +6,7 @@ containers:
   memory: 256
   ports: 
   - 8800
+  - 8443
   allow_external_ingress:
   - high-ports
 gcp_projects:
