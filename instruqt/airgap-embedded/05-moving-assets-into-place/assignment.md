@@ -38,19 +38,6 @@ Downloading the Application Bundle
 At this point, your download the kURL bundle should be completed. If
 not, wait for it to complete before you continue.
 
-The next step is to install the application download bundle. You copied
-at the end of the last step, lets paste it as the argument to the
-`curl` command in the Jumpbox shell. The URL carries a lot of detail in
-it's parameters, so don't be surprised by it's length. Also make sure
-it's in quotes.
-
-```
-curl -fSL -o application-bundle.tar.gz '[PASTE URL HERE]'
-```
-
-Wait for this download to finish, then we'll move our two bundles onto
-the air-gapped host.
-
 Copying the Airgap Bundles to the Air-Gapped Host
 =================================================
 
@@ -65,22 +52,21 @@ install your application.
 
 In our simple case, we're going to use the SSH connection between our
 Jumpbox and the airgapped instance to manage our install. First, we'll
-copy the two bundle files to the instance using `scp`, then we'll use
+copy the bundle files to the instance using `scp`, then we'll use
 an SSH tunnel to configure the application and complete the install.
 
 Let's copy the kURL bundle first. Take a look at the files in your
-current directory. There should be two (the name of your kURL bundle
+current directory. There should be one (the name of your kURL bundle
 will different but have the same ending after the random identifier
 at the beginning).
 
 ```
 replicant@jumpbox:~$ ls
-application-bundle.tar.gz  uws24vkeurcz-replicated-labs-com-development.tar.gz
-
+uws24vkeurcz-replicated-labs-com-development.tar.gz
 ```
 
-We're going to move both files, so let's be efficient and use a
-wildcard. We're copying them to the machine named `cluster` which
+Since there's only one file, let's save some typing and use a
+wildcard. We're copying the to the machine named `cluster` which
 will become a single-node Kubernetes cluster running our application.
 
 ```
@@ -90,4 +76,4 @@ scp *.tar.gz cluster:
 Ready to Install
 ================
 
-Now that the assets are in place, we're ready to start the install.
+Now that the bundle is in place, we're ready to install.
