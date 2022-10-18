@@ -9,9 +9,4 @@ if ! grep -q "-replicated-labs-com-development.tar.gz" <(echo ${REMOTE_FILES}) ;
   exit 1
 fi
 
-if ! grep -q "application-bundle.tar.gz" <(echo ${REMOTE_FILES}) ; then
-  fail-message "Please make sure to copy the application bundle to the air-gapped host."
-  exit 1
-fi
-
 exit 0
