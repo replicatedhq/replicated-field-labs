@@ -83,14 +83,7 @@ air gap install: the kURL bundle, their license file, and the airgap
 bundle for your application. They will usually download all three at
 once for the initial install.
 
-We're only going to download the license file right now. We started
-downloading the kURL bundle in the previous step, and we'll use the
-command-line to download the application bundle in the next step.
+We're only going to download the license file and the application
+bundle right now. We started downloading the kURL bundle in the previous 
+step, so we don't need to do that again.
 
-You will need the URL for the application bundle in order to download
-it, so let's copy it while we're here.
-
-![Copying the Application Bundle Download Link](../assets/application-bundle-link.png)
-
-Don't copy anything else onto your clipboard before you paste it into
-your Jumpbox terminal in the next step.
