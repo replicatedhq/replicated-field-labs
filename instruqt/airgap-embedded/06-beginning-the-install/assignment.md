@@ -61,8 +61,17 @@ Login with password (will not be shown again): iunIEfPyc
 This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
 ```
 
-You'll need the password in next step, so be sure to copy it and put it
-in your notes.
+Change Default Password
+=======================
+
+Let's follow the advice from the install command and changet he default
+password to something easy to remember. Run the following command and
+pick a password that'll you'll use in the next step.
+
+```
+export KUBECONFIG=/etc/kubernetes/admin.conf
+kubectl kots reset-password default
+```
 
 Disconnect
 ==========
