@@ -31,6 +31,8 @@ timelimit: 600
 
 ## Setting Up the Dev Environment ##
 
+The application that has been provisioned for you does not currently have the new feature added. So in this challenge we will update the application to include the new feature, which will be in a new `ConfigMap`. We'll then update the application to use the right `ConfigMap` based on the value of the Custom License File we created in the previous challenge.
+
 Before we update the application, let's set up our dev environment. In this lab, you will notice some new tabs:
 
 * **Dev:** This is a Linux environment preloaded with some handy tools, like the `replicated` command line. This will be our dev environment.
@@ -39,6 +41,8 @@ Before we update the application, let's set up our dev environment. In this lab,
 Let's start by setting our environment variables in our dev environment. The two environment variables are `REPLICATED_APP` and `REPLICATED_API_TOKEN` which tell the `replicated` command line where to push changes. This is covered in the Replicated CLI track in more detail.
 
 Both values for these are in the Vendor Portal. Click on the **Vendor** tab to go to the Vendor Portal, and if you are prompted to log in, use the credentials in the **Shell** tab.
+
+Once you are logged in to the Vendor Portal, head over to the **Dev** tab to set the Environment Variables.
 
 Set the `REPLICATED_APP` to be the **application slug** found in the setting in the vendor portal. 
 
@@ -144,7 +148,11 @@ To save the changes, click on the **Save** icon (highlighted in red below):
 
 <p align="center"><img src="../assets/cf-save-file-icon.png" width=450></img></p>
 
-Next, we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use. To do this, we will use sprig in the `volumes` section to determine the `ConfigMap` at run time.
+Next, we are going to update the `nginx-deployment.yaml` file to choose which ConfigMap to use.
+
+To do this, we will use [templating](https://docs.replicated.com/vendor/packaging-template-functions), specifically, the [License Context](https://docs.replicated.com/reference/template-functions-license-context).
+
+In the `volumes` section of the file, we will use an `if statement` to determine the `ConfigMap` at run time.
 
 Replace the name of the ConfigMap with the following:
 
