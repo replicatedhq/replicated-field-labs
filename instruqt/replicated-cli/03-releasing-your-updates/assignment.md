@@ -97,7 +97,7 @@ promote that release in the next command.
 
 ```
 replicated release promote [SEQUENCE] Stable \
-  --version [NEW VERSION] --release-notes "Adds resource requests to our deployment"
+  --version 0.0.2 --release-notes "Adds resource requests to our deployment"
 ```
 
 After promoting the release, take a look at your releases again
