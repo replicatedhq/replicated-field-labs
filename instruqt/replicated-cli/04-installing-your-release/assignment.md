@@ -10,8 +10,8 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: kubernetes-vm
-- title: Kuard
+  hostname: shell
+- title: Example Application
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8080
   new_window: true
@@ -19,6 +19,9 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Cluster
+  type: terminal
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 1200
 ---
@@ -29,45 +32,6 @@ timelimit: 1200
 This challenge may seem familiar if you've already run through
 the "Hello World" track.  We're going to go through the same
 steps to install using Replicated's command line tooling.
-
-### 0. Configuring API access
-
-We're running this install from a different shell than our other
-challenges, so we'll need to make sure we can connect to the
-Replicated API. Let's set that up like we did in the early
-challenge.
-
-You'll need the API token that you set up earlier for this
-step. Hopefully you kept track of it, otherwise you can log
-into the vendor portal and create another one. Use the tab
-"Vendor" do to that if you need to (see below for a resfresher).
-
-```
-export REPLICATED_API_TOKEN=...
-```
-
-Next we'll set up our application slug so the command line
-knows which application we're working with. You can uyse
-Now, you'll need to set up environment variables to interact
-with. If you don't recall it from the earlier challenges,
-you can list your applications with
-
-```
-replicated app ls
-```
-
-which will show something like
-
-```
-ID                             NAME                                                     SLUG                                                     SCHEDULER
-2FK67XXGtleLCE8bm3KJnLdezww    chuck-instruqt-replicon-2022q3-replabs-replicated-com    chuck-instruqt-replicon-2022q3-replabs-replicated-com    kots
-```
-
-Set `REPLICATED_APP` to the application slug.
-
-```
-export REPLICATED_APP=...
-```
 
 ### 1. Getting the install command
 
@@ -139,7 +103,8 @@ replicated customer download-license --customer "Replicant" > license.yaml
 ### 3. Run your install
 
 When you looked up your install command, you saw something
-like this.
+like this. You won't run this full command in this example,
+because we've done some setup ahead of time.
 
 ```
 curl -fsSL https://kots.io/install | bash
@@ -154,8 +119,10 @@ the command line.
 
 Our shell already has the `kots` plugin installed, so we can
 skip the first line. We are also going to embelish the second
-line a little bit to fill in the values that your customer
-would typically enter into the admin console.
+line a little bit to provide a password and license files so
+that your customer would generally enter into the admin console.
+Most customers won't install from the command line, but since
+this is the command line lab let's see how it would go.
 
 We're also setting the password for the admin console that
 Replicated provides for managing the application. Since we're
@@ -164,12 +131,19 @@ a reminder not to leak secrets in the real world.
 
 ```
 kubectl kots install ${REPLICATED_APP} --namespace kuard \
-  --shared-password this-is-unsafe --license-file ~/license.yaml
+  --shared-password this-is-unsafe --license-file ~/license.yaml \
+  --no-port-forward
 ```
 
 #### 4. Check your application
 
-Click on the "Kuard" tab to see you application running.
+Click on the "Example Application" tab to see you application running.
+_Be prepared, it gives a giant security warning because it shows a bunch
+of details about the cluster it's running in. Nothing is wrong and your
+browser/laptop/workstation is completely safe._
+
+![Application Homepage](../assets/kuard-homepage.png)
+
 
 🏁 Finish
 =========

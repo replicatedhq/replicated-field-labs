@@ -56,10 +56,11 @@ to create our release and make it available on the `Unstable` channel
 for internal user. After we review  the release, we'll promote
 it to our `Stable` channel to simulate releasing to the customer.
 Make sure to change the version number (in my case, I'll go from
-`0.0.1` to `0.0.2`).
+`0.0.1` to `0.0.2`). You should keep it inline with the version you
+ used in the unstable channel.
 
 ```
-replicated release create --version [NEW VERSION] --release-notes "Adds resource requests to our deployment" \
+replicated release create --version 0.0.2 --release-notes "Adds resource requests to our deployment" \
   --promote Unstable --yaml-dir manifests
 ```
 
@@ -96,7 +97,7 @@ promote that release in the next command.
 
 ```
 replicated release promote [SEQUENCE] Stable \
-  --version [NEW VERSION] --release-notes "Adds resource requests to our deployment"
+  --version 0.0.2 --release-notes "Adds resource requests to our deployment"
 ```
 
 After promoting the release, take a look at your releases again
