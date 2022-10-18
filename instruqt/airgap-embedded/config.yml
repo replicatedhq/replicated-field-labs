@@ -4,6 +4,10 @@ containers:
   image: gcr.io/kots-field-labs/shell
   shell: tmux new-session -A -s airgap su - replicant
   memory: 256
+  ports: 
+  - 8800
+  allow_external_ingress:
+  - high-ports
 gcp_projects:
 - name: airgap
   services:
