@@ -21,8 +21,9 @@ tabs:
   url: https://vendor.replicated.com
   new_window: true
 - title: Application Installer
-  type: website
-  url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
+  type: service
+  hostname: jumpbox
+  port: 8800
   new_window: true
 difficulty: basic
 timelimit: 600
