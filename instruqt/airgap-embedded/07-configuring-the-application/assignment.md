@@ -16,7 +16,7 @@ tabs:
   type: website
   url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
 difficulty: basic
-timelimit: 600:
+timelimit: 600
 ---
 
 Forwarding Traffic to the Installer
