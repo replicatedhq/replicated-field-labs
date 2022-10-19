@@ -7,4 +7,8 @@ set -euxo pipefail
 tmux clear-history -t airgap 
 tmux send-keys clear ENTER
 
+# clean up tarball
+# get rid of the tarball
+rm /home/replicant/*-replicated-labs-com.tar.gz
+
 exit 0
