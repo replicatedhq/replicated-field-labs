@@ -39,7 +39,7 @@ ssh-keygen -t ed25519 -o -a 100 -f ${SSH_DIR}/id_ed25519 -q -N ""
 
 # add the key to the SSH metadata
 gcloud compute instances add-metadata cluster --zone europe-west1-b \
-  --metadata "ssh-keys=replicant:$(cat /home/replicant/id_ed25519.pub)"
+  --metadata "ssh-keys=replicant:$(cat ${SSH_DIR}/id_ed25519.pub)"
 
 # make sure we can refer to the host by name
 CLUSTER_IP=$(gcloud compute instances describe cluster --zone europe-west1-b \
