@@ -16,7 +16,8 @@ difficulty: basic
 timelimit: 800
 ---
 
-## Air Gap Deployment Assets
+Air Gap Deployment Assets
+=========================
 
 Our next step is to collect the assets we need for an Air Gap installation:
 
@@ -28,7 +29,8 @@ Items (2) and (3) are separate artifacts to cut down on bundle size during
 upgrade scenarios where only the application version is changing and the
 underlying cluster does not need to change.
 
-#### Starting the kURL Bundle Download
+Starting the kURL Bundle Download
+=================================
 
 We're going to start with downloading the bundle for kURL cluster. This will
 turn our air-gapped instance into as single-node Kubernetes cluster which in

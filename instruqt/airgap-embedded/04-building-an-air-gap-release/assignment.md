@@ -16,7 +16,8 @@ difficulty: basic
 timelimit: 600
 ---
 
-#### Building an Airgap Release
+Building an Airgap Release
+==========================
 
 While the kURL download continues, let's build the air-gap bundle for
 our current application release. You can see your download status in
@@ -48,7 +49,8 @@ create airgap builds for newly promoted release in this channel"
 Now you should see all the bundles building or built on the release
 history page.
 
-#### Enabling Airgap for a customer
+Enabling Airgap for a customer
+==============================
 
 Customers are automatically enabled for air gap deployment. This
 gives you flexibility in terms of product packaging and deployment.
@@ -61,7 +63,8 @@ for the lab. Go to "Customers" in the Vendor portal and select the
 Click the checkbox next to "Airgap Download Enabled" and make sure
 you "Save Changes" with the bottom on the bottom right.
 
-#### Download Airgap Assets
+Download Airgap Assets
+======================
 
 After saving the customer, scroll to the bottom of the page to the
 `Download Portal` section.
