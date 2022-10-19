@@ -4,7 +4,7 @@
 set -euxo pipefail
 
 # ssh-keyscan -H cluster >> /root/known-hosts
-REMOTE_FILES=$(ssh -o StrictHostKeyChecking=no replicant@cluster ls)
+REMOTE_FILES=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster ls)
 
 echo $REMOTE_FILES
 if ! grep -q "-replicated-labs-com-development.tar.gz" <(echo ${REMOTE_FILES}) ; then
