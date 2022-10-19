@@ -14,7 +14,7 @@ tabs:
   workdir: /home/replicant
 - title: Application Installer
   type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
 timelimit: 600
