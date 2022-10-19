@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
 
 DEPLOYMENT_READY=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster kubectl --kubeconfig /etc/kubernetes/admin.conf get deployments -o "jsonpath='{.items[?(@.metadata.name == \"kuard\")].status.conditions[?(@.type == \"Available\")].status}'")
 if [[ "${DEPLOYMENT_READY}" != "True" ]] ; then
