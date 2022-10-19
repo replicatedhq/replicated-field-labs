@@ -3,10 +3,10 @@ slug: deploying-a-new-version
 id: 3a8ilcdrsyed
 type: challenge
 title: Deploying a New Version
-teaser: A short description of the challenge.
+teaser: Upgrading an application deployed in an air-gapped environment
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Time to upgrade the application
 tabs:
 - title: Jumpbox
   type: terminal
@@ -15,7 +15,7 @@ tabs:
 - title: Code Editor
   type: code
   hostname: shell
-  path: /home/replicant/
+  path: /home/replicant/manifests
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -34,7 +34,8 @@ application. The KUARD application has multiple versions published, so
 we're going to change our configuration to deploy the `green` version
 rather than the `blue` version we just installed.
 
-### Updating and Releasing
+Updating and Releasing
+======================
 
 Go to the the "Code Editor" tab and edit the file `deployment.yaml` in
 your application manifests.` Where is references the `blue` image for
@@ -48,7 +49,8 @@ After making the change, create a new Replicated release.
 replicated release create ... TO DO
 ```
 
-### Downloading the Updated Bundle
+Downloading the Updated Bundle
+==============================
 
 Once the release is made, you should be able to navigate back to the
 customer download portal we accessed from the customer page. Scrolling to
@@ -59,7 +61,8 @@ with a timestamp that matches when you created the release.
 
 ![download-portal-more](assets/download-portal-more.png)
 
-### Installing the Update
+Installing the Update
+=====================
 
 Once you've downloaded the new version, in the KOTS Admin Console
 select **Version History** and click "**Upload a new version**" and
@@ -68,10 +71,13 @@ select your bundle.
 ![airgap-new-upload](assets/airgap-new-upload.png)
 
 You'll see the bundle upload as before and you'll have the option to deploy
-it once the preflight checks complete. Click **Deploy** to perform the upgrade.
+it once the preflight checks complete. Click **Deploy** to perform the
+upgrade.
 
 Click the **Application** button to navigate back to the main landing page.
 The app should now show as **Ready** status on the main dashboard.
 
-Congrats! You've installed and then upgraded an Air Gap instance!
-
+Congratulations! You've deployed your first application in an air-gapped
+environment using the Replicated Application Installer. We're going to
+take a look at one more thing before we finish learning about the airgap
+workflow.

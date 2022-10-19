@@ -1,8 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# clear the tmux pane and scrollback to look like a fresh shell
-tmux clear-history -t airgap 
-tmux send-keys clear ENTER
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
 
-git clone --depth 1 --filter=blob:none --branch=instruqt-airgap-embedded --sparse https://github.com/replicatedhq/kots-field-labs.git
-git sparse-checkoutt instruqt/airgap-embedded
+HOME_DIR=/home/replicant
+
+# get manifests to use for updating
+git clone --depth 1 --filter=blob:none --sparse --branch instruqt-airgap-embedded https://github.com/replicatedhq/kots-field-labs
+cd kots-field-labs
+git sparse-checkout init
+git sparse-checkout set instruqt/airgap-embedded
+mv kots-field-labs/instruqt/airgap-embedded/vendor/manifests ${HOME_DIR}
+rm -rf kots-field-labs
+
+/bin/chown replicant:replicant ${HOME_DIR}/manifests
