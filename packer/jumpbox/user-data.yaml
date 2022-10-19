@@ -22,7 +22,6 @@ users:
   gecos: "Replicated Lab Participant"
   groups:
   - users 
-  - sudo
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   lock_passwd: true
  
@@ -47,6 +46,7 @@ snap:
   - snap install google-cloud-cli --classic
 
 runcmd:
+- chsh -s /usr/bin/bash replicant
 - curl https://kots.io/install | bash
 - |
   bash -c "(
