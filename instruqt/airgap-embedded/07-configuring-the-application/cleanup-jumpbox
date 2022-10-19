@@ -1,11 +1,10 @@
-#!/bin/sh
-#
-# This script runs when the platform cleanup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
 
-echo "This is the cleanup script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t airgap 
+tmux send-keys clear ENTER
 
 exit 0
