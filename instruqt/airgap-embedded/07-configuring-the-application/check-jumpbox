@@ -1,11 +1,9 @@
 #!/bin/sh
-#
-# This script runs when the platform check the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
 
-echo "This is the check script"
+DEPLOYMENT_READY=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster kubectl --kubeconfig /etc/kubernetes/admin.conf get deployments -o "jsonpath='{.items[?(@.metadata.name == \"kuard\")].status.conditions[?(@.type == \"Available\")].status}'")
+if [[ "${DEPLOYMENT_READY}" != "True" ]] ; then
+  fail-message "Application deployment is not available, please make sure the install has completed"
+  exit 1
+fi
 
 exit 0

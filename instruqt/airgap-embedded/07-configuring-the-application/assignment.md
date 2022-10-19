@@ -91,4 +91,6 @@ will need to be dismissed before you can continue.
 
 ![Running Preflight Checks](../assets/airgap-preflight.png)
 
-Your application is now installed.
+Your application is now installed and ready.
+
+![Application Installed and Ready](../assets/installed-and-ready.png)
