@@ -1,6 +1,6 @@
 ---
-slug: collecting-a-support-bundle
-id: kryjgrtoqw2l
+slug: troubleshooting-admin-console
+id: jddje8dvs3oj
 type: challenge
 title: What if the Admin Console fails?
 teaser: Addressing a failed admin console in an air-gapped environment
@@ -37,7 +37,7 @@ Let's connect to the air-gapped cluster and give this a try:
 TO DO
 ```
 
-As expected, this doesn't work. Looks like you'll need to a 
+As expected, this doesn't work. Looks like you'll need to a
 local support bundle specification that does the same thing.
 
 Moving the KOTS Support Bundle Spec
@@ -66,7 +66,7 @@ bundle.
 kubectl support-bundle ./support-bundle.yaml
 ```
 
-There's an in depth post with some other options at [How Can I Generate a Support Bundle If 
+There's an in depth post with some other options at [How Can I Generate a Support Bundle If
 I Cannot Access the Admin Console?](https://help.replicated.com/community/t/kots-how-can-i-generate-a-support-bundle-if-i-cannot-access-the-admin-console/455).
 
 🏁 Finish
