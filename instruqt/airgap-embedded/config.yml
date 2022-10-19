@@ -1,12 +1,10 @@
 version: "3"
-containers:
+virtualmachines:
 - name: jumpbox
-  image: gcr.io/kots-field-labs/shell
+  image: kots-field-labs/airgap-jumpbox
   shell: tmux new-session -A -s airgap su - replicant
-  memory: 256
-  ports: 
-  - 8800
-  - 8443
+  machine_type: n1-standard-2
+  version: "2"
   allow_external_ingress:
   - high-ports
 gcp_projects:

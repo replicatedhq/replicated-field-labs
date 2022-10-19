@@ -13,9 +13,8 @@ tabs:
   hostname: jumpbox
   workdir: /home/replicant
 - title: Application Installer
-  type: service
-  hostname: jumpbox
-  port: 8800
+  type: website
+  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
 timelimit: 600
