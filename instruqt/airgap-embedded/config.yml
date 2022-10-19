@@ -7,6 +7,10 @@ virtualmachines:
   version: "2"
   allow_external_ingress:
   - high-ports
+containers:
+- name: airgap
+  image: gcr.io/instruqt/cloud-client
+  shell: /bin/bash
 gcp_projects:
 - name: airgap
   services:
