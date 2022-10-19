@@ -41,7 +41,7 @@ Provide the following information
 
 * **Customer name:** Enter the name of the customer. In the screenshot below, we use `License Customer` as the name.
 
-* **Assigned channel:** By assigning a channel, we can ensure the right version of the application is installed. Select the `CustomFields` channel.
+* **Assigned channel:** By assigning a channel, we can ensure the right version of the application is installed. Select the `Stable` channel.
 * **Expiration policy:** These settings allow to specify if the license should have an expiration date. The expiration date ensures that a new install or upgrades are not allowed as well as restricting access to the image registry. For this lab, leave the setting as-is.
 * **Customer type:** The type of customer you select is used solely for reporting purposes. Their access to your app will not be affected by the type you assign to them. For this lab, select **Development**.
 * **License Options:** This section allows you toggle on & off Replicated features. Leave this section as-is
