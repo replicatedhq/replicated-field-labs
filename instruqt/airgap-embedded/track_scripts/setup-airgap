@@ -21,13 +21,7 @@ gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials
 gcloud config set project $INSTRUQT_GCP_PROJECT_AIRGAP_PROJECT_ID
 
 ### Create airgap network
-JUMPBOX_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
 gcloud compute networks create airgap
-
-# allow SSH accesss from the jumpbox
-gcloud compute firewall-rules create allow-jumpbox-ssh \
-  --priority 1000 --network airgap --allow tcp:22 \
-  --source-ranges ${JUMPBOX_IP}/32
 
 # explicitly deny all opther ingress and egress
 gcloud compute firewall-rules create deny-ingress \
@@ -42,7 +36,6 @@ CLUSTER_IP=$(gcloud compute instances create cluster \
   --image-project ubuntu-os-cloud --image-family ubuntu-2204-lts \
   --machine-type n1-standard-8 --network airgap --zone europe-west1-b \
   --boot-disk-size=200GB --boot-disk-type=pd-ssd \
-  --metadata "ssh-keys=replicant:$(cat /opt/instruqt/ssh/participant-ssh-key/public_key)" \
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 echo "${CLUSTER_IP}   cluster   # airgapped cluster" >> /etc/hosts
