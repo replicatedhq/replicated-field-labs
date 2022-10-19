@@ -10,15 +10,20 @@ do
   sleep 1
 done
 
+HOME_DIR=/home/replicant
+
 ### copy the participant SSH key to the user `replicant`
 if [ -d /opt/instruqt/ssh/participant-ssh-key ]; then
-  SSH_DIR=/home/replicant/.ssh
+  SSH_DIR=${HOME_DIR}/.ssh
   mkdir -p "${SSH_DIR}"
   /bin/chmod 0700 "${SSH_DIR}"
   cat /opt/instruqt/ssh/participant-ssh-key/public_key >> ${SSH_DIR}/authorized_keys
   cat /opt/instruqt/ssh/participant-ssh-key/public_key  > ${SSH_DIR}/id_rsa.pub
   cat /opt/instruqt/ssh/participant-ssh-key/private_key > ${SSH_DIR}/id_rsa
-  /bin/chmod 0600 ${SSH_DIR}/*
-  /bin/chown -R replicant ${SSH_DIR}
+  # ssh-keyscan -H cluster >> ${SSH_DIR}/known_hosts
 fi
 
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> ${HOME_DIR}/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> ${HOME_DIR}/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> ${HOME_DIR}/.bashrc
