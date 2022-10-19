@@ -22,7 +22,7 @@ timelimit: 300
 🚀 Let's start
 ==============
 
-### Connecting to the Replicated Vendor Portal
+## Connecting to the Replicated Vendor Portal
 
 Log into the Replicated Vendor Portal in the "Vendor Portal" tab using the username
 and password printed to your screen in the "Shell" tab.
@@ -73,15 +73,4 @@ You can ensure this is working with
 
 ```
 replicated release ls
-```
-
-### 2. Saving your lab setup
-
-The lab environment you are working in is a little bit different
-than your own workstation. Because of the lab structure, we need
-to take an extra step to support the next challenges. You would
-not need to do this in a real-world environment. If you run the below command, it will persist the environment variables between challenges.
-
-```bash
-save_lab_setup
 ```
