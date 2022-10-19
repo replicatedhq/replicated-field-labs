@@ -48,7 +48,7 @@ Set the `REPLICATED_APP` to be the **application slug** found in the setting in 
 
 <p align="center"><img src="../assets/cf-app-slug.png" width=450></img></p>
 
-Set the `Replicated_API_TOKEN` to your user token, which you can create under your Account Settings.
+Set the `REPLICATED_API_TOKEN` to your user token, which you can create under your Account Settings.
 
 <p align="center"><img src="../assets/cf-acc-set.png" width=450></img></p>
 
