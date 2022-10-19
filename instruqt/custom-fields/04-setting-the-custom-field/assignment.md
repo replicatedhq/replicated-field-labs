@@ -25,7 +25,7 @@ timelimit: 600
 
 Now that we have created our Custom License Field and updated the application, we are ready to put this into motion.
 
-Let's create a new Customer, set the feature flag to `false` and install the application. We will take a look at the applicaiton without the Super Duper feature turned on. Then, we'll update the field to `true` and update the application we deployed and verify that the feature is now on.
+Let's create a new Customer, set the feature flag to `false` and install the application. We will take a look at the application without the Super Duper feature turned on. Then, we'll update the field to `true` and update the application we deployed and verify that the feature is now on.
 
 Go back to your browser that has the Vendor Portal open. If you closed it, no worries, click on the **Open External Window** button on the **Vendor** tab.
 
