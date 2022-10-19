@@ -25,4 +25,10 @@ source "googlecompute" "airgap-jumpbox" {
 
 build {
   sources = ["sources.googlecompute.airgap-jumpbox"]
+
+  provisioner "shell" {
+    inline = [
+      "cloud-init status --wait",
+    ]
+  }
 }

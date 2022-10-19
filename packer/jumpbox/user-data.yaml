@@ -34,6 +34,7 @@ package_upgrade: true
 packages:
 - ca-certificates
 - curl
+- tmux
 
 # install snaps on first boot
 snap:
@@ -57,8 +58,8 @@ runcmd:
     curl -L https://krew.sh/ctx | bash
     curl -L https://krew.sh/preflight | bash
     curl -L https://krew.sh/support-bundle | bash
-    echo export KREW_ROOT=/usr/local/libexec/krew >> /home/replicant/.profile",
-    echo export PATH='$${KREW_ROOT:-$HOME/.krew}/bin:$PATH' >> /home/replicant/.profile",
+    echo 'export KREW_ROOT=/usr/local/libexec/krew' >> /home/replicant/.profile
+    echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> /home/replicant/.profile
   )" 
 - |
   bash -c "(
@@ -69,9 +70,9 @@ runcmd:
   )"
 - |
   bash -c "(
-    curl -s https://api.github.com/repos/replicatedhq/sbctl/releases/latest | \
-    jq '.assets[] | select(.name == "sbctl_linux_amd64.tar.gz").browser_download_url' | \
-    xargs curl --location | \
-    tar -C /usr/local/bin -xzvf - sbctl && \
-    chmod 755 /usr/local/bin/sbctl
+   curl -s https://api.github.com/repos/replicatedhq/sbctl/releases/latest \
+      | jq -r '.assets[] | select ( .name == \"sbctl_linux_amd64.tar.gz\").browser_download_url' \
+      | xargs curl --location \
+      | tar -C /usr/local/bin -xzvf - sbctl \
+    && chmod 755 /usr/local/bin/sbctl
   )"
