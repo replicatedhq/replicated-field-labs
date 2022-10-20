@@ -43,7 +43,7 @@ Replicated command-line, then set up some environment variables in your shell to
 
 When you log in, you'll be on our release channels page.
 
-![Release Channels on the Vendor Portal](../assets/vendor-portal-login.png)
+![Release Channels on the Vendor Portal](../assets/release-channels.png)
 
 Go from the channels page to the settings page to see the application slug. The slug is how the
 Replicated CLI and API uniquely identify applications. We'll need to know the slug to use the
