@@ -78,7 +78,7 @@ downloadable assets.
 
 ![Viewing the Customer Download Portal](../assets/download-portal-view.png)
 
-This is where your customer downloads the assets they neeed for an
+This is where your customer downloads the assets they need for an
 air gap install: the kURL bundle, their license file, and the airgap
 bundle for your application. They will usually download all three at
 once for the initial install.
