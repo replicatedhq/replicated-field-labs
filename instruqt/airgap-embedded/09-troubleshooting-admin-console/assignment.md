@@ -44,7 +44,7 @@ kubectl support-bundle https://kots.io
 ```
 
 After a short bit of time you'll see it's timed out, as we
-expected since we can't get ot the Internet from the air-gapped
+expected since we can't get to the Internet from the air-gapped
 network.
 
 ```shell
