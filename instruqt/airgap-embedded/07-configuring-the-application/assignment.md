@@ -12,7 +12,7 @@ tabs:
   type: terminal
   hostname: jumpbox
   workdir: /home/replicant
-- title: Application Installer
+- title: Admin Console
   type: website
   url: http://jumpbox.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
@@ -39,13 +39,13 @@ output.
 Running the Installer
 =====================
 
-The "Application Installer" tab is configured to point to accces the
+The "Admin Console" tab is configured to point to accces the
 port you forwarded. Switch to that tab to begin the installation. The
 first thing you'll see is a warning about the TLS certificate. In a real
 world install we **strongly** recommend you replace the certificate,
 which is self-signed and thus not signed by a trusted authority.
 
-![Application Installer Certificate Warning](../assets/kots-tls-warning.png)
+![Admin Console Certificate Warning](../assets/kots-tls-warning.png)
 
 For the Lab, we're going to leave the self-signed certificate in place.
 Click the "Skip and continue" to accept the self-signed certificate.
