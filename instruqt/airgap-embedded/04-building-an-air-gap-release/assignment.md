@@ -46,9 +46,6 @@ create airgap builds for newly promoted release in this channel"
 
 ![Enabling Automatic Airgap Builds](../assets/channel-enable-airgap.png)
 
-Now you should see all the bundles building or built on the release
-history page.
-
 Enabling Airgap for a customer
 ==============================
 
