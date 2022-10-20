@@ -27,7 +27,7 @@ jobs:
     - name: Setup Google Cloud CLI
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0
       with:
-        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} 
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         project_id: kots-field-labs
 
     - name: Configure Docker Authentication for GCP
