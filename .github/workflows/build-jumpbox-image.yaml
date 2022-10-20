@@ -1,4 +1,4 @@
-name: Build Shell Image
+name: Build Jumpbox Image
 on:
   schedule:
   - cron: '0 10 * * *' # everyday at 10am
@@ -42,7 +42,8 @@ jobs:
       with:
         command: validate
         arguments: -syntax-only
-        target: .
+        working-directory: ./packer
+        target: jumpbox
 
     # build artifact
     - name: Build VM Image
@@ -50,6 +51,7 @@ jobs:
       with:
         command: build
         arguments: "-color=false -on-error=abort -force -var service_account_key=${{secrets.GCP_SERVICE_ACCOUNT_KEY}}"
-        target: packer.pkr.hcl
+        working-directory: ./packer
+        target: jumpbox
       env:
         PACKER_LOG: 1
