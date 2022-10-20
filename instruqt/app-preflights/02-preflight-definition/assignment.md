@@ -12,6 +12,9 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
