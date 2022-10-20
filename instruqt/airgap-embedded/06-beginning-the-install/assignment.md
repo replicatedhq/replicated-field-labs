@@ -18,7 +18,7 @@ timelimit: 600
 
 In this lab we're using kURL to turn our air-gapped system into a single-node
 Kuberenetes cluster. Our installation begins by connecting to the air-gapped
-instane over SSH. From there we unpack the kURL bundle and run the included
+instance over SSH. From there we unpack the kURL bundle and run the included
 install script. When these steps are complete we'll be able to install our
 application into the cluster.
 
