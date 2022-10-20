@@ -141,11 +141,13 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	}
 	track.Status.Channel = channel
 
-	customer, err := e.getOrCreateCustomer(track)
-	if err != nil {
-		return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+	if trackSpec.Customer != "" {
+		customer, err := e.getOrCreateCustomer(track)
+		if err != nil {
+			return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+		}
+		track.Status.Customer = customer
 	}
-	track.Status.Customer = customer
 
 	release, err := e.Client.CreateRelease(app.ID, kotsYAML)
 	if err != nil {
