@@ -64,7 +64,7 @@ This password has been set for you by default. It is recommended that you change
 Change Default Password
 =======================
 
-Let's follow the advice from the install command and changet he default
+Let's follow the advice from the install command and change the default
 password to something easy to remember. Run the following command and
 pick a password that'll you'll use in the next step.
 
