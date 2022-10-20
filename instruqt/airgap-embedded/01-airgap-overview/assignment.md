@@ -3,7 +3,7 @@ slug: airgap-overview
 id: mq22qgecjrh9
 type: challenge
 title: The Replicated Air Gap Worfklow
-teaser: An overview of the Replicated air gap overview
+teaser: An overview of the Replicated air gap workflow
 notes:
 - type: text
   contents: Our workflow for air-gapped deployment
