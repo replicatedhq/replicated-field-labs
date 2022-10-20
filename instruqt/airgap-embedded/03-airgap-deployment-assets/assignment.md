@@ -35,7 +35,7 @@ Starting the kURL Bundle Download
 We're going to start with downloading the bundle for the kURL cluster. This will
 turn our air-gapped instance into a single-node Kubernetes cluster which in
 turn will run our application. We start with the cluster download since it's
-the largest of the thres assets and we can download the others while its
+the largest of the three assets and we can download the others while its
 download is running.
 
 From the "Jumpbox" tab, run the command below:
