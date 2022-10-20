@@ -17,7 +17,7 @@ timelimit: 600
 ---
 
 If your application is at least partially installed in the customer
-enviornmnet, they can use the support bundle you defined to troubelshoot
+environment, they can use the support bundle you defined to troubleshoot
 application failures. But what happens if it fails before that?
 
 
