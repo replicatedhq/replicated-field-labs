@@ -32,7 +32,7 @@ underlying cluster does not need to change.
 Starting the kURL Bundle Download
 =================================
 
-We're going to start with downloading the bundle for kURL cluster. This will
+We're going to start with downloading the bundle for the kURL cluster. This will
 turn our air-gapped instance into as single-node Kubernetes cluster which in
 turn will run our application. We start with the cluster download since it's
 the largest of the thres assets and we can download the others while its
