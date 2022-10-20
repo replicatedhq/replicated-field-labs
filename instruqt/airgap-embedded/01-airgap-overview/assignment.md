@@ -51,7 +51,7 @@ Next, we'll collect a license file, a download link, and a public kURL bundle.
 
 From there, we'll move all three artifacts into the datacenter via a jump box.
 
-![Air Gap Delviery](../assets/airgap-slide-3.png)
+![Air Gap Delivery](../assets/airgap-slide-3.png)
 
 The above diagram shows a three node cluster, but we'll use only a single node.
 While the KOTS bundle will be moved onto the server via SCP as in the diagram,
