@@ -20,24 +20,30 @@ RUN curl https://krew.sh/support-bundle | bash
 # sbctl
 FROM installer AS sbctl
 RUN apt-get update && apt-get install -y ca-certificates curl jq
-RUN curl -s https://api.github.com/repos/replicatedhq/sbctl/releases/latest \
-    | jq '.assets[] | select(.name == "sbctl_linux_amd64.tar.gz").browser_download_url' \
-    | xargs curl --location \
-    | tar -C /usr/local/bin -xzvf - sbctl \
-  && chmod 755 /usr/local/bin/sbctl
+RUN curl -s https://api.github.com/repos/replicatedhq/sbctl/releases/latest | \
+  jq '.assets[] | select(.name == "sbctl_linux_amd64.tar.gz").browser_download_url' | \
+  xargs curl --location | \
+  tar -C /usr/local/bin -xzvf - sbctl && \
+  chmod 755 /usr/local/bin/sbctl
 
 # kubctl
 FROM installer AS kubectl
 
 # kubectl
-RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
-    | apt-key add - \
-  && echo "deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main" \
-    | tee /etc/apt/sources.list.d/kubernetes.list
+RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+  echo "deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 RUN apt-get update && apt-get install -y kubectl 
 
 # final image
 FROM ubuntu:jammy
+
+ARG USERNAME=replicant
+ARG USER_UID=1001
+ARG USER_GID=$USER_UID
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME && \
+  useradd --uid $USER_UID --gid $USER_GID --shell /bin/bash --create-home $USERNAME
 
 RUN apt-get update && apt-get install -y \
   ca-certificates \
@@ -52,10 +58,10 @@ COPY --from=kubectl /usr/bin/kubectl /usr/local/bin
 RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # YQ, using the github release
-RUN curl -s https://api.github.com/repos/mikefarah/yq/releases/latest \
-    | jq '.assets[] | select(.name == "yq_linux_amd64").browser_download_url' \
-    |  xargs curl --location --output /usr/local/bin/yq \
-  && chmod 755 /usr/local/bin/yq
+RUN curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | \
+  jq '.assets[] | select(.name == "yq_linux_amd64").browser_download_url' | \
+  xargs curl --location --output /usr/local/bin/yq && \
+  chmod 755 /usr/local/bin/yq
 
 # add  KOTS
 RUN curl -fsSL https://kots.io/install | bash
