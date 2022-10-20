@@ -1,11 +1,15 @@
-#!/bin/sh
-#
-# This script runs when the platform check the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
 
-echo "This is the check script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# ssh-keyscan -H cluster >> /root/known-hosts
+REMOTE_FILES=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster ls)
+
+echo $REMOTE_FILES
+if ! grep -q "support-bundle-.*.tar.gz" <(echo ${REMOTE_FILES}) ; then
+  fail-message "Please make sure to copy the kURL bundle to the air-gapped host."
+  exit 1
+fi
 
 exit 0
