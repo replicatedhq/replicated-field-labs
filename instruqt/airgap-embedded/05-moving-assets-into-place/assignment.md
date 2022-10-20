@@ -40,7 +40,7 @@ Copying the Airgap Bundle to the Air-Gapped Host
 
 In the wild, this step could take many forms. Customers may have a "soft"
 airgap like the one we us in this lab, which means you can copy the
-file directly from a jumpbox or throuhg a bastion host. They may have
+file directly from a jumpbox or through a bastion host. They may have
 a much more robust airgap requiring a cross-domain solution or burning
 the bundles to read-only media and using a sneakernet to get move that
 media to the other side. Regardless of the requirements, as long as the
