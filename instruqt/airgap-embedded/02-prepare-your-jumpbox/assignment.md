@@ -60,7 +60,7 @@ page:
 
 ![Creating an API token](../assets/create-api-token.png)
 
-Note: Ensure the token has "Write" access or you'll be unable create new releases.
+Note: Ensure the token has "Write" access or you'll be unable to create new releases.
 
 Once you have the values, go back to the "Shell" tab and set them in your environment.
 
