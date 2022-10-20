@@ -68,7 +68,7 @@ until you see it, then click 'Download airgap bundle".
 If you have to wait, you can explore the different versions of KOTS and your
 application that are vailable. Clicking "Show other bundles" will show
 historical versions of the KOTS Airgap Bundle that are available. Don't
-worry if you see different versions, we've likely release a lot more
+worry if you see different versions, we've likely released a lot more
 since I took this screenshot.
 
 ![Older Versios of the KOTS Airgap Bundle](../assets/download-portal-older-kots-bundles.png)
