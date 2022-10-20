@@ -1,0 +1,64 @@
+name: Build Shell Image
+on:
+  schedule:
+    - cron: '0 10 * * *' # everyday at 10am
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'docker/shell/**'
+  pull_request:
+    branches:
+    - 'instruqt'
+
+jobs:
+  build_and_push_shell_image:
+    name: Build and Push Shell Image
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docker/shell
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Google Cloud CLI
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} 
+        project_id: ${{ secrets.GCP_PROJECT_ID }} 
+
+    - name: Configure Docker Authentication for GCP
+      run: gcloud auth configure-docker
+
+    - name: Prepare Docker Metadata
+      id: meta
+      uses: crazy-max/ghaction-docker-meta@v2
+      with:
+          # list of Docker images to use as base name for tags
+        images: |
+          gcr.io/kots-field-labs/shell
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=edge,branch=main
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Push to Google Container Registry
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        platforms: linux/amd64
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
