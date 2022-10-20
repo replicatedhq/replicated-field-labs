@@ -32,7 +32,7 @@ customer gets access to all three assets from the Replicated download
 portal, then grapped their license file. Now we're going to grab the
 application bundle using the command line.
 
-At this point, your download the kURL bundle should be completed. If
+At this point, your download of the kURL bundle should be completed. If
 not, wait for it to complete before you continue.
 
 Copying the Airgap Bundle to the Air-Gapped Host
