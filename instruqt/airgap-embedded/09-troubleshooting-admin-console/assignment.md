@@ -87,7 +87,7 @@ node when we run command.
 kubectl support-bundle ./support-bundle.yaml
 ```
 
-You may see some a couple of errors collecting data because of
+You may see a couple of errors collecting data because of
 components that are not installed in our kURL cluster, this is
 expected. Once the bundle has been collected, you'll get a quick
 review of the analysis.
