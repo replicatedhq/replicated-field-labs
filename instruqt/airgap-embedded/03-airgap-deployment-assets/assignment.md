@@ -83,7 +83,7 @@ onto our jumpbox.
 
 In my case:
 
-```text
+```bash
 curl -fSL -o uws24vkeurcz-replicated-labs-com-development.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-development.tar.gz
 ```
 
