@@ -38,7 +38,7 @@ Updating and Releasing
 ======================
 
 Go to the the "Code Editor" tab and edit the file `deployment.yaml` in
-the directory application `manifests`. Where is references the `blue` image for
+the directory application `manifests`. Where it references the `blue` image for
 the application, switch it instead to read `green`.
 
 ![Editing the Deployment](../assets/editing-the-deployment.png)
