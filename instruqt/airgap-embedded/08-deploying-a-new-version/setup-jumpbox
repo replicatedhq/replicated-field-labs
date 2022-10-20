@@ -10,7 +10,8 @@ git clone --depth 1 --filter=blob:none --sparse --branch instruqt-airgap-embedde
 cd kots-field-labs
 git sparse-checkout init
 git sparse-checkout set instruqt/airgap-embedded
-mv kots-field-labs/instruqt/airgap-embedded/vendor/manifests ${HOME_DIR}
+mv instruqt/airgap-embedded/vendor/manifests ${HOME_DIR}
+cd ..
 rm -rf kots-field-labs
 
 /bin/chown replicant:replicant ${HOME_DIR}/manifests
