@@ -26,7 +26,7 @@ this lab.
 
 Since air-gapped bundles can be quite large, not all release channels
 build them automatically. Two of the default channels, `Stable` and
-`Beta` are are configured to do it. Other channels can be set to auto
+`Beta` are configured to do it. Other channels can be set to auto
 build, or you can manually build a bundle when needed.
 
 You can build air-gap bundles for any of your releases by looking at
