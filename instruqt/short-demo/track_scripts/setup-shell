@@ -1,0 +1,11 @@
+#!/bin/bash 
+
+# change the cluster URI
+yq -i '.clusters[0].cluster.server = "https://kotsadm:6443"' /home/replicant/.kube/config-kotsadm
+yq -i '.clusters[0].cluster.server = "https://application:6443"' /home/replicant/.kube/config-application
+chown -R replicant /home/replicant/.kube
+
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> /home/replicant/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /home/replicant/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc

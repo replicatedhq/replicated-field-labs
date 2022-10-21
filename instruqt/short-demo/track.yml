@@ -1,0 +1,21 @@
+slug: short-demo
+id: iecexaqfyu6j
+title: Short Demo
+teaser: Used for conferences and pitches
+description: |-
+  An environment to run very short demo's
+
+  It contains two k3s environments:
+  * k3s-1: Just k3s with kots pre-installed. You can upload a license and go through the installation process.
+  * k3s-2: Just k3s with kots pre-installed and also the application pre-installed.
+
+  It contains a container with the replicated CLI pre-installed.
+  It contains an editor with the manifests pre-loaded as an IDE example
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+private: false
+published: false
+checksum: "6267719934184066923"

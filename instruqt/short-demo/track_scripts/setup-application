@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# simple SSH client setup so we can SSH to/from the shell
+
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    PubkeyAcceptedKeyTypes +ssh-rsa
+EOF
+
+while ! ssh shell true; do
+  echo "Waiting for container SSH to be available..."
+  sleep 1
+done
+
+ssh shell "mkdir -p /home/replicant/.kube"
+
+while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do
+  echo "Waiting for Rancher kubernetes configuration to be available..."
+  sleep 1
+done
+
+scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config-application
