@@ -55,25 +55,24 @@ air-gapped machine. The air-gapped install method also includes it's
 own cluster.
 
 ```text
-ID:             2GSIQnqsl6ybfWVacXrutlLQa28
+ID:             2GSbRtgZKeOTmjsU87d1lhE8Qdq
 NAME:           Unstable
-DESCRIPTION:
+DESCRIPTION:    
 RELEASE:        1
-VERSION:        Installing in an Air-Gapped Environment
+VERSION:        0.0.1
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install uws24vkeurcz-replicated-labs-com-caiman/unstable
+    kubectl kots install installing-in-an-air-gapped-environment-q4b0wn3mzsqj/unstable
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/uws24vkeurcz-replicated-labs-com-caiman-unstable | sudo bash
+    curl -fsSL https://k8s.kurl.sh/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable | sudo bash
 
 AIRGAP:
-
-    curl -fSL -o uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
-    # ... scp or sneakernet uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz to airgapped machine, then
-    tar xvf uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
+    curl -fSL -o installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
+    # ... scp or sneakernet installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz to airgapped machine, then
+    tar xvf installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
     sudo bash ./install.sh airgap
 ```
 
@@ -84,7 +83,7 @@ onto our jumpbox.
 In my case:
 
 ```bash
-curl -fSL -o uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
+curl -fSL -o installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
