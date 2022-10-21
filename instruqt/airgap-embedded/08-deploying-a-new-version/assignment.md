@@ -47,7 +47,7 @@ After making the change, pop back over to the "Jumpbox" tab and create a
 new Replicated release.
 
 ```shell
-replicated release create --promote development --version green --yaml-dir manifests
+replicated release create --promote Unstable --version green --yaml-dir manifests
 ```
 
 Downloading the Updated Bundle
