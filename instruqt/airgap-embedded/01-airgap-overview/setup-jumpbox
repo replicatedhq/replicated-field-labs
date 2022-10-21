@@ -3,7 +3,7 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-export HOME_DIR=/home/replicant
+HOME_DIR=/home/replicant
 
 # Wait for Instruqt bootstrap to be complete
 while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]

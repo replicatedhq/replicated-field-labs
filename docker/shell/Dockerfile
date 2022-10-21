@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y kubectl
 # final image
 FROM ubuntu:jammy
 
+
 ARG USERNAME=replicant
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID

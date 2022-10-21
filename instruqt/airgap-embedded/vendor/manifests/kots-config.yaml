@@ -1,0 +1,26 @@
+---
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: kuard
+spec:
+  groups: 
+  - name: resources
+    title: Resource Limits
+    description: Specify application resource limits
+    items:
+    - name: cpu
+      title: CPU
+      help_text: "CPU limit in megahertz, e.g. 1000m"
+      type: text
+      value: 1000m
+      default: 1000m
+      recommended: true
+    - name: memory
+      title: Memory
+      help_text: "Memory limits, e.g. 256Mi"
+      type: text
+      value: 256Mi
+      default: 256Mi
+      recommended: true
+
