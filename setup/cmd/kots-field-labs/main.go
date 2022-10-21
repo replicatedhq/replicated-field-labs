@@ -104,7 +104,7 @@ func gitSparseCheckout(trackSlug string, branch string) (string, error) {
 	}
 	log.Println("Git clone", string(out))
 
-	command = exec.Command("git", "sparse-checkout", "set", fmt.Sprintf("instruqt/%s", trackSlug))
+	command = exec.Command("git", "sparse-checkout", "set", fmt.Sprintf("instruqt/%s/vendor", trackSlug))
 	command.Dir = fmt.Sprintf("%s/%s", tempDir, "kots-field-labs")
 
 	out, err = command.CombinedOutput()
