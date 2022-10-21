@@ -39,7 +39,7 @@ jobs:
       with:
         command: validate
         arguments: -syntax-only
-        working-directory: ./packer
+        working_directory: ./packer
         target: jumpbox
 
     # build artifact
@@ -48,7 +48,7 @@ jobs:
       with:
         command: build
         arguments: "-color=false -on-error=abort -force -var service_account_key=${{secrets.GCP_SERVICE_ACCOUNT_KEY}}"
-        working-directory: ./packer
+        working_directory: ./packer
         target: jumpbox
       env:
         PACKER_LOG: 1
