@@ -54,12 +54,12 @@ an SSH tunnel to configure the application and complete the install.
 
 Let's copy the kURL bundle first. Take a look at the files in your
 current directory. There should be one (the name of your kURL bundle
-will different but have the same ending after the random identifier
-at the beginning).
+will be different, but it will include `replicated-labs-com` and end
+in `-unstable.tar.gz`).
 
 ```
 replicant@jumpbox:~$ ls
-uws24vkeurcz-replicated-labs-com-development.tar.gz
+uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
 ```
 
 Since there's only one file, let's save some typing and use a
