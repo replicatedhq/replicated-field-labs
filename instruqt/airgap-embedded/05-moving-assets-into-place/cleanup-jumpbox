@@ -5,7 +5,7 @@ set -euxo pipefail
 
 # clear the tmux pane and scrollback to look like a fresh shell
 tmux clear-history -t airgap 
-tmux send-keys clear ENTER
+tmux send-keys -t airgap clear ENTER
 
 # clean up tarball
 # get rid of the tarball

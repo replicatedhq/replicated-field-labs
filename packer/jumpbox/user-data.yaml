@@ -34,11 +34,11 @@ packages:
 - ca-certificates
 - curl
 - tmux
+- jq
 
 # install snaps on first boot
 snap:
   commands:
-  - snap install jq
   - snap install yq
   - snap install git-ubuntu --classic
   - snap install kubectl --classic

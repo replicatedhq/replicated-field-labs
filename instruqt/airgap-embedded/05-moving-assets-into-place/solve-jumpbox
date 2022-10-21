@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+tmux send-keys -t airgap scp SPACE -o SPACE StrictHostKeyChecking=no SPACE '*.tar.gz' SPACE cluster: ENTER
