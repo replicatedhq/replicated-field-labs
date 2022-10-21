@@ -1,7 +1,7 @@
 slug: airgap-embedded
 id: 0zxhhnehsgua
-title: Installing in an Air-Gapped Environment
-teaser: Using Replicated to install your application into an air-gapped environment
+title: Managing Airgapped Applications with Replicated 
+teaser: Using Replicated to install, upgrade, and support your application into an air-gapped environment
 description: |-
   In this exercise you will learn the Replicated workflow for installing and
   supporting your application when it's installed into an air-gapped network.

@@ -11,3 +11,4 @@ tracks:
   - { slug: support-cli, id: uab72ueg5ox2 }
   - { slug: redactors, id: gmiwrds3jmuy }
   - { slug: custom-fields, id: 9ixa2iyrggut }
+  - { slug: airgap-embedded, id: 0zxhhnehsgua }
