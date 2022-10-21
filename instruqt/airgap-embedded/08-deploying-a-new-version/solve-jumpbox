@@ -1,11 +1,6 @@
-#!/bin/sh
-#
-# This script runs when the platform solve the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
 
-echo "This is the solve script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
 
-exit 0
+ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster echo "True" > /tmp/.test-solve
