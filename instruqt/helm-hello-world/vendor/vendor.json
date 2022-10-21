@@ -1,8 +1,6 @@
 {
     "name": "Wordpress",
     "slug": "helm-hello-world",
-    "channel": "HelloHelm",
-    "channel_slug": "hellohelm",
     "customer": "Wordpress Customer",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""

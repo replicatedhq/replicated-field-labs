@@ -1,0 +1,74 @@
+name: Build Shell Image
+on:
+  schedule:
+  - cron: '0 10 * * *' # everyday at 10am
+  push:
+    branches:
+    - '**'
+    paths:
+    - 'docker/shell/**'
+    - '.github/workflows/build-shell-image.yaml'
+  pull_request:
+    branches:
+    - 'instruqt'
+
+jobs:
+  build_and_push_shell_image:
+    name: Build and Push Shell Image
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docker/shell
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenicate to Google Cloud
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    - name: Setup Google Cloud SDK
+      id: auth
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: kots-field-labs
+
+    - name: Registry Login
+      uses: docker/login-action@v2
+      with:
+        registry: gcr.io
+        username: _json_key
+        password: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    - name: Prepare Docker Metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          gcr.io/kots-field-labs/shell
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=edge,branch=main
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and Push to Google Container Registry
+      uses: docker/build-push-action@v3
+      with:
+        context: docker/shell 
+        platforms: linux/amd64
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
