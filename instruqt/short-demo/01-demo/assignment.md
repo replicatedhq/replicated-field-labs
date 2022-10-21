@@ -7,8 +7,8 @@ teaser: The demo environment
 notes:
 - type: video
   url: ../assets/demo.mp4
-- type: text
-  contents: Replace this text with your own text
+- type: image
+  url: ../assets/connected.png
 tabs:
 - title: Shell
   type: terminal

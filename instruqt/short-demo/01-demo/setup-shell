@@ -19,13 +19,14 @@ echo "export REPLICATED_API_TOKEN=${access_token}" >> /home/replicant/.bashrc
 echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc
 
 # Download manifests
-mkdir -p demo-app/manifests
+mkdir -p /home/replicant/demo-app/manifests
 export REPLICATED_API_TOKEN=${access_token}
 export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID
-replicated release download 1 -d ./demo-app/manifests
+replicated release download 1 -d /home/replicant/demo-app/manifests
+chown -R replicant /home/replicant/demo-app
 
 # Install kotsadm on kotsadm
-export KUBECONFIG=~/.kube/config-kotsadm
+export KUBECONFIG=/home/replicant/.kube/config-kotsadm
 kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --name short-demo-$INSTRUQT_PARTICIPANT_ID \
   --namespace default \
@@ -35,12 +36,12 @@ kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-h
 
 
 # Install kotsadm + application on application
-replicated customer download-license --customer "Some big bank" > license.yaml
-export KUBECONFIG=~/.kube/config-application
+replicated customer download-license --customer "Some big bank" > /home/replicant/license.yaml
+export KUBECONFIG=/home/replicant/.kube/config-application
 kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --name short-demo-$INSTRUQT_PARTICIPANT_ID \
   --namespace default \
-  --license-file ./license.yaml \
+  --license-file /home/replicant/license.yaml \
   --shared-password $INSTRUQT_PARTICIPANT_ID \
   --no-port-forward \
   --skip-preflights
