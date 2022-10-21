@@ -1,0 +1,14 @@
+slug: short-demo
+title: Short demo track
+teaser: An environment to be used for a short demo
+description: |-
+  This track will show a video without audio that can be used to give an overview of Replicated.
+  Once the environment is ready, it will give access to the Vendor Portal, the Application Installer, and a k3s cluster with the application pre-installed.
+
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+private: false
+published: false

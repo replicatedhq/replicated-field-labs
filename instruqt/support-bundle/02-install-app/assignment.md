@@ -26,30 +26,20 @@ timelimit: 600
 🚀 Let's start
 ==============
 
-### Check Your Email!
+### Vendor Portal login
 
-If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to the next section.
+To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+```
+username: [PARTICIPANT_ID]@replicated-labs.com
+password: [PARTICIPANT_ID]
+```
 
-You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
-
-**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
-
-The email should look like this:
-
-<p align="center"><img src="../assets/email-invite.png" width=600></img></p>
-
-Once you click on the button, it should open a browser to a page similar to this:
-
-<p align="center"><img src="../assets/create-account.png" width=600></img></p>
-
-Fill in the rest of the form and click on the **Create Account** button to get started.
-
-Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 👋 Install Nginx
-===============
+================
 
-In this case, the Applicatin Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
+In this case, the Application Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
 
 ### 1. Download the license
 
@@ -68,7 +58,7 @@ Go to the `Application Installer` tab (external window), login and upload the li
    ![Application installer](../assets/deploy.png)
 
 🐛 The Issue
-===============
+============
 
 Once the app is deployed, you'll notice something is not quite right. The Status Informers show "Unavailable".
 
@@ -76,7 +66,7 @@ Once the app is deployed, you'll notice something is not quite right. The Status
 
 
 🔎 Investigating
-===============
+================
 
 As you know, the first step when the application isn't starting will be to collect a support bundle. Doing so will run a series of diagnostic checks to help diagnose problems with the application. In the case that a problem cannot be diagnosed automatically, a bundle will be ready for download so you can share with your broader team to help diagnose the issue. Start by navigating to the "Troubleshoot" tab and clicking the "Analyze" button.
 
@@ -94,7 +84,7 @@ Once the bundle is collected, you should see an informative error message in the
 
 
 ♠️ Under the hood
-===============
+================
 
 To understand why the application won't work, we have to look a little more into how the application works. The `Deployment` resource, is making use of an `initContainer` which checks for the following:
 
@@ -148,6 +138,6 @@ The analyzer:
 If you want to learn more about the power of Support Bundles, check out [https://troubleshoot.sh](https://troubleshoot.sh).
 
 🏁 Next
-=========
+=======
 
 Great! Now that we're able to generate a support bundle and analyze a broken application, let's move to the next challenge and correct the problem.

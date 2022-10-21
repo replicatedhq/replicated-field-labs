@@ -1,6 +1,6 @@
 ---
 slug: setup
-id: lhcgdbms3swd
+id: igopgzjlo7vg
 type: challenge
 title: setup
 teaser: A short description of the challenge.

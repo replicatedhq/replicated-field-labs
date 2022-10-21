@@ -1,8 +1,13 @@
 ---
 tracks:
-  - { slug: lab05-airgap, id: orakg61xczwz }
-  - { slug: sample, id: rkh2x9nsexjs }
+  - { slug: lab05-airgap, id: 7erl3lsyiybk }
+  - { slug: sample, id: tvc3c4ohghbi }
   - { slug: hello-world, id: otit0x2yl9ry }
-  - { slug: helm-hello-world, id:nbxtqf3fllg8 }
+  - { slug: helm-hello-world, id: nbxtqf3fllg8 }
   - { slug: app-preflights, id: yv7w1owyqbeh }
   - { slug: replicated-cli, id: pur3nyzcbryg }
+  - { slug: support-bundle, id: d2oeswgg5ra2 }
+  - { slug: support-bundle-analyzers, id: ustszdcffvmg }
+  - { slug: support-cli, id: uab72ueg5ox2 }
+  - { slug: redactors, id: gmiwrds3jmuy }
+  - { slug: custom-fields, id: 9ixa2iyrggut }

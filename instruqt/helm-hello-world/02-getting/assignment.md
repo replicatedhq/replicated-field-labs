@@ -12,6 +12,9 @@ notes:
     - Walkthrough of the Application
     - Download the customer license
 tabs:
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -23,33 +26,21 @@ timelimit: 600
 🚀 Let's start
 ==============
 
-### 1. Check Your Email!
+### 1. Vendor Portal login
 
-If you previously already done any tracks and accepted the invite for the Vendor Portal, you can skip this and go to section 2.
+To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+```
+username: [PARTICIPANT_ID]@replicated-labs.com
+password: [PARTICIPANT_ID]
+```
 
-You should have received an invite via email to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
-
-**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
-
-The email should look like this:
-
-<p align="center"><img src="../assets/email-invite.png" width=600></img></p>
-
-Once you click on the button, it should open a browser to a page similar to this:
-
-<p align="center"><img src="../assets/create-account.png" width=600></img></p>
-
-Fill in the rest of the form and click on the **Create Account** button to get started.
-
-Once you have created your account you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 ### 2. Review the Application
 
-The default channels are `Stable`, `Beta` and `Unstable`. For this lab we have created a new channel `HelloHelm` and you may need to scroll down to see it, depending on your screen resolution.
+The default channels are `Stable`, `Beta` and `Unstable`.
 
-<p align="center"><img src="../assets/hellohelmscroll.png" width=600></img></p>
-
-On that channel card, click on **Release history** to get the list of releases. Here you can see all of the releases that have been promoted to this channel.
+On the Stable channel card, click on **Release history** to get the list of releases. Here you can see all of the releases that have been promoted to this channel.
 
 <p align="center"><img src="../assets/hellohelmchannel.png" width=300></img></p>
 
@@ -73,20 +64,20 @@ Note that for some values, the value is not a hard coded value, rather it has so
 
 ## 3. Copy Install Command
 
-Go back to **Channels** and scroll down to the `hellohelm` channel. On the bottom of the channel card, select to copy the install command for `existing install`
+Go back to **Channels** and go to the `Stable` channel. On the bottom of the channel card, select to copy the install command for `existing install`
 
 <p align="center"><img src="../assets/install-command.png" width=600></img></p>
 
 ## 4. Download Customer File
 
 A customer license (downloadable as a `.yaml` file) is required to install any KOTS application.
-To create a customer license, go to `Customers > Wordpress Customer` by selecting the "Customers" link on the left in the Vendor Portal. Customers for each lab have already been created for you.
+To create a customer license, go to `Customers > Wordpress Customer` by selecting the "Customers" link on the left in the Vendor Portal.
 
 <p align="center"><img src="../assets/helm-customer-list.png" width=600></img></p>
 
 You can view the customer details by clicking the row.
 For this Hello World exercise we'll use `Wordpress Customer`.
-You'll notice that the customer is assigned to the the "HelloWorld" channel on the right hand side, and the Customer Type is set to "Development".
+You'll notice that the customer is assigned to the the "Stable" channel on the right hand side, and the Customer Type is set to "Development".
 When you've reviewed these, you can click the "Download License" link in the top right corner.
 
 <p align="center"><img src="../assets/helm-cust-details.png" width=600></img></p>

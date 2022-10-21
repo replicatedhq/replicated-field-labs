@@ -1,16 +1,12 @@
 package fieldlabs
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
-	"net/http"
 	"strings"
 	"time"
 
-	"github.com/gosimple/slug"
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
 	"github.com/replicatedhq/replicated/pkg/logger"
@@ -39,10 +35,6 @@ type TrackSpec struct {
 	Name string `json:"name"`
 	// Slug of the track
 	Slug string `json:"slug"`
-	// Channel name to create
-	Channel string `json:"channel"`
-	// Slug of channel name
-	ChannelSlug string `json:"channel_slug"`
 	// Customer Name to Create
 	Customer string `json:"customer"`
 	// Dir of YAML sources to promote to channel
@@ -79,23 +71,8 @@ type EnvironmentManager struct {
 	VendorLoc string
 }
 
-func (e *EnvironmentManager) Validate(track *TrackSpec) error {
-	slug.CustomSub = map[string]string{"_": "-"}
-
-	slugifiedChannel := slug.Make(track.Channel)
-
-	if track.ChannelSlug == "" {
-		track.ChannelSlug = slugifiedChannel
-	}
-
-	if slugifiedChannel != track.ChannelSlug {
-		return errors.Errorf("slugified form of Channel name %q was %q, did not match specified slug %q", track.Channel, slugifiedChannel, track.ChannelSlug)
-	}
-
-	return nil
-}
 func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
-	app, err := e.createApp()
+	app, err := e.createApp(track.Name)
 	if err != nil {
 		return errors.Wrap(err, "create apps")
 	}
@@ -120,9 +97,9 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 		return errors.Wrap(err, "get members")
 	}
 
-	err = e.inviteUser(members, policies)
+	err = e.addMember(members, policies)
 	if err != nil {
-		return errors.Wrap(err, "invite users")
+		return errors.Wrap(err, "add member")
 	}
 
 	err = e.createVendorTrack(*app, *track)
@@ -158,17 +135,19 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	}
 
-	channel, err := e.getOrCreateChannel(track)
+	channel, err := e.getChannel(track)
 	if err != nil {
-		return errors.Wrapf(err, "get or create channel %q", track.Spec.Channel)
+		return errors.Wrapf(err, "get Stable channel")
 	}
 	track.Status.Channel = channel
 
-	customer, err := e.getOrCreateCustomer(track)
-	if err != nil {
-		return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+	if trackSpec.Customer != "" {
+		customer, err := e.getOrCreateCustomer(track)
+		if err != nil {
+			return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+		}
+		track.Status.Customer = customer
 	}
-	track.Status.Customer = customer
 
 	release, err := e.Client.CreateRelease(app.ID, kotsYAML)
 	if err != nil {
@@ -177,7 +156,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
 	track.Status.Release = release
 
-	err = e.Client.PromoteRelease(app.ID, release.Sequence, trackSpec.Name, trackSpec.Slug, false, channel.ID)
+	err = e.Client.PromoteRelease(app.ID, release.Sequence, "0.1.0", trackSpec.Slug, false, channel.ID)
 	if err != nil {
 		return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
 	}
@@ -216,38 +195,30 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	return nil
 }
 
-func (e *EnvironmentManager) getOrCreateChannel(track Track) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.ChannelSlug)
+func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, "Stable")
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.ChannelSlug, track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list channel Stable for app %q", track.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
-		if channel.Name == track.Spec.ChannelSlug || channel.Slug == track.Spec.ChannelSlug {
+		if channel.Name == "Stable" {
 			matchedChannels = append(matchedChannels, channel)
 		}
 	}
 
-	if len(matchedChannels) == 1 {
-		return &matchedChannels[0], nil
+	if len(matchedChannels) != 1 {
+		return nil, errors.Errorf("expected one channel to match Stable, found %d", len(matchedChannels))
 	}
+	return &matchedChannels[0], nil
 
-	if len(matchedChannels) > 1 {
-		return nil, errors.Errorf("expected at most one channel to match %q, found %d", track.Spec.Channel, len(matchedChannels))
-	}
-
-	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.ChannelSlug, track.Spec.Channel)
-	if err != nil {
-		return nil, errors.Wrapf(err, "create channel for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
-	}
-	return channel, nil
 }
 
 func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, error) {
 	customers, err := e.Client.ListCustomers(track.Status.App.ID)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list customer %q for app %q", track.Spec.Channel, track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list customer for app %q", track.Status.App.Slug)
 	}
 
 	for _, customer := range customers {
@@ -263,14 +234,8 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 	return customer, nil
 }
 
-func (e *EnvironmentManager) getAppName() string {
-	appName := strings.Replace(e.Params.ParticipantEmail, "@", "-", 1)
-	appName = strings.Replace(appName, "+", "-", -1)
-	return strings.Replace(appName, ".", "-", -1)
-}
-
-func (e *EnvironmentManager) createApp() (*types.App, error) {
-	appName := e.getAppName()
+func (e *EnvironmentManager) createApp(trackName string) (*types.App, error) {
+	appName := trackName + " " + e.Params.ParticipantId
 	app, err := e.getOrCreateApp(appName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "get or create app %q", appName)
@@ -311,237 +276,4 @@ func (e *EnvironmentManager) getOrCreateApp(appName string) (*types.App, error) 
 
 func (e *EnvironmentManager) isNotFound(err error) bool {
 	return strings.Contains(err.Error(), "App not found")
-}
-
-func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
-	req, err := http.NewRequest(
-		"GET",
-		fmt.Sprintf("%s/v1/policies", e.Params.IDOrigin),
-		nil,
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build policies request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send policies request")
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err.Error())
-	}
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("GET /v1/policies %d: %s", resp.StatusCode, body)
-	}
-	var policies []PolicyListItem
-	err = json.Unmarshal([]byte(body), &policies)
-	if err != nil {
-		return nil, errors.Wrap(err, "list policies unmarshal")
-	}
-
-	policiesMap := make(map[string]string)
-	for i := 0; i < len(policies); i += 1 {
-		policiesMap[policies[i].Name] = policies[i].Id
-	}
-	return policiesMap, nil
-}
-
-func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
-	members, err := e.GetMembers()
-	if err != nil {
-		return nil, errors.Wrap(err, "get members")
-	}
-
-	membersMap := make(map[string]MemberList)
-	for i := 0; i < len(members); i += 1 {
-		membersMap[members[i].Email] = members[i]
-	}
-	return membersMap, nil
-}
-
-func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]string) error {
-	if _, policyExists := policies[e.getAppName()]; policyExists {
-		// Policy already exists, not recreating
-		return nil
-	}
-	//read + write policy
-	policyDefinition := &PolicyDefinition{
-		V1: PolicyDefinitionV1{
-			Name: "Policy Name",
-			Resources: PolicyResourcesV1{
-				Allowed: []string{fmt.Sprintf("kots/app/%s/**", app.ID), "kots/license/**", "user/token/**"},
-				Denied:  []string{},
-			},
-		},
-	}
-	policyDefinitionBytes, err := json.Marshal(policyDefinition)
-	if err != nil {
-		return errors.Wrap(err, "marshal definition body")
-	}
-	rbacBody := &Policy{
-		Name:        e.getAppName(),
-		Description: e.getAppName(),
-		Definition:  string(policyDefinitionBytes),
-	}
-
-	rbacBodyBytes, err := json.Marshal(rbacBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal rbac body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
-		bytes.NewReader(rbacBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build rbac request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send rbac request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
-	}
-
-	//readonly policy
-	policyDefinition = &PolicyDefinition{
-		V1: PolicyDefinitionV1{
-			Name: "Policy Name",
-			Resources: PolicyResourcesV1{
-				Allowed: []string{fmt.Sprintf("kots/app/%s/read", app.ID), "kots/license/**", "user/token/**"},
-				Denied:  []string{},
-			},
-		},
-	}
-	policyDefinitionBytes, err = json.Marshal(policyDefinition)
-	if err != nil {
-		return errors.Wrap(err, "marshal definition body")
-	}
-	rbacBody = &Policy{
-		Name:        fmt.Sprintf("%s-readonly", e.getAppName()),
-		Description: fmt.Sprintf("%s-readonly", e.getAppName()),
-		Definition:  string(policyDefinitionBytes),
-	}
-
-	rbacBodyBytes, err = json.Marshal(rbacBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal rbac body")
-	}
-	req, err = http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
-		bytes.NewReader(rbacBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build rbac request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err = http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send rbac request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
-	}
-	return nil
-
-}
-
-func (e *EnvironmentManager) updateRBAC(member MemberList, policyId string) error {
-	policyUpdateBody := &PolicyUpdate{
-		Id: policyId,
-	}
-
-	policyUpdateBytes, err := json.Marshal(policyUpdateBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal policy update body")
-	}
-	url := fmt.Sprintf("%s/v1/team/member/%s", e.Params.APIOrigin, member.Id)
-	if member.Is_Pending_Invite {
-		url = fmt.Sprintf("%s/v1/team/invite/%s", e.Params.APIOrigin, member.Email)
-	}
-	req, err := http.NewRequest(
-		"PUT",
-		url,
-		bytes.NewReader(policyUpdateBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build update policy request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send update policy request")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 204 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("PUT /v1/team/member %d: %s", resp.StatusCode, body)
-	}
-	return nil
-}
-
-func (e *EnvironmentManager) inviteUser(members map[string]MemberList, policies map[string]string) error {
-	inviteEmail := strings.Replace(e.Params.ParticipantEmail, "@", "+replabs@", 1)
-	if _, memberExists := members[inviteEmail]; memberExists {
-		// Update RBAC policy TODO
-		err := e.updateRBAC(members[inviteEmail], policies[e.getAppName()])
-		if err != nil {
-			return errors.Wrap(err, "update rbac policy")
-		}
-		return nil
-	}
-	inviteBody := map[string]string{
-		"email":     inviteEmail,
-		"policy_id": policies[e.getAppName()],
-	}
-	inviteBodyBytes, err := json.Marshal(inviteBody)
-	if err != nil {
-		return errors.Wrap(err, "marshal invite body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
-		bytes.NewReader(inviteBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build invite request")
-	}
-	req.Header.Set("Authorization", e.Params.SessionToken)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send invite request")
-	}
-	defer resp.Body.Close()
-	// rate limit returned when already invited
-	if resp.StatusCode == 429 {
-		e.Log.ActionWithoutSpinner("Skipping invite %q due to 429 error", inviteEmail)
-		return nil
-	}
-	if resp.StatusCode != 204 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
-	}
-	return nil
 }

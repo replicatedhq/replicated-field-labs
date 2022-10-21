@@ -1,6 +1,6 @@
 ---
 slug: tunnel-and-deploy
-id: lpezue9darej
+id: aykgklg0iuql
 type: challenge
 title: Tunnel and Deploy
 teaser: A short description of the challenge.
@@ -33,7 +33,7 @@ export AIRGAP_IP=... # your airgap IP
 ssh -NTfL 0.0.0.0:8800:$AIRGAP_IP:8800 airgap
 ```
 
-The SSH command will run in the background, and you wont see any output. 
+The SSH command will run in the background, and you wont see any output.
 Next, get your hostname for interacting with the App Manager admin console.
 
 ```shell

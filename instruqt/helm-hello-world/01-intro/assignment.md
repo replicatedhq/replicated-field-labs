@@ -9,14 +9,12 @@ notes:
   contents: |-
     This track uses a single node Kubernetes cluster on a sandbox virtual machine.
     Please wait while we boot the VM for you and start Kubernetes.
-
     ## Objectives
-
     **This track demonstrates how to:**
     - Install Replicated's application installer
     - Deploy Wordpress on Kubernetes using Replicated
     - Provide the Initial Blog's name during the installation
-    - Open Wordpress from the Admin Console
+    - Make a change in the webserver configuration and update the application
 tabs:
 - title: Shell
   type: terminal
@@ -24,12 +22,11 @@ tabs:
 difficulty: basic
 timelimit: 300
 ---
+
 👋 Introduction
 ===============
 
 This exercise is designed to give you a sandbox to ensure you have a basic understanding how to deploy a kubernetes application packaged as a Helm Chart using Replicated.
-
-The README and the YAML sources draw from https://github.com/replicatedhq/replicated-starter-kots
 
 * **What you will do**:
   * Review the Wordpress Helm Chart packaged in Replicated and deploy it to a sandbox environment
