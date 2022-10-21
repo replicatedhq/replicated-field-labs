@@ -6,7 +6,7 @@ title: Setting the Initial Value
 teaser: Let's create a customer license and get the install command
 notes:
 - type: text
-  contents: -|
+  contents: |-
     In this challenge we will create a customer license and set the value of our custom field to `false`. 
     While in the Vendor Portal, we'll also grab the install command.
 tabs:
@@ -25,7 +25,7 @@ timelimit: 600
 
 Now that we have created our Custom License Field and updated the application, we are ready to put this into motion.
 
-Let's create a new Customer, set the feature flag to `false` and install the application. We will take a look at the applicaiton without the Super Duper feature turned on. Then, we'll update the field to `true` and update the application we deployed and verify that the feature is now on.
+Let's create a new Customer, set the feature flag to `false` and install the application. We will take a look at the application without the Super Duper feature turned on. Then, we'll update the field to `true` and update the application we deployed and verify that the feature is now on.
 
 Go back to your browser that has the Vendor Portal open. If you closed it, no worries, click on the **Open External Window** button on the **Vendor** tab.
 
@@ -41,7 +41,7 @@ Provide the following information
 
 * **Customer name:** Enter the name of the customer. In the screenshot below, we use `License Customer` as the name.
 
-* **Assigned channel:** By assigning a channel, we can ensure the right version of the application is installed. Select the `CustomFields` channel.
+* **Assigned channel:** By assigning a channel, we can ensure the right version of the application is installed. Select the `Stable` channel.
 * **Expiration policy:** These settings allow to specify if the license should have an expiration date. The expiration date ensures that a new install or upgrades are not allowed as well as restricting access to the image registry. For this lab, leave the setting as-is.
 * **Customer type:** The type of customer you select is used solely for reporting purposes. Their access to your app will not be affected by the type you assign to them. For this lab, select **Development**.
 * **License Options:** This section allows you toggle on & off Replicated features. Leave this section as-is

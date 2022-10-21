@@ -10,17 +10,7 @@ do
   sleep 1
 done
 
-### install Google Cloud CLI
-apt -y update && apt -y install apt-transport-https gnupg
-
-# Use the gcloud installation process described in the docs:
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
-  tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
-  apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-
-# Update apt again and install gcloud
-apt -y update && apt -y install google-cloud-sdk && sudo apt -y clean
+HOME_DIR=/home/replicant
 
 ### authenticate to gcloud
 mkdir -p /root/.config/gcloud
@@ -34,26 +24,24 @@ gcloud config set project $INSTRUQT_GCP_PROJECT_AIRGAP_PROJECT_ID
 
 ### Create airgap network
 JUMPBOX_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
-gcloud compute networks create airgap
 
 # allow SSH accesss from the jumpbox
 gcloud compute firewall-rules create allow-jumpbox-ssh \
-    --priority 1000 --network airgap --allow tcp:22 \
-    --source-ranges ${JUMPBOX_IP}/32
-# explicitly deny all opther ingress and egress
-gcloud compute firewall-rules create deny-ingress \
-    --priority 2000 --network airgap --action deny --rules tcp,udp,icmp \
-    --direction ingress --source-ranges 0.0.0.0/0
-gcloud compute firewall-rules create deny-egress \
-    --priority 2000 --network airgap --action deny --rules tcp,udp,icmp \
-    --direction egress --destination-ranges 0.0.0.0/0
+  --priority 1000 --network airgap --allow tcp:22 \
+  --source-ranges ${JUMPBOX_IP}/32
 
-### create cluster VM
-CLUSTER_IP=$(gcloud compute instances create cluster \
-  --image-project ubuntu-os-cloud --image-family ubuntu-2204-lts \
-  --machine-type n1-standard-8 --network airgap --zone europe-west1-b \
-  --boot-disk-size=200GB --boot-disk-type=pd-ssd \
-  --metadata "ssh-keys=replicant:$(cat /opt/instruqt/ssh/participant-ssh-key/public_key)" \
+### Assure access to the air-gapped cluster VM
+# create an SSH key
+SSH_DIR=${HOME_DIR}/.ssh
+mkdir -p "${SSH_DIR}" && /bin/chmod 0700 "${SSH_DIR}"
+ssh-keygen -t ed25519 -o -a 100 -f ${SSH_DIR}/id_ed25519 -q -N ""
+/bin/chmod 0600 ${SSH_DIR}/* && /bin/chown -R replicant:replicant ${SSH_DIR}
+
+# add the key to the SSH metadata
+gcloud compute instances add-metadata cluster --zone europe-west1-b \
+  --metadata "ssh-keys=replicant:$(cat /home/replicant/id_ed25519.pub)"
+
+# make sure we can refer to the host by name
+CLUSTER_IP=$(gcloud compute instances describe cluster --zone europe-west1-b \
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
-
 echo "${CLUSTER_IP}   cluster   # airgapped cluster" >> /etc/hosts

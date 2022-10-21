@@ -1,0 +1,54 @@
+name: Build Jumpbox Image
+on:
+  schedule:
+  - cron: '0 10 * * *' # everyday at 10am
+  push:
+    branches:
+    - '**'
+    paths:
+    - 'packer/jumpbox/**'
+    - '.github/workflows/build-jumpbox-image.yaml'
+  pull_request:
+    branches:
+    - 'instruqt'
+
+jobs:
+  build_and_push_jumpbox:
+    name: Build and Push Jumpbox VM Image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenicate to Google Cloud
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    - name: Setup Google Cloud SDK
+      id: auth
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: kots-field-labs
+
+    # validate templates
+    - name: Validate Packer Template
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: validate
+        arguments: -syntax-only
+        working_directory: ./packer
+        target: jumpbox
+
+    # build artifact
+    - name: Build VM Image
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: build
+        arguments: "-color=false -on-error=abort -force -var service_account_key=${{secrets.GCP_SERVICE_ACCOUNT_KEY}}"
+        working_directory: ./packer
+        target: jumpbox
+      env:
+        PACKER_LOG: 1

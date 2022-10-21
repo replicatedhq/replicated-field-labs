@@ -37,9 +37,9 @@ password: [PARTICIPANT_ID]
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
 👋 Install Nginx
-===============
+================
 
-In this case, the Applicatin Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
+In this case, the Application Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
 
 ### 1. Download the license
 
@@ -58,7 +58,7 @@ Go to the `Application Installer` tab (external window), login and upload the li
    ![Application installer](../assets/deploy.png)
 
 🐛 The Issue
-===============
+============
 
 Once the app is deployed, you'll notice something is not quite right. The Status Informers show "Unavailable".
 
@@ -66,7 +66,7 @@ Once the app is deployed, you'll notice something is not quite right. The Status
 
 
 🔎 Investigating
-===============
+================
 
 As you know, the first step when the application isn't starting will be to collect a support bundle. Doing so will run a series of diagnostic checks to help diagnose problems with the application. In the case that a problem cannot be diagnosed automatically, a bundle will be ready for download so you can share with your broader team to help diagnose the issue. Start by navigating to the "Troubleshoot" tab and clicking the "Analyze" button.
 
@@ -84,7 +84,7 @@ Once the bundle is collected, you should see an informative error message in the
 
 
 ♠️ Under the hood
-===============
+================
 
 To understand why the application won't work, we have to look a little more into how the application works. The `Deployment` resource, is making use of an `initContainer` which checks for the following:
 
@@ -138,6 +138,6 @@ The analyzer:
 If you want to learn more about the power of Support Bundles, check out [https://troubleshoot.sh](https://troubleshoot.sh).
 
 🏁 Next
-=========
+=======
 
 Great! Now that we're able to generate a support bundle and analyze a broken application, let's move to the next challenge and correct the problem.

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+HOME_DIR=/home/replicant
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> ${HOME_DIR}/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> ${HOME_DIR}/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> ${HOME_DIR}/.bashrc

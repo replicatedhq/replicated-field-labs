@@ -1,6 +1,6 @@
 ---
 slug: connecting
-id: x5fau7sif8sa
+id: jnl508r4xqhm
 type: challenge
 title: Connecting
 teaser: Connecting with the airgapped server

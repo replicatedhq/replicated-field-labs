@@ -14,11 +14,10 @@ tabs:
   new_window: true
 - title: Shell
   type: terminal
-  hostname: kubernetes-vm  
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
-## Adding a Custom redactor
 
 Custom redactors can be added both by a Vendor in a release and their end customer in the Admin Console. In this lab we are going to learn how to add it from the Admin Console as the feedback loop is shorter. Keep in mind that the file we create in this lab could be also included as part of a release.
 

@@ -1,7 +1,7 @@
 {
     "name": "CustomFields",
     "slug": "customfields",
-    "customer": "Some Big Bank",
+    "customer": "",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""
 }

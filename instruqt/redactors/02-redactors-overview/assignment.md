@@ -14,6 +14,7 @@ tabs:
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
+  new_window: true
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
@@ -28,7 +29,7 @@ timelimit: 600
 
 We'll explore how Redactors work and learn the workflows that end customers can use to review and customize redaction of support bundles. We'll study an app that has a container that logs sensitive information, and how to ensure that information is excluded from support bundles.
 
-In this lab, the Applicatin Installer is already deployed. So you can download the license from the Vendor Portal (`Redactors Customer`), upload the license in the Application Installer and go through the initial installation.
+In this lab, the Application Installer is already deployed. So you can download the license from the Vendor Portal (`Redactors Customer`), upload the license in the Application Installer and go through the initial installation.
 
 ### 1. Download the license
 

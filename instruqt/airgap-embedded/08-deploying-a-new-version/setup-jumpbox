@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+tmux send-keys -t airgap replicated SPACE release SPACE download SPACE $INSTRUQT_PARTICIPANT_ID-replicated-labs-com/Unstable ENTER
+tmux send-keys -t airgap tar -xzvf '*.tar.gz' ENTER
+
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t airgap 
+tmux send-keys -t airgap clear ENTER
+
