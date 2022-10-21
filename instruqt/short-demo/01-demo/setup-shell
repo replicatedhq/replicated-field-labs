@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+# Setup default kubeconfig
+echo "export KUBECONFIG=~/.kube/config-kotsadm" >> /home/replicant/.bashrc
+
+# Setup REPLICATED_APP and REPLICATED_API_TOKEN
+json=$( jq -n -c --arg email "$INSTRUQT_PARTICIPANT_ID@replicated-labs.com" --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
+token=$(curl -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+apiToken=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
+access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+echo "export REPLICATED_API_TOKEN=${access_token}" >> /home/replicant/.bashrc
+echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc
+
+# Download manifests
+mkdir -p /home/replicant/demo-app/manifests
+export REPLICATED_API_TOKEN=${access_token}
+export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID
+replicated release download 1 -d /home/replicant/demo-app/manifests
+chown -R replicant /home/replicant/demo-app
+
+# Install kotsadm on kotsadm
+export KUBECONFIG=/home/replicant/.kube/config-kotsadm
+kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --name short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --namespace default \
+  --shared-password $INSTRUQT_PARTICIPANT_ID \
+  --no-port-forward 
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
+
+
+# Install kotsadm + application on application
+replicated customer download-license --customer "Some big bank" > /home/replicant/license.yaml
+export KUBECONFIG=/home/replicant/.kube/config-application
+kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --name short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --namespace default \
+  --license-file /home/replicant/license.yaml \
+  --shared-password $INSTRUQT_PARTICIPANT_ID \
+  --no-port-forward \
+  --skip-preflights
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
+  
+
+exit 0

@@ -1,10 +1,17 @@
 slug: short-demo
-title: Short demo track
-teaser: An environment to be used for a short demo
-description: |-
-  This track will show a video without audio that can be used to give an overview of Replicated.
-  Once the environment is ready, it will give access to the Vendor Portal, the Application Installer, and a k3s cluster with the application pre-installed.
 
+id: iecexaqfyu6j
+title: Short Demo
+teaser: Used for conferences and pitches
+description: |-
+  An environment to run very short demo's
+
+  It contains two k3s environments:
+  * k3s-1: Just k3s with kots pre-installed. You can upload a license and go through the installation process.
+  * k3s-2: Just k3s with kots pre-installed and also the application pre-installed.
+
+  It contains a container with the replicated CLI pre-installed.
+  It contains an editor with the manifests pre-loaded as an IDE example
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags: []
 owner: replicated
@@ -12,3 +19,5 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
+checksum: "8746650916365197624"
+
