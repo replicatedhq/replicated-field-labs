@@ -20,5 +20,9 @@ func loadConfig(vendorLoc string) (*fieldlabs.TrackSpec, error) {
 		return nil, errors.Wrapf(err, "unmarshal vendor json from %q", vendorLoc)
 	}
 
+	if track.Channel == "" {
+		track.Channel = "Stable"
+	}
+
 	return &track, nil
 }

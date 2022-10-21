@@ -35,6 +35,8 @@ type TrackSpec struct {
 	Name string `json:"name"`
 	// Slug of the track
 	Slug string `json:"slug"`
+	// Channel: if not defined or empty use Stable
+	Channel string `json:"channel"`
 	// Customer Name to Create
 	Customer string `json:"customer"`
 	// Dir of YAML sources to promote to channel
@@ -196,22 +198,31 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 }
 
 func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, "Stable")
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.Channel)
 	if err != nil {
-		return nil, errors.Wrapf(err, "list channel Stable for app %q", track.Status.App.Slug)
+		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.Channel, track.Status.App.Slug)
 	}
 
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
-		if channel.Name == "Stable" {
+		if channel.Name == track.Spec.Channel {
 			matchedChannels = append(matchedChannels, channel)
 		}
 	}
 
-	if len(matchedChannels) != 1 {
-		return nil, errors.Errorf("expected one channel to match Stable, found %d", len(matchedChannels))
+	if len(matchedChannels) == 1 {
+		return &matchedChannels[0], nil
 	}
-	return &matchedChannels[0], nil
+
+	if len(matchedChannels) > 1 {
+		return nil, errors.Errorf("expected at most one channel to match %q, found %d", track.Spec.Channel, len(matchedChannels))
+	}
+
+	channel, err := e.Client.CreateChannel(track.Status.App.ID, track.Spec.Channel, track.Spec.Channel)
+	if err != nil {
+		return nil, errors.Wrapf(err, "create channel for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
+	}
+	return channel, nil
 
 }
 
