@@ -2,7 +2,6 @@
     "name": "Installing in an Air-Gapped Environment",
     "slug": "airgap-embedded",
     "channel": "Unstable",
-    "channel_slug": "Unstable",
     "customer": "Replicant",
     "yaml_dir": "./manifests",
     "k8s_installer_yaml_path": ""
