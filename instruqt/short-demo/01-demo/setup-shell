@@ -11,7 +11,15 @@ echo "export KUBECONFIG=~/.kube/config-kotsadm" >> /home/replicant/.bashrc
 
 # Setup REPLICATED_APP and REPLICATED_API_TOKEN
 json=$( jq -n -c --arg email "$INSTRUQT_PARTICIPANT_ID@replicated-labs.com" --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
-token=$(curl -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+token=$(curl -s -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+i=0
+while [[ "$token" == "null" && $i -lt 10 ]]
+do
+    sleep 2
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+    echo $token
+    i=$((i+1))
+done
 apiToken=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
 
