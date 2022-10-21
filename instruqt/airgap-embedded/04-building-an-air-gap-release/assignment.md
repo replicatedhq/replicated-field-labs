@@ -34,9 +34,9 @@ the release history page for a channel. If you have a channel that
 you'll want regular airgap bundles on, you'll likely want to edit
 that channel to enable auto builds.
 
-![Release History for the development Channel](../assets/channel-release-history.png)
+![Release History for the Unstable Channel](../assets/channel-release-history.png)
 
-Let's go through setting that up for our `development` channel we're
+Let's go through setting that up for our `Unstable` channel we're
 using for this lab. Start by editing the channel info
 
 ![Editing Channel Details](../assets/channel-edit-info-btn.png)
