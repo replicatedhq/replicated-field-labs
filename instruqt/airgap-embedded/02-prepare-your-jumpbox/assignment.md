@@ -49,7 +49,7 @@ Go from the channels page to the settings page to see the application slug. The 
 Replicated CLI and API uniquely identify applications. We'll need to know the slug to use the
 CLI later in the lab.
 
-![Finding Your Application Slug](../assets/cli-setup-quickstart-settings.png)
+![Finding Your Application Slug](../assets/application-slug-in-settings.png)
 
 When you go back to the "Shell" tab you'll set the variable `REPLICATED_APP` to the app slug. This tells
 the `replicated` command which application you are working on without you having to passing it as
