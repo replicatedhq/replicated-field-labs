@@ -41,10 +41,10 @@ download is running.
 From the "Jumpbox" tab, run the command below:
 
 ```
-replicated channel inspect development
+replicated channel inspect Unstable
 ```
 
-This command shows you the details of the `development` release channel,
+This command shows you the details of the `Unstable` release channel,
 which we'll use for the air-gap install.
 
 The channel details include the information you need to install the
@@ -55,25 +55,25 @@ air-gapped machine. The air-gapped install method also includes it's
 own cluster.
 
 ```text
-ID:             2G8bwopWjbBhyGqKut11tpMcTz6
-NAME:           development
+ID:             2GSIQnqsl6ybfWVacXrutlLQa28
+NAME:           Unstable
 DESCRIPTION:
-RELEASE:        2
+RELEASE:        1
 VERSION:        Installing in an Air-Gapped Environment
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install uws24vkeurcz-replicated-labs-com/development
+    kubectl kots install uws24vkeurcz-replicated-labs-com-caiman/unstable
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/uws24vkeurcz-replicated-labs-com-development | sudo bash
+    curl -fsSL https://k8s.kurl.sh/uws24vkeurcz-replicated-labs-com-caiman-unstable | sudo bash
 
 AIRGAP:
 
-    curl -fSL -o uws24vkeurcz-replicated-labs-com-development.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-development.tar.gz
-    # ... scp or sneakernet uws24vkeurcz-replicated-labs-com-development.tar.gz to airgapped machine, then
-    tar xvf uws24vkeurcz-replicated-labs-com-development.tar.gz
+    curl -fSL -o uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
+    # ... scp or sneakernet uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz to airgapped machine, then
+    tar xvf uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
     sudo bash ./install.sh airgap
 ```
 
@@ -84,7 +84,7 @@ onto our jumpbox.
 In my case:
 
 ```bash
-curl -fSL -o uws24vkeurcz-replicated-labs-com-development.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-development.tar.gz
+curl -fSL -o uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.
