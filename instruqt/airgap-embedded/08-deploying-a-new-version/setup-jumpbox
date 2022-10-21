@@ -3,15 +3,10 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-HOME_DIR=/home/replicant
+tmux send-keys -t airgap replicated SPACE release SPACE download SPACE $INSTRUQT_PARTICIPANT_ID-replicated-labs-com/Unstable ENTER
+tmux send-keys -t airgap tar -xzvf '*.tar.gz' ENTER
 
-# get manifests to use for updating
-git clone --depth 1 --filter=blob:none --sparse --branch instruqt-airgap-embedded https://github.com/replicatedhq/kots-field-labs
-cd kots-field-labs
-git sparse-checkout init
-git sparse-checkout set instruqt/airgap-embedded
-mv instruqt/airgap-embedded/vendor/manifests ${HOME_DIR}
-cd ..
-rm -rf kots-field-labs
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t airgap 
+tmux send-keys -t airgap clear ENTER
 
-/bin/chown replicant:replicant ${HOME_DIR}/manifests
