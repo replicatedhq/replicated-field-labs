@@ -35,11 +35,11 @@ ssh cluster
 Once you're on the node, untar the bundle and run the install script
 with the `airgap` flag. kURL install flags are documented
 [in the kurl.sh docs](https://kurl.sh/docs/install-with-kurl/advanced-options).
-Your bundle name will vary, but end with the `-replicated-labs-com-development.tar.gz`
-suffix like mine does.
+Since there's only one tarball on the host, you can use a wildcard to expand
+it.
 
 ```shell
-tar xvzf uws24vkeurcz-replicated-labs-com-development.tar.gz
+tar xvf *.tar.gz
 sudo bash install.sh airgap
 ```
 
