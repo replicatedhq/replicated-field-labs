@@ -57,7 +57,7 @@ own cluster.
 ```text
 ID:             2GSbRtgZKeOTmjsU87d1lhE8Qdq
 NAME:           Unstable
-DESCRIPTION:    
+DESCRIPTION:
 RELEASE:        1
 VERSION:        0.0.1
 EXISTING:
