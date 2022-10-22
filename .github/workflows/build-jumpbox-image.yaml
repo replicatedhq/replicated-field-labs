@@ -33,12 +33,11 @@ jobs:
       with:
         project_id: kots-field-labs
 
-    # validate templates
-    - name: Validate Packer Template
+    # initialize
+    - name: Initialize Packer
       uses: hashicorp/packer-github-actions@master
       with:
         command: init
-        arguments: -syntax-only
         working_directory: ./packer
         target: jumpbox
 
