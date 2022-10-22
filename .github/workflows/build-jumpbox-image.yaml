@@ -14,7 +14,7 @@ on:
 
 jobs:
   build_and_push_jumpbox:
-    name: Build and Push Jumpbox VM Image
+    name: Build Jumpbox GCP Compute Image
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -55,8 +55,9 @@ jobs:
       uses: hashicorp/packer-github-actions@master
       with:
         command: build
-        arguments: "-color=false -on-error=abort -force -var service_account_key=${{secrets.GCP_SERVICE_ACCOUNT_KEY}}"
+        arguments: "-force"
         working_directory: ./packer
         target: jumpbox
       env:
         PACKER_LOG: 1
+        PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
