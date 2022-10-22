@@ -37,6 +37,15 @@ jobs:
     - name: Validate Packer Template
       uses: hashicorp/packer-github-actions@master
       with:
+        command: init
+        arguments: -syntax-only
+        working_directory: ./packer
+        target: jumpbox
+
+    # validate templates
+    - name: Validate Packer Template
+      uses: hashicorp/packer-github-actions@master
+      with:
         command: validate
         arguments: -syntax-only
         working_directory: ./packer
