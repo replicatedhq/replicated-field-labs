@@ -4,7 +4,7 @@
 set -euxo pipefail
 
 # save the session
-tmux capture-pane -t airgap -S 50
+tmux capture-pane -t airgap -S -
 SESSION=$(tmux save-buffer -)
 
 # short circuit if testing
