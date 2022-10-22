@@ -4,14 +4,17 @@ on:
   - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
-    - '**'
+    - 'instruqt'
     paths:
     - 'packer/jumpbox/**'
     - '.github/workflows/build-jumpbox-image.yaml'
   pull_request:
     branches:
     - 'instruqt'
-
+    paths:
+    - 'packer/jumpbox/**'
+    - '.github/workflows/build-jumpbox-image.yaml'
+ 
 jobs:
   build_and_push_jumpbox:
     name: Build Jumpbox GCP Compute Image
@@ -53,6 +56,7 @@ jobs:
     # build artifact
     - name: Build VM Image
       uses: hashicorp/packer-github-actions@master
+      if: ${{ github.event_name == 'pull_request' }} 
       with:
         command: build
         arguments: "-force"
