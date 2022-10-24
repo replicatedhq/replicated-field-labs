@@ -7,7 +7,17 @@ username="${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
 password="${INSTRUQT_PARTICIPANT_ID}"
 
 login_request=$( jq -n -c --arg email "${username}" --arg password "${password}" '$ARGS.named' )
-token=$(curl -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
+token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
+
+i=0
+while [[ "$token" == "null" && $i -lt 20 ]]
+do
+    sleep 2
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
+    echo $token
+    i=$((i+1))
+done
+
 api_token=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$api_token" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
 
