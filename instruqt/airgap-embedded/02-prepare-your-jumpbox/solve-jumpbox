@@ -13,13 +13,17 @@ i=0
 while [[ "$token" == "null" && $i -lt 20 ]]
 do
     sleep 2
+    set +u
     token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
     echo $token
+    set -u
     i=$((i+1))
 done
 
-api_token=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
+UUID=$(cat /proc/sys/kernel/random/uuid)
+api_token=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$api_token" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+app_slug=$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq --raw-output ".apps [] | select(.name | test(\".*${INSTRUQT_PARTICIPANT_ID}.*\")).slug")
 
 tmux send-keys -t airgap export SPACE REPLICATED_API_TOKEN=${access_token} ENTER
-tmux send-keys -t airgap export SPACE REPLICATED_APP=$(replicated app ls | grep $INSTRUQT_PARTICIPANT_ID | tr -s ' ' | cut -d ' ' -f3) ENTER
+tmux send-keys -t airgap export SPACE REPLICATED_APP=${app_slug} ENTER
