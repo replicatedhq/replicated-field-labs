@@ -1,6 +1,10 @@
 Guidelines for Instruqt invites
 ===============================
 
+### External invites
+
+At a minimum the following should be present.
+
 * Public title: `Replicated Hands-On Labs for [Vendor Name]`
 * Public description: `An opportunity for the [Vendor Name] team to explore the features and capabilities of Replicated in a lab environment.`
 * Internal description: ok to leave empty
