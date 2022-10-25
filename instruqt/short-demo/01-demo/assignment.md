@@ -33,10 +33,10 @@ difficulty: basic
 timelimit: 1800
 ---
 
-Instructions
-============
+Kubeconfig
+==========
 
-kubectl for kotsadm (default)
+kubectl for kotsadm
 ```
 export KUBECONFIG=~/.kube/config-kotsadm
 ```
@@ -45,3 +45,20 @@ kubectl for application
 ```
 export KUBECONFIG=~/.kube/config-application
 ```
+
+
+Remove app
+==========
+
+```shell
+export KUBECONFIG=~/.kube/config-kotsadm
+kubectl kots remove short-demo-${INSTRUQT_PARTICIPANT_ID} -n default --force
+```
+
+Create new release
+==================
+
+```shell
+replicated release create --yaml-dir ./demo-app/manifests --promote Stable --version 0.2.0
+```
+

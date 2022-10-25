@@ -3,6 +3,12 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
+# Wait for the Instruqt host bootstrap to finish
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+    sleep 1
+done
+
 # simple SSH client setup so we can SSH to/from the shell
 
 cat <<EOF >> "$HOME/.ssh/config"
@@ -22,6 +28,12 @@ ssh shell "mkdir -p /home/replicant/.kube"
 while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do
   echo "Waiting for Rancher kubernetes configuration to be available..."
   sleep 1
+done
+
+# Wait for the Kubernetes API server to become available
+while ! curl --silent --fail --output /dev/null http://localhost:8001/api 
+do
+    sleep 1 
 done
 
 scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config-kotsadm

@@ -4,8 +4,8 @@ kind: Application
 metadata:
   name: nginx
 spec:
-  title: App Name
-  icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.png
+  title: Sppoky
+  icon: https://github.githubassets.com/images/icons/emoji/unicode/1f47b.png?v8
   statusInformers:
     - deployment/nginx
   ports:

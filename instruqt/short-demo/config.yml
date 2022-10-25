@@ -2,7 +2,7 @@ version: "3"
 containers:
 - name: shell
   image: gcr.io/kots-field-labs/shell
-  shell: su - replicant 
+  shell: su - replicant
   memory: 256
 virtualmachines:
 - name: kotsadm
@@ -21,4 +21,3 @@ virtualmachines:
   - http
   - https
   - high-ports
-

@@ -5,7 +5,26 @@ yq -i '.clusters[0].cluster.server = "https://kotsadm:6443"' /home/replicant/.ku
 yq -i '.clusters[0].cluster.server = "https://application:6443"' /home/replicant/.kube/config-application
 chown -R replicant /home/replicant/.kube
 
+# Install kotsadm on kotsadm
+export KUBECONFIG=/home/replicant/.kube/config-kotsadm
+kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --name short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --namespace default \
+  --shared-password $INSTRUQT_PARTICIPANT_ID \
+  --no-port-forward 
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
+
+# Install kotsadm on application
+export KUBECONFIG=/home/replicant/.kube/config-application
+kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --name short-demo-$INSTRUQT_PARTICIPANT_ID \
+  --namespace default \
+  --shared-password $INSTRUQT_PARTICIPANT_ID \
+  --no-port-forward 
+kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
+
 # Display PARTICIPANT_ID info for Vendor Portal
+echo "export INSTRUQT_PARTICIPANT_ID=${INSTRUQT_PARTICIPANT_ID}" >> /home/replicant/.bashrc
 echo "echo Credentials for https://vendor.replicated.com" >> /home/replicant/.bashrc
 echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /home/replicant/.bashrc
 echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc

@@ -5,24 +5,24 @@
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
-
-# Setup default kubeconfig
-echo "export KUBECONFIG=~/.kube/config-kotsadm" >> /home/replicant/.bashrc
+cat <<'SAVE_SCRIPT' >> /home/replicant/trigger.sh
+#!/bin/bash 
 
 # Setup REPLICATED_APP and REPLICATED_API_TOKEN
-json=$( jq -n -c --arg email "$INSTRUQT_PARTICIPANT_ID@replicated-labs.com" --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
-token=$(curl -s -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${INSTRUQT_PARTICIPANT_ID}" '$ARGS.named' )
+token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
 
 i=0
-while [[ "$token" == "null" && $i -lt 10 ]]
+while [[ "$token" == "null" && $i -lt 20 ]]
 do
     sleep 2
-    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$json" https://id.replicated.com/v1/login | jq -r ".token")
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
     echo $token
     i=$((i+1))
 done
 
-apiToken=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
+UUID=$(cat /proc/sys/kernel/random/uuid)
+apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
 
 echo "export REPLICATED_API_TOKEN=${access_token}" >> /home/replicant/.bashrc
@@ -35,19 +35,11 @@ export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID
 replicated release download 1 -d /home/replicant/demo-app/manifests
 chown -R replicant /home/replicant/demo-app
 
-# Install kotsadm on kotsadm
-export KUBECONFIG=/home/replicant/.kube/config-kotsadm
-kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
-  --name short-demo-$INSTRUQT_PARTICIPANT_ID \
-  --namespace default \
-  --shared-password $INSTRUQT_PARTICIPANT_ID \
-  --no-port-forward 
-kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
-
 
 # Install kotsadm + application on application
 replicated customer download-license --customer "Some big bank" > /home/replicant/license.yaml
 export KUBECONFIG=/home/replicant/.kube/config-application
+kubectl kots remove short-demo-${INSTRUQT_PARTICIPANT_ID} -n default --force
 kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --name short-demo-$INSTRUQT_PARTICIPANT_ID \
   --namespace default \
@@ -55,7 +47,10 @@ kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --shared-password $INSTRUQT_PARTICIPANT_ID \
   --no-port-forward \
   --skip-preflights
-kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
-  
+SAVE_SCRIPT
+
+chmod a+x /home/replicant/trigger.sh
+chown -R replicant /home/replicant/trigger.sh
+nohup /home/replicant/trigger.sh > /home/replicant/trigger.out 2> /home/replicant/trigger.err < /dev/null & disown
 
 exit 0

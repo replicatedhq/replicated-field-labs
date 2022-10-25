@@ -6,8 +6,8 @@ description: |-
   An environment to run very short demo's
 
   It contains two k3s environments:
-  * k3s-1: Just k3s with kots pre-installed. You can upload a license and go through the installation process.
-  * k3s-2: Just k3s with kots pre-installed and also the application pre-installed.
+  * k3s-1 (kotsadm cluster): Just k3s with kots pre-installed. You can upload a license and go through the installation process.
+  * k3s-2 (application cluster): Just k3s with kots pre-installed and also the application pre-installed.
 
   It contains a container with the replicated CLI pre-installed.
   It contains an editor with the manifests pre-loaded as an IDE example
@@ -18,4 +18,4 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
-checksum: "6402256772002631424"
+checksum: "4205164416859097913"
