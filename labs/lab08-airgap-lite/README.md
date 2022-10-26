@@ -225,7 +225,18 @@ To continue downloading the air gap assets, navigate back to the download portal
 
 Because this instance is in air gap mode, you must create a port forward to access the UI from your workstation in the next step.
 
-![kurl-password](img/kurl-password.png)
+```text
+configmap/kurl-config created
+
+
+		Installation
+		  Complete ✔
+
+
+Kotsadm: http://10.128.1.47:30880
+Login with password (will not be shown again): iunIEfPyc
+This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
+```
 
 ***
 ## Accessing the UI using SSH and configuring the instance
@@ -236,13 +247,13 @@ You must create a port forward from your workstation in order to access the UI l
 export FIRST_NAME=... # your firstname (lowercase)
 export JUMP_BOX_IP=... # your jumpbox IP
 export REPLICATED_APP=... # your app slug
-ssh -NL 8800:${REPLICATED_APP}-lab08-airgap-lite:8800 -L 8888:${REPLICATED_APP}-lab08-airgap-lite:8888 ${FIRST_NAME}@${JUMP_BOX_IP}
+ssh -NL 30880:${REPLICATED_APP}-lab08-airgap-lite:30880 -L 30888:${REPLICATED_APP}-lab08-airgap-lite:30888 ${FIRST_NAME}@${JUMP_BOX_IP}
 ```
 
 At this point, Kubernetes and the admin console are running inside the air gapped server, but the application is not deployed yet.
 
 To complete the installation:
-1. Visit http://localhost:8800 in your browser.
+1. Visit http://localhost:30880 in your browser.
 
 1. Click **Continue to Setup** in the browser to navigate to the secure admin console.
 
@@ -277,7 +288,7 @@ When the bundle is uploaded, `Preflight Checks` will run. These are designed to 
 Depending on your YAML in the `preflight.yaml` file, you can see some of the example preflight checks fail.
 If you have failing checks, you can click **Continue** and the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
+![Preflight Checks](img/airgap-preflight.png)
 
 
 You will see that the application is unavailable.
@@ -346,7 +357,7 @@ As part of the lab setup, a new release was created in the vendor portal with th
    1. Click **Application** to navigate back to the main landing page. The app should now show the **Ready** status on the main dashboard.
 
    1. To access the application select **Open Lab 8**.
-      > **Note**: The SSH tunnel for the application's port (8888) must be initialized for this to work successfully.
+      > **Note**: The SSH tunnel for the application's port (30888) must be initialized for this to work successfully.
 
 Congratulations! You have installed and then upgraded an air gap instance!
 

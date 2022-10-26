@@ -46,7 +46,7 @@ spec:
             - -ec
             - |
               while :; do
-                sleep 5
+                sleep 60
                 if [ -f /etc/lab3/restraining-bolt.txt ]; then
                   echo "restraining bolt found at /etc/lab3/restraining-bolt.txt, better delete kotsadm"
                   kubectl delete pod -lapp=kotsadm

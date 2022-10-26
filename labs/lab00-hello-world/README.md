@@ -47,18 +47,40 @@ brew install replicatedhq/replicated/cli
 
 ##### Manual
 
-```shell script
-curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+* Mac
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
            | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_all.tar.gz" \
            | cut -d : -f 2,3 \
            | tr -d \" \
            | cat <( echo -n "url") - \
            | curl -fsSL -K- \
            | tar xvz replicated
-```
+  ```
+
+* Linux 64 bit
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_amd64.tar.gz" \
+           | cut -d : -f 2,3 \
+           | tr -d \" \
+           | cat <( echo -n "url") - \
+           | curl -fsSL -K- \
+           | tar xvz replicated
+  ```
+
+* Linux 32 bit
+  ```shell script
+  curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+           | grep "browser_download_url.*$(uname | tr '[:upper:]' '[:lower:]')_386.tar.gz" \
+           | cut -d : -f 2,3 \
+           | tr -d \" \
+           | cat <( echo -n "url") - \
+           | curl -fsSL -K- \
+           | tar xvz replicated
+  ```
+
 Then move `./replicated` to somewhere in your `PATH`:
-
-
 ```shell script
 mv replicated /usr/local/bin/
 ```
@@ -89,17 +111,18 @@ $ replicated version
 
 You should have received an invite to log into https://vendor.replicated.com -- you'll want to accept this invite and set your password.
 
-You will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
+**Important Note:** It is important to logout of any existing session in the Replicated vendor portal so that when clicking on the Labs Account invitation email link it takes you to a specific new registration page where you enter your name and password details.  If you get a login screen then this is probably the issue.
+
+Once registered, you will be in a shared account with all other lab participants -- once you log in, your application will be automatically selected:
 
 <img width="1368" alt="Screen Shot 2021-04-12 at 6 49 20 AM" src="https://user-images.githubusercontent.com/1579188/136086041-0a8a6cd9-20c8-4627-83b3-c62223cbae44.png">
 
 Now, you'll need to set up environment variables to interact with vendor.replicated.com and instance.
 
 
-`REPLICATED_APP` should be set to the app slug from the Settings page. You should have received your App Name
-ahead of time.
+`REPLICATED_APP` should be set to the app slug from the Settings page.
 
-<p align="center"><img src="https://kots.io/images/guides/kots/cli-setup-quickstart-settings.png" width=600></img></p>
+<p align="center"><img src="./img/cli-setup-quickstart-settings.png" width=600></img></p>
 
 Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings) page:
 > Note: Ensure the token has "Write" access or you'll be unable create new releases.
@@ -263,6 +286,13 @@ KOTS has not yet been installed on this server to give you an opportunity to exp
 
 #### **On the Server**
 
+First, set your first name, all lowercase, that will be your ssh login to the server.
+
+**Note if you fail the login 3 times, you will be locked out for 10 minutes, so if you can't get in on the first attempt, please check with your lab proctor to confirm credentials**.
+
+```bash
+export FIRST_NAME=dex
+```
 
 ```bash
 ssh ${FIRST_NAME}@<server ip address>
@@ -283,30 +313,21 @@ You should expect output like this:
 
 ```text
 
-Kotsadm: http://[ip-address]:8800
+
+
+		Installation
+		  Complete ✔
+
+
+Kotsadm: http://[ip-address]:30880
 Login with password (will not be shown again): [password]
+This password has been set for you by default. It is recommended that you change this password; this can be done with the following command: kubectl kots reset-password default
 
-
-To access the cluster with kubectl, reload your shell:
-
-    bash -l
-
-The UIs of Prometheus, Grafana and Alertmanager have been exposed on NodePorts 30900, 30902 and 30903 respectively.
-
-To access Grafana use the generated user:password of admin:[password] .
-
-To add worker nodes to this installation, run the following script on your other nodes
-    curl -sSL https://kurl.sh/rp415-dex-unstable/join.sh | sudo bash -s kubernetes-master-address=[ip-address]:6443 kubeadm-token=[token] kubeadm-token-ca-hash=sha256:[sha] kubernetes-version=1.16.4 docker-registry-ip=[ip-address]
 
 ```
 
 > **NOTE**: The Kotsadm URL and Password in the above output. We will use this later to complete the install of the application.
 
-Per the instructions, run the following to reload your shell so that you can run `kubectl`
-
-```shell script
-bash -l
-```
 
 Test `kubectl` with the following command:
 ```shell script
@@ -315,13 +336,11 @@ kubectl get pods
 
 Expect output like this:
 
-```bash
-NAME                                  READY   STATUS      RESTARTS   AGE
-kotsadm-585579b884-v4s8m              1/1     Running     0          4m47s
-kotsadm-migrations                    0/1     Completed   2          4m47s
-kotsadm-operator-fd9d5d5d7-8rrqg      1/1     Running     0          4m47s
-kotsadm-postgres-0                    1/1     Running     0          4m47s
-kurl-proxy-kotsadm-77c59cddc5-qs5bm   1/1     Running     0          4m46s
+```text
+NAME                                  READY   STATUS    RESTARTS   AGE
+kurl-proxy-kotsadm-6755fb9cdf-fjb7b   1/1     Running   0          3m1s
+kotsadm-0                             1/1     Running   0          3m3s
+kotsadm-postgres-0                    1/1     Running   0          3m3s
 user@kots-guide:~$
 ```
 
@@ -334,7 +353,7 @@ To complete the installation, visit the URL noted previously in your browser.  T
 
 Click "Continue to Setup" in the browser to continue to the secure Admin Console.
 
-<!-- TODO: insert picture of insecure landing page. -->
+<p align="center"><img src="./img/bypass-browser-tls.png" width=600></img></p>
 
 Accept the insecure certificate.
 
@@ -345,28 +364,28 @@ Click the "Skip & continue" link in the admin console.
 
 > Note, For production installations we recommend uploading a trusted cert and key, but for this tutorial we will proceed with the self-signed cert.
 
-![Console TLS](https://kots.io/images/guides/kots/admin-console-tls.png)
+<p align="center"><img src="./img/admin-console-tls.png" width=600></img></p>
 
 Paste in the password noted previously on the password screen. The password is shown in the output from the installation script.
 
-![Log In](https://kots.io/images/guides/kots/admin-console-login.png)
+<p align="center"><img src="./img/admin-console-login.png" width=600></img></p>
 
 Until this point, this server is just running Kubernetes, and the kotsadm containers.
 The next step is to upload a license file so KOTS can pull containers and run your application. Use the license file we downloaded in step 5.
 Click the Upload button and select your `.yaml` file to continue, or drag and drop the license file from a file browser. 
 
-![Upload License](https://kots.io/images/guides/kots/upload-license.png)
+<p align="center"><img src="./img/upload-license.png" width=600></img></p>
 
 Preflight checks are designed to ensure this server has the minimum system and software requirements to run the application.
 Depending on your YAML in `preflight.yaml`, you may see some of the example preflight checks fail.
 If you have failing checks, you can click continue -- the UI will show a warning that will need to be dismissed before you can continue.
 
-![Preflight Checks](https://kots.io/images/guides/kots/preflight.png)
+<p align="center"><img src="./img/preflight.png" width=600></img></p>
 
 
 You will be presented with the application dashboard where you can see various information and metrics. Click the Continue button to proceed to the dashboard.
 
-![Cluster](https://kots.io/images/guides/kots/application.png)
+<p align="center"><img src="./img/application.png" width=600></img></p>
 
 Run the following in the console to show the nginx application we just deployed:
 ```shell script
@@ -379,7 +398,7 @@ Click the "Open Lab 0" link in the dashboard to open the NGINX server.
 
 Since this example uses the default nginx application, you should see a basic (perhaps familiar) nginx server running:
 
-![Cluster](https://kots.io/images/guides/kots/example-nginx.png)
+<p align="center"><img src="./img/example-nginx.png" width=600></img></p>
 
 Next, we'll walk through creating and delivering an update to the application we just installed.
 
@@ -421,13 +440,13 @@ make release
 
 ### Update the Test Server
 
-To install and test this new release, we need to connect to the Admin Console dashboard on port :8800 using a web browser.
+To install and test this new release, we need to connect to the Admin Console dashboard on port :30880 using a web browser.
 At this point, it will likely show that our test application is "Up To Date" and that "No Updates Are Available".
 The Admin Console can be configured to check for new updates at regular intervals but for now we'll trigger a check manually by clicking "Check for Updates".
 You should see a new release in the history now.
 You can click the "View diff" link to open a modal comparing the releases. For now let's click "Deploy" to roll out this new version.
 
-![View Update](https://kots.io/images/guides/kots/view-update.png)
+<p align="center"><img src="./img/view-update.png" width=800></img></p>
 
 Clicking the Deploy button will apply the new YAML which will change the number of nginx replicas, this should only take a few seconds.
 You can verify this on the server by running

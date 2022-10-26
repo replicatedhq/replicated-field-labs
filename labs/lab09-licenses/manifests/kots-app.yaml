@@ -9,6 +9,6 @@ spec:
   ports:
     - serviceName: "nginx"
       servicePort: 80
-      localPort: 8888
+      localPort: 30888
       applicationUrl: "http://nginx"
   icon: data:image/png;base64,5e84879ce72cfd690148f840e62c16fb2709bddaa09763dba195eb137b798c49

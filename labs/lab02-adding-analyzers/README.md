@@ -55,7 +55,7 @@ You should see a properly-restricted file in place, so we won't need to worry ab
 
 > **NOTE**: If you have configured your <span style="color:#1E90FF;">**/etc/hosts**</span> file with the instance(s) names and IP address(es) you can use the lab name, i.e. lab02-adding-analyzers in place of the node IP address. 
 
-Open the KOTS admin console by navigating to https://lab02-adding-analyzers:8800 in a browser. Otherwise use `https://<Instance IP Address>:8800`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
+Open the KOTS admin console by navigating to https://lab02-adding-analyzers:30880 in a browser. Otherwise use `https://<Instance IP Address>:30880`. The password to your instance will be provided as part of the lab, or you can reset by SSHing into the node and running
 
 ```shell
 kubectl kots reset-password -n default
@@ -65,15 +65,15 @@ Unfortunately, even though `config.txt` is present, the app is still not healthy
 
 ![not-healthy](./img/not-healthy.png)
 
-Using what we learned in Lab 1.1, we can generate a support bundle to see what's wrong. 
-Unfortunately, we'll find that all the analyzers are "info" level, and there are no errors or warnings for us to address:
+Using what we learned in Lab 1.1, we can generate a support bundle to see what's wrong.
+Unfortunately, while we find some analyzers in an "error" state, they do not give us enough information to zero in on the root cause or to fix the problem.
 
-![analyzers-green](./img/analyzers-green.png)
+![analyzers-run](./img/analyzers-run.png)
 
 ***
 ## Investigating
 
-The key lesson of this lab is around what to do if analyzers don't provide any useful information. 
+The key lesson of this lab is around what to do if analyzers don't provide any useful information.
 We'll walk through downloading the bundle, collaborating with your team to diagnose the error, and preventing it in the future.
 
 <div align="center"><blockquote><h3>If support analyzers don't surface any issues, the bundle should be downloaded and sent to the vendor team</h3></blockquote></div>
