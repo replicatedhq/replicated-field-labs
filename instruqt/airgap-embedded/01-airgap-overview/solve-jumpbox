@@ -12,6 +12,6 @@ set -euxo pipefail
 #
 
 if ! tmux has-session -t airgap ; then
-  tmux new-session -d -s airgap
+  tmux new-session -d -s airgap su - replicant
 fi
 
