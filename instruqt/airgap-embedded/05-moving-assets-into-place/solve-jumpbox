@@ -3,4 +3,17 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-tmux send-keys -t airgap scp SPACE -o SPACE StrictHostKeyChecking=no SPACE '*.tar.gz' SPACE cluster: ENTER
+# save the session
+# tmux capture-pane -t airgap -S -
+# SESSION=$(tmux save-buffer -)
+
+# echo "Checking if bundle download is complete..."
+# while ! echo "${SESSION}" | tail -1 | grep "replicant" ;
+# do
+#   sleep 5
+#   tmux capture-pane -t airgap -S -
+#   SESSION=$(tmux save-buffer -)
+# done
+
+REPLICANT_HOME=/home/replicant
+scp -o StrictHostKeyChecking=no ${REPLICANT_HOME}/'*.tar.gz' cluster:
