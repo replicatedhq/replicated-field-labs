@@ -4,7 +4,7 @@ kind: Application
 metadata:
   name: nginx
 spec:
-  title: Sppoky
+  title: Spooky
   icon: https://github.githubassets.com/images/icons/emoji/unicode/1f47b.png?v8
   statusInformers:
     - deployment/nginx
