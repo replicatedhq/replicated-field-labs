@@ -86,5 +86,5 @@ jobs:
       
     # delete built artifact for PRs (save storage costs)
     - name: Delete VM Image
-      run: gcloud compute images delete --zone europe-west1-b airgap-jumpbox-${{GITHUB_REF##*/}}
+      run: "gcloud compute images delete --zone europe-west1-b airgap-jumpbox-${{GITHUB_REF##*/}}"
       shell: bash
