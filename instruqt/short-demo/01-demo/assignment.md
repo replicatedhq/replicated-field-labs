@@ -5,10 +5,12 @@ type: challenge
 title: Demo
 teaser: The demo environment
 notes:
-- type: video
-  url: ../assets/demo.mp4
 - type: image
-  url: ../assets/connected.png
+  url: ../assets/slide1.png
+- type: image
+  url: ../assets/slide2.png
+- type: image
+  url: ../assets/slide3.png
 tabs:
 - title: Shell
   type: terminal
