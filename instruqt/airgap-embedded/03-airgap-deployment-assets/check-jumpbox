@@ -9,5 +9,3 @@ if ! find ${REPLICANT_HOME} -name "installing-in-an-air-gapped-environment-*-uns
   fail-message "You do not appear to have started downloading the bundle, please start the download before continuing"
   exit 1
 fi
-
-exit 0
