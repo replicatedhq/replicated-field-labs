@@ -11,4 +11,3 @@ if ! grep -q "installing-in-an-air-gapped-environment" <(echo ${REMOTE_FILES}) ;
   exit 1
 fi
 
-exit 0
