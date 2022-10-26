@@ -16,4 +16,4 @@ set -euxo pipefail
 # done
 
 REPLICANT_HOME=/home/replicant
-scp -o StrictHostKeyChecking=no ${REPLICANT_HOME}/'*.tar.gz' cluster:
+scp -o StrictHostKeyChecking=no -i ${REPLICANT_HOME}/.ssh/id_ed25519 ${REPLICANT_HOME}/*.tar.gz replicant@cluster:
