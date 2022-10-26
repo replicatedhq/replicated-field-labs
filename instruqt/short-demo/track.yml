@@ -18,4 +18,5 @@ developers:
 - joshd@replicated.com
 private: false
 published: false
-checksum: "4205164416859097913"
+show_timer: true
+checksum: "16431180425494156485"
