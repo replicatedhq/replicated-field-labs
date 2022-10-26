@@ -55,7 +55,7 @@ Let's enable air-gap downloads for the example customer we're using
 for the lab. Go to "Customers" in the Vendor portal and select the
 "Replicant" customer to enable the airgap.
 
-![Enabling Airgap Downloads for a Custtomer](../assets/airgap-customer-enable.png)
+![Enabling Airgap Downloads for a Customer](../assets/airgap-customer-enable.png)
 
 Click the checkbox next to "Airgap Download Enabled" and make sure
 you "Save Changes" with the bottom on the bottom right.
