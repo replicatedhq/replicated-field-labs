@@ -6,8 +6,6 @@ set -euxo pipefail
 REPLICANT_HOME=/home/replicant
 
 if ! find ${REPLICANT_HOME} -name "installing-in-an-air-gapped-environment-*-unstable.tar.gz" > /dev/null 2>&1 ; then
-  fail-message "Please make sure you've set your API token and run save_lab_setup"
+  fail-message "You do not appear to have started downloading the bundle, please start the download before continuing"
   exit 1
 fi
-
-exit 0

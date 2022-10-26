@@ -11,4 +11,3 @@ tmux send-keys -t airgap clear ENTER
 # get rid of the tarball
 rm /home/replicant/*-replicated-labs-com.tar.gz
 
-exit 0

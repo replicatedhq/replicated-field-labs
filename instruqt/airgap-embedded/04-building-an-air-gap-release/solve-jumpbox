@@ -3,4 +3,61 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-exit 0
+username="${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
+password="${INSTRUQT_PARTICIPANT_ID}"
+
+login_request=$( jq -n -c --arg email "${username}" --arg password "${password}" '$ARGS.named' )
+token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
+
+i=0
+while [[ "$token" == "null" && $i -lt 20 ]]
+do
+    sleep 2
+    set +u
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
+    echo $token
+    set -u
+    i=$((i+1))
+done
+
+UUID=$(cat /proc/sys/kernel/random/uuid)
+api_token=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
+access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$api_token" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+app_id=$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq --raw-output ".apps [] | select(.name | test(\".*${INSTRUQT_PARTICIPANT_ID}.*\")).id")
+channel_id=$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/channels\?channelName\=Unstable | jq -r '.channels[].id')
+
+# enable autobuild airgap for channel "Unstable"
+channel_payload="$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/channel/${channel_id} | jq -r '.channel' | jq --arg app_id ${app_id} --arg channel_id ${channel_id} '{
+  "name": .name,
+  "airgapDockerRegistryFormatEnabled": .airgapDockerRegistryFormatEnabled,
+  "autoAirgapBuildsValue": 1,
+  "channelIcon": .channelIcon,
+  "description": .description,
+  "semverRequired": .semverRequired
+}'
+)"
+curl --silent  -H "Content-Type: application/json" -H "Authorization: ${access_token}" --request PUT https://api.replicated.com/vendor/v3/app/${app_id}/channel/${channel_id} --data-raw "${channel_payload}"
+
+# enable airgap for the customer "Replicant"
+customer_id="$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r '.customers[] | select(.name == "Replicant").id')"
+customer_payload="$(curl -s -H "Content-Type: application/json" -H "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r '.customers[] | select(.name == "Replicant")' | jq --arg app_id ${app_id} --arg channel_id ${channel_id} '{ 
+  "app_id": $app_id,
+  "name": .name,
+  "email": .email,
+  "channel_id": $channel_id,
+  "domain": .domain,
+  "avatar": .avatar,
+  "expires_at": .expiresAt,
+  "type": "dev",
+  "is_airgap_enabled": true,
+  "is_gitops_supported": false,
+  "is_identity_service_supported": false,
+  "is_geoaxis_supported": false,
+  "is_snapshot_supported": false,
+  "is_support_bundle_upload_enabled": false,
+  "entitlementValues": []
+}'
+)"
+
+echo "customer_payload=${customer_payload}"
+curl --silent -H "Content-Type: application/json" -H "Authorization: ${access_token}" --request PUT https://api.replicated.com/vendor/v3/customer/${customer_id} --data-raw "${customer_payload}"

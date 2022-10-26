@@ -3,4 +3,4 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-tmux send-keys -t airgap curl SPACE -fSL SPACE -o SPACE uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz SPACE https://k8s.kurl.sh/bundle/uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz ENTER
+tmux send-keys -t airgap curl SPACE -fSL SPACE -o SPACE installing-in-an-air-gapped-environment-${INSTRUQT_PARTICIPANT_ID}-unstable.tar.gz SPACE https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-${INSTRUQT_PARTICIPANT_ID}-unstable.tar.gz ENTER
