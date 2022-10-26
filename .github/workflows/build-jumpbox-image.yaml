@@ -4,16 +4,18 @@ on:
   - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
-    - 'instruqt'
+    - instruqt
+    - main
     paths:
     - 'packer/jumpbox/**'
-    - '.github/workflows/build-jumpbox-image.yaml'
+    - .github/workflows/build-jumpbox-image.yaml
   pull_request:
     branches:
-    - 'instruqt'
+    - instruqt
+    - main
     paths:
     - 'packer/jumpbox/**'
-    - '.github/workflows/build-jumpbox-image.yaml'
+    - .github/workflows/build-jumpbox-image.yaml
  
 jobs:
   build_and_push_jumpbox:
@@ -53,7 +55,21 @@ jobs:
         working_directory: ./packer
         target: jumpbox
 
-    # build artifact
+    # build artifact for push/merge (use default name)
+    - name: Build VM Image
+      uses: hashicorp/packer-github-actions@master
+      if: ${{ github.event_name != 'pull_request' }} 
+      with:
+        command: build
+        arguments: "-force"
+        working_directory: ./packer
+        target: jumpbox
+      env:
+        PACKER_LOG: 1
+        PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
+        PKR_VAR_zone: europe-west1-b
+          
+    # build artifact for PRs (need to assign image name)
     - name: Build VM Image
       uses: hashicorp/packer-github-actions@master
       if: ${{ github.event_name == 'pull_request' }} 
@@ -65,3 +81,10 @@ jobs:
       env:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
+        PKR_VAR_compute_image_name: airgap-jumpbox-${GITHUB_REF##*/}
+        PKR_VAR_zone: europe-west1-b
+      
+    # delete built artifact for PRs (save storage costs)
+    - name: Delete VM Image
+      run: gcloud compute images delete 
+      shell: bash
