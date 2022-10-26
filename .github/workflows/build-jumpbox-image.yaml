@@ -81,10 +81,10 @@ jobs:
       env:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
-        PKR_VAR_compute_image_name: airgap-jumpbox-${{GITHUB_REF##*/}}
+        PKR_VAR_compute_image_name: airgap-jumpbox-${{github.sha}}
         PKR_VAR_zone: europe-west1-b
       
     # delete built artifact for PRs (save storage costs)
     - name: Delete VM Image
-      run: "gcloud compute images delete --zone europe-west1-b airgap-jumpbox-${{GITHUB_REF##*/}}"
+      run: gcloud compute images delete --zone europe-west1-b airgap-jumpbox-${{github.sha}}
       shell: bash
