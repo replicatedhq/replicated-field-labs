@@ -35,7 +35,7 @@ Paste license contents into a file called license.yaml
 
 Install using kots cli including license file to upload automatically vs uploading via kotsadm web UI
 ```
-kubectl kots install proxy --skip-preflights --license-file ~/license.yaml --shared-password mytestapp --namespace default --no-port-forward
+kubectl kots install proxy-$INSTRUQT_PARTICIPANT_ID --skip-preflights --license-file ~/license.yaml --shared-password mytestapp --namespace default --no-port-forward
 ```
 
 Text access to kotsapp via the KotsAdm tab..
