@@ -15,7 +15,7 @@ tabs:
   type: terminal
   hostname: isolated-host
 difficulty: basic
-timelimit: 3600
+timelimit: 1200
 ---
 
 💡 Shell

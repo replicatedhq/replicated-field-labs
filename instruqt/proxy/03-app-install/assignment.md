@@ -21,7 +21,7 @@ tabs:
   url: http://isolated-host.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
-timelimit: 600
+timelimit: 1800
 ---
 
 💡 Shell
