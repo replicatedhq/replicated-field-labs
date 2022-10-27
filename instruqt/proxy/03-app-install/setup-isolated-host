@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euxo pipefail
+
+echo "Running challenge 03 setup script - Started.."
+epoc_start=`date +%s`
+
+
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> /root/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /root/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
+
+
+# Download the application license file
+#####get app token using vendor portal auth
+#####install replicated cli
+
+
+# done
+epoc_end=`date +%s`
+duration=$(($epoc_end - $epoc_start))
+DURATION=`echo "DURATION: $(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."`
+echo "challenge 03 setup script - Done ($DURATION)"
+
+exit 0

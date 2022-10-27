@@ -1,0 +1,17 @@
+slug: proxy
+id: 8txqwacwfxcu
+title: Proxy
+teaser: Install kurl and kots application using proxy server config
+description: Install kurl and kots application using proxy server config.<BR> When
+  a deployment host does not have direct access to the internet, some environments
+  require an http proxy to be configured and used.<BR> This lab shows how a proxy
+  server can be used to install both the kubernetes kurl cluster and then the kots
+  application.
+icon: https://cdn.instruqt.com/img/logo/instruqt_isotype_indigo.svg
+tags: []
+owner: replicated
+developers:
+- graham@replicated.com
+private: true
+published: false
+checksum: "15095203908133706259"

@@ -1,0 +1,7 @@
+{
+    "name": "Proxy",
+    "slug": "proxy",
+    "customer": "Hola ProxyCLI Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": "./kurl-installer.yaml"
+}

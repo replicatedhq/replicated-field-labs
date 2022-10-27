@@ -1,0 +1,10 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: proxy-supportbundle
+spec:
+  collectors:
+    - logs:
+        selector:
+          - app=nginx
+        namespace: '{{repl Namespace }}'
