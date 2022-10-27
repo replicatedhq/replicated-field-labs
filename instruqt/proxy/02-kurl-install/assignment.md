@@ -29,20 +29,15 @@ Download kurl installer
 curl --proxy http://${LOCAL_PROXY_IP}:3128 https://kurl.sh/proxy-$INSTRUQT_PARTICIPANT_ID -o /root/kurl-install.sh
 ```
 
-Replace instruqt local hostname for IP address in installer file (needed as not an fqdn for kubernetes DNS to work later)
-```
-sed -i 's/proxy-host/${LOCAL_PROXY_IP}/' /root/kurl-install.sh
-```
-
 Install kurl kubernetes cluster
-note the below command uses 'screen' to run the install in the background which protects from session timeouts on laptops etc.
+note the below command uses 'screen' to run the install in the background which protects instruqt session timeouts when screen locks.
 ```
 screen -d -m bash -c 'time bash /root/kurl-install.sh 2>&1 | tee -a /root/kurl-install.log'
 ```
 
-note: this will take around 12 minutes to complete.
+The kurl installer will take around 10-12 minutes to complete.
 
-View the deployment log while installing..
+Monitor the installation progress by tailing the log file..
 ```
 tail -f /root/kurl-install.log
 ```

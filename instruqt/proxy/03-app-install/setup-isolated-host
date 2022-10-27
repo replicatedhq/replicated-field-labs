@@ -5,9 +5,28 @@ echo "Running challenge 03 setup script - Started.."
 epoc_start=`date +%s`
 
 
-# Download the application license file
-#####get app token using vendor portal auth
-#####install replicated cli
+# Download the application license file:
+#
+# install replicated cli
+curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
+| grep "browser_download_url.*linux_amd64.tar.gz" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -O replicated.tar.gz -qi -
+tar xf replicated.tar.gz replicated && rm replicated.tar.gz
+mv replicated /usr/local/bin/replicated
+
+# Obtain REPLICATED_API_TOKEN for instruqt user token
+USER_JSON=$( jq -n -c --arg email "$INSTRUQT_PARTICIPANT_ID@replicated-labs.com" --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
+AUTH_TOKEN=$(curl -H "Content-Type: application/json" --request POST -d "$USER_JSON" https://id.replicated.com/v1/login | jq -r ".token")
+APITOKEN_JSON=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
+REPLICATED_API_TOKEN=$(curl -s -H "Content-Type: application/json" -H "Authorization: $AUTH_TOKEN" --request POST -d "$APITOKEN_JSON" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+# Customer ID
+CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | awk '{print $1}'`
+
+# Download license
+replicated customer download-license --customer $CUSTOMER_ID --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID --output /root/license.yaml
 
 
 # done

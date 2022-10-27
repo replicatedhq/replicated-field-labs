@@ -27,7 +27,8 @@ if $UBUNTU ; then
 
   # install some useful packages
   apt-get update
-  apt-get install -y mlocate bind9utils net-tools
+  apt-get --fix-broken install
+  apt-get install -y mlocate bind9utils net-tools jq
 
   # enable proxy for apt (after setup package installs as proxy not available yet)
   LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
