@@ -97,6 +97,12 @@ echo "net.ipv4.ip_forward = 1" | tee /etc/sysctl.d/99-ipforward.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sysctl -a | grep ip_forward
 
+# bashrc
+# Display PARTICIPANT_ID info for Vendor Portal
+echo "echo Credentials for https://vendor.replicated.com" >> /root/.bashrc
+echo "echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com" >> /root/.bashrc
+echo "echo Password: $INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
+
 # done
 epoc_end=`date +%s`
 duration=$(($epoc_end - $epoc_start))
