@@ -5,8 +5,83 @@ metadata:
   name: config-sample
 spec:
   groups:
+  - name: database
+    title: Database
+    description: Database Options
+    items:
+      - name: postgres_type
+        type: select_one
+        title: Postgres
+        default: embedded_postgres
+        items:
+          - name: embedded_postgres
+            title: Embedded Postgres
+          - name: external_postgres_inline
+            title: External Postgres
+      - name: embedded_postgres_password
+        hidden: true
+        type: password
+        value: "{{repl RandomString 32}}"
+      - name: external_postgres_host
+        title: Postgres Host
+        when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres_inline"}}'
+        type: text
+        default: postgres
+      - name: external_postgres_port
+        title: Postgres Port
+        when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres_inline"}}'
+        type: text
+        default: "5432"
+      - name: external_postgres_user
+        title: Postgres Username
+        when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres_inline"}}'
+        type: text
+        required: true
+      - name: external_postgres_password
+        title: Postgres Password
+        when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres_inline"}}'
+        type: password
+        required: true
+      - name: external_postgres_db
+        title: Postgres Database
+        when: '{{repl ConfigOptionEquals "postgres_type" "external_postgres_inline"}}'
+        type: text
+        default: sentry
+
+      - name: redis_type
+        type: select_one
+        title: Redis
+        default: embedded_redis
+        items:
+          - name: embedded_redis
+            title: Embedded Redis
+          - name: external_redis_inline
+            title: External Redis
+      - name: embedded_redis_password
+        hidden: true
+        type: password
+        value: "{{repl RandomString 32}}"
+      - name: external_redis_host
+        title: Redis Host
+        when: '{{repl ConfigOptionEquals "redis_type" "external_redis_inline"}}'
+        type: text
+        default: redis
+      - name: external_redis_port
+        title: Redis Port
+        when: '{{repl ConfigOptionEquals "redis_type" "external_redis_inline"}}'
+        type: text
+        default: "6379"
+      - name: external_redis_user
+        title: Redis Username
+        when: '{{repl ConfigOptionEquals "redis_type" "external_redis_inline"}}'
+        type: text
+      - name: external_redis_password
+        title: Redis Password
+        when: '{{repl ConfigOptionEquals "redis_type" "external_redis_inline"}}'
+        type: password
+        required: true
   - name: example_settings
-    title: My Example Config
+    title: Other Config
     description: Configuration to serve as an example for creating your own. See [https://kots.io/reference/v1beta1/config/](https://kots.io/reference/v1beta1/config/) for configuration docs. In this case, we provide example fields for configuring an Nginx welcome page.
     items:
     - name: show_text_inputs
