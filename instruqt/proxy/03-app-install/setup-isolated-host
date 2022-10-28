@@ -16,13 +16,7 @@ curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest \
 tar xf replicated.tar.gz replicated && rm replicated.tar.gz
 mv replicated /usr/local/bin/replicated
 
-# Obtain REPLICATED_API_TOKEN for instruqt user token
-#USER_JSON=$( jq -n -c --arg email "$INSTRUQT_PARTICIPANT_ID@replicated-labs.com" --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
-#AUTH_TOKEN=$(curl -H "Content-Type: application/json" --request POST -d "$USER_JSON" https://id.replicated.com/v1/login | jq -r ".token")
-#APITOKEN_JSON=$( jq -n -c --arg name "instruqt" --argjson read_only false '$ARGS.named' )
-#REPLICATED_API_TOKEN=$(curl -s -H "Content-Type: application/json" -H "Authorization: $AUTH_TOKEN" --request POST -d "$APITOKEN_JSON" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
-
-# Setup REPLICATED_APP and REPLICATED_API_TOKEN
+# Obtain REPLICATED_API_TOKEN for instruqt user id
 login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${INSTRUQT_PARTICIPANT_ID}" '$ARGS.named' )
 token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
 i=0
@@ -39,10 +33,10 @@ access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $t
 echo "export REPLICATED_API_TOKEN=${access_token}" >> /root/.bashrc
 echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
 
-# Customer ID
-CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | grep -v EXPIRES | awk '{print $1}'`
 
-# Download license
+# Download license using replicated client
+REPLICATED_API_TOKEN="${access_token}"
+CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | grep -v EXPIRES | awk '{print $1}'`
 replicated customer download-license --customer $CUSTOMER_ID --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID --output /root/license.yaml
 
 

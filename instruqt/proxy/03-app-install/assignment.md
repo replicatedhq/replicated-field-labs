@@ -57,9 +57,14 @@ NAME                                            DESIRED   CURRENT   READY   AGE
 replicaset.apps/nginx-6795d5954c                1         1         1       5m8s
 ```
 
+The application output can be viewed on the command line using:
+```
+curl http://isolated-host.$INSTRUQT_PARTICIPANT_ID.instruqt.io:30888/
+```
+
 You can also view the application status and output via the KotsAdm UI.
-Navigate to the KotsAdm tab, login and click on Details to see the statusInformers output should be Ready (Running okay)
-The application can be viewed by clicking on the "Open nginx app" link.
+Navigate to the "KotsAdm" tab, login and click on "Details" to see the statusInformers output should be "Ready" (Running okay)
+The application can be viewed in the browser by clicking on the "Open nginx app" link.
 
 
 🏁 Finish
