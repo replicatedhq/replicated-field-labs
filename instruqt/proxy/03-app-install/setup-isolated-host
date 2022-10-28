@@ -40,7 +40,7 @@ echo "export REPLICATED_API_TOKEN=${access_token}" >> /root/.bashrc
 echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
 
 # Customer ID
-CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | awk '{print $1}'`
+CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | grep -v EXPIRES | awk '{print $1}'`
 
 # Download license
 replicated customer download-license --customer $CUSTOMER_ID --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID --output /root/license.yaml

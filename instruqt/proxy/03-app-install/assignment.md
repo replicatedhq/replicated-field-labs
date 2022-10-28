@@ -29,9 +29,9 @@ timelimit: 1800
 
 Install sample application with proxy config in place.
 
-Access the vendor portal using the credentials output in the Host tab and download the application license
-A customer entry has been pre-created called "Hola ProxyCLI Customer", download the license associated with this customer.
-Paste license contents into a file called license.yaml
+The license file for the application has already been downloaded in the home directory.
+
+Even thought the kurl installer spec included kotsadm which can be see running the application installation can be completed by the command line with the kot install command using the license.
 
 Install using kots cli including license file to upload automatically vs uploading via kotsadm web UI
 ```
@@ -39,6 +39,27 @@ kubectl kots install proxy-$INSTRUQT_PARTICIPANT_ID --skip-preflights --license-
 ```
 
 Text access to kotsapp via the KotsAdm tab..
+
+Verify that the application is running using the cli:
+```
+kubectl get all | egrep 'nginx|NAME'
+```
+
+The output should look like this:
+```
+NAME                                      READY   STATUS    RESTARTS   AGE
+pod/nginx-6795d5954c-dlkz9                1/1     Running   0          5m8s
+NAME                         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)         AGE
+service/nginx                NodePort    10.96.1.61    <none>        80:30888/TCP    5m8s
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx                1/1     1            1           5m8s
+NAME                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-6795d5954c                1         1         1       5m8s
+```
+
+You can also view the application status and output via the KotsAdm UI.
+Navigate to the KotsAdm tab, login and click on Details to see the statusInformers output should be Ready (Running okay)
+The application can be viewed by clicking on the "Open nginx app" link.
 
 
 🏁 Finish
