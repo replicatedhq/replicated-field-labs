@@ -36,8 +36,8 @@ done
 UUID=$(cat /proc/sys/kernel/random/uuid)
 apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
-echo "export REPLICATED_API_TOKEN=${access_token}" >> /home/replicant/.bashrc
-echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc
+echo "export REPLICATED_API_TOKEN=${access_token}" >> /root/.bashrc
+echo "export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID" >> /root/.bashrc
 
 # Customer ID
 CUSTOMER_ID=`replicated customer ls --token $REPLICATED_API_TOKEN --app proxy-$INSTRUQT_PARTICIPANT_ID | awk '{print $1}'`
