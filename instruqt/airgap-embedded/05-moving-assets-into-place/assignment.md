@@ -54,12 +54,12 @@ an SSH tunnel to configure the application and complete the install.
 
 Let's copy the kURL bundle first. Take a look at the files in your
 current directory. There should be one (the name of your kURL bundle
-will be different, but it will include `replicated-labs-com` and end
-in `-unstable.tar.gz`).
+will be different, but it will include `installing-in-an-air-gapped-environment` 
+and end in `-unstable.tar.gz`).
 
 ```
 replicant@jumpbox:~$ ls
-uws24vkeurcz-replicated-labs-com-caiman-unstable.tar.gz
+installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable 
 ```
 
 Since there's only one file, let's save some typing and use a
