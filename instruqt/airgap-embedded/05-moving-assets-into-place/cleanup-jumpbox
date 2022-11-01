@@ -9,5 +9,5 @@ tmux send-keys -t airgap clear ENTER
 
 # clean up tarball
 # get rid of the tarball
-rm /home/replicant/*-replicated-labs-com.tar.gz
+rm /home/replicant/installing-in-an-air-gapped-environment-*-unstable.tar.gz
 
