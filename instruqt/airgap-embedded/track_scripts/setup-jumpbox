@@ -10,7 +10,15 @@ do
   sleep 1
 done
 
-HOME_DIR=/home/replicant
+REPLICANT_HOME=/home/replicant
+
+### make SSH key mismatches go away
+cat <<EOF >> "$REPLICANT_HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    PubkeyAcceptedKeyTypes +ssh-rsa
+EOF
 
 ### authenticate to gcloud
 mkdir -p /root/.config/gcloud
@@ -32,7 +40,7 @@ gcloud compute firewall-rules create allow-jumpbox-ssh \
 
 ### Assure access to the air-gapped cluster VM
 # create an SSH key
-SSH_DIR=${HOME_DIR}/.ssh
+SSH_DIR=${REPLICANT_HOME}/.ssh
 mkdir -p "${SSH_DIR}" && /bin/chmod 0700 "${SSH_DIR}"
 ssh-keygen -t ed25519 -o -a 100 -f ${SSH_DIR}/id_ed25519 -q -N ""
 /bin/chmod 0600 ${SSH_DIR}/* && /bin/chown -R replicant:replicant ${SSH_DIR}
