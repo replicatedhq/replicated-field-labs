@@ -6,7 +6,7 @@ title: Air Gap Deployment Assets
 teaser: The files you need to deploy your air-gapped instance
 notes:
 - type: text
-  contents: The assets that make up your air-gapped deployment
+  contents: Let's learn the assets that make up your air-gapped deployment
 tabs:
 - title: Jumpbox
   type: terminal
