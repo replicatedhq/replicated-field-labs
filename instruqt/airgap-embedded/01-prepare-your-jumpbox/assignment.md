@@ -19,28 +19,46 @@ notes:
         * Create an SSH tunnel to configure an air gap instance
         * Perform an upgrade of an application runnning in an air gap
         * Collect a support bundle in an air-gapped environment
-    * **Who this is for**: This lab is for anyone who builds/maintains KOTS applications (see note below)
+    * **Who this is for**: This lab is for anyone who builds/maintains KOTS applications (see
+        note below)
         * Full Stack / DevOps / Product Engineers
     * **Outcomes**:
         * You will be ready to deliver a KOTS application into an air gap environment
-        * You will build confidence in performing upgrades and troubleshooting in air gap environments
+        * You will build confidence in performing upgrades and troubleshooting in
+        air gap environments
+
 - type: text
-  contents: |
+  contents: 
     🔒 Packaging
     ============
 
-    First, we'll push a release -- in the background, Replicated's air gap builder will prepare an air gap bundle.
+    First, we'll push a release -- in the background, Replicated's air gap builder 
+    will prepare an air gap bundle.
 
     ![Air Gap Deployment Packaging](../assets/airgap-slide-1.png)
-
+   
 - type: text
   contents: |
     🔒 Delivery
     ===========
 
-    Next, we'll collect a license file, a download link, and a public kURL bundle.
+    Next, we'll collect a license file,
+        a download link, and a public kURL bundle.
 
     ![Air Gap Deployment Delivery](../assets/airgap-slide-2.png)
+    
+- type: text
+  contents: |
+    🔒 Deployment
+    ============
+
+    From there, we'll move all three artifacts into the datacenter via a jump box.
+
+    ![Air Gap Delivery](../assets/airgap-slide-3.png)
+
+    The above diagram shows a three node cluster, but we'll use only a single node.
+    While the KOTS bundle will be moved onto the server via SCP as in the diagram,
+    the app bundle and license file will be uploaded via a browser UI through an SSH tunnel. 
 tabs:
 - title: Shell
   type: terminal
