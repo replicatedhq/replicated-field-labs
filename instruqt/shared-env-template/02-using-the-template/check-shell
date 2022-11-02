@@ -8,7 +8,7 @@ tmux capture-pane -t shell -S -
 SESSION=$(tmux save-buffer -)
 
 # check for disconnection
-if ! grep -qE 'echo $THIS' <(echo ${SESSION}) ; then
+if ! grep -qE 'echo' <(echo ${SESSION}) ; then
   fail-message 'Please make sure you can still access `$THIS`'
   exit 1
 fi
