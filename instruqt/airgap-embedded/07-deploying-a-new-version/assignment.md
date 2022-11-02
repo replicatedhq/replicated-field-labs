@@ -43,7 +43,12 @@ the application, switch it instead to read `green`.
 
 ![Editing the Deployment](../assets/editing-the-deployment.png)
 
-After making the change, pop back over to the "Jumpbox" tab and create a
+After making the change, make sure you save them using the save icon in the
+editor tab. It's easy to miss, so check the image below if you can't find it.
+
+![Saving Your Changes](../assets/saving-your-changes.png)
+
+Once you've saved your changes, pop back over to the "Jumpbox" tab and create a
 new Replicated release.
 
 ```shell
