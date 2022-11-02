@@ -10,7 +10,11 @@ on:
     - '.github/workflows/build-shell-image.yaml'
   pull_request:
     branches:
-    - 'instruqt'
+    - instruqt
+    - main
+    paths:
+    - 'docker/shell/**'
+    - '.github/workflows/build-shell-image.yaml'
 
 jobs:
   build_and_push_shell_image:
@@ -53,6 +57,7 @@ jobs:
         # generate Docker tags based on the following events/attributes
         tags: |
           type=edge,branch=main
+          type=edge,branch=instruqt
           type=schedule
           type=ref,event=branch
           type=ref,event=pr
