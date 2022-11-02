@@ -12,6 +12,9 @@ on:
     branches:
     - instruqt
     - main
+    paths:
+    - 'docker/shell/**'
+    - '.github/workflows/build-shell-image.yaml'
 
 jobs:
   build_and_push_shell_image:
