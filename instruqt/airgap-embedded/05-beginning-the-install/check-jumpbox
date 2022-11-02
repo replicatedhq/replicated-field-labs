@@ -3,10 +3,6 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-# save the session
-tmux capture-pane -t airgap -S -
-SESSION=$(tmux save-buffer -)
-
 # short circuit if testing
 set +x
 TEST_RUN=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster "[[ ! -f /tmp/.test-solve ]] || cat /tmp/.test-solve")
@@ -15,17 +11,23 @@ if [[ "${TEST_RUN}" == "True" ]] ; then
 fi
 set -x
 
+# check that the node is ready
 NODE_READY=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes -o "jsonpath='{.items[0].status.conditions[?(@.type == \"Ready\")].status}'")
 if [[ "${NODE_READY}" != "True" ]] ; then
   fail-message "Kubernetes cluster is not Ready, please make sure the install has completed"
   exit 1
 fi
 
+# check that the admin consule is running
 ADMIN_STATUS=$(ssh -o StrictHostKeyChecking=no -i /home/replicant/.ssh/id_ed25519 replicant@cluster curl -s -o /dev/null -w "%{http_code}" http://cluster:8800)
 if [[ "${ADMIN_STATUS}" != "200" ]] ; then
   fail-message "Admin Console is not running, please make sure the install has completed"
   exit 1
 fi
+
+# save the last few lines session to check what the learner has disconnected their SSH session
+HEIGHT=$(tmux list-panes -F "#{pane_height}")
+SESSION=$(tmux capture-pane -t airgap -S $(expr $HEIGHT - 10) -p)
 
 # check for disconnection
 if ! grep -qE "Connection to cluster closed" <(echo ${SESSION}) ; then
@@ -33,5 +35,3 @@ if ! grep -qE "Connection to cluster closed" <(echo ${SESSION}) ; then
   exit 1
 fi
 
-
-exit 0
