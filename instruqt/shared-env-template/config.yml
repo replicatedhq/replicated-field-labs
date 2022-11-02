@@ -1,0 +1,10 @@
+version: "3"
+containers:
+- name: shell
+  image: gcr.io/kots-field-labs/shell
+  shell: tmux new-session -A -s shell su - replicant
+virtualmachines:
+- name: cluster
+  image: instruqt/k3s-v1-25-0
+  shell: /bin/bash
+  machine_type: n1-standard-1
