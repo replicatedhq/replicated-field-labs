@@ -3,10 +3,10 @@ slug: tips-and-tricks
 id: 8axg0ijvq0ru
 type: challenge
 title: Tips and Tricks
-teaser: A short description of the challenge.
+teaser: Some tips and recomended defaults
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Making the most of this template
 tabs:
 - title: Shell
   type: terminal
@@ -26,7 +26,7 @@ capture the entire history of a challenge:
 
 ```shell
 # save the entire session to check user inputs and outputs
-tmux capture-pane -t airgap -S -
+tmux capture-pane -t shell -S -
 SESSION=$(tmux save-buffer -)
 ```
 
@@ -37,7 +37,7 @@ we get the last ten lines.
 # save the last _LINES_ lines to check inputs and outputs
 LINES=10
 HEIGHT=$(tmux list-panes -F "#{pane_height}")
-SESSION=$(tmux capture-pane -t airgap -S $(expr $HEIGHT - $LINES) -p)
+SESSION=$(tmux capture-pane -t shell -S $(expr $HEIGHT - $LINES) -p)
 ```
 
 In either case, you can use `grep` or either shell commands to examine
@@ -52,7 +52,7 @@ you'll need in another challenge. In that case, you can use `send-keys`
 in your solve script to change the environment.
 
 ```shell
-tmux send-keys -t airgap export SPACE REPLICATED_APP=wordpress-civet ENTER
+tmux send-keys -t shell export SPACE REPLICATED_APP=wordpress-civet ENTER
 ```
 
 Note that since the shell isn't restarted with each challenge, you'll
@@ -102,3 +102,10 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 ```
+
+🏁 Finish
+=========
+
+You've now had a bit of a tour through this template. You're ready to
+base a lab on it. Feel free to browse through the source code to see
+examples of these tips in action.
