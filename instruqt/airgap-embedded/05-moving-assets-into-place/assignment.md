@@ -54,7 +54,7 @@ an SSH tunnel to configure the application and complete the install.
 
 Let's copy the kURL bundle first. Take a look at the files in your
 current directory. The kURL bundle should be there (the name of your
-kURL bundle will be different, but it will include 
+kURL bundle will be different, but it will include
 `installing-in-an-air-gapped-environment` and end in `-unstable.tar.gz`).
 
 ```
