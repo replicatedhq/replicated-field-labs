@@ -79,5 +79,5 @@ It should have, so you should see
 ```text
 replicant@shell:~$ echo $THIS
 the way
-replicant@shell:~$ 
+replicant@shell:~$
 ```
