@@ -46,6 +46,13 @@ create airgap builds for newly promoted release in this channel"
 
 ![Enabling Automatic Airgap Builds](../assets/channel-enable-airgap.png)
 
+After enabling the automatic build, you should make sure you current 
+release has an airgap bundle built by clicking "Release history" for
+the channel and then "Build" next to the release.
+
+![Building Your Current Release](../assets/manual-airgap-build.png)
+
+
 Enabling Airgap for a customer
 ==============================
 
@@ -58,7 +65,7 @@ for the lab. Go to "Customers" in the Vendor portal and select the
 ![Enabling Airgap Downloads for a Customer](../assets/airgap-customer-enable.png)
 
 Click the checkbox next to "Airgap Download Enabled" and make sure
-you "Save Changes" with the bottom on the bottom right.
+you "Save Changes" with the button on the bottom right.
 
 Download Airgap Assets
 ======================
@@ -76,12 +83,12 @@ our Jumpbox and working wearing our "end user" hat.
 Navigate to the "embedded cluster" option and review the three
 downloadable assets.
 
-![Viewing the Customer Download Portal](../assets/download-portal-view.png)
-
 This is where your customer downloads the assets they need for an
 air gap install: the kURL bundle, their license file, and the airgap
 bundle for your application. They will usually download all three at
 once for the initial install.
+
+![Viewing the Customer Download Portal](../assets/download-portal-view.png)
 
 We're only going to download the license file and the application
 bundle right now. We started downloading the kURL bundle in the previous
