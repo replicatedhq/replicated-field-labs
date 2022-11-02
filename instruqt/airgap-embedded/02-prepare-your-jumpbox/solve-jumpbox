@@ -3,6 +3,20 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+
+if ! tmux has-session -t airgap ; then
+  tmux new-session -d -s airgap su - replicant
+fi
+
+### Set the required environment variables
+
 username="${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
 password="${INSTRUQT_PARTICIPANT_ID}"
 
