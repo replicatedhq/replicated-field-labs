@@ -4,10 +4,12 @@
 set -euxo pipefail
 
 # save the entire session to check user inputs and outputs
-tmux capture-pane -t airgap -S -
+tmux capture-pane -t shell -S -
 SESSION=$(tmux save-buffer -)
 
-# save the last _LINES_ lines to check inputs and outputs
-LINES=10
-HEIGHT=$(tmux list-panes -F "#{pane_height}")
-SESSION=$(tmux capture-pane -t airgap -S $(expr $HEIGHT - $LINES) -p)
+# check for disconnection
+if ! grep -qE 'THIS=[A-Za-z "]+' <(echo ${SESSION}) ; then
+  fail-message 'Please try it out by setting the environment variable `$THIS`'
+  exit 1
+fi
+

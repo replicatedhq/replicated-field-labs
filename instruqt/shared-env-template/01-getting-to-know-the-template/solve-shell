@@ -1,11 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+### Assure the tmux session exists
 #
-# This script runs when the platform solve the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
 #
 
-echo "This is the solve script"
+if ! tmux has-session -t airgap ; then
+  tmux new-session -d -s airgap su - replicant
+fi
 
-exit 0
+tmux send-keys -t airgap export SPACE THIS="the way" ENTER

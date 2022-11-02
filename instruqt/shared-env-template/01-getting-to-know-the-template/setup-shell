@@ -12,7 +12,6 @@ do
   sleep 1
 done
 
-
 # Display PARTICIPANT_ID info for Vendor Portal
 cat<<SCRIPT >> ${HOME_DIR}/.bashrc
 show_credentials () {
