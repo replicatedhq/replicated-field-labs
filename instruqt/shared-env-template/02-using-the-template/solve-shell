@@ -11,8 +11,8 @@ set -euxo pipefail
 # succeed, so let's create it here.
 #
 
-if ! tmux has-session -t airgap ; then
-  tmux new-session -d -s airgap su - replicant
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
 fi
 
-tmux send-keys -t airgap echo SPACE '$THIS' ENTER
+tmux send-keys -t shell echo SPACE '$THIS' ENTER
