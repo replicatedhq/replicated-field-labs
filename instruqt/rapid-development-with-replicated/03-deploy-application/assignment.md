@@ -24,19 +24,20 @@ timelimit: 600
 
 To access the Admin Console, click on the **Admin Console** tab. This should open a browser set to the Admin Console log in page. Use the password you set during the install in the previous challenge.
 
-If you need to reset the password, head over to the **K3S-VM** and run the [reset-password](https://docs.replicated.com/reference/kots-cli-reset-password) command. By the default, the namespace is the application slug, which is in the format of `sample-app-{$INSTRUQT_PARTICIPANT_ID}`.
+If you need to reset the password, head over to the **K3S-VM** and run the [reset-password](https://docs.replicated.com/reference/kots-cli-reset-password) command. By the default, the namespace is the application slug, which is in the format of `sample-app-$INSTRUQT_PARTICIPANT_ID`.
 
 Once logged in, upload the license file we downloaded in the previous challenge.
 
 Wait for the application to be `ready` as shown below:
 
+<p align="center"><img src="../assets/rdk-ready-icon.png" width=600></img></p>
 
 **Exploring the View Files Tab**
 
 Now that our application is deployed, head over to the **View Files** tab in the Admin Console.
 rdk-
 
-<p align="center"><img src="../assets/rdk-view-files.png" width=600></img></p>
+<p align="center"><img src="../assets/rdk-view-files-tab.png" width=600></img></p>
 
 You should see a file tree similar to the one shown below:
 

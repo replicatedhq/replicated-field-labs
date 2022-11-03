@@ -29,13 +29,13 @@ If you are still logged in to the Vendor Portal from the previous challenge, con
 
 Navigate to **Channels** if not there already. The release we are going to use has been promoted to the **Stable** channel so let's use that install command. Since we already have a cluster setup, we are going to use the **existing cluster** command highlighted below:
 
-<p align="center"><img src="../assets/rdk-channels.png" width=450></img></p>
+<p align="center"><img src="../assets/rdk-install-cmd.png" width=450></img></p>
 
 ## Download the License File
 
 Navigate to **Customers** where we should have our `Dev Customer` there. Click on the download icon highlighted in red below to download the license file.
 
-<p align="center"><img src="../assets/rdk-customers.png" width=600></img></p>
+<p align="center"><img src="../assets/rdk-customer-list.png" width=600></img></p>
 
 ## Install the Admin Console
 
@@ -43,12 +43,12 @@ Head over to the **K3S-VM** tab and paste the install command which should look 
 
 ```shell
 curl https://kots.io/install | bash
-kubectl kots sample-app-{$INSTRUQT_PARTICIPANT_ID}
+kubectl kots sample-app-xxxxxxxxxx
 ```
 
 Use the default namespace and set the password, keeping in mind that you will need it throughout the lab.
 
-<p align="center"><img src="../assets/rdk-output.png" width=600></img></p>
+<p align="center"><img src="../assets/rdk-install-output.png" width=600></img></p>
 
 Once you see the port forward to the admin console as shown above, you have completed this challenge.
 

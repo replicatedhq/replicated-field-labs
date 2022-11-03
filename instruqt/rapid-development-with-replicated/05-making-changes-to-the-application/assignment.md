@@ -28,24 +28,13 @@ timelimit: 600
 
 Not all your changes are going to involve the **Admin Console** so how can we bypass it altogether to deploy our changes? In this lab, let's explore how to do just that. In our example, we are going to add a new `Deployment` to our application and then will check that its pod is properly scheduled after we update the applicaiton without going to the Admin Console to deploy our change.
 
-There are two options for us to have a new version deployed without us having to click on the **Deploy** button:
-1. Set up Automatic Updates in the Admin Console
-2. Use the KOTS CLI to deploy the update
-
-In this lab, we'll configure the Admin Console to automatically deploy the change, but will cover the KOTS CLI command at the end as well.
-
-## Set up Automatic Updates
-
-Head over to the **Admin Console** tab and click on the **Configure automatic updates** link highlighted below:
-
-<p align="center"><img src="../assets/rdk-conf-updates.png" width=600></img></p>
-
-Select the option to automatically deploy the app.
-
-
 ## Update the App
 
-Head over to the **Code Editor** tab where we edited the **kots-app.yaml** file. This time we want to create a new file, so click on the new file icon in the editor in the **manifests** folder. Paste the contents below to create our deployment.
+Head over to the **Code Editor** tab where we edited the **kots-app.yaml** file. This time we want to create a new file, so click on the new file icon in the editor in the **manifests** folder.
+
+<p align="center"><img src="../assets/rdk-new-file.png" width=600></img></p>
+
+Paste the contents below to create our deployment.
 
 ```yaml
 apiVersion: apps/v1
@@ -71,13 +60,44 @@ spec:
         command: ['sh', '-c', 'echo Container 1 is Running ; sleep 3600']
 ```
 
-Save your changes and head over to the **Dev** tab. Let's upload the changes again. Remember that you can get the command from the **View files** tab in the Admin console.
+Save your changes by clicking on the icon highlighted below.
 
-Since we enabled automatic updates, our change should be applied without having to use the Admin Console. To check that we in fact have our new deployment run `kubectl get deployments -n <your-namespace>`, you should see the new deployment:
+<p align="center"><img src="../assets/rdk-save-file.png" width=600></img></p>
 
+Let's upload the changes again, so head over to the **Dev** tab. Remember that you can get the command from the **View files** tab in the Admin console.
 
+Now we are going to use the `kots upstream upgrade` to deploy the change.
 
+```shell
+$ kubectl kots upstream upgrade --namespace <your-namespace> $REPLIACTED_APP --deploy
+```
 
+The output should look something like this:
+
+```
+  • Checking for application updates ✓
+
+  • There are no application updates available, ensuring latest is deployed
+
+  • To access the Admin Console, run kubectl kots admin-console --namespace sample-app-swhcp1e9nlcj
+
+  • Currently deployed release: sequence 2, version 0.1.0
+  • Deploying release: sequence 3, version 0.1.0
+  • KOTS CLI version 1.88.0 does not match API version 1.89.0. To update, run:
+  $ curl https://kots.io/install/1.89.0 | bash
+```
+
+To check the changes were deployed, get the deployments for your namespace
+
+```shell
+
+kubectl get deployments -n <your-namespace>
+NAME                 READY   UP-TO-DATE   AVAILABLE   AGE
+kotsadm              1/1     1            1           19m
+nginx                1/1     1            1           16m
+busybox-deployment   1/1     1            1           7m50s
+replicant@shell:~$
+```
 
 If you see the new deployment, congratulations! You have completed this challenge. Click on **Next** to continue
 
