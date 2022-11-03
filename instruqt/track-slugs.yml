@@ -12,3 +12,5 @@ tracks:
   - { slug: support-bundle-analyzers, id: ustszdcffvmg }
   - { slug: support-bundle, id: d2oeswgg5ra2 }
   - { slug: support-cli, id: uab72ueg5ox2 }
+  - { slug: custom-fields, id: 9ixa2iyrggut }
+  - { slug: rapid-development-with-replicated,id: x4azomfgtrik }
