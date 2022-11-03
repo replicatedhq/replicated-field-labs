@@ -23,7 +23,7 @@ concurrency:
 on:
   push:
     branches:
-      - instruqt
+      - main
     paths:
       - 'instruqt/**'
   workflow_dispatch:

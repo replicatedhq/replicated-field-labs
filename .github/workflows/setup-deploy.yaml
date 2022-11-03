@@ -2,7 +2,7 @@ name: setup-deploy
 
 on:
   push:
-    branches: [instruqt]
+    branches: [main]
     paths:
       - 'setup/**'
   workflow_dispatch:

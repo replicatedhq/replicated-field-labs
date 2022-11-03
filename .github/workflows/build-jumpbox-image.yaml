@@ -4,14 +4,12 @@ on:
   - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
-    - instruqt
     - main
     paths:
     - 'packer/jumpbox/**'
     - .github/workflows/build-jumpbox-image.yaml
   pull_request:
     branches:
-    - instruqt
     - main
     paths:
     - 'packer/jumpbox/**'
