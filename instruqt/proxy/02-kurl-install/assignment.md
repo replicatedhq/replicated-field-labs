@@ -26,7 +26,7 @@ env | grep proxy
 
 Download kurl installer
 ```
-curl --proxy http://${LOCAL_PROXY_IP}:3128 https://kurl.sh/proxy-$INSTRUQT_PARTICIPANT_ID -o /root/kurl-install.sh
+curl https://kurl.sh/proxy-$INSTRUQT_PARTICIPANT_ID -o /root/kurl-install.sh
 ```
 
 Install kurl kubernetes cluster
