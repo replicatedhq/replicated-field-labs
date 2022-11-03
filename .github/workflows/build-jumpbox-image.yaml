@@ -83,5 +83,6 @@ jobs:
       
     # delete built artifact for PRs (save storage costs)
     - name: Delete VM Image
+      if: ${{ github.event_name == 'pull_request' }} 
       run: gcloud compute images delete --quiet airgap-jumpbox-${{github.sha}}
       shell: bash
