@@ -20,7 +20,7 @@ tabs:
   path: /home/replicant/
 - title: Admin Console
   type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  url: http://cluster.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
 timelimit: 600

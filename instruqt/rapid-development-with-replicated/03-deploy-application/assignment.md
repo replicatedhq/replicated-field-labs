@@ -6,7 +6,7 @@ title: Deploy Application
 teaser: Deploy the Application
 notes:
 - type: text
-  contents: -| In this lab we will deploy the sample applicaiton using the Admin Console
+  contents: In this lab we will deploy the sample applicaiton using the Admin Console
     and then look at the file explorer.
 tabs:
 - title: K3S-VM
@@ -14,7 +14,7 @@ tabs:
   hostname: cluster
 - title: Admin Console
   type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  url: http://cluster.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
 timelimit: 600

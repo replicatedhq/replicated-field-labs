@@ -8,6 +8,6 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      nodePort: 8888
+      nodePort: 32123
   selector:
     app: nginx

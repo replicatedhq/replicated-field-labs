@@ -8,9 +8,18 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Shell
+- title: Dev
   type: terminal
   hostname: shell
+  workdir: /home/replicant
+- title: Code Editor
+  type: code
+  hostname: shell
+  path: /home/replicant/
+- title: Vendor
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true  
 difficulty: basic
 timelimit: 600
 ---
