@@ -4,20 +4,8 @@ set -euxo pipefail
 echo "Running challenge 02 setup script - Started.."
 epoc_start=`date +%s`
 
-# Determine OS platform
-CENTOS=false
-UBUNTU=false
-if [ -f /usr/bin/python ] ; then
-  if python -mplatform |grep -i 'centos'; then CENTOS=true; fi
-fi
-if uname -a | grep -i Ubuntu ; then UBUNTU=true; fi
-
-if $CENTOS ; then
-  NET_INTERFACE=eth0
-fi
-if $UBUNTU ; then
-  NET_INTERFACE=ens4
-fi
+# Set network interface name for instance type
+NET_INTERFACE=ens4
 
 #
 LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
