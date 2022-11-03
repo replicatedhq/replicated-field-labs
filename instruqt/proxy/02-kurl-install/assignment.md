@@ -62,7 +62,7 @@ Change the default randomly generated kotsadm password to a known value
 echo mytestapp | /usr/bin/kubectl kots --kubeconfig=/etc/kubernetes/admin.conf reset-password -n default
 ```
 
-🏁 Finish
-==========
+🏁 Next
+=======
 
 To complete the challenge, press **Next**.
