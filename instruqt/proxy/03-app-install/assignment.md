@@ -38,7 +38,7 @@ Install using kots cli including license file to upload automatically vs uploadi
 kubectl kots install proxy-$INSTRUQT_PARTICIPANT_ID --skip-preflights --license-file ~/license.yaml --shared-password mytestapp --namespace default --no-port-forward
 ```
 
-Text access to kotsapp via the KotsAdm tab..
+Test access to kotsapp via the KotsAdm tab..
 
 Verify that the application is running using the cli:
 ```
