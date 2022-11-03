@@ -29,7 +29,7 @@ If you are still logged in to the Vendor Portal from the previous challenge, con
 
 Navigate to **Channels** if not there already. The release we are going to use has been promoted to the **Stable** channel so let's use that install command. Since we already have a cluster setup, we are going to use the **existing cluster** command highlighted below:
 
-<p align="center"><img src="../assets/rdk-channels.png" width=300></img></p>
+<p align="center"><img src="../assets/rdk-channels.png" width=450></img></p>
 
 ## Download the License File
 
@@ -50,5 +50,5 @@ Use the default namespace and set the password, keeping in mind that you will ne
 
 <p align="center"><img src="../assets/rdk-output.png" width=600></img></p>
 
-Once you see the prompt to browse to the admin console as shown above, you have completed this challenge.
+Once you see the port forward to the admin console as shown above, you have completed this challenge.
 
