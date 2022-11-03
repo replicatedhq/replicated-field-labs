@@ -55,7 +55,7 @@ curl -v -m 5 https://lwn.net 2>&1 | egrep 'Trying|HTTP/|Failed|error|unreachable
 ```
 
 
-🏁 Finish
-==========
+🏁 Next
+=======
 
 To complete the challenge, press **Next**.
