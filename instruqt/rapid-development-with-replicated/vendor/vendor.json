@@ -1,0 +1,7 @@
+{
+    "name": "Sample App",
+    "slug": "Sample App",
+    "customer": "Dev Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}
