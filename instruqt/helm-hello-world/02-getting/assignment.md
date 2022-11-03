@@ -64,7 +64,7 @@ Note that for some values, the value is not a hard coded value, rather it has so
 
 ## 3. Copy Install Command
 
-Go back to **Channels** and go to the `Stable` channel. On the bottom of the channel card, select to copy the install command for `existing install`
+Go back to **Channels** and go to the `Stable` channel. On the bottom of the channel card, select to copy the install command for `Existing Cluster`
 
 <p align="center"><img src="../assets/install-command.png" width=600></img></p>
 
