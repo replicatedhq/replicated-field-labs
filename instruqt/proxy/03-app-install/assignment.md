@@ -31,7 +31,7 @@ Install sample application with proxy config in place.
 
 The license file for the application has already been downloaded in the home directory.
 
-Even thought the kurl installer spec included kotsadm which can be see running the application installation can be completed by the command line with the kot install command using the license.
+Even thought the kurl installer spec included kotsadm which can be see running the application installation can be completed by the command line with the kots install command using the license.
 
 Install using kots cli including license file to upload automatically vs uploading via kotsadm web UI
 ```
