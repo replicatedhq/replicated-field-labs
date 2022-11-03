@@ -10,53 +10,20 @@ do
     sleep 1
 done
 
+# set interface name for instance type used
+NET_INTERFACE=ens4
 
-# Determine OS platform
-CENTOS=false
-UBUNTU=false
-if [ -f /usr/bin/python ] ; then
-  if python -mplatform |grep -i 'centos'; then CENTOS=true; fi
-fi
-if uname -a | grep -i Ubuntu ; then UBUNTU=true; fi
+# install some useful packages
+apt-get update
+apt-get --fix-broken install
+apt-get install -y mlocate bind9utils net-tools jq
 
-
-# ubuntu
-if $UBUNTU ; then
-
-  NET_INTERFACE=ens4
-
-  # install some useful packages
-  apt-get update
-  apt-get --fix-broken install
-  apt-get install -y mlocate bind9utils net-tools jq
-
-  # enable proxy for apt (after setup package installs as proxy not available yet)
-  LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
-  cat <<EOF> /etc/apt/apt.conf.d/proxy.conf
+# enable proxy for apt (after setup package installs as proxy not available yet)
+LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
+cat <<EOF> /etc/apt/apt.conf.d/proxy.conf
 Acquire::http::Proxy "http://${LOCAL_PROXY_IP}:3128/";
 Acquire::https::Proxy "http://${LOCAL_PROXY_IP}:3128/";
 EOF
-fi
-
-# centos
-if $CENTOS ; then
-
-  NET_INTERFACE=eth0
-
-  # install some useful packages
-  yum install -y mlocate bind-utils
-
-  # Disable security services for smooth kurl install prompts
-  # note: stopping firewalld flushes iptables! so running before adding rules
-  systemctl stop firewalld
-  systemctl disable firewalld
-  setenforce 0
-
-  # enable proxy for yum (after setup package installs as proxy not available yet)
-  LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
-  echo "proxy=http://$LOCAL_PROXY_IP:3128" >> /etc/yum.conf
-fi
-
 
 # record DNS details to local file for reference
 LOCAL_HOST=`host isolated-host | grep for | awk '{print $1}'`
