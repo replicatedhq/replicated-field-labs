@@ -17,9 +17,6 @@ mv /usr/lib/apt/apt.systemd.daily /usr/lib/apt/apt.systemd.daily.DISABLED
 rm -f /etc/cron.daily/dpkg 
 rm -f /etc/apt/apt.conf.d/10periodic
 
-# bashrc
-echo "alias l='ls -latFrh'" >> /root/.bashrc
-
 # done
 epoc_end=`date +%s`
 duration=$(($epoc_end - $epoc_start))
