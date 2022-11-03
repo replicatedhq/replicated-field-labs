@@ -32,5 +32,5 @@ developers:
 - graham@replicated.com
 private: false
 published: false
-maintenance: true
+maintenance: false
 checksum: "339424959900277795"
