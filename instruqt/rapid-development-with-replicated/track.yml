@@ -1,7 +1,7 @@
 slug: rapid-development-with-replicated
 id: x4azomfgtrik
 title: Rapid Development with Replicated
-teaser: A short description of the track.
+teaser: Rapid Development with Replicated.
 description: |-
   * **What you will do**:
     * Learn to use the `kots download` & `kots upload` command to rapidly iterate on a deployed instance
