@@ -81,7 +81,7 @@ The above should return a single node, which we can access over on the **K3S-VM*
 kubectl kots version
 ```
 
-The above should return the version of the `kots`.
+The above should return the version of the `kots` cli.
 
 Let's head over now to the **K3S-VM** tab, where you should see the username and password we will use to login to the Vendor Portal. The username and password are based on your Participant ID, which is generated when you start a track.
 
