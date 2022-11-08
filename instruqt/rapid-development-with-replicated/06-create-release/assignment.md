@@ -49,7 +49,7 @@ The **Upstream** directory includes the **userdata** sub directory which we don'
 First let's make sure you are in the `sample-app-...` directory. Once there, let's create the **manifests** directory:
 
 ```bash
-mk dir Manifests
+mkdir manifests
 ```
 Now let's copy the yaml files here. Note that since our application only contains manifests, we only need to copy files with a `.yaml` extension. If the application contained any Helm Charts, then those would need to copied as well.
 
