@@ -40,7 +40,7 @@ timelimit: 300
     * Success / Sales Engineers
 * **Prerequisites**:
     * Basic working knowledge of Linux (Bash)
-    * This is an advanced topic so make sure you have completed the following tracks or have relevant hands=on experience
+    * This is an advanced topic so make sure you have completed the following tracks or have relevant hands-on experience
       * Deploy Hello World Application
       * Replicated CLI
 * **Outcomes**:
