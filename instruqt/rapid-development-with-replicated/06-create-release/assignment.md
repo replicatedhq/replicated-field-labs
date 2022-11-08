@@ -25,7 +25,7 @@ timelimit: 600
 ---
 ## Set the Application Slug
 
-We will use the Application Slug to set the `REPLICATED_APP` environment varilable used by the `replicated` cli to know which application to update. To access the Application Slug, navigate to **Settings** and copy the value highlighted in red below:
+We will use the Application Slug to set the `REPLICATED_APP` environment variable used by the `replicated` cli to know which application to update. To access the Application Slug, navigate to **Settings** and copy the value highlighted in red below:
 
 To set the environment variable run the command `export REPLICATED_APP=<your-app-slug>` on the **Dev** tab.
 
