@@ -13,12 +13,5 @@ do
 done
 
 # Display PARTICIPANT_ID info for Vendor Portal
-cat<<SCRIPT >> ${HOME_DIR}/.bashrc
-show_credentials () {
-  echo Credentials for https://vendor.replicated.com
-  echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com
-  echo Password: $INSTRUQT_PARTICIPANT_ID
-}
-
-show_credentials
-SCRIPT
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+echo "show_credentials" >> ${HOME_DIR}/.bashrc

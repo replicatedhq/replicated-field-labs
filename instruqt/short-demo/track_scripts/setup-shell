@@ -25,5 +25,5 @@ kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-h
 
 # Display PARTICIPANT_ID info for Vendor Portal
 echo "export INSTRUQT_PARTICIPANT_ID=${INSTRUQT_PARTICIPANT_ID}" >> /home/replicant/.bashrc
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/pwd-hash/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
 echo "show_credentials" >> /home/replicant/.bashrc
