@@ -66,6 +66,8 @@ You can also view the application status and output via the KotsAdm UI.
 Navigate to the "KotsAdm" tab, login and click on "Details" to see the statusInformers output should be "Ready" (Running okay)
 The application can be viewed in the browser by clicking on the "Open nginx app" link.
 
+![proxy-applink](../assets/proxy-applink.png)
+
 
 🏁 Finish
 ==========
