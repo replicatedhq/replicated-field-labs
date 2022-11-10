@@ -1,0 +1,26 @@
+#!/bin/bash
+set -euxo pipefail
+
+echo "Running challenge 01 setup script - Started.."
+epoc_start=`date +%s`
+
+# drop egress (doesn't work with this in track_scripts setup stage as breaks instruqt setup)
+iptables -A OUTPUT -p tcp -m tcp -j DROP
+iptables -A OUTPUT -p icmp -j DROP
+
+# clear some daily package management tasks that cause dpkg lock when installing kurl
+systemctl stop apt-daily.timer
+systemctl disable apt-daily.timer
+systemctl mask apt-daily.service
+systemctl daemon-reload
+mv /usr/lib/apt/apt.systemd.daily /usr/lib/apt/apt.systemd.daily.DISABLED
+rm -f /etc/cron.daily/dpkg 
+rm -f /etc/apt/apt.conf.d/10periodic
+
+# done
+epoc_end=`date +%s`
+duration=$(($epoc_end - $epoc_start))
+DURATION=`echo "DURATION: $(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."`
+echo "challenge 01 setup script - Done ($DURATION)"
+
+exit 0

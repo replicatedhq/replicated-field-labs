@@ -1,0 +1,20 @@
+---
+apiVersion: cluster.kurl.sh/v1beta1
+kind: Installer
+metadata:
+  name: "proxy-app"
+spec:
+  kubernetes:
+    version: 1.23.x
+  containerd:
+    version: 1.5.x
+  weave:
+    version: latest
+  ekco:
+    version: latest
+  longhorn:
+    version: latest
+  minio:
+    version: latest
+  kotsadm:
+    version: latest

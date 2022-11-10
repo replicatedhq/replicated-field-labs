@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>proxy track</title>
+    </head>
+    <body>
+      <h2>Congrats!</h2>
+      <img src="https://i.giphy.com/media/3ornk57KwDXf81rjWM/giphy.webp">
+      <br><br>
+      If you can read this, you have successfully installed your app in an environment using an http proxy
+    </body>
+    </html>
