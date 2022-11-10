@@ -1,5 +1,8 @@
 #!/bin/bash 
 
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 # change the cluster URI
 yq -i '.clusters[0].cluster.server = "https://kotsadm:6443"' /home/replicant/.kube/config-kotsadm
 yq -i '.clusters[0].cluster.server = "https://application:6443"' /home/replicant/.kube/config-application
@@ -7,11 +10,16 @@ chown -R replicant /home/replicant/.kube
 
 # Install kotsadm on kotsadm
 export KUBECONFIG=/home/replicant/.kube/config-kotsadm
+echo -e "$CYAN$> kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \n\
+   --name short-demo-$INSTRUQT_PARTICIPANT_ID \n\
+   --namespace default \n\
+   --shared-password $INSTRUQT_PARTICIPANT_ID \n\
+   --no-port-forward$NC" > /home/replicant/kotsadm.log
 kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --name short-demo-$INSTRUQT_PARTICIPANT_ID \
   --namespace default \
   --shared-password $INSTRUQT_PARTICIPANT_ID \
-  --no-port-forward 
+  --no-port-forward >> /home/replicant/kotsadm.log
 kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
 
 # Install kotsadm on application
