@@ -1,7 +1,7 @@
 slug: support-cli
 id: uab72ueg5ox2
 title: Support CLI
-teaser: use the kubectl support-bundle plugin
+teaser: Use the kubectl support-bundle plugin
 description: |-
   In this lab, we'll learn how to debug and diagnose support problems when the KOTS admin console is unavailable.
 
