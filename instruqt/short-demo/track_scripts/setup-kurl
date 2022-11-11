@@ -23,8 +23,17 @@ while ! ssh shell true; do
   sleep 1
 done
 
+cat <<'SAVE_SCRIPT' >> sharelog.sh
+#!/bin/bash 
+tail -f kurl.log | ssh shell "cat > /home/replicant/kurl.log" 2> ssh.err
+
+SAVE_SCRIPT
+
+chmod a+x sharelog.sh
+
 curl https://kurl.sh/short-demo-$INSTRUQT_PARTICIPANT_ID > install.sh
 chmod +x install.sh
-nohup sudo ./install.sh > kurl.log & disown
+nohup sudo ./install.sh > kurl.log 2> kurl.err < /dev/null & disown
+nohup ./sharelog.sh > tail.log 2> tail.err < /dev/null & disown
 
-nohup tail -f - kurl.log | ssh shell "cat > /home/replicant/kurl.log" & disown
+exit 0
