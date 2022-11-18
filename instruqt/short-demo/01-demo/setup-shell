@@ -47,6 +47,13 @@ kubectl kots install short-demo-$INSTRUQT_PARTICIPANT_ID \
   --shared-password $INSTRUQT_PARTICIPANT_ID \
   --no-port-forward \
   --skip-preflights
+
+# Generate a support-bundle by default
+json=$( jq -n -c --arg password "$INSTRUQT_PARTICIPANT_ID" '$ARGS.named' )
+token=$(curl -H "Content-Type: application/json" --request POST -d "$json" http://application.${_SANDBOX_ID}.instruqt.io:8800/api/v1/login | jq -r ".token")
+origin=$( jq -n -c --arg origin "http://application.${_SANDBOX_ID}.instruqt.io:8800" '$ARGS.named' )
+command=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$origin" http://application.${_SANDBOX_ID}.instruqt.io:8800/api/v1/troubleshoot/app/short-demo-$INSTRUQT_PARTICIPANT_ID/supportbundlecommand | jq -r ".command[1]")
+${command} --insecure-skip-tls-verify=true --interactive=false
 SAVE_SCRIPT
 
 chmod a+x /home/replicant/trigger.sh
