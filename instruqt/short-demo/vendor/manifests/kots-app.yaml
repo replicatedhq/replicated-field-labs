@@ -5,7 +5,7 @@ metadata:
   name: nginx
 spec:
   title: Spooky
-  icon: https://github.githubassets.com/images/icons/emoji/unicode/1f47b.png?v8
+  icon: https://user-images.githubusercontent.com/1579188/201223313-7e1c5649-30c4-47f0-bfc6-0c697e1b329b.png
   statusInformers:
     - deployment/nginx
   ports:
