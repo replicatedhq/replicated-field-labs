@@ -32,7 +32,7 @@ tabs:
   url: http://application.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
-timelimit: 3600
+timelimit: 4200
 ---
 
 Kubeconfig
