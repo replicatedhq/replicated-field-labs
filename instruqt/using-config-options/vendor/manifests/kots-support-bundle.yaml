@@ -1,0 +1,13 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: lab9
+spec:
+  collectors:
+    - logs:
+        name: repl-db-consumer-logs
+        selector:
+          - app=repl-db-consumer
+        namespace: '{{repl Namespace }}'
+  analyzers: []
+
