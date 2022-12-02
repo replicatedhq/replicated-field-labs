@@ -4,8 +4,6 @@ metadata:
   name: repl-db-provider-service
   labels:
     app: repl-db-provider-service
-  annotations:
-    kots.io/when: '{{repl ConfigOptionEquals "postgres_type" "embedded_postgres"}}'
 spec:
   type: ClusterIP
   ports:

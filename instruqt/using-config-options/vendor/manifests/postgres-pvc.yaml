@@ -4,8 +4,6 @@ metadata:
   name: postgres-pvc
   labels:
     app: postgres
-  annotations:
-    kots.io/when: '{{repl ConfigOptionEquals "postgres_type" "embedded_postgres"}}'  
 spec:
   accessModes:
     - "ReadWriteOnce"

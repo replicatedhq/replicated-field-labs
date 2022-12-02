@@ -4,8 +4,6 @@ metadata:
   name: postgres
   labels:
     app: postgres
-  annotations:
-    kots.io/when: '{{repl ConfigOptionEquals "postgres_type" "embedded_postgres"}}'
 spec:
   replicas: 1
   selector:
@@ -31,10 +29,7 @@ spec:
           value: "postgres"
         # use admin password from secret
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres
-              key: DB_PASSWORD
+          value: "postgres"
         - name: POD_IP
           valueFrom: { fieldRef: { fieldPath: status.podIP } }
         ports:

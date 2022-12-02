@@ -1,14 +1,14 @@
 apiVersion: kots.io/v1beta1
 kind: Application
 metadata:
-  name: app-slug
+  name: sts-app
 spec:
-  title: "Lab 1.17: Persistent Storage"
+  title: "STS App"
   statusInformers:
-    - deployment/repl-db-consumer
+    - deployment/sts-app
   ports:
-    - serviceName: "repl-db-consumer-service"
+    - serviceName: "sts-app-service"
       servicePort: 5000
       localPort: 5000
-      applicationUrl: "http://repl-db-consumer-service"  
+      applicationUrl: "http://sts-app-service"  
   icon: data:image/png;base64,5e84879ce72cfd690148f840e62c16fb2709bddaa09763dba195eb137b798c49

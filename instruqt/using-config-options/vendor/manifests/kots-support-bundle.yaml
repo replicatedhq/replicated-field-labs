@@ -5,9 +5,9 @@ metadata:
 spec:
   collectors:
     - logs:
-        name: repl-db-consumer-logs
+        name: sts-app-logs
         selector:
-          - app=repl-db-consumer
+          - app=sts-app
         namespace: '{{repl Namespace }}'
   analyzers: []
 

@@ -2,10 +2,13 @@
 slug: using-config-values
 type: challenge
 title: Using Config Values
-teaser: A short description of the challenge.
+teaser: Let's map the values from our Config screen to the app yaml
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: -|
+    In this challenge we are taking a deeper dive into templating. We are going to use templating to
+      * Only deploy postgres manifests when we need to
+      * Provide the right database connection info to the application, regardless of the user's selection.
 tabs:
 - title: Shell
   type: terminal
@@ -169,6 +172,9 @@ data:
 
 Save your changes and create a new release. With the changes made, when a user selects to connect to their own database, the postgres resources (StatefulSet, Service, Secret & PVC) will not be created.
 
+### What if I have a helm chart instead of manifests?
+
+If `postgres` or any other optional component in your application is packaged as a helm chart, you can then set them as [optional charts](https://docs.replicated.com/vendor/helm-optional-charts)
 
 ## Getting the STS App to Connect to the Correct Database
 
@@ -257,3 +263,6 @@ spec:
               value: '{{repl if ConfigOptionEquals "postgres_type" "embedded_postgres"}}5432{{repl else}}{{repl ConfigOption "external_postgres_port" }}{{repl end}}'
 ```
 </details>  
+
+Save your changes and create a new release. You may opt to update your application but at this time, we don't have an external instance to test against.
+
