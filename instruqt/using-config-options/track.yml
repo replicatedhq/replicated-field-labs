@@ -3,7 +3,7 @@ title: Using Config Options
 teaser: A short description of the track.
 description: "In this track we will learn about Config Options\n* what they are\n*
   How to map values to your application\n\nAs a practical example, we will learn how
-  to use Config Options to manage persistent store options for an application. We
+  to use Config Options to manage persistent store options for an application that is stateful. We
   will start with an \napplication that ships with postgres, but we'll use Config
   options to let the end user choose between using their own postgres or the one shipped\nwith
   the application.\n\nYou can use any GitHub flavoured markdown."

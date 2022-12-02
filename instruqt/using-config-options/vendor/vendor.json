@@ -1,0 +1,9 @@
+{
+    "name": "STS App",
+    "slug": "sts-app",
+    "customer": "STS Customer",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+
+
+}
