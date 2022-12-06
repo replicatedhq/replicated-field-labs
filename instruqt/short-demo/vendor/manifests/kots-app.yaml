@@ -4,7 +4,7 @@ kind: Application
 metadata:
   name: nginx
 spec:
-  title: Spooky
+  title: SpaceRocket
   icon: https://user-images.githubusercontent.com/1579188/201223313-7e1c5649-30c4-47f0-bfc6-0c697e1b329b.png
   statusInformers:
     - deployment/nginx
