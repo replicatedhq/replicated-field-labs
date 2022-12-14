@@ -31,6 +31,10 @@ tabs:
   type: website
   url: http://application.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
+- title: kURL
+  type: website
+  url: http://kurl.${_SANDBOX_ID}.instruqt.io:8800
+  new_window: true
 difficulty: basic
 timelimit: 4200
 ---
@@ -56,6 +60,21 @@ Remove app
 export KUBECONFIG=~/.kube/config-kotsadm
 kubectl kots remove short-demo-${INSTRUQT_PARTICIPANT_ID} -n default --force
 ```
+
+kURL Embedded Install
+=====================
+
+You can show the kURL install output from the embedded installation in the shell tab using
+```
+tail -100f ~/kurl.log
+```
+
+Or if you want the full output from the beginning
+```
+cat ~/kurl.log | more
+```
+
+If you want to install the application on the embedded kURL instance, go to the `kURL` tab, upload the license and enjoy.
 
 Create new release
 ==================
