@@ -3,11 +3,14 @@ id: iecexaqfyu6j
 title: Short Demo
 teaser: Used for conferences and pitches
 description: |-
-  An environment to run very short demo's
+  An environment to run demo's
 
   It contains two k3s environments:
   * k3s-1 (kotsadm cluster): Just k3s with kots pre-installed. You can upload a license and go through the installation process.
   * k3s-2 (application cluster): Just k3s with kots pre-installed and also the application pre-installed.
+
+  It contains one kURL environment:
+  * kurl (kurl cluster): kURL cluster that can be used to show kURL output or do an embedded application install. The kURL cluster is installed async.
 
   It contains a container with the replicated CLI pre-installed.
   It contains an editor with the manifests pre-loaded as an IDE example
@@ -19,4 +22,5 @@ developers:
 private: false
 published: false
 show_timer: true
-checksum: "3741293787499066470"
+checksum: "11293693655654846089"
+
