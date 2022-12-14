@@ -83,3 +83,9 @@ Create new release
 replicated release create --yaml-dir ./demo-app/manifests --promote Stable --version 0.2.0
 ```
 
+Support Bundle
+==============
+
+The `Application Installed` instance also has a support-bundle pre generated. So you can browse to the application installer and use that one in case you can't wait for the results.
+
+FYI: It takes a couple minutes before it is generated. If you see the following message in `trigger.out`, it should be loaded: `A copy of this support bundle was written to the current directory, named "support-bundle-....tar.gz"`
