@@ -54,7 +54,7 @@ Navigate to the Releases tab and click on the latest active releases **View YAML
 ![preflight-release-yaml](../assets/preflight-view-yaml-link.png)
 
 The UI code editor has the file list down the left hand side, there is a line separating the kots feature config and the application itself.
-The file that contains the application preflights in this example is called **kots-preflights**, select this file and note the header type:
+The file that contains the application preflights in this example is called **kots-preflight**, select this file and note the header type:
 
 ```yaml
 apiVersion: troubleshoot.sh/v1beta2
