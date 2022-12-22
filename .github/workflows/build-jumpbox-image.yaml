@@ -43,6 +43,8 @@ jobs:
         command: init
         working_directory: ./packer
         target: jumpbox
+      env:
+        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # validate templates
     - name: Validate Packer Template
@@ -52,6 +54,8 @@ jobs:
         arguments: -syntax-only
         working_directory: ./packer
         target: jumpbox
+      env:
+        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # build artifact for push/merge (use default name)
     - name: Build VM Image
@@ -66,6 +70,7 @@ jobs:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
         PKR_VAR_zone: europe-west1-b
+        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
     # build artifact for PRs (need to assign image name)
     - name: Build VM Image
@@ -80,6 +85,7 @@ jobs:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
         PKR_VAR_image_name: airgap-jumpbox-${{github.sha}}
+        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     # delete built artifact for PRs (save storage costs)
     - name: Delete VM Image
