@@ -24,7 +24,7 @@ In this lab, we'll use your partipant ID for your credentials in the Vendor Port
 
 ```
 username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PARTICIPANT_ID]
+password: [PASSWORD]
 ```
 
 To access the Vendor Portal, click on the **Vendor** tab and login to the Vendor Portal. Once you log in, you should land on the Channels, which allow you to manage who has access to which releases of your application.

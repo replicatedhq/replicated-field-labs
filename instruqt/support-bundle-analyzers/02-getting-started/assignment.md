@@ -32,7 +32,7 @@ To access the Vendor Portal, you will need your participant id. If you go to the
 
 ```
 username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PARTICIPANT_ID]
+password: [PASSWORD]
 ```
 
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
