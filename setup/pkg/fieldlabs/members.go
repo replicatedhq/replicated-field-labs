@@ -2,6 +2,7 @@ package fieldlabs
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -140,7 +141,9 @@ type AcceptBody struct {
 }
 
 func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
-	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: participantId, ReplaceAccount: false, FromTeamSelection: true}
+	h := sha256.Sum256([]byte(participantId))
+	sum := fmt.Sprintf("%x", h)
+	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: string(sum[0:20]), ReplaceAccount: false, FromTeamSelection: true}
 	acceptBodyBytes, err := json.Marshal(ab)
 	if err != nil {
 		return errors.Wrap(err, "marshal accept body")
