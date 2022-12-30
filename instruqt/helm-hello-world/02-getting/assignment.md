@@ -48,7 +48,7 @@ We want to view the contents of the latest release, so to do that click on the *
 
 <p align="center"><img src="../assets/releases-channel.png" width=600></img></p>
 
-You will see a file navigator similar to the one shown below. This view shows you the content of the current release. As you can see there are some files above the line and files below it. The files above are files used to configure some of the Replicated features. The files below are the ones needed to deploy the applicaiton, which in our case is Wordpress.
+You will see a file navigator similar to the one shown below. This view shows you the content of the current release. As you can see there are some files above the line and files below it. The files above are files used to configure some of the Replicated features. The files below are the ones needed to deploy the application, which in our case is Wordpress.
 
 <p align="center"><img src="../assets/release-contents.png" width=600></img></p>
 

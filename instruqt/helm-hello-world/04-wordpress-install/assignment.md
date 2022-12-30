@@ -9,7 +9,7 @@ notes:
   contents: |-
     We have installed the Admin Console, now we are ready to deploy Wordpress.
 
-    This challenge will walk through deploying the Wordpress applicatin using the Admin Console.
+    This challenge will walk through deploying the Wordpress application using the Admin Console.
 tabs:
 - title: Application Installer
   type: website
