@@ -2,7 +2,7 @@ version: "3"
 virtualmachines:
 - name: kubernetes-vm
   image: instruqt/k3s-v1-25-0
-  shell: /bin/bash
+  shell: /bin/bash -l
   machine_type: n1-standard-2
   version: "2"
   allow_external_ingress:

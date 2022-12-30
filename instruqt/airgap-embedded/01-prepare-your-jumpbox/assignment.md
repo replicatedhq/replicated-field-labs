@@ -53,7 +53,7 @@ and password printed to your screen in the "Shell" tab.
 
 ```
 username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PARTICIPANT_ID]
+password: [PASSWORD]
 ```
 
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels tab.

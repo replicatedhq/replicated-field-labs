@@ -19,5 +19,6 @@ yq -i '.clusters[0].cluster.server = "https://kubernetes-vm:6443"' /home/replica
 chown -R replicant /home/replicant/.kube
 
 # Display PARTICIPANT_ID info for Vendor Portal
+echo "export INSTRUQT_PARTICIPANT_ID=${INSTRUQT_PARTICIPANT_ID}" >> /home/replicant/.bashrc
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
 echo "show_credentials" >> /home/replicant/.bashrc

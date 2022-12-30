@@ -48,7 +48,7 @@ This exercise is designed to give you a sandbox to ensure you have a basic under
 To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
 ```
 username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PARTICIPANT_ID]
+password: [PASSWORD]
 ```
 
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
