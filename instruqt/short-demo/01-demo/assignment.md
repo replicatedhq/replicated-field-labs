@@ -52,6 +52,13 @@ kubectl for application
 export KUBECONFIG=~/.kube/config-application
 ```
 
+Log output
+==========
+
+Showing the log output for an existing cluster install
+```
+cat kotsadm.log
+```
 
 Remove app
 ==========
