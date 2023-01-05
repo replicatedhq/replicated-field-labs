@@ -10,7 +10,7 @@ virtualmachines:
   - high-ports
 - name: isolated-host
   image: kots-field-labs/instruqt-airgap
-  shell: /bin/bash
+  shell: /bin/bash -l
   machine_type: n1-standard-8
   allow_external_ingress:
   - http

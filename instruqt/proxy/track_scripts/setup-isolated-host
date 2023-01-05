@@ -18,6 +18,9 @@ apt-get update
 apt-get --fix-broken install
 apt-get install -y mlocate bind9utils net-tools jq
 
+# Display PARTICIPANT_ID info for Vendor Portal
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+
 # enable proxy for apt (after setup package installs as proxy not available yet)
 LOCAL_PROXY_IP=`host proxy-host | grep has | awk '{print $4}'`
 cat <<EOF> /etc/apt/apt.conf.d/proxy.conf

@@ -18,7 +18,7 @@ fi
 ### Set the required environment variables
 
 username="${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
-password="${INSTRUQT_PARTICIPANT_ID}"
+password=$(get_password)
 
 login_request=$( jq -n -c --arg email "${username}" --arg password "${password}" '$ARGS.named' )
 token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login_request" https://id.replicated.com/v1/login | jq -r ".token")
