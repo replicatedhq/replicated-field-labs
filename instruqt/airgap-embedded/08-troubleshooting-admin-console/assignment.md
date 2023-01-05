@@ -6,7 +6,7 @@ title: What if the Admin Console fails?
 teaser: Addressing a failed admin console in an air-gapped environment
 notes:
 - type: text
-  contents: Troubelshooting the air-gapped Admin Console
+  contents: Troubleshooting the air-gapped Admin Console
 tabs:
 - title: Jumpbox
   type: terminal
