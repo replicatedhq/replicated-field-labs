@@ -8,6 +8,8 @@
 cat <<'SAVE_SCRIPT' >> /home/replicant/trigger.sh
 #!/bin/bash 
 
+source /etc/profile.d/header.sh
+
 # Setup REPLICATED_APP and REPLICATED_API_TOKEN
 password=$(get_password)
 login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )

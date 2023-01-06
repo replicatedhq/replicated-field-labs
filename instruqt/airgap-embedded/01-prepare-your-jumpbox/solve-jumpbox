@@ -16,7 +16,7 @@ if ! tmux has-session -t airgap ; then
 fi
 
 ### Set the required environment variables
-
+source /etc/profile.d/header.sh
 username="${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
 password=$(get_password)
 

@@ -17,6 +17,7 @@ tar xf replicated.tar.gz replicated && rm replicated.tar.gz
 mv replicated /usr/local/bin/replicated
 
 # Obtain REPLICATED_API_TOKEN for instruqt user id
+source /etc/profile.d/header.sh
 password=$(get_password)
 login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
 token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
