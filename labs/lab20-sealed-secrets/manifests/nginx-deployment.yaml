@@ -13,21 +13,28 @@ spec:
       labels:
         app: nginx
     spec:
-      initContainers:
-        - name: check-file
-          image: busybox
-          command:
-            - /bin/sh
-            - -ec
-            - |
-              perms=$(stat -c "%a" /etc/lab10/config.txt)
-              if [ "$perms" -ne "400" ]; then echo missing config; exit 1; fi
-          volumeMounts:
-            - mountPath: /etc/lab10
-              name: config
       containers:
         - name: nginx
           image: nginx
+          env:
+            - name: SECRET_ONE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-one
+                  key: data
+                  optional: true
+            - name: SECRET_TWO
+              valueFrom:
+                secretKeyRef:
+                  name: secret-two
+                  key: data
+                  optional: true
+            - name: SECRET_THREE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-three
+                  key: data
+                  optional: true
           volumeMounts:
             - mountPath: /usr/share/nginx/html
               name: html
@@ -45,3 +52,15 @@ spec:
         - name: html
           configMap:
             name: nginx-html
+        - name: secret-one
+          secret:
+            secretName: secret-one
+            optional: true
+        - name: secret-two
+          secret:
+            secretName: secret-two
+            optional: true
+        - name: secret-three
+          secret:
+            secretName: secret-three
+            optional: true

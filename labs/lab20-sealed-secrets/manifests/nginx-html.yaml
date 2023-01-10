@@ -5,13 +5,22 @@ metadata:
 data:
   index.html: |
     <!doctype html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>Lab 1.10</title>
-    </head>
-    <body>
-      <h2>Congrats!</h2>
-      If you can read this, you've completed Lab 1.10!
-    </body>
+    <html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Lab 20: GitOps and Sealed Secrets</title>
+        <link href="styles.css" rel="stylesheet" type="text/css">
+      </head>
+      <body>
+        Hello from KOTS.
+
+        This is a demonstration of the Sealed Secrets features of KOTS.  Observe that the
+        application running in the target cluster can decrypt Sealed Secrets.
+      </body>
     </html>
+  styles.css: |
+    body {
+      background-color: rgb(224,224,224);
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+      font-size: 100%;
+    }

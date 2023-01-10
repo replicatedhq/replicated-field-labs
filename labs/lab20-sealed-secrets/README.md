@@ -11,7 +11,7 @@ are encrypted and safe to store, even in a public repository!
 * **What you will do**:
     * Learn how to deploy your application in GitOps mode for a `git`-driven deployment
     * Learn to configure KOTS to automatically encrypt Secrets to make them safe to share, even publicly
-    * Learn how `kubeseal` can be used from your workstation to achieve the same
+    * Learn how `kubeseal` can be used from your workstation to create SealedSecrets manually
 * **Who this is for**: This lab is for anyone who will deploy KOTS applications, in particular if you may also be using the GitOps features of KOTS
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
@@ -19,22 +19,19 @@ are encrypted and safe to store, even in a public repository!
     * Success / Sales Engineers
 * **Prerequisites**:
     * Basic working knowledge of Linux (SSH, bash)
-    * A cluster that has an application installed with KOTS
-    * A workstation (which may be the same as the cluster control plane node)
-    * some Kubernetes Secrets you want to protect
-    * a `git` repo hosted on a supported provider, such as GitHub, GitLab, or Bitbucket, and an associated Deploy key
+    * a private `git` repo hosted on a supported provider, such as GitHub, GitLab, or Bitbucket
 * **Outcomes**:
-    * You will be able to effectively utilize Sealed Secrets to prevent passwords, certificates, etc. from leaking out of your Kubernetes manifests, and build confidence in your automation workflow using `git`
+    * You will be able to effectively utilize Sealed Secrets to prevent passwords, certificates, etc. from leaking out of your Kubernetes manifests, and build confidence in your automation workflow using GitOps
 
-### Deploy an application and enable GitOps mode
+### Enable GitOps on an application
 
-1.
+#### 1. Open the Admin Console and enable GitOps
 
 
 
-### Prepare the workstation to use Sealed Secrets
+### Enable Sealed Secrets
 
-#### 1. Install `helm` and, optionally, `kubeseal`
+#### 1. On your workstation, install `helm` and, optionally, `kubeseal`
 
 - If using a Mac as your workstation, install with `homebrew`
 
@@ -55,9 +52,8 @@ are encrypted and safe to store, even in a public repository!
     chmod +x kubeseal
     sudo mv kubeseal /usr/local/bin/kubeseal
     ```
-#### 2.
 
-#### 3. Prepare the cluster
+#### 2. Prepare the cluster
 
 1. Install the `sealed-secrets` CRDs, controller, etc. from the [bitnami project](https://github.com/bitnami-labs/sealed-secrets#installation) in the `kube-system` namespace
 
@@ -132,6 +128,8 @@ are encrypted and safe to store, even in a public repository!
 1. Enable GitOps and allow KOTS to push a release to the repo.  Observe that `Secrets` have been replaced with `SealedSecrets`
 
 1. Apply the finished manifest to the cluster and observe that the `SealedSecrets` have been decrypted by the SealedSecrets controller
+
+
 
 
 Congrats! You've completed Exercise 20! [Back To Exercise List](https://github.com/replicatedhq/kots-field-labs/tree/main/labs)
