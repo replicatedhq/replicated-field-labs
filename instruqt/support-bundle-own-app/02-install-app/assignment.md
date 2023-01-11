@@ -2,59 +2,52 @@
 slug: install-app
 type: challenge
 title: Install app
-teaser: Install the Application using the Replicated Application Installer
+teaser: Install Your Application using Replicated
 notes:
 - type: text
-  contents: Let's install the Application
+  contents: Let's install your Application
 tabs:
 - title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Application Installer
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
-  new_window: true
+# - title: Application Installer
+#   type: website
+#   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+#   new_window: true
 - title: Shell
   type: terminal
   hostname: kubernetes-vm
-difficulty: basic
+difficulty: intermediate
 timelimit: 600
 ---
 
 🚀 Let's start
-==============
+=================
 
-### Vendor Portal login
+## Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+Log into the Vendor Portal with your existing account, and note your application install command from your typical release channel.  It should look something like:
+
 ```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
+kubectl kots install <app-slug>
 ```
 
-Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
-
-👋 Install Nginx
+👋 Install Your Application
 ================
-
-In this case, the Application Installer is already deployed. So you can download the license from the Vendor Portal (`Support Bundle Customer`), upload the license in the Application Installer and go through the initial installation.
 
 ### 1. Download the license
 
-   ![Support Bundle Customer](../assets/support-bundle-customer.png)
+Navigate to the Vendor Portal tab and download the license that you've provisioned for your development work.
+
+  ![Support Bundle Customer](../assets/support-bundle-customer.png)
 
 ### 2. Install the application
 
-The password for the application installer is your `PARTICIPANT_ID`, which can be obtained running the following in the Shell tab:
-
-```
-echo $INSTRUQT_PARTICIPANT_ID
-```
 
 Go to the `Application Installer` tab (external window), login and upload the license that was downloaded from the Vendor Portal.
 
-   ![Application installer](../assets/deploy.png)
+  ![Application installer](../assets/deploy.png)
 
 🐛 The Issue
 ============
@@ -62,7 +55,6 @@ Go to the `Application Installer` tab (external window), login and upload the li
 Once the app is deployed, you'll notice something is not quite right. The Status Informers show "Unavailable".
 
 ![Status Informers](../assets/status-informers.png)
-
 
 🔎 Investigating
 ================

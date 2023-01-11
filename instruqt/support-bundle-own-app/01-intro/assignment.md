@@ -1,5 +1,5 @@
 ---
-slug: supportbundle-practical-1
+slug: intro
 type: challenge
 title: Support Bundles in Practice 1
 teaser: Practical Application of Support Bundles and Analyzers
