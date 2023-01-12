@@ -1,11 +1,21 @@
 slug: support-bundle-own-app
-title: Support bundle own app
-teaser: Using Support Analyzers
-description: |-
-  In this track, we invite you to bring your own application and apply some practical application of Troubleshoot Support Bundles and the `sbctl` tool to learn how to troubleshoot your application deployed with Replicated.
+id: 92kgiiahwnsc
+title: Troubleshoot Your Own App with Replicated
+teaser:
+  Get hands-on, practical application at debugging problems on Kubernetes clusters
+  using Support Bundles
+description: |+
+  In this track, we invite you to bring your own cloud app and apply some practical application of Troubleshoot.sh Support Bundles and the `sbctl` tool to learn how to triage, diagnose, and solve problems with Kubernetes.
+
+  https://troubleshoot.sh/
+
+  https://github.com/replicatedhq/sbctl
+
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+level: intermediate
 tags: []
 owner: replicated
 developers:
   - danj@replicated.com
   - ada@replicated.com
+checksum: "4427728916930269535"

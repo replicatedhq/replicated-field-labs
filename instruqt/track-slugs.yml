@@ -12,3 +12,4 @@ tracks:
   - { slug: support-bundle-analyzers, id: ustszdcffvmg }
   - { slug: support-bundle, id: d2oeswgg5ra2 }
   - { slug: support-cli, id: uab72ueg5ox2 }
+  - { slug: support-bundle-own-app, id: 92kgiiahwnsc }

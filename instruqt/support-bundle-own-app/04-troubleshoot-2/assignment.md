@@ -1,5 +1,6 @@
 ---
 slug: troubleshoot-2
+id: fvqrxka6fxu8
 type: challenge
 title: Correcting the broken application
 teaser: Time to fix the problem
@@ -17,3 +18,4 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+not blank

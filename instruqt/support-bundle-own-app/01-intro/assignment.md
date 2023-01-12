@@ -1,11 +1,13 @@
 ---
 slug: intro
+id: 9qhfrzwga94y
 type: challenge
 title: Support Bundles in Practice 1
 teaser: Practical Application of Support Bundles and Analyzers
 notes:
 - type: text
-  contents: In this track, we'll work together with your own application to practice troubleshooting Kubernetes applications using Support Bundles
+  contents: In this track, we'll work together with your own application to practice
+    troubleshooting Kubernetes applications using Support Bundles
 tabs:
 - title: Shell
   type: terminal

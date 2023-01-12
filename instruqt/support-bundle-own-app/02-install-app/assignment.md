@@ -1,5 +1,6 @@
 ---
 slug: install-app
+id: mj5o2wyy0ryp
 type: challenge
 title: Install app
 teaser: Install Your Application using Replicated
