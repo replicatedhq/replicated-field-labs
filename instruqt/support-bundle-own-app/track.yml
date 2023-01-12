@@ -2,10 +2,10 @@ slug: support-bundle-own-app
 title: Support bundle own app
 teaser: Using Support Analyzers
 description: |-
-  In this track, we'll use the Support Bundle analyzers feature to debug an application and
-  modifying the host in order to create the correct conditions for the application to start.
+  In this track, we invite you to bring your own application and apply some practical application of Troubleshoot Support Bundles and the `sbctl` tool to learn how to troubleshoot your application deployed with Replicated.
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
 tags: []
 owner: replicated
 developers:
-- danj@replicated.com
+  - danj@replicated.com
+  - ada@replicated.com
