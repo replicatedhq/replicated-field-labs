@@ -6,4 +6,20 @@
 # script. If the exit code is not 0, the script fails.
 #
 
-# TODO: write a check that will only proceed if there is a KOTS app installed
+if [[ -z "${APP_SLUG}" ]]; then
+  echo "APP_SLUG is not set; please export APP_SLUG to configure the learning environment."
+  exit 1
+fi
+
+if [[ -z "${CHANNEL}" ]]; then
+  echo "CHANNEL is not set; please export CHANNEL to configure the learning environment."
+  exit 1
+fi
+
+
+# TODO: check to make sure that the application is deployed before continuing
+
+
+# if all is well, export the app slug and channel to the user's .bashrc and continue
+echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
+echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
