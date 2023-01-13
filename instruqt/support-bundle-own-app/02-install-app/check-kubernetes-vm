@@ -6,4 +6,4 @@
 # script. If the exit code is not 0, the script fails.
 #
 
-curl localhost:8800/healthz
+# TODO: write a check that will only proceed if there is a KOTS app installed

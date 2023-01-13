@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+
+# this was overengineered and doesn't work with the lifecycle sripts supported by instruqt, so split into individual scripts for each challenge
 ARGS=$(getopt -o elsvar --long storage,service,limits,entrypoint,admin-console,registry  -- "$@")
 
-get_deployment() {
-# get a random deployment name from the application deployed by a vendor
-kubectl get deployments -l kots.io/app-slug=annarchy  | awk '{if(NR>1)print $1}' | xargs shuf -n1 -e
+get_random_deployment() {
+  # get a random deployment name from the application deployed by a vendor
+  kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e
 }
 
+get_random_service() {
+  kubectl get services -A -l kots.io/app-slug=annarchy --no-headers | awk '{print $2}' | xargs shuf -n1 -e
+}
 
 if [[ $? -ne 0 ]]; then
   echo "Failed parsing options." >&2
