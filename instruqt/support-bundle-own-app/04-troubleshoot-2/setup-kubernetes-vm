@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# patch a random service to use a random port
+service=$(kubectl get services -A -l kots.io/app-slug=annarchy --no-headers | awk '{print $2}' | xargs shuf -n1 -e)
+port=$(shuf -i 30000-32767 -n 1)
+
+kubectl patch service "${service}" --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/ports/0/port\", \"value\": \"${port}\"}]"
