@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Wait for the Instruqt host bootstrap to finish
 until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
@@ -7,9 +7,9 @@ do
 done
 
 # Wait for the Kubernetes API server to become available
-while ! curl --silent --fail --output /dev/null http://localhost:8001/api 
+while ! curl --silent --fail --output /dev/null http://localhost:8001/api
 do
-    sleep 1 
+    sleep 1
 done
 
 # Enable bash completion for kubectl
@@ -18,7 +18,3 @@ echo "complete -F __start_kubectl k" >> /root/.bashrc
 
 # Add kots kubectl plugin
 curl -fsSL https://kots.io/install | bash
-
-# Display PARTICIPANT_ID info for Vendor Portal
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
-echo "show_credentials" >> /root/.bashrc
