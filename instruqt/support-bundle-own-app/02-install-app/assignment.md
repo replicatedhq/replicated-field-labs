@@ -41,10 +41,12 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 
 ### 1. Install the application
 
-Install your application by executing `kots install` with your app slug:
+Configure the environment for automation by exporting the name of your app slug and the release channel.  Then, install your application by executing `kots install` with your app slug:
 
 ```shell
-kubectl kots install your-app-slug/stable
+export APP_SLUG=your-app
+export CHANNEL=stable
+kubectl kots install ${APP_SLUG}/${CHANNEL}
 ```
 
 ### 2. Upload your license
@@ -58,7 +60,12 @@ After installation succeeds, navigate to the `Application Installer` admin conso
 To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`:
 
 ```shell
-kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm2 --port=8800 --target-port=3000
+kubectl expose deployment kotsadm \
+  -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) \
+  --type=LoadBalancer \
+  --name=kotsadm2 \
+  --port=8800 \
+  --target-port=3000
 ```
 
 🏁 Next
