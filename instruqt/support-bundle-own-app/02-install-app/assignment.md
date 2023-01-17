@@ -82,4 +82,4 @@ kubectl expose deployment kotsadm \
 
 Great! Now that your application is installed, we can move on to the interactive troubleshooting exercises.
 
-Click "Next" to continue.
+Click "Check" to continue.
