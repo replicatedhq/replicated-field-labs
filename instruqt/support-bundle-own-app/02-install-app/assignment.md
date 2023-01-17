@@ -44,11 +44,16 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 
 ### 1. Install the application
 
-Configure the environment for automation by exporting the name of your app slug and the release channel.  Then, install your application by executing `kots install` with your app slug:
+Configure the environment for automation by exporting the name of your app slug and the release channel.
 
 ```shell
 export APP_SLUG=your-app
 export CHANNEL=stable
+```
+
+Then, install your application by executing `kots install` with your app slug:
+
+```shell
 kubectl kots install ${APP_SLUG}/${CHANNEL}
 ```
 
