@@ -19,6 +19,10 @@ fi
 
 # TODO: check to make sure that the application is deployed before continuing
 
+if ! curl localhost:8800; then
+  echo "The Admin Console is not available on port 8800. Please expose the Application Installer admin console on port 8800 via assignment step 3."
+  exit 1
+fi
 
 # if all is well, export the app slug and channel to the user's .bashrc and continue
 echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
