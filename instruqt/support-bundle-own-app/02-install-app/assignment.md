@@ -14,7 +14,7 @@ tabs:
   new_window: true
 - title: Application Installer
   type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  url: https://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
 - title: Shell
   type: terminal
   hostname: kubernetes-vm
