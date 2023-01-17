@@ -16,6 +16,6 @@ tabs:
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
-timelimit: 600
+timelimit: 3600
 ---
 not blank

@@ -7,20 +7,26 @@
 #
 
 if [[ -z "${APP_SLUG}" ]]; then
-  echo "APP_SLUG is not set; please export APP_SLUG to configure the learning environment."
+  fail-message "APP_SLUG is not set; please export APP_SLUG to configure the learning environment."
   exit 1
 fi
 
 if [[ -z "${CHANNEL}" ]]; then
-  echo "CHANNEL is not set; please export CHANNEL to configure the learning environment."
+  fail-message "CHANNEL is not set; please export CHANNEL to configure the learning environment."
   exit 1
 fi
 
 if ! curl localhost:8800; then
-  echo "The Admin Console is not available on port 8800. Please expose the Application Installer admin console on port 8800 via assignment step 3."
+  fail-message "The Admin Console is not available on port 8800. Please expose the Application Installer admin console on port 8800 via assignment step 3."
   exit 1
 fi
 
-# if all is well, export the app slug and channel to the user's .bashrc and continue
-echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
-echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
+
+if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "No resources found." ]]; then
+  fail-message "No deployments found for app-slug ${APP_SLUG}. Please ensure that you've uploaded your license so installation can begin."
+  exit 1
+fi
+
+
+agent variable set APP_SLUG "${APP_SLUG}"
+agent variable set CHANNEL "${CHANNEL}"

@@ -13,7 +13,7 @@ tabs:
   type: terminal
   hostname: kubernetes-vm
 difficulty: intermediate
-timelimit: 300
+timelimit: 3600
 ---
 
 👋 Introduction
@@ -35,13 +35,6 @@ timelimit: 300
   * You will be ready to use KOTS's support bundle feature to diagnose first-line issues in end-user environments
   * You will reduce escalations and expedite time to remediate for such issues
 
-🐚 Get started
-===============
+The environment is already configured for an "existing cluster" installation.  Check that the Kubernetes environment is running and that `kubectl` is configured correctly by running `kubectl get nodes` in the terminal.
 
-Use the terminal to check if kubernetes is running:
-
-```
-kubectl get nodes
-```
-
-To complete this challenge, press **Next**.
+Press **Next** when you're ready to begin.

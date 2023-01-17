@@ -19,37 +19,46 @@ tabs:
   type: website
   url: https://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
 difficulty: intermediate
-timelimit: 600
+timelimit: 3600
 ---
 
 🚀 Let's start
 =================
 
-## Vendor Portal login
+# Vendor Portal login
 
-Log into the Vendor Portal with your existing account, and note your application install command from your typical release channel.  It should look something like:
+Log into the Vendor Portal with your existing account, and note your application *app slug*, *release channel*, and the "existing cluster install command".  It should look something like `kubectl kots install <app-slug/channel>`:
 
-```shell
-kubectl kots install <app-slug>
-```
+  ![Existing Cluster Install Command](../assets/release-channel.png)
 
-## Download the license
+# Download the license
 
 Navigate to the Vendor Portal tab and download the license that you've provisioned for your development work.
 
   ![Support Bundle Customer](../assets/support-bundle-customer.png)
 
-👋 Install Your Application
-================
+Then click into the next section and install your application.
 
-### 1. Install the application
+Install your application
+==================
+
+### 1. Run the Application Installer
 
 Configure the environment for automation by exporting the name of your app slug and the release channel.  Type the following into your shell, replacing `your-app` and `stable` with your app slug and release channel, and hit Enter.
 
 ```shell
 export APP_SLUG=your-app
 export CHANNEL=stable
+
 ```
+
+Then run the following snippet to add these variables to your shell environment - they'll be useful later for automating the challenges.  You can paste the following snippet entirely:
+
+```shell
+echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
+echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
+```
+
 
 Then, install your application by executing `kots install` with your app slug.  You can copy/paste this snippet:
 
@@ -66,7 +75,7 @@ After installation succeeds, navigate to the `Application Installer` admin conso
 
 ### 3. Expose the Application Installer admin console
 
-To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`:
+To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`.  Paste this whole snippet:
 
 ```shell
 kubectl expose deployment kotsadm \
@@ -77,9 +86,6 @@ kubectl expose deployment kotsadm \
   --target-port=3000
 ```
 
-🏁 Next
-=======
-
-Great! Now that your application is installed, we can move on to the interactive troubleshooting exercises.
+Now that your application is installed, we can move on to the interactive troubleshooting exercises.
 
 Click "Check" to continue.

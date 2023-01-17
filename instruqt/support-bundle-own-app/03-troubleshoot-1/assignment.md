@@ -16,6 +16,15 @@ tabs:
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
 difficulty: basic
-timelimit: 600
+timelimit: 3600
 ---
+
+🚀 Let's start
+=================
+
+Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="kubernetes-vm" ]]/[[ Instruqt-Var key="CHANNEL" hostname="kubernetes-vm" ]]*.  Imagine: you are supporting a customer and they report to you that one of their application pods is not working.  How do you begin to solve the problem?
+
+💡 Hints
+=================
+
 

@@ -1,9 +1,24 @@
 #!/bin/bash
 set -euxo pipefail
 
+echo "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
+
+echo "script runs as $UID"
+
+echo "Reticulating Splines..."
+
 # patch a random deployment to use a low memory limit & request
 
-deployment=$(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e)
+app_slug=$(agent variable get APP_SLUG) || app_slug="${APP_SLUG}"
+
+if [[ -z "${app_slug}" ]]; then
+  fail-message "APP_SLUG could not be parsed from env"
+  exit 1
+fi
+
+deployment=$(kubectl get deployments -A --no-headers -l kots.io/app-slug="${app_slug}"  | awk '{print $2}' | xargs shuf -n1 -e)
 
 kubectl patch deployment "${deployment}" --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
 kubectl patch deployment "${deployment}" --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
+
+echo "Mischief Managed!"
