@@ -8,6 +8,9 @@ notes:
 - type: text
   contents: Let's install your Application
 tabs:
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 - title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
@@ -15,9 +18,6 @@ tabs:
 - title: Application Installer
   type: website
   url: https://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 difficulty: intermediate
 timelimit: 600
 ---
