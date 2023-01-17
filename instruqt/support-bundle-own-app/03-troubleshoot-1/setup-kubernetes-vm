@@ -2,9 +2,6 @@
 set -euxo pipefail
 
 echo "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
-
-echo "script runs as $UID"
-
 echo "Reticulating Splines..."
 
 # patch a random deployment to use a low memory limit & request

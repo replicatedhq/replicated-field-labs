@@ -26,5 +26,3 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 
 💡 Hints
 =================
-
-
