@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
-echo "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
-echo "Matriculating unmatriculated vectors..."
+debug-message "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
+debug-message "Matriculating unmatriculated vectors..."
 
 # patch a random service to use a random port
 
@@ -13,7 +13,9 @@ if [[ -z "${app_slug}" ]]; then
   exit 1
 fi
 
-service=$(kubectl get services -A -l kots.io/app-slug="${app_slug}" --no-headers | awk '{print $2}' | xargs shuf -n1 -e)
-port=$(shuf -i 30000-32767 -n 1)
+read -r namespace service < <(kubectl get services -A -l kots.io/app-slug="${app_slug}" --no-headers | awk '{print $1,$2}' | shuf -n1)
+port=$(shuf -i 30000-32767 -n1)
 
-kubectl patch service "${service}" --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/ports/0/port\", \"value\": \"${port}\"}]"
+kubectl patch service -n "${namespace}" "${service}" --type='json' -p="[{\"op\": \"replace\", \"path\": \"/spec/ports/0/port\", \"value\": \"${port}\"}]"
+
+debug-message "Mischief Managed!"

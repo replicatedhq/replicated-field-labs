@@ -1,6 +1,11 @@
 #!/bin/bash
 
+debug-message "Starting practical application track $INSTRUQT_TRACK_ID for $INSTRUQT_USER_NAME on $(date)"
+debug-message "Sandbox $_SANDBOX_ID"
+debug-message "Hostname $HOSTNAME"
+
 agent variable set SANDBOX_ID "$_SANDBOX_ID"
 agent variable set HOSTNAME "$HOSTNAME"
 agent variable set ADMIN_CONSOLE_PORT 8800
 agent variable set HOST_URL "https://$HOSTNAME.$_SANDBOX_ID.instruqt.io"
+
