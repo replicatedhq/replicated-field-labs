@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-# This script runs when the platform check the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails.
-#
-
-# TODO: figure out what's appropriate here; we might not use check scripts for these challenges

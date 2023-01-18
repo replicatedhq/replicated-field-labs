@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 debug-message "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
 debug-message "Matriculating unmatriculated vectors..."
