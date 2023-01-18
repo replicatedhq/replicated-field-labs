@@ -1,5 +1,6 @@
 #!/bin/bash
-set -euxo pipefail
+# set -euxo pipefail
+set -x
 
 echo "$INSTRUQT_USER_NAME started challenge $INSTRUQT_CHALLENGE_ID"
 echo "Reticulating Splines..."

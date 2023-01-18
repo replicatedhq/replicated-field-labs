@@ -15,9 +15,6 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Application Installer
-  type: website
-  url: https://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
 difficulty: intermediate
 timelimit: 3600
 ---
@@ -59,7 +56,6 @@ echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
 echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
 ```
 
-
 Then, install your application by executing `kots install` with your app slug.  You can copy/paste this snippet:
 
 ```shell
@@ -67,13 +63,7 @@ kubectl kots install ${APP_SLUG}/${CHANNEL} \
   --no-port-forward=true
 ```
 
-### 2. Upload your license
-
-After installation succeeds, navigate to the `Application Installer` admin console, login and upload your license.
-
-  ![Application installer](../assets/deploy.png)
-
-### 3. Expose the Application Installer admin console
+### 2. Expose the Application Installer admin console
 
 To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`.  Paste this whole snippet:
 
@@ -86,6 +76,14 @@ kubectl expose deployment kotsadm \
   --target-port=3000
 ```
 
-Now that your application is installed, we can move on to the interactive troubleshooting exercises.
+### 3. Upload your license
+
+After installation succeeds, navigate to the [Application Installer admin console](http://[[ Instruqt-Var key="HOSTNAME" hostname="kubernetes-vm" ]].[[ Instruqt-Var key="SANDBOX_ID" hostname="kubernetes-vm" ]].instruqt.io:8800), login and upload your license.
+
+  ![Application installer](../assets/deploy.png)
+
+In the admin console, continue to configure your application, run preflight checks, and deploy your application.
+
+Once your application is deployed, we can move on to the interactive troubleshooting exercises.
 
 Click "Check" to continue.
