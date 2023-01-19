@@ -84,6 +84,6 @@ After installation succeeds, navigate to the [Application Installer admin consol
 
 In the admin console, continue to configure your application, run preflight checks, and deploy your application.
 
-Once your application is deployed, we can move on to the interactive troubleshooting exercises.
+Once your application is deployed and the admin console reports it is ready to use, we can move on to the interactive troubleshooting exercises.
 
 Click "Check" to continue.
