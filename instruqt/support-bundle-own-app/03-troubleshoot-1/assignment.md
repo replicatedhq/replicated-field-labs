@@ -26,3 +26,21 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 
 💡 Hints
 =================
+- How do you list pods?
+- How do you describe pods?
+  - What if you wanted to see events from multiple pods at once?
+- How do you get logs from a pod?
+  - What if you wanted to see a previous version of the pod's logs?
+- When would you look at `describe` output vs. gathering pod logs?
+
+✔️ Solution
+=================
+A random deployment has been selected and the memory limit reduced to 10Mi.  This will cause the application to crash.
+
+Remediation
+=================
+Patch or edit the affected deployment to increase the memory request and limit to a reasonable amount.
+
+- How can you edit or patch a resource in-place?
+- How can you edit or patch a resource from a file?
+- How can we make sure that this doesn't happen again?
