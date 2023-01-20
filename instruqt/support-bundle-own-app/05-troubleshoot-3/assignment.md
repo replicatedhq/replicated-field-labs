@@ -18,4 +18,15 @@ tabs:
 difficulty: basic
 timelimit: 3600
 ---
-not blank
+
+🚀 Let's start
+=================
+
+💡 Hints
+=================
+
+✔️ Solution
+=================
+
+Remediation
+=================

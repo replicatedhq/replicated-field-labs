@@ -22,7 +22,7 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-You get another report from a customer saying that the application isn't working, as if two components are unable to communicate.
+You get another report from a customer saying that the application isn't working, as if two components are unable to communicate.  How would you begin to solve the problem?
 
 💡 Hints
 =================
