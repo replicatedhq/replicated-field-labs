@@ -96,3 +96,44 @@ Support Bundle
 The `Application Installed` instance also has a support-bundle pre generated. So you can browse to the application installer and use that one in case you can't wait for the results.
 
 FYI: It takes a couple minutes before it is generated. If you see the following message in `trigger.out`, it should be loaded: `A copy of this support bundle was written to the current directory, named "support-bundle-....tar.gz"`
+
+Demo Examples
+==============
+
+Below are different demo examples that can be used as needed:
+
+<details>
+  <summary>Default</summary>
+
+1. Vendor Portal: Applications / Channels
+2. Vendor Portal: What is a Replicated Application / Release
+3. Application Installer: Day 1 Operations - Login -> Vendor Portal Customers to get License
+   * Value: License Management / Expiration / Enterprise Feature Flags
+4. Application Installer: Day 1 Operations - Customer Config
+   * Value: Ease of use
+5. Application Installer: Day 1 Operations - Preflights
+6. Application Installer: Day 2 Operations - Update
+   * Value: Increased adoption rates
+   * Additional: Show Reporting in Vendor Portal
+   * Additional: Make a change in the editor tab, and create a new release.
+7. Application Installer: Day 2 Operations - Support bundles
+   * Value: Faster Time To Resolution
+   * Additional: Show `sbctl`
+
+</details>
+
+<details>
+  <summary>Conferences / 5 minute demo</summary>
+
+You will need to use the "Hot Load" functionality from Instruqt to make sure you always have an environment available. This can allow you to reset your demo environment every hour, without having to wait 5 minutes to create a new environment. Also use the `kubectl kots remove` functionality to reset and be able to redo a clean install.
+1. Discovery: What is the main interest for the prospect? Initial Deploy? Updates? Support Bundles? Airgap?
+2. Address one or two main interest points.
+3. Try scheduling a more in depth demo (20-30 minutes)
+
+</details>
+
+<details>
+  <summary>Airgap</summary>
+TBD: This environment is not fully airgapped. It is possible to do an airgap deploy with the embedded kURL instance. However, the instance is not airgapped. Nor is there a sandbox that has everything already installed airgapped.
+
+</details>
