@@ -29,12 +29,15 @@ You get another report from a customer saying that the application isn't working
 💡 Hints
 =================
 
-- Think about the path from the client to your application and back - there are multiple "hops" in the network path, and any of them _could_ be a potential break in the path.  Which hops can you identify?
+- There are multiple "hops" in the network path, and any of them _could_ be a potential break in the path.  Which hops can you identify?
 
 - The Kubernetes documentation has a [great manual on debugging Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
 
 - Think about the traffic flow to your application
+  - There are multiple *hops* in the network path, and any of them _could_ be a potential break in the path.  - Which hops can you identify?
+
 - How does traffic get to workloads inside kubernetes
+- How does Kubernetes handle DNS resolution and load balancing for Pods?
 
 ✔️ Solution
 =================
