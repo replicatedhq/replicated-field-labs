@@ -1,6 +1,5 @@
 ---
-slug: troubleshoot-3
-id: vbniffgw5lxc
+slug: troubleshoot-5
 type: challenge
 title: Correcting the broken application
 teaser: Time to fix the problem
@@ -21,8 +20,6 @@ timelimit: 3600
 
 🚀 Let's start
 =================
-
-iptables/coredns issue
 
 💡 Hints
 =================
