@@ -1,5 +1,6 @@
 ---
 slug: troubleshoot-5
+id: nvcixsrqx5i9
 type: challenge
 title: Correcting the broken application
 teaser: Time to fix the problem
