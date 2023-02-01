@@ -21,11 +21,12 @@ timelimit: 3600
 
 * **What you will do**:
   * Learn to troubleshoot application & cluster problems using Support Bundles and `sbctl`
-* **Who this is for**: This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing
-  * Full Stack / DevOps / Product Engineers
-  * Support Engineers
-  * Implementation / Field Engineers
-  * Success / Sales Engineers
+* **Who this is for**:
+  * This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing:
+    * Full Stack / DevOps / Product Engineers
+    * Support Engineers
+    * Implementation / Field Engineers
+    * Success / Sales Engineers
 * **Prerequisites**:
   * Basic working knowledge of Linux (Bash)
   * A release of your application is available in Replicated Vendor Portal
@@ -35,6 +36,6 @@ timelimit: 3600
   * You will be ready to use KOTS's support bundle feature to diagnose first-line issues in end-user environments
   * You will reduce escalations and expedite time to remediate for such issues
 
-The environment is already configured for an "existing cluster" installation.  Check that the Kubernetes environment is running and that `kubectl` is configured correctly by running `kubectl get nodes` in the terminal.
+The environment is already configured for an *existing cluster* installation.  Check that the Kubernetes environment is running and that `kubectl` is configured correctly by running `kubectl get nodes` in the terminal.
 
 Press **Next** when you're ready to begin.

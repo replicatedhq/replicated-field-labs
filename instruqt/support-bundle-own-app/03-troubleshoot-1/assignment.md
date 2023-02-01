@@ -24,6 +24,24 @@ timelimit: 3600
 
 Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="kubernetes-vm" ]]/[[ Instruqt-Var key="CHANNEL" hostname="kubernetes-vm" ]]*.  Imagine: you are supporting a customer and they report to you that one of their application pods is crashing.  How do you begin to solve the problem?
 
+We think it's a good habit to use Support Bundles whenever possible - and we'll use another tool we've developed called `sbctl` to help with that.
+
+First let's take a support bundle from the cluster:
+
+```
+kubectl support-bundle --load-cluster-specs
+```
+
+Right now we have access to the cluster, but what if we did not?  `sbctl` to the rescue - let's invoke it:
+
+```
+sbctl --shell ./support-bundle.tar.gz
+```
+
+
+
+
+
 💡 Hints
 =================
 - How do you list pods?
@@ -38,6 +56,12 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 
 - Review the [Kubernetes documentation on debugging Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
 
+💡 More Hints
+=================
+- How do you find the exit code of a Pod?
+
+- What could it mean if a Pod is exiting before it has a chance to emit any logs?
+
 ✔️ Solution
 =================
 A random deployment has been selected and the memory limit reduced to 10Mi.  This will cause the application to crash.
@@ -51,3 +75,11 @@ Patch or edit the affected deployment to increase the memory request and limit t
 - How can you edit or patch a resource from a file?
 
 - How can we make sure that this doesn't happen again?
+
+Extending to Support Bundles
+=================
+
+- `cluster_resources` collector has the `kubectl describe` of resources in the cluster
+  - check the description of all the pods in the cluster
+
+-
