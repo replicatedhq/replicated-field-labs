@@ -35,10 +35,10 @@ kubectl support-bundle --load-cluster-specs
 Right now we have access to the cluster, but what if we did not?  `sbctl` to the rescue - let's invoke it:
 
 ```
-sbctl --shell ./support-bundle.tar.gz
+sbctl shell --support-bundle-location ./support-bundle.tar.gz
 ```
 
-
+This will give us a shell in the context of the support bundle.  `sbctl` mocks a Kubernetes API so we can use `kubectl` to inspect the data in the bundle - just like a regular cluster.
 
 
 
@@ -75,11 +75,3 @@ Patch or edit the affected deployment to increase the memory request and limit t
 - How can you edit or patch a resource from a file?
 
 - How can we make sure that this doesn't happen again?
-
-Extending to Support Bundles
-=================
-
-- `cluster_resources` collector has the `kubectl describe` of resources in the cluster
-  - check the description of all the pods in the cluster
-
--
