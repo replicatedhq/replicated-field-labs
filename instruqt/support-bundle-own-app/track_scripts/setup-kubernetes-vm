@@ -12,12 +12,26 @@ do
     sleep 1
 done
 
+echo "export SHELL=bash" >> /root/.bashrc
+
 # Enable bash completion for kubectl
 echo "source /usr/share/bash-completion/bash_completion" >> /root/.bashrc
 echo "complete -F __start_kubectl k" >> /root/.bashrc
 
 # Add kots kubectl plugin
 curl -fsSL https://kots.io/install | bash
+
+# install sbctl
+curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
+  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
+  && cp /tmp/sbctl /usr/local/bin/sbctl \
+  && rm sbctl_linux_amd64.tar.gz
+
+# install support-bundle
+curl -LO https://github.com/replicatedhq/troubleshoot/releases/latest/download/support-bundle_linux_amd64.tar.gz \
+  && tar -xvzf support-bundle_linux_amd64.tar.gz -C /tmp support-bundle \
+  && cp /tmp/support-bundle /usr/local/bin/kubectl-support_bundle \
+  && rm support-bundle_linux_amd64.tar.gz
 
 debug-message "Starting practical application track $INSTRUQT_TRACK_ID for $INSTRUQT_USER_NAME on $(date)"
 debug-message "Sandbox $_SANDBOX_ID"
