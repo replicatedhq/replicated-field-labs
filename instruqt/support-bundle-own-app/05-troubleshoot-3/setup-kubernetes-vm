@@ -5,14 +5,13 @@ debug-message "Shooping the woop..."
 
 # break iptables such that coredns stops working
 
-if [[ -z "${app_slug}" ]]; then
-  fail-message "APP_SLUG could not be parsed from env"
-  exit 1
-fi
+# if [[ -z "${app_slug}" ]]; then
+#   fail-message "APP_SLUG could not be parsed from env"
+#   exit 1
+# fi
 
 read -r namespace service < <(kubectl get services -A -l kots.io/app-slug="${app_slug}" --no-headers | awk '{print $1,$2}' | shuf -n1)
 port=$(shuf -i 30000-32700 -n1)
 
-kubectl patch service -n "${namespace}" "${service}" --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetport", "value": '"${port}"'}]'
 
 debug-message "Mischief Managed!"

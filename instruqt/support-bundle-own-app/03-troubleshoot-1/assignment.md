@@ -29,7 +29,7 @@ We think it's a good habit to use Support Bundles whenever possible - and we'll 
 First let's take a support bundle from the cluster:
 
 ```
-kubectl support-bundle --load-cluster-specs
+kubectl support-bundle --load-cluster-specs --output support-bundle.tar.gz
 ```
 
 Right now we have access to the cluster, but what if we did not?  `sbctl` to the rescue - let's invoke it:
@@ -39,7 +39,6 @@ sbctl shell --support-bundle-location ./support-bundle.tar.gz
 ```
 
 This will give us a shell in the context of the support bundle.  `sbctl` mocks a Kubernetes API so we can use `kubectl` to inspect the data in the bundle - just like a regular cluster.
-
 
 
 💡 Hints

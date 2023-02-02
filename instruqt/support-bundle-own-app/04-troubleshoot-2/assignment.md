@@ -22,9 +22,10 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-You get another report from a customer saying that the application isn't working, as if two components are unable to communicate.  How would you begin to solve the problem?
+You get another report from a customer saying that the application isn't working, as if **two components are unable to communicate**.  How would you begin to solve the problem?
 
-- You may want to start by verifying that all the expected pods are running, then move on to checking the communication between the pods and the client.
+- What component handles communication between Kubernetes workloads?
+
 
 💡 Hints
 =================
