@@ -1,0 +1,21 @@
+slug: support-bundle-own-app-kurl
+id: 6kxbfw4c3pne
+title: Troubleshoot Your Own App with Replicated - kURL Edition
+teaser: Get hands-on, practical application at debugging problems on Replicated embedded
+  clusters (aka kURL)
+description: |+
+  In this track, we invite you to bring your own cloud app and apply some practical application of Troubleshoot.sh Support Bundles and the `sbctl` tool to learn how to triage, diagnose, and solve problems with Kubernetes.
+
+  https://troubleshoot.sh/
+
+  https://github.com/replicatedhq/sbctl
+
+icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+level: intermediate
+tags: []
+owner: replicated
+developers:
+- ada@replicated.com
+- danj@replicated.com
+maintenance: true
+checksum: "1892285474356837569"
