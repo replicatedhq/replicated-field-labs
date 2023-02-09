@@ -15,7 +15,7 @@ level: intermediate
 tags: []
 owner: replicated
 developers:
-- ada@replicated.com
 - danj@replicated.com
+- ada@replicated.com
 maintenance: true
-checksum: "1759094006395476411"
+checksum: "5765968939012947608"

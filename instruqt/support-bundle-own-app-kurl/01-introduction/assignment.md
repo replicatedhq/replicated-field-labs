@@ -11,7 +11,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: kurl-vm
+  hostname: kurl-1
 difficulty: intermediate
 timelimit: 3600
 ---
