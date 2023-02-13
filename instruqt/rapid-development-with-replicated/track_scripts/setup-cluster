@@ -28,5 +28,9 @@ scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config
 
 
 # Display PARTICIPANT_ID info for Vendor Portal
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/instruqt-rapid-develop/libs/header.sh}
+source /etc/profile.d/header.sh
+
+register_variables
 echo "show_credentials" >> /root/.bashrc
+

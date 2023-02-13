@@ -23,11 +23,11 @@ timelimit: 600
 
 ## Log in to Vendor Portal
 
-If you are still logged in to the Vendor Portal from the previous challenge, continue to the next section. If you are not logged in to Vendor Portal, click on the **Vendor** tab to lauch a new window and log in 
+If you are still logged in to the Vendor Portal from the previous challenge, continue to the next section. If you are not logged in to Vendor Portal, click on the **Vendor** tab to lauch a new window and log in again with your credentials.
 
 ```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
+username: [[ Instruqt-Var key="USERNAME" host="cluster" ]] 
+password: [[ Instruqt-Var key="PASSWORD" host="cluster" ]]
 ```
 
 ## Retrieve the Install Command
