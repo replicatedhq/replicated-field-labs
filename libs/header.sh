@@ -1,3 +1,7 @@
+register_variables() {
+  agent variable set USERNAME "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
+  agent variable set PASSWORD "$(get_password)"
+}
 
 show_credentials () {
     CYAN='\033[0;36m'
@@ -13,3 +17,4 @@ get_password () {
     password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}" | sha256sum)
     echo ${password::20}
 }
+
