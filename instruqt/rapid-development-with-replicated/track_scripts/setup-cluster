@@ -25,3 +25,8 @@ while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do
 done
 
 scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config
+
+
+# Display PARTICIPANT_ID info for Vendor Portal
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+echo "show_credentials" >> /root/.bashrc
