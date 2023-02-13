@@ -1,20 +1,17 @@
 ---
 slug: intro
 id: kuutyxh4oiv4
-type: challenge
+type: step
 title: Intro
 teaser: Introduction to Rapid Development with Replicated
 notes:
 - type: text
   contents: |-
-    This track is composed of several challenges. Do not skip any challenge as these build on each other.
-    In this challenge, we introduce the track and check our sandbox environment to make sure we are ready to go.
+    This lab is composed of several steps. Do not skip any step as these build on each other.
+    In this step, we introduce the lab and check our sandbox environment to make sure we are ready to go.
 
     Have fun!
 tabs:
-- title: K3S-VM
-  type: terminal
-  hostname: cluster
 - title: Dev
   type: terminal
   hostname: shell
@@ -23,6 +20,9 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Cluster
+  type: terminal
+  hostname: cluster
 difficulty: basic
 timelimit: 300
 ---
@@ -33,14 +33,14 @@ timelimit: 300
 * **What you will do**:
     * Learn to use the `kots download` & `kots upload` command to rapidly iterate on a deployed instance
     * Learn how to take the modified manifests and then create a release
-* **Who this is for**: This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing
+* **Who this is for**: This lab is for anyone who will build KOTS applications **plus** anyone who will be working with your users
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
     * Implementation / Field Engineers
     * Success / Sales Engineers
 * **Prerequisites**:
     * Basic working knowledge of Linux (Bash)
-    * This is an advanced topic so make sure you have completed the following tracks or have relevant hands-on experience
+    * This is an advanced topic so make sure you have completed the following labs or have relevant hands-on experience
       * Deploy Hello World Application
       * Replicated CLI
 * **Outcomes**:
@@ -50,13 +50,13 @@ timelimit: 300
 🐚 Get started
 ===============
 
-In this track we are going to use several tabs so let's review how we will use each one:
+In this lab we are going to use several tabs so let's review how we will use each one:
 
 * **Dev**: This tab provides access to our dev environment. Here we already installed the `Replicated` and `KOTS` command lines for your convenience.
-* **K3S-VM**: This tab contains access to the VM hosting our K3s cluster, which we will use as our dev cluster.
 * **Vendor**: This tab launches a browser to https://vendor.replicated.com which is the Vendor Portal. We will use this to get our Application Slug, API token and license file.
-* **Admin Console**: This tab is not visible in this challenge but will be later in this track. The Admin Console will be used to install our sample application that we will iterate on.
-* **Code Editor**: This tab is not visible in this challenge but will be later in this track. The Code Editor will be used to create a new deployment manifest later in the track.
+* **Cluster**: This tab contains access to the VM hosting our K3s cluster, which we will use as our dev cluster.
+* **Admin Console**: This tab is not visible in this step but will be later in this lab. The Admin Console will be used to install our sample application that we will iterate on.
+* **Code Editor**: This tab is not visible in this step but will be later in this lab. The Code Editor will be used to create a new deployment manifest later in the lab.
 
 ## Checking your Environment
 
@@ -75,7 +75,7 @@ The above should return the version of the `replicated` command line. Anything e
 kubectl get nodes
 ```
 
-The above should return a single node, which we can access over on the **K3S-VM** tab. Before we go there, let's make sure we also have the `kots` command line as well:
+The above should return a single node, which we can access over on the **Cluster** tab. Before we go there, let's make sure we also have the `kots` command line as well:
 
 ```bash
 kubectl kots version
@@ -83,12 +83,21 @@ kubectl kots version
 
 The above should return the version of the `kots` cli.
 
-Let's head over now to the **K3S-VM** tab, where you should see the username and password we will use to login to the Vendor Portal. The username and password are based on your Participant ID, which is generated when you start a track.
+Let's head over now to the **Cluster** tab, where you should see the username and password we will use to login to the Vendor Portal. The username and password are based on your Participant ID, which is generated when you start a lab.
 
-We won't use this tab much in this track, but will be available in case we want to troubleshoot any issues with the cluster or application or need to retrieve the Vendor Portal credentials.
+We won't use this tab much in this lab, but will be available in case we want to troubleshoot any issues with the cluster or application or need to retrieve the Vendor Portal credentials.
 
-Let's now head over to the **Vendor** tab and make sure you can log in using the credentials provided in the **K3S-VM** tab. If you see the **Channels**, congratulations! you are in.
 
-**Tip:** Stay logged in to Vendor Portal as you we will be using it on the next challenge.
+## Vendor Portal login
+
+To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+```
+username: [PARTICIPANT_ID]@replicated-labs.com
+password: [PASSWORD]
+```
+
+Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+
+**Tip:** Stay logged in to Vendor Portal as you we will be using it on the next step.
 
 

@@ -10,7 +10,7 @@ notes:
     In this challenge we'll retrieve from the Vendor Portal our install command and our customer license file.
     we'll also install the Admin Console which we'll use in the next challenge to deploy the sample app.
 tabs:
-- title: K3S-VM
+- title: Cluster
   type: terminal
   hostname: cluster
 - title: Vendor
@@ -23,7 +23,12 @@ timelimit: 600
 
 ## Log in to Vendor Portal
 
-If you are still logged in to the Vendor Portal from the previous challenge, continue to the next section. If you are not logged in to Vendor Portal, click on the **Vendor** tab to lauch a new window and log in using the credentials provided in the **Shell** tab.
+If you are still logged in to the Vendor Portal from the previous challenge, continue to the next section. If you are not logged in to Vendor Portal, click on the **Vendor** tab to lauch a new window and log in 
+
+```
+username: [PARTICIPANT_ID]@replicated-labs.com
+password: [PASSWORD]
+```
 
 ## Retrieve the Install Command
 
@@ -39,7 +44,7 @@ Navigate to **Customers** where we should have our `Dev Customer` there. Click o
 
 ## Install the Admin Console
 
-Head over to the **K3S-VM** tab and paste the install command which should look something like:
+Head over to the **Cluster** tab and paste the install command which should look something like:
 
 ```shell
 curl https://kots.io/install | bash
