@@ -1,7 +1,7 @@
 ---
 slug: intro
 id: kuutyxh4oiv4
-type: step
+type: challenge
 title: Intro
 teaser: Introduction to Rapid Development with Replicated
 notes:
