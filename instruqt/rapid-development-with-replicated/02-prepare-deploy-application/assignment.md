@@ -26,7 +26,7 @@ timelimit: 600
 If you are still logged in to the Vendor Portal from the previous challenge, continue to the next section. If you are not logged in to Vendor Portal, click on the **Vendor** tab to lauch a new window and log in again with your credentials.
 
 ```
-username: [[ Instruqt-Var key="USERNAME" host="cluster" ]] 
+username: [[ Instruqt-Var key="USERNAME" host="cluster" ]]
 password: [[ Instruqt-Var key="PASSWORD" host="cluster" ]]
 ```
 

@@ -90,11 +90,11 @@ We won't use this tab much in this lab, but will be available in case we want to
 
 ## Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id.  These are
-```
-username: [[ Instruqt-Var key="USERNAME" host="cluster" ]] 
-password: [[ Instruqt-Var key="PASSWORD" host="cluster" ]]
-```
+To access the Vendor Portal, you will need your username and password.  These are
+
+[[ Instruqt-Var key="USERNAME" host="cluster" ]]
+[[ Instruqt-Var key="PASSWORD" host="cluster" ]]
+
 
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
