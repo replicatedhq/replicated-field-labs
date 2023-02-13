@@ -23,6 +23,5 @@ tags: []
 owner: replicated
 developers:
 - fernando@replicated.com
-private: false
-published: false
-checksum: "17663384452854981157"
+- chuck@replicated.com
+checksum: "13189454187642590614"
