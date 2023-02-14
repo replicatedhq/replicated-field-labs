@@ -13,8 +13,8 @@ runs:
       cd ${{ inputs.path }}
 
       # Check whether this is already a dev version track
-      ISDEV=$(yq '.slug | contains("-dev")' track.yml)
-      if [[ $ISDEV == "true" ]]; then
+      ISDEV=$(yq '.slug | match(".*-dev$")' track.yml)
+      if [[ -n $ISDEV ]]; then
         echo -e "It looks like the track slug already has the -dev suffix"
         exit 1
       fi
