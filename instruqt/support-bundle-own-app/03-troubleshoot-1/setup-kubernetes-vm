@@ -25,6 +25,13 @@ else
 fi
 
 kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
+
+if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.limits // empty'; then
+  op=add
+else
+  op=replace
+fi
+
 kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
 
 debug-message "Mischief Managed!"

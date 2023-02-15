@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -euxo pipefail
+# set -euxo pipefail
+set -x
 
 # Wait for the Instruqt host bootstrap to finish
 until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
@@ -35,6 +36,7 @@ curl -LO https://github.com/replicatedhq/troubleshoot/releases/latest/download/s
   && cp /tmp/support-bundle /usr/local/bin/kubectl-support_bundle \
   && rm support-bundle_linux_amd64.tar.gz
 
+debug-message "$(printenv)"
 debug-message "Starting practical application track with kurl $INSTRUQT_TRACK_ID for $INSTRUQT_USER_NAME on $(date)"
 debug-message "Sandbox $_SANDBOX_ID"
 debug-message "Hostname $HOSTNAME"
@@ -46,13 +48,13 @@ agent variable set HOST_URL "https://$HOSTNAME.$_SANDBOX_ID.instruqt.io"
 
 ### authenticate to gcloud
 mkdir -p /root/.config/gcloud
-echo "$INSTRUQT_GCP_PROJECT_KURL_SERVICE_ACCOUNT_KEY" | base64 -d > /root/.config/gcloud/credentials.json
+echo "${INSTRUQT_GCP_PROJECT_AIRGAP_SERVICE_ACCOUNT_KEY}" | base64 -d > /root/.config/gcloud/credentials.json
 
 # Activate the service account
 gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials.json
 
 # Set our project
-gcloud config set project "$INSTRUQT_GCP_PROJECT_KURL_PROJECT_ID"
+gcloud config set project "$INSTRUQT_GCP_PROJECT_AIRGAP_PROJECT_ID"
 
 # add a hard disk for Rook
 gcloud compute disks create rook-disk-"$HOSTNAME" \

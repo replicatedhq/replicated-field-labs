@@ -13,7 +13,7 @@ tabs:
   type: terminal
   hostname: kubernetes-vm
 difficulty: intermediate
-timelimit: 3600
+timelimit: 600
 ---
 
 👋 Introduction

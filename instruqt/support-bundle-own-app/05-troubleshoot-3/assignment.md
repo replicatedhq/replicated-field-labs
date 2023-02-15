@@ -24,6 +24,10 @@ timelimit: 3600
 
 iptables/coredns issue
 
+TODO: find the iptables rules for the coredns pod, and drop them
+
+should simulate DNS failures across the cluster
+
 💡 Hints
 =================
 

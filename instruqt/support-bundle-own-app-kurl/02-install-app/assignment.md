@@ -10,7 +10,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: kurl-1
+  hostname: cloud-client
 - title: Vendor Portal
   type: website
   url: https://vendor.replicated.com

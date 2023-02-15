@@ -10,7 +10,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: kurl-1
+  hostname: cloud-client
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800

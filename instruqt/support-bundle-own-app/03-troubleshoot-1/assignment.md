@@ -63,7 +63,7 @@ This will give us a shell in the context of the support bundle.  `sbctl` mocks a
 
 ✔️ Solution
 =================
-A random deployment has been selected and the memory limit reduced to 10Mi.  This will cause the application to crash.
+Our chaos script randomly selected a Deployment in your application and reduced the memory limit to 10Mi, which should cause those pods to start crashing.
 
 Remediation
 =================

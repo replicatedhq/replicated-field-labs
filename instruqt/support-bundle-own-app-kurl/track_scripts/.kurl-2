@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Wait for the Instruqt host bootstrap to finish
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+    sleep 1
+done
+
+### authenticate to gcloud
+mkdir -p /root/.config/gcloud
+echo "${INSTRUQT_GCP_PROJECT_AIRGAP_SERVICE_ACCOUNT_KEY}" | base64 -d > /root/.config/gcloud/credentials.json
+
+# Activate the service account
+gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials.json
+
+# Set our project
+gcloud config set project "$INSTRUQT_GCP_PROJECT_AIRGAP_PROJECT_ID"
+
+# add a hard disk for Rook
+gcloud compute disks create rook-disk-"$HOSTNAME" \
+  --size=200GB \
+  --zone=europe-west1-b
+
+gcloud compute instances attach-disk "$HOSTNAME" \
+ --disk rook-disk-"$HOSTNAME" \
+  --zone=europe-west1-b
+

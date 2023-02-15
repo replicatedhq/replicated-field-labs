@@ -33,6 +33,7 @@ curl -LO https://github.com/replicatedhq/troubleshoot/releases/latest/download/s
   && cp /tmp/support-bundle /usr/local/bin/kubectl-support_bundle \
   && rm support-bundle_linux_amd64.tar.gz
 
+
 debug-message "Starting practical application track $INSTRUQT_TRACK_ID for $INSTRUQT_USER_NAME on $(date)"
 debug-message "Sandbox $_SANDBOX_ID"
 debug-message "Hostname $HOSTNAME"
@@ -42,3 +43,138 @@ agent variable set HOSTNAME "$HOSTNAME"
 agent variable set ADMIN_CONSOLE_PORT 8800
 agent variable set HOST_URL "https://$HOSTNAME.$_SANDBOX_ID.instruqt.io"
 
+
+cat > /root/license.yaml <<EOF
+apiVersion: kots.io/v1beta1
+kind: License
+metadata:
+  name: somebigbank
+spec:
+  appSlug: annarchy
+  channelID: 2G05cnC05cd3yjEl6q9zjmi25TL
+  channelName: Unstable
+  customerName: somebigbank
+  endpoint: https://replicated.app
+  entitlements:
+    expires_at:
+      description: License Expiration
+      title: Expiration
+      value: ""
+      valueType: String
+  isAirgapSupported: true
+  isGeoaxisSupported: true
+  isGitOpsSupported: true
+  isIdentityServiceSupported: true
+  isSnapshotSupported: true
+  licenseID: 2G06JeJfQA0KWZCgeia3GTxuybZ
+  licenseSequence: 1
+  licenseType: dev
+  signature: eyJsaWNlbnNlRGF0YSI6ImV5SmhjR2xXWlhKemFXOXVJam9pYTI5MGN5NXBieTkyTVdKbGRHRXhJaXdpYTJsdVpDSTZJa3hwWTJWdWMyVWlMQ0p0WlhSaFpHRjBZU0k2ZXlKdVlXMWxJam9pYzI5dFpXSnBaMkpoYm1zaWZTd2ljM0JsWXlJNmV5SnNhV05sYm5ObFNVUWlPaUl5UnpBMlNtVktabEZCTUV0WFdrTm5aV2xoTTBkVWVIVjVZbG9pTENKc2FXTmxibk5sVkhsd1pTSTZJbVJsZGlJc0ltTjFjM1J2YldWeVRtRnRaU0k2SW5OdmJXVmlhV2RpWVc1cklpd2lZWEJ3VTJ4MVp5STZJbUZ1Ym1GeVkyaDVJaXdpWTJoaGJtNWxiRWxFSWpvaU1rY3dOV051UXpBMVkyUXplV3BGYkRaeE9YcHFiV2t5TlZSTUlpd2lZMmhoYm01bGJFNWhiV1VpT2lKVmJuTjBZV0pzWlNJc0lteHBZMlZ1YzJWVFpYRjFaVzVqWlNJNk1Td2laVzVrY0c5cGJuUWlPaUpvZEhSd2N6b3ZMM0psY0d4cFkyRjBaV1F1WVhCd0lpd2laVzUwYVhSc1pXMWxiblJ6SWpwN0ltVjRjR2x5WlhOZllYUWlPbnNpZEdsMGJHVWlPaUpGZUhCcGNtRjBhVzl1SWl3aVpHVnpZM0pwY0hScGIyNGlPaUpNYVdObGJuTmxJRVY0Y0dseVlYUnBiMjRpTENKMllXeDFaU0k2SWlJc0luWmhiSFZsVkhsd1pTSTZJbE4wY21sdVp5SjlmU3dpYVhOQmFYSm5ZWEJUZFhCd2IzSjBaV1FpT25SeWRXVXNJbWx6UjJsMFQzQnpVM1Z3Y0c5eWRHVmtJanAwY25WbExDSnBjMGxrWlc1MGFYUjVVMlZ5ZG1salpWTjFjSEJ2Y25SbFpDSTZkSEoxWlN3aWFYTkhaVzloZUdselUzVndjRzl5ZEdWa0lqcDBjblZsTENKcGMxTnVZWEJ6YUc5MFUzVndjRzl5ZEdWa0lqcDBjblZsTENKcGMwNWxkMHR2ZEhOVmFVVnVZV0pzWldRaU9uUnlkV1Y5ZlE9PSIsImlubmVyU2lnbmF0dXJlIjoiZXlKc2FXTmxibk5sVTJsbmJtRjBkWEpsSWpvaWRWWjJMeTlqTmt0Q1ZXRkdWazlhVW5Gc1pUSklVVlpRYzNveFZXdGpOV1phUjFWMlVWazNlVTh2YTFjM1VuQXlhekpUYW1oelJsb3hWSEZpT1ZWTmNFVkJieXROT0VOdlUxTXZiMFJXYURSYWNYQTVOV0Y0UVRCbFZVRkNXSFpOUld4NVYzbHhhbTlJTlVOdmVrbFpMMEYzYVhGeFFuSTNVbEl5V1hJcmJXOVVSbE5rUzNweFRFSkZObGhWVUhGSVpYTkVla2h5WkhsU2VUUXlZbk5MY0doelkxQjNMMUZEUmpab2RqaDZiR0ZHWWxoWmNWZHNkVVp2YmpNNVpWQlNia2hwVG1oUlVsQkNjMkZqZDFwWlUxUkNkVk5pYjJGWmFTdFZURmhwVUZoTlZscFZOMnRoSzBZMFQxazBWM1pJUjAwemJTdHBVRWhITVhORU9WSjZMemRhVGxoV2FWSlFhblp1T1ZCNGFrOWphMnBhU2xnemNYVXZRbXBYUTBOd1JVTkdkR3BDYzJ3eFNIQm1OSGhNVlVWR1JEVnhOMDgwTTNSa2EwOUhWekUyU1V0VVUwZHhNMjlwVGtzdlRqQmxOMDVMTWtWblBUMGlMQ0p3ZFdKc2FXTkxaWGtpT2lJdExTMHRMVUpGUjBsT0lGQlZRa3hKUXlCTFJWa3RMUzB0TFZ4dVRVbEpRa2xxUVU1Q1oydHhhR3RwUnpsM01FSkJVVVZHUVVGUFEwRlJPRUZOU1VsQ1EyZExRMEZSUlVGNWRsQnhSa2gzUkRoemN6TktPWGxRY1VkbEwxeHVVVXcyY25wTVFuRmhjM0E1ZGpaNWJWbEtTemhKTWtkR2VVSXdlazVEYzJkVGMwVXZkbTFETTB3ME5ESk9SbXBTVERaa0szRnVaWHBTYzNaaFZsUTJURnh1UWt4SE4xZEhjR2xhVEZoclNUZHFkMmRhVkRKM1R6aDRTVkJwZG5kV09FODRiRnBIVWpWU2NYVlRaQ3RNWTFOcFFVbFlSRVptVkN0Q1lrdGlMMUJoVjF4dVQxbDVXVEZzTlVGaVlUVk5lR281Y2tsQ2JUbGpjRXd4Y2tVclMwTlNTM2cwUTFWT1NtVm5PV3hZTkVZeE1VTmpPVkYxVFhCMFpWZ3hiMmRzT0UxdGFGeHVaazUzZDJ4R1pHUkRZVXRsTkc1YVIwRTJTMUpTZDA4eGIwa3dNVEl6VVVjNVNVcHljRkpXV0hSdE1FODBXQzh5WTJGV00zSk1kMFZRVmtaSk5IRlFjMXh1VW1aQ2QydEtlR2hoWnpkNE5sTkRObkJyVVdKNVNFNXhObG92ZHpBcmNqbFZjVU16WkVoM1EyRXdTa0ZWT0ZOVU5GRlliVGhQUTNkM2N6Wk5PRWN6ZUZ4dVRsRkpSRUZSUVVKY2JpMHRMUzB0UlU1RUlGQlZRa3hKUXlCTFJWa3RMUzB0TFZ4dUlpd2lhMlY1VTJsbmJtRjBkWEpsSWpvaVpYbEtlbUZYWkhWWldGSXhZMjFWYVU5cFNsZGlRemh5VVZVeGFGZFZjM1pSTVVwS1QwUkdlRTFYZEZkVFYwWllVVlZvUlZWNlZuRmtiRXBXVDBSa2RtSXphRFpaYmtKYVpWWm9WR1Z1YjNaTk0xb3pWREJPTTFaV1FtcFVNMmg1VkROb2RGUjZVbkJaVjBsNldrWlNlbGx0Vm5GTmJFMHlXbGRhVTFrd2RGRmlNbEpUVlRGQ1RsUlVRbEpWUkdoTVUxWmtiRkZyWkhCVE1FNVRaVWQwVlZkRWF6TmxWV1JyVGpOT2MxUnNaekpoYld4S1dqSjBjbGRyV2pSTmFsSnlWakZzYVdKVk1YaFRibkJNWld4U1NWRnFiRWRsYmtKRlQwZGFVR0pXU2t0VU1sWkdZa1ZXVkZGdE5YcFVWMVUwVVd0c2JsUXdOWGxTV0VwdlRIcG9XbEpVWXpGaFIwNVRZbTB4TWxFelJYWmpWR3hSVFRBeE5WSXdPWE5rTTFwU1ZXMU9TVTFGVmsxWFIxVXhTekZhU1ZkWFZuWlNNalY2U3pOV1ZWbHRWbkZUU0U1RFdWVldRMDVYYURaT1Z6bDZWVzFSZGxWWVFtNVhiVEZKVVZoU1VWUXpaekZOUjBaRFRWWldkMU5YY3pOU2VrcDJVMjE0YVdNd2VIcGlNVVphVTJwWmQxSkdaRlZVYkd4YVZtMW9ObGt6YkV4alIyaFpWak5vYTFNeGJIRmlWRll5VFd4Q1UyUXhVbFpQUmxJMVZGUnNkV1ZZVmxObFZXaFNWREphVTJScmN6UlJNWEJPVjJwb1JFc3pjRmxVVm1zd1RWVjRWbU5yUlRsUVUwbHpTVzFrYzJJeVNtaGlSWFJzWlZWc2EwbHFiMmxaYlZKc1dsUlZNazVVV1hkWk1scHBUa1JPYWs5WFNYbFBSMHB0VDFSb2JGbFhUbWhhYlVVeVRrUlphV1pSUFQwaWZRPT0ifQ==
+
+EOF
+
+cat > /root/config-values.yaml <<EOF
+apiVersion: kots.io/v1beta1
+kind: ConfigValues
+metadata:
+  creationTimestamp: null
+  name: sentry-enterprise
+spec:
+  values:
+    admin_password:
+      default: password
+      value: 2g1gVHgZrd20N+qKu9ualQ==
+    admin_username:
+      default: admin
+    embedded_postgres_password:
+      value: LGt0cW2xe6yEc395N8l7YFJqUuT11u9n4qw1NIbkPZZYRHexgMlRuB8TA9Wa23EV
+    embedded_redis_password:
+      value: B2cAV16yerXlY0d8ZddcXxlDK/np7f1HwIQsP4ewKJdilvTc1o5XN7Yhs1bdh0ly
+    enable_node_affinity:
+      default: "0"
+    enable_node_toleration:
+      default: "0"
+    enable_optional_ns:
+      default: "0"
+    enable_smtp:
+      default: "0"
+    external_postgres_db:
+      default: sentry
+    external_postgres_host:
+      default: postgres
+    external_postgres_password:
+      value: 2g1gVHgZrd20N+qKu9ualQ==
+    external_postgres_port:
+      default: "5432"
+    external_postgres_user: {}
+    external_redis_host:
+      default: redis
+    external_redis_password:
+      value: 2g1gVHgZrd20N+qKu9ualQ==
+    external_redis_port:
+      default: "6379"
+    external_redis_user: {}
+    issuer_cert:
+      default: |
+        -----BEGIN CERTIFICATE-----
+        MIIDFTCCAf2gAwIBAgIQbAEWZvuWPlctqUQb7MuEyTANBgkqhkiG9w0BAQsFADAV
+        MRMwEQYDVQQDEwppbmdyZXNzLWNhMB4XDTIzMDEyMDE3MTAxMFoXDTI0MDEyMDE3
+        MTAxMFowFTETMBEGA1UEAxMKaW5ncmVzcy1jYTCCASIwDQYJKoZIhvcNAQEBBQAD
+        ggEPADCCAQoCggEBAMEIuqm/tw/G/IAdqA2Gjp1erzzaaRCNKRrgcsWYXJTQLkwO
+        dXv7bjrOYe4DzZBeFhw8W5LbgTLE2YvdQjmJrMDk/Y7UrW5e/JmGvQRd3f7xV60K
+        q3hqL0Mm8Ye3PJpcoWRIh7IMgeymEvInhYERkcyxzlEf0bfFfTN16WFBuHZDsw2L
+        N/K87ZFeZmE/1CgOgjIQURGSYEDSukDH764+48WQM1zZTQBBs5CLb3TNYplt0Ca1
+        j5ZVnODwDzU3u2QtM50H4V90YFNzr2hZvY5Sk2CX+xFnBVkTWpywIuk2x5rGfWRA
+        pR1PhzLveKk+6wU9OtXyhFCMctDC7pTBp7pPyUMCAwEAAaNhMF8wDgYDVR0PAQH/
+        BAQDAgKkMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAPBgNVHRMBAf8E
+        BTADAQH/MB0GA1UdDgQWBBSe2cxTOQ7yNNWM31s311mLFD4F6jANBgkqhkiG9w0B
+        AQsFAAOCAQEAhSdPUvS8QiD598nPqEKrBrJww82Y5gOSI98nUsuMF4KOn4EwqreO
+        +DW4T9oLxPYQtkxV4mIkD9QP7Rq1vzu3aszb3RUDcqz9PLgB9keDzw9PPmvHG88R
+        GH6OQRIrPEL+RHMlkkvS+92e+CkYAjIeQNBEh1G/Hu7f/5PIrxvlw5P9AZ8vCHPr
+        CFEiBjQqRVpGwPFMPDYywWiwCNVTdXMWT24wWJlRpglBFfwisWyWK2BbOLcpltuf
+        O4DX5VKljKjOnEtHPyHNf3JbWLKwNFXQYFd+xiA8kD3oQ3vIXnvFAfoohVl0GE0s
+        b11jokd8zCj3vfQnXi1FBNi+INddW4vX1g==
+        -----END CERTIFICATE-----
+    issuer_certs:
+      value: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURGVENDQWYyZ0F3SUJBZ0lRYkFFV1p2dVdQbGN0cVVRYjdNdUV5VEFOQmdrcWhraUc5dzBCQVFzRkFEQVYKTVJNd0VRWURWUVFERXdwcGJtZHlaWE56TFdOaE1CNFhEVEl6TURFeU1ERTNNVEF4TUZvWERUSTBNREV5TURFMwpNVEF4TUZvd0ZURVRNQkVHQTFVRUF4TUthVzVuY21WemN5MWpZVENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFECmdnRVBBRENDQVFvQ2dnRUJBTUVJdXFtL3R3L0cvSUFkcUEyR2pwMWVyenphYVJDTktScmdjc1dZWEpUUUxrd08KZFh2N2Jqck9ZZTREelpCZUZodzhXNUxiZ1RMRTJZdmRRam1Kck1Eay9ZN1VyVzVlL0ptR3ZRUmQzZjd4VjYwSwpxM2hxTDBNbThZZTNQSnBjb1dSSWg3SU1nZXltRXZJbmhZRVJrY3l4emxFZjBiZkZmVE4xNldGQnVIWkRzdzJMCk4vSzg3WkZlWm1FLzFDZ09naklRVVJHU1lFRFN1a0RINzY0KzQ4V1FNMXpaVFFCQnM1Q0xiM1ROWXBsdDBDYTEKajVaVm5PRHdEelUzdTJRdE01MEg0VjkwWUZOenIyaFp2WTVTazJDWCt4Rm5CVmtUV3B5d0l1azJ4NXJHZldSQQpwUjFQaHpMdmVLays2d1U5T3RYeWhGQ01jdERDN3BUQnA3cFB5VU1DQXdFQUFhTmhNRjh3RGdZRFZSMFBBUUgvCkJBUURBZ0trTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3JCZ0VGQlFjREFqQVBCZ05WSFJNQkFmOEUKQlRBREFRSC9NQjBHQTFVZERnUVdCQlNlMmN4VE9RN3lOTldNMzFzMzExbUxGRDRGNmpBTkJna3Foa2lHOXcwQgpBUXNGQUFPQ0FRRUFoU2RQVXZTOFFpRDU5OG5QcUVLckJySnd3ODJZNWdPU0k5OG5Vc3VNRjRLT240RXdxcmVPCitEVzRUOW9MeFBZUXRreFY0bUlrRDlRUDdScTF2enUzYXN6YjNSVURjcXo5UExnQjlrZUR6dzlQUG12SEc4OFIKR0g2T1FSSXJQRUwrUkhNbGtrdlMrOTJlK0NrWUFqSWVRTkJFaDFHL0h1N2YvNVBJcnh2bHc1UDlBWjh2Q0hQcgpDRkVpQmpRcVJWcEd3UEZNUERZeXdXaXdDTlZUZFhNV1QyNHdXSmxScGdsQkZmd2lzV3lXSzJCYk9MY3BsdHVmCk80RFg1VktsaktqT25FdEhQeUhOZjNKYldMS3dORlhRWUZkK3hpQThrRDNvUTN2SVhudkZBZm9vaFZsMEdFMHMKYjExam9rZDh6Q2ozdmZRblhpMUZCTmkrSU5kZFc0dlgxZz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+        LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBd1FpNnFiKzNEOGI4Z0Iyb0RZYU9uVjZ2UE5wcEVJMHBHdUJ5eFpoY2xOQXVUQTUxCmUvdHVPczVoN2dQTmtGNFdIRHhia3R1Qk1zVFppOTFDT1ltc3dPVDlqdFN0Ymw3OG1ZYTlCRjNkL3ZGWHJRcXIKZUdvdlF5YnhoN2M4bWx5aFpFaUhzZ3lCN0tZUzhpZUZnUkdSekxIT1VSL1J0OFY5TTNYcFlVRzRka096RFlzMwo4cnp0a1Y1bVlUL1VLQTZDTWhCUkVaSmdRTks2UU1mdnJqN2p4WkF6WE5sTkFFR3prSXR2ZE0xaW1XM1FKcldQCmxsV2M0UEFQTlRlN1pDMHpuUWZoWDNSZ1UzT3ZhRm05amxLVFlKZjdFV2NGV1JOYW5MQWk2VGJIbXNaOVpFQ2wKSFUrSE11OTRxVDdyQlQwNjFmS0VVSXh5ME1MdWxNR251ay9KUXdJREFRQUJBb0lCQUNMS2svb3NWNjQ4U3g0OApPaUhWOHJaaWJtc2xZbkpkUHQ5ZFBOSm9WNmRxcmkxL0hhV3U5M3NaMzRTcW9zNDJadjNIMHlsdzdxUmIzbW5iCkF5aWpxOE5JZ25yUDBrSm1WRmpIZENIcFdTMnVDZ05pUE8yREZlbWdoei9Td3RWL2hJY3ltMkozNXFMa2U5MngKU2RxdGMvM1V2ajdZNFUraUJLTFZ5YTZCemVGaW1pdXAzVk5aWDBwc3BUTlZiNnA1dEhhNWhURmRZelBYd0JFNgpSTHJlSndjRmV0WHhtdmN6UEVYT2FrMkxsK0hkMzRzMldDN3ZleGRSYlByQTd6OXZTWWNNVWRiVCtiL0JRT3IxCmJxU1pwd011Wk94c2djcnBPQnlMdEl6Wjl4bWdvOWh0TzB4cVRWVnNtM1hJa3BYNHhSR2RkM1RJbW9idVdWRGMKOUhIdDd1RUNnWUVBMjhWT3pyU2d4NWEwZ1ptVmlrSVJpVWo3aDRIV2h4dEh6NzVQL2Y2bWtBTEhQWkY0VWkwYwpGK0M3RmEvNVRPU0FBUmxUVDh4dTNCMWFNWGdFbmhVTkdqRS9PZVFzZzVpOW00b2MrazduS2thUnZmV2xWdVIvCkR3aXkzUmFXL0VMKytQTWVLYXIrWFIzb1hJSEtDSUhaaFp5WTJUM3MyTllBVml0U2licGUzVmNDZ1lFQTROc1gKTXZLTERtZEtHNUhGeXFNZWkzOFo1MmhSNWgrcm1jZFdjRkZNaElyeDFwa1dsQ29qTVRVQUhZVGxUakt1Sll2Lwp4OTNaQXdXNFJyZjA2YzVybGpUSUJ6VWJveFhZZXNRdDBTazRXNDlKbUlIQzd3MmNkeVZKekM2NUJjZ2pIa3ZWCmdaRGlhK01OS01KZm95eGRmS1pFTzNPM2RPSzZSSUwxZGUzYmsvVUNnWUVBbCtiT3k4ekpmR3JNSk8vMURuVVEKRGVYbUJRbFhNRmRJMFd4bmVkV3pac0trMkFkZU5ONTlGbnY4azhibjk1L1FZZklSUll5MTYycFdWdTd2c2h3Mgp6QzNSMTcvQWpNemI4VkFMSzIreUUrUm5BL2R2NnBsUXdTRndENlIzZzdFQzd5dUxZNTJPNXVtdkc1R1NCVU5MCkNERHU3T2tDZGZXa2tlcXJ5QXFMVzAwQ2dZQXpxZU5RcjIzSDUyK2RtZ2JLSW1TWVJLSGRDNWtWdU4waXZpeGMKTGpIWW1sd3FwSTROaVFrQSsxNkZhYzJPQkJNRFNZR0JtTFdOL2poeTl6MXNveU1SSmh0M25IbzNKSVBTNFZSdApwSHp3ZktHNlNzWlJTdDFTZXR6VDcwQlAxY1pMNWJ5dXdtMWp3STE3ZWYyamJrUWtxY2N2cWN6VExHMEQ1TnNsCk4zdW1LUUtCZ0R0Q29qVU5YZmhLU2hxQWQ3VWptWVVmVlNnYjhpRVpJRUsxUnNJdmRqRUw4Z2lXa2M1L0svTUEKcHZwSjA5bU9VOUlCRTRuUjV3U1crVVBpR014TFZFN0gvMEpIMkJuVXFVaTNhVmtqNXlGQ3YycmtIMGZ2Uld4VwowaS9PLzZsd0h3b2lsWFJWMXY1aTFrMHpMbWNjZjhLaG1nTG9lRW1LSW1VRkdTMEdtWTNNCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+    node_affinity: {}
+    node_toleration: {}
+    optional_ns:
+      default: remote
+    postgres_type:
+      default: embedded_postgres
+    redis_type:
+      default: embedded_redis
+    secret_key:
+      value: ElAAcnzkfMf6e0ZIfdBMYBp8JOLB0NBfwfIeHJGWPZ8IRjgN28Ds9QvGDUOYz6AQ9bljJsa2Kcs=
+    smtp_host: {}
+    smtp_password:
+      default: password
+      value: 2g1gVHgZrd20N+qKu9ualQ==
+    smtp_port: {}
+    smtp_user: {}
+    worker_replicas:
+      default: "2"
+
+EOF
+
+cat > /root/bootstrap.sh <<EOF
+#!/bin/bash
+kubectl kots install annarchy/stable --shared-password supersecret --license-file /root/license.yaml --namespace annarchy --config-values /root/config.yaml --skip-preflights --wait-duration 5m --no-port-forward
+kubectl expose deployment kotsadm \
+  -n annarchy \
+  --type=LoadBalancer \
+  --name=kotsadm2 \
+  --port=8800 \
+  --target-port=3000
+
+kubectl expose deployment sentry-web \
+  -n annarchy \
+  --type=LoadBalancer \
+  --name=sentry-web \
+  --port=9000 \
+  --target-port=9000
+echo "export APP_SLUG=annarchy" >> /root/.bashrc
+echo "export CHANNEL=stable" >> /root/.bashrc
+EOF

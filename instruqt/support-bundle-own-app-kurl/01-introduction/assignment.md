@@ -11,7 +11,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: kurl-1
+  hostname: cloud-client
 difficulty: intermediate
 timelimit: 3600
 ---
