@@ -9,9 +9,18 @@ notes:
   contents: In this track, we'll work together to apply some practical methods for
     troubleshooting problems on Kubernetes clusters, using your own application.
 tabs:
-- title: Shell
+- title: Workstation
   type: terminal
   hostname: cloud-client
+- title: Cluster Node 1
+  type: terminal
+  hostname: kurl-node-1
+- title: Cluster Node 2
+  type: terminal
+  hostname: kurl-node-2
+- title: Cluster Node 3
+  type: terminal
+  hostname: kurl-node-3
 difficulty: intermediate
 timelimit: 3600
 ---

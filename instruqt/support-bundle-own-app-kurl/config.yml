@@ -29,6 +29,18 @@ containers:
   image: gcr.io/instruqt/cloud-client
   ports: [80]
   shell: /bin/bash
+- name: kurl-node-1
+  image: gcr.io/instruqt/cloud-client
+  shell: /bin/bash
+  cmd: ssh kurl-node-1 --ignore-host-key-checks
+- name: kurl-node-2
+  image: gcr.io/instruqt/cloud-client
+  shell: /bin/bash
+  cmd: ssh kurl-node-2 --ignore-host-key-checks
+- name: kurl-node-3
+  image: gcr.io/instruqt/cloud-client
+  shell: /bin/bash
+  cmd: ssh kurl-node-3 --ignore-host-key-checks
 gcp_projects:
 - name: kurl
   services:
