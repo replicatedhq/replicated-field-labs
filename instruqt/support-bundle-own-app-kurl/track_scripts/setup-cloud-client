@@ -23,3 +23,6 @@ gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials
 
 # Set our project
 gcloud config set project $INSTRUQT_GCP_PROJECT_KURL_PROJECT_ID
+
+# set up kots cli
+curl https://kots.io/install | REPL_INSTALL_PATH=/usr/local/bin bash
