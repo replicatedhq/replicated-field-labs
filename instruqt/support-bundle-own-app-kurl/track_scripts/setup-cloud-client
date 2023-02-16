@@ -27,6 +27,12 @@ gcloud config set project $INSTRUQT_GCP_PROJECT_KURL_PROJECT_ID
 # set up kots cli
 curl https://kots.io/install | REPL_INSTALL_PATH=/usr/local/bin bash
 
+SSH_DIR=${REPLICANT_HOME}/.ssh
+mkdir -p "${SSH_DIR}" && /bin/chmod 0700 "${SSH_DIR}"
+ssh-keygen -t ed25519 -o -a 100 -f ${SSH_DIR}/id_ed25519 -q -N ""
+/bin/chmod 0600 ${SSH_DIR}/* && /bin/chown -R replicant:replicant ${SSH_DIR}
+
+
 
 for i in {1..3}; do
   NODE_IP=$(gcloud compute instances create "kurl-node-$i" \
@@ -48,4 +54,8 @@ for i in {1..3}; do
     --zone=europe-west1-b
 
   echo "${NODE_IP}   kurl-node-$i   # kurl node $i" >> /etc/hosts
+
+  # add the key to the SSH metadata
+  gcloud compute instances add-metadata kurl-node-$i --zone europe-west1-b \
+    --metadata "ssh-keys=replicant:$(cat ${SSH_DIR}/id_ed25519.pub)"
 done
