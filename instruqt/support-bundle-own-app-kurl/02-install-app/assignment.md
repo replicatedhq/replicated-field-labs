@@ -15,6 +15,22 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Cluster Node 1
+  type: terminal
+  hostname: cloud-client
+  cmd: gcloud compute ssh kurl-node-1 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+- title: Cluster Node 2
+  type: terminal
+  hostname: cloud-client
+  cmd: gcloud compute ssh kurl-node-2 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+- title: Cluster Node 3
+  type: terminal
+  hostname: cloud-client
+  cmd: gcloud compute ssh kurl-node-3 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+- title: Application Installer
+  type: website
+  url: http://kurl-node-1.${_SANDBOX_ID}.instruqt.io:8800
+  new_window: true
 difficulty: intermediate
 timelimit: 3600
 ---
@@ -34,28 +50,19 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 
   ![Support Bundle Customer](../assets/support-bundle-customer.png)
 
-# Install the Replicated admin console
+# Install the Replicated embedded cluster
 
-Configure the VM environment for automation by exporting the name of your app slug and the release channel.  Type the following into your shell, replacing `your-app` and `stable` with your app slug and release channel, and hit Enter.
-
-```shell
-export APP_SLUG=your-app
-export CHANNEL=stable
-```
-
-Then run the following snippet to add these variables to your shell environment - they'll be useful later for automating the challenges.  You can paste the following snippet entirely:
+In the Cluster Node 1 tab, begin your embedded cluster installation
 
 ```shell
-echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
-echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
+curl -sSL https://kurl.sh/<installer-name> | bash -s ha
 ```
 
-Then, install your application by executing `kots install` with your app slug.  You can copy/paste this snippet:
+*When prompeted for the loadbalancer IP address, leave it blank to use the internal LB*
 
-```shell
-kubectl kots install ${APP_SLUG}/${CHANNEL} \
-  --no-port-forward=true
-```
+When the install script completes, copy the join command and run it in the *Cluster Node 2* tab
+
+Repeat for *Cluster Node 3*
 
 # Expose the admin console
 
