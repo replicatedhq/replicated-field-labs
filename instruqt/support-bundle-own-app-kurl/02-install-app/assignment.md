@@ -18,19 +18,15 @@ tabs:
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-1 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+  cmd: ssh kurl-node-1 --ignore-host-key-checks
 - title: Cluster Node 2
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-2 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+  cmd: ssh kurl-node-2 --ignore-host-key-checks
 - title: Cluster Node 3
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-3 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
-- title: Application Installer
-  type: website
-  url: http://kurl-node-1.${_SANDBOX_ID}.instruqt.io:8800
-  new_window: true
+  cmd: ssh kurl-node-3 --ignore-host-key-checks
 difficulty: intermediate
 timelimit: 3600
 ---
@@ -79,7 +75,7 @@ kubectl expose deployment kotsadm \
 
 # Upload your license and install the app
 
-After installation succeeds, navigate to the [Application Installer admin console](http://[[ Instruqt-Var key="HOSTNAME" hostname="kubernetes-vm" ]].[[ Instruqt-Var key="SANDBOX_ID" hostname="kubernetes-vm" ]].instruqt.io:8800), login and upload your license.
+After installation succeeds, navigate to the [Application Installer admin console](http://[[ Instruqt-Var key="HOSTNAME" hostname="cloud-client" ]].[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 

@@ -15,15 +15,15 @@ tabs:
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-1 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+  cmd: ssh kurl-node-1 --ignore-host-key-checks
 - title: Cluster Node 2
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-2 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+  cmd: ssh kurl-node-2 --ignore-host-key-checks
 - title: Cluster Node 3
   type: terminal
   hostname: cloud-client
-  cmd: gcloud compute ssh kurl-node-3 --quiet --zone=europe-west1-b --ssh-key-file=.ssh/id_ed25519
+  cmd: ssh kurl-node-3 --ignore-host-key-checks
 difficulty: intermediate
 timelimit: 3600
 ---
