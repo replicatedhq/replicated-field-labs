@@ -18,15 +18,15 @@ tabs:
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
-  cmd: ssh kurl-node-1 --ignore-host-key-checks
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
 - title: Cluster Node 2
   type: terminal
   hostname: cloud-client
-  cmd: ssh kurl-node-2 --ignore-host-key-checks
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
 - title: Cluster Node 3
   type: terminal
   hostname: cloud-client
-  cmd: ssh kurl-node-3 --ignore-host-key-checks
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
 difficulty: intermediate
 timelimit: 3600
 ---
