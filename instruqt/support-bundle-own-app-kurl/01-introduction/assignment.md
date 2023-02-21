@@ -25,7 +25,7 @@ tabs:
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
 difficulty: intermediate
-timelimit: 3600
+timelimit: 600
 ---
 
 👋 Introduction

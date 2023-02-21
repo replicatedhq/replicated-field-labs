@@ -105,3 +105,5 @@ backend kots-admin
     server kurl-node-1 $KURL_NODE_1_IP:8800 check
 
 EOF
+
+systemctl restart haproxy
