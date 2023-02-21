@@ -15,6 +15,9 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: loadbalancer
+  type: terminal
+  hostname: loadbalancer
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
@@ -36,11 +39,11 @@ timelimit: 3600
 
 # Vendor Portal login
 
-Log into the Vendor Portal with your existing account, and note your application *app slug*, *release channel*, and the "existing cluster install command".  It should look something like `kubectl kots install <app-slug/channel>`.  You don't need to install it yet! We have a little bit of setup to complete, first.
+Log into the Vendor Portal with your existing account, and note your application *app slug*, *release channel*, and the "embedded cluster install command".  It should look something like `curl -sSL https://kurl.sh/<appslug>-<channel> | sudo bash`.  You don't need to install it yet! We have a little bit of setup to complete, first.
 
   ![Existing Cluster Install Command](../assets/release-channel.png)
 
-# Download the license
+# Download your test license
 
 Navigate to the Vendor Portal tab and download the license that you've provisioned for your development work.
 
@@ -48,17 +51,21 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 
 # Install the Replicated embedded cluster
 
-In the Cluster Node 1 tab, begin your embedded cluster installation
+In the Cluster Node 1 tab, begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
 
+Example: for an HA installation (3 primaries)
 ```shell
 curl -sSL https://kurl.sh/<installer-name> | bash -s ha
 ```
 
-*When prompeted for the loadbalancer IP address, leave it blank to use the internal LB*
+Example: for a single node installation
+```shell
+curl -sSL https://kurl.sh/<installer-name> | bash
+```
 
-When the install script completes, copy the join command and run it in the *Cluster Node 2* tab
+*When prompted for the loadbalancer IP address, leave it blank to use the internal LB*
 
-Repeat for *Cluster Node 3*
+When the install script completes, copy the join command and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab if you're adding more nodes.  There's a *Workstation* tab as well if you need to provision extra resources for your app to run in GCP.  Any resources you create will be destroyed at the completion of this exercise.
 
 # Expose the admin console
 
@@ -75,7 +82,7 @@ kubectl expose deployment kotsadm \
 
 # Upload your license and install the app
 
-After installation succeeds, navigate to the [Application Installer admin console](http://[[ Instruqt-Var key="HOSTNAME" hostname="cloud-client" ]].[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
+After installation succeeds, navigate to the [Application Installer admin console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 

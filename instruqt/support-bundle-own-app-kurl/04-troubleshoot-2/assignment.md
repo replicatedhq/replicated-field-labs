@@ -11,6 +11,18 @@ tabs:
 - title: Shell
   type: terminal
   hostname: cloud-client
+- title: Cluster Node 1
+  type: terminal
+  hostname: cloud-client
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
+- title: Cluster Node 2
+  type: terminal
+  hostname: cloud-client
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
+- title: Cluster Node 3
+  type: terminal
+  hostname: cloud-client
+  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
 - title: Application Installer
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
