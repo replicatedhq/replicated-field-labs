@@ -8,16 +8,13 @@ notes:
 - type: text
   contents: Let's install your Application
 tabs:
-- title: Shell
+- title: Workstation
   type: terminal
   hostname: cloud-client
 - title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: loadbalancer
-  type: terminal
-  hostname: loadbalancer
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
@@ -41,35 +38,37 @@ timelimit: 3600
 
 Log into the Vendor Portal with your existing account, and note your application *app slug*, *release channel*, and the "embedded cluster install command".  It should look something like `curl -sSL https://kurl.sh/<appslug>-<channel> | sudo bash`.  You don't need to install it yet! We have a little bit of setup to complete, first.
 
-  ![Existing Cluster Install Command](../assets/release-channel.png)
-
 # Download your test license
 
 Navigate to the Vendor Portal tab and download the license that you've provisioned for your development work.
 
   ![Support Bundle Customer](../assets/support-bundle-customer.png)
 
+# Configure the VM environment
+
+Next, configure the VM environment for automation by exporting the name of your app slug and the release channel.  In the Workstation shell, type:
+- `export APP_SLUG=app && export CHANNEL=stable`
+replacing `app` and `stable` with your app slug and release channel, and hit Enter.
+
 # Install the Replicated embedded cluster
 
 In the Cluster Node 1 tab, begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
 
-Example: for an HA installation (3 primaries)
-```shell
-curl -sSL https://kurl.sh/<installer-name> | bash -s ha
-```
+Example: for an HA installation (3 primary nodes)
+- `curl -sSL https://kurl.sh/<installer-name> | bash -s ha`
 
-Example: for a single node installation
-```shell
-curl -sSL https://kurl.sh/<installer-name> | bash
-```
+Example: for an installation with a single primary node
+- `curl -sSL https://kurl.sh/<installer-name> | bash`
+
+Your embedded installer command may have additional [advanced installation options](https://kurl.sh/docs/install-with-kurl/advanced-options).  Double check with your team for the expected options to use.
 
 *When prompted for the loadbalancer IP address, leave it blank to use the internal LB*
 
-When the install script completes, copy the join command and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab if you're adding more nodes.  There's a *Workstation* tab as well if you need to provision extra resources for your app to run in GCP.  Any resources you create will be destroyed at the completion of this exercise.
+When the install script completes, copy the join command and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab if you're adding more nodes.  You can also provision additional GCP resources, if needed, from the *Workstation* tab.  Any resources you create will be destroyed at the completion of this exercise.
 
 # Expose the admin console
 
-To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`.  Paste this whole snippet:
+To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`.  Paste this whole snippet into the *Cluster Node 1* tab and hit Enter:
 
 ```shell
 kubectl expose deployment kotsadm \
@@ -82,7 +81,7 @@ kubectl expose deployment kotsadm \
 
 # Upload your license and install the app
 
-After installation succeeds, navigate to the [Application Installer admin console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
+After installation succeeds, navigate to the [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 
