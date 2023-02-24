@@ -58,6 +58,8 @@ You get another report from a customer saying that the application isn't working
   - Pods advertise a `containerPort` that they are listening on, but we don't want to keep track of their IP addresses since they change all the time.  Services are a way to abstract away the IP addresses of the Pods, and instead use a DNS name to connect to the Pods.
   - Services advertise a listening `port` and forward connections to a `targetPort`.
 
+  ![Services at a glance](../assets/services-explained.png)
+
  Troubleshooting Procedure
 =================
 
@@ -168,6 +170,8 @@ Reference:
 =================
 
 A random Service's `targetPort` has been patched to be something in the 30k range.  Any pod in the cluster that tries to connect to this pod's Service name (which is what gets programmed in to DNS in the cluster) will fail to connect, because the pod is not listening on the the same port that the Service is trying to connect to.
+
+
 
 Remediation
 =================
