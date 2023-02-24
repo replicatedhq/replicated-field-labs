@@ -93,6 +93,20 @@ backend k8s-ingress-http
     server kurl-node-2 $KURL_NODE_2_IP:80 check
     server kurl-node-3 $KURL_NODE_3_IP:80 check
 
+frontend k8s-ingress-https
+    mode tcp
+    bind :80
+    option tcp-check
+    default_backend k8s-ingress-https
+
+backend k8s-ingress-https
+    mode tcp
+    option tcp-check
+    balance roundrobin
+    server kurl-node-1 $KURL_NODE_1_IP:443 check
+    server kurl-node-2 $KURL_NODE_2_IP:443 check
+    server kurl-node-3 $KURL_NODE_3_IP:443 check
+
 frontend kots-admin
     mode tcp
     bind :8800
