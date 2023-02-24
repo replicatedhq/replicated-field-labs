@@ -8,9 +8,13 @@ notes:
 - type: text
   contents: Time to fix the problem...
 tabs:
-- title: Shell
+- title: Workstation
   type: terminal
   hostname: cloud-client
+- title: Vendor Portal
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
@@ -23,13 +27,10 @@ tabs:
   type: terminal
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-- title: Application Installer
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
-  new_window: true
 difficulty: intermediate
 timelimit: 3600
 ---
+[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
 =================

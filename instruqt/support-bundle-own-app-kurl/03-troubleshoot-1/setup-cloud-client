@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# copy support bundle from node1 over to the workstation
+
+mkdir ~/troubleshoot-1 && cd ~/troubleshoot-1 || true
+
+

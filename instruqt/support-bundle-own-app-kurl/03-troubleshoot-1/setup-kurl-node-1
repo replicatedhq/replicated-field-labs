@@ -4,7 +4,7 @@ set -euxo pipefail
 debug-message "Reticulating Splines..."
 debug-message "patch a random deployment to use a low memory limit & request"
 
-app_slug=$(agent variable get APP_SLUG) || app_slug="${APP_SLUG}"
+app_slug=$(agent variable get APP_SLUG)
 
 if [[ -z "${app_slug}" ]]; then
   fail-message "APP_SLUG could not be parsed from env"
@@ -25,6 +25,19 @@ else
 fi
 
 kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
+
+if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.limits // empty'; then
+  op=add
+else
+  op=replace
+fi
 kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
+
+sleep 120
+
+
+support_bundle_path=/tmp/support-bundle-troubleshoot-1.tar.gz
+kubectl support-bundle --load-cluster-specs --interactive=false -o "$support_bundle_path"
+debug-message "wrote support bundle to $support_bundle_path"
 
 debug-message "Mischief Managed!"
