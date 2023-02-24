@@ -46,13 +46,22 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 
 # Configure the VM environment
 
+## Set up the Workstation
 Next, configure the VM environment for automation by exporting the name of your app slug and the release channel.  In the Workstation shell, type:
 - `export APP_SLUG=app && export CHANNEL=stable`
 replacing `app` and `stable` with your app slug and release channel, and hit Enter.
 
+Then run the following snippet to add these variables to your shell environment - they'll be used to set up the challenges.  You can paste the following snippet entirely:
+
+```shell
+echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
+echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
+```
+
 # Install the Replicated embedded cluster
 
-In the Cluster Node 1 tab, begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
+## Setup Cluster Node 1
+**In the ***Cluster Node 1*** tab** begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
 
 Example: for an HA installation (3 primary nodes)
 - `curl -sSL https://kurl.sh/<installer-name> | bash -s ha`
@@ -73,7 +82,7 @@ To reach the admin console through the VM's firewall, expose the Kubernetes Serv
 ```shell
 kubectl expose deployment kotsadm \
   -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) \
-  --type=LoadBalancer \
+  --type=NodePort \
   --name=kotsadm2 \
   --port=8800 \
   --target-port=3000

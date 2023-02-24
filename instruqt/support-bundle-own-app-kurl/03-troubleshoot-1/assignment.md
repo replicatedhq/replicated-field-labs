@@ -39,13 +39,7 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 
 We think it's a good habit to use Support Bundles whenever possible - and we'll use another tool we've developed called `sbctl` to help with that.
 
-First let's take a support bundle from the cluster:
-
-```
-kubectl support-bundle --load-cluster-specs --output support-bundle.tar.gz
-```
-
-Right now we have access to the cluster, but what if we did not?  `sbctl` to the rescue - let's invoke it:
+A support bundle should be available from the cluster in `/tmp/troubleshoot-1` - let's inspect it
 
 ```
 sbctl shell --support-bundle-location ./support-bundle.tar.gz
@@ -73,6 +67,15 @@ This will give us a shell in the context of the support bundle.  `sbctl` mocks a
 - How do you find the exit code of a Pod?
 
 - What could it mean if a Pod is exiting before it has a chance to emit any logs?
+
+Troubleshooting Procedure
+=================
+
+Identify the problematic Pod from `kubectl get pods`.  Notice any pods that are not in the Running state.
+
+Describe the current state of the pod and examine any recent events with `kubectl describe pod <pod-name>`.  Look for any Events that may indicate a problem.  Look for the Pod's State
+
+First, let's
 
 ✔️ Solution
 =================

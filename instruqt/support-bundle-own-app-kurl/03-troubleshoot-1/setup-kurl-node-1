@@ -40,4 +40,4 @@ support_bundle_path=/tmp/support-bundle-troubleshoot-1.tar.gz
 kubectl support-bundle --load-cluster-specs --interactive=false -o "$support_bundle_path"
 debug-message "wrote support bundle to $support_bundle_path"
 
-debug-message "Mischief Managed!"
+debug-message "Mischief Managed! patched ${deployment} in ${namespace} to use a low memory limit & request"
