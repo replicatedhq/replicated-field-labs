@@ -3,7 +3,7 @@ slug: troubleshoot-2
 id: bbn7etmrxhet
 type: challenge
 title: Correcting the broken application
-teaser: Time to fix another problem
+teaser: A Pod is not responding...
 notes:
 - type: text
   contents: Time to fix another problem...
@@ -112,8 +112,55 @@ nc -vz <pod-ip> <container-port>
 # -z is zero I/O mode, just check if the port is open
 ```
 
+From the same Pod shell, first let's check that cluster DNS is working by resolving the Service name:
 
-From the same Pod shell, use
+```
+dig <service-name>
+dig <service-name>.<namespace>.svc.cluster.local
+
+# or
+nslookup <service-name>
+nslookup <service-name>.<namespace>.svc.cluster.local
+```
+
+Expect both the short name and the FQDN of the service to resolve to the same IP address.  If not, there is a problem with DNS resolution.
+
+Next, let's check that the Service is working by connecting to the Service name:
+
+```
+# For applications that speak HTTP
+#
+curl -vvvv -sSL <service-name>:<service-port>
+curl -vvvv -sSL <service-name>.<namespace>.svc.cluster.local:<service-port>
+#
+
+# For applications that expect a TCP connection (like MySQL)
+#
+nc -vz <service-name> <service-port>
+nc -vz <service-name>.<namespace>.svc.cluster.local <service-port>
+#
+```
+
+Expect both connections to the short name and the FQDN of the service to succeed.  If not, there is a problem with the Service configuration or the `kube-proxy` component of the cluster.
+
+I expect that the problem in this challenge is visible now, but the same technique can be applied to any network path in the cluster.  As long as you are able to make a connection to the next hop in the network path, you can move on to testing access through an IngressController Pod, an infrastructure loadbalancer, etc.
+
+Some `curl` examples that may be useful, particularly for testing IngressControllers and other layer 7 loadbalancers:
+
+```
+# connect to a server and send a "Host:" header
+curl -vvvv -SsL -H "Host: service.domain.com" http://<ingress-ip>:80
+
+
+
+# connect to a server that expects a TLS connection and override DNS resolution for SNI
+# useful to fake a connection through an IngressController or other layer 7 loadbalancer since the "Host:" header cannot be inspected
+curl -vvvv -kSsL --resolve <service-fqdn>:<service-port>:<ingress-ip> https://<service-fqdn>:<service-port>
+```
+
+Reference:
+[Debugging Kubernetes Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
+[curl name resolution tricks](https://everything.curl.dev/usingcurl/connections/name)
 
 
 

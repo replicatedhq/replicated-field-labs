@@ -3,7 +3,7 @@ slug: troubleshoot-5
 id: kes4hs16aran
 type: challenge
 title: Correcting the broken application
-teaser: Time to fix the problem
+teaser: Kubelet is unhealthy...
 notes:
 - type: text
   contents: Time to fix the problem...

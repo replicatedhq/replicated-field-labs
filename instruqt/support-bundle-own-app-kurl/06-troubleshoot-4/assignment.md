@@ -3,7 +3,7 @@ slug: troubleshoot-4
 id: ksonxafcrrhe
 type: challenge
 title: Correcting the broken application
-teaser: Time to fix the problem
+teaser: Rook is unhealthy...
 notes:
 - type: text
   contents: Time to fix the problem...

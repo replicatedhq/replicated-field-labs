@@ -3,7 +3,7 @@ slug: troubleshoot-3
 id: whdgcrbxzxzt
 type: challenge
 title: Correcting the broken application
-teaser: Time to fix the problem
+teaser: It's not DNS...
 notes:
 - type: text
   contents: Time to fix the problem...
