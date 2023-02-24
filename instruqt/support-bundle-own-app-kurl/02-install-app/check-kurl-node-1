@@ -7,7 +7,7 @@ done
 
 app_slug=$(agent variable get APP_SLUG)
 
-if ! curl -LkSs $HOSTNAME:8800; then
+if ! curl -LkSs "$HOSTNAME":8800; then
   fail-message "The Admin Console is not available on port 8800. Please expose the Application Installer admin console on port 8800."
   exit 1
 fi

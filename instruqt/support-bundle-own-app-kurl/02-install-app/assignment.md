@@ -75,19 +75,6 @@ Your embedded installer command may have additional [advanced installation optio
 
 When the install script completes, copy the join command and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab if you're adding more nodes.  You can also provision additional GCP resources, if needed, from the *Workstation* tab.  Any resources you create will be destroyed at the completion of this exercise.
 
-# Expose the admin console
-
-To reach the admin console through the VM's firewall, expose the Kubernetes Service for `kotsadm`.  Paste this whole snippet into the *Cluster Node 1* tab and hit Enter:
-
-```shell
-kubectl expose deployment kotsadm \
-  -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) \
-  --type=NodePort \
-  --name=kotsadm2 \
-  --port=8800 \
-  --target-port=3000
-```
-
 # Upload your license and install the app
 
 After installation succeeds, navigate to the [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
