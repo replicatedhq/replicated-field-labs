@@ -4,4 +4,8 @@
 
 mkdir ~/troubleshoot-1 && cd ~/troubleshoot-1 || true
 
-
+# install sbctl
+curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
+  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
+  && cp /tmp/sbctl /usr/local/bin/sbctl \
+  && rm sbctl_linux_amd64.tar.gz
