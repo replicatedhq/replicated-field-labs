@@ -43,7 +43,7 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 - How do you list pods?
 
 - How do you describe pods?
-  - What if you wanted to see events from multiple pods at once?
+  - What if you wanted to see data from multiple pods at once?
 
 - How do you get logs from a pod?
   - What if you wanted to see a previous version of the pod's logs?
@@ -61,9 +61,22 @@ Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_
 Troubleshooting Procedure
 =================
 
-Identify the problematic Pod from `kubectl get pods`.  Notice any pods that are not in the Running state.
+Identify the problematic Pod from `kubectl get pods -n <namespace>`.  Notice any pods that are not in the Running state.
 
-Describe the current state of the pod and examine any recent events with `kubectl describe pod <pod-name>`.  Look for any Events that may indicate a problem.  Look for the Pod's State
+Describe the current state of the Pod with `kubectl describe pod -n <namespace> <pod-name>`.  Here are some things to look out for:
+  - each Container's current State and Reason
+  - each Container's Last State and Reason
+    - the Last State's Exit Code
+  - each Container's Ready status
+  - the Events table
+
+For a Pod that is crashing, expect that the current state will be `Waiting` or `Terminated`, and the last state will probably also be `Terminated`.  Notice the reason for the termination, and especially notice the exit code.  There are standards for the exit code originally set by the `chroot` standards, but they are not strictly enforced since applications can always set their own exit codes.
+
+In short, if the exit code is >128, then the application exited as a result of Kubernetes killing the Pod.  If that's the case, you'll commonly see code 137 or 143, which is 128 + the value of the `kill` signal sent to the container.
+
+If the exit code is <128, then the application crashed or exited abnormally.  If the exit code is 0, then the application exited normally (most commonly seen in init containers or Jobs/CronJobs)
+
+Look for any Events that may indicate a problem.  Look for the Pod's State,
 
 First, let's
 
