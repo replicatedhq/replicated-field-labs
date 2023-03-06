@@ -76,9 +76,15 @@ In short, if the exit code is >128, then the application exited as a result of K
 
 If the exit code is <128, then the application crashed or exited abnormally.  If the exit code is 0, then the application exited normally (most commonly seen in init containers or Jobs/CronJobs)
 
-Look for any Events that may indicate a problem.  Look for the Pod's State,
+Look for any Events that may indicate a problem.  Events by default last 1 hour, unless they occur repeatedly.  Events in a repetition loop are especially noteworthy:
 
-First, let's
+```
+Events:
+  Type     Reason                  Age                      From     Message
+  ----     ------                  ----                     ----     -------
+  Warning  BackOff                 2d19h (x9075 over 4d4h)  kubelet  Back-off restarting failed container sentry-workers in pod sentry-worker-696456b57c-twpj7_default(82eb1dde-2987-4f58-af64-883470ffcb58)
+```
+
 
 ✔️ Solution
 =================
