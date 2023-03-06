@@ -35,17 +35,7 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="kubernetes-vm" ]]/[[ Instruqt-Var key="CHANNEL" hostname="kubernetes-vm" ]]*.  Imagine: you are supporting a customer and they report to you that one of their application pods is crashing.  How do you begin to solve the problem?
-
-We think it's a good habit to use Support Bundles whenever possible - and we'll use another tool we've developed called `sbctl` to help with that.
-
-A support bundle should be available from the cluster in `/tmp/troubleshoot-1` - let's inspect it
-
-```
-sbctl shell --support-bundle-location ./support-bundle.tar.gz
-```
-
-This will give us a shell in the context of the support bundle.  `sbctl` mocks a Kubernetes API so we can use `kubectl` to inspect the data in the bundle - just like a regular cluster.
+Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.  Imagine: you are supporting a customer and they report to you that one of their application pods is crashing.  How do you begin to solve the problem?
 
 
 💡 Hints
