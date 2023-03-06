@@ -73,9 +73,10 @@ Your embedded installer command may have additional [advanced installation optio
 
 *When prompted for the loadbalancer IP address, leave it blank to use the internal LB*
 
-When the install script completes, copy the join command and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab if you're adding more nodes.  You can also provision additional GCP resources, if needed, from the *Workstation* tab.  Any resources you create will be destroyed at the completion of this exercise.
+## If you need to add more nodes to the cluster, do the following, otherwise skip to the "Upload your license" step
+**When the install script completes,** copy the primary or secondary node join command printed in green at the end of the installation and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab.
 
-# Upload your license and install the app
+# Upload your license and install your application
 
 After installation succeeds, navigate to the [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
 
