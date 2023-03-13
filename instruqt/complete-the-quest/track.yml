@@ -1,0 +1,14 @@
+slug: complete-the-quest
+id: joxjzlxvqr1w
+title: Complete the Quest
+teaser: Complete the quest for the Ring of Kubernetes
+description: |-
+  Complete your quest for the Ring of Kubernetes by answering a few questions
+  to test your knowledge of how Replicated helps you ship your apps to complex
+  customer environmnets.
+icon: https://drive.google.com/file/d/1oDPD5P6PnirnDTtOsjvFEr65eqfueZi2/view?usp=sharing
+tags: []
+owner: replicated
+developers:
+- chuck@replicated.com
+checksum: "17195455512213362376"
