@@ -60,7 +60,7 @@ for i in {1..3}; do
 done
 
 # set up firewall to allow ingress to kurl nodes
-gcloud compute firewall-rules create kurl --source-ranges 0.0.0.0/0 --action allow --rules tcp:80,tcp:8800,tcp:443,udp:30000-65535,tcp:30000-65535
+gcloud compute firewall-rules create kurl --source-ranges 0.0.0.0/0 --action allow --rules tcp:80,tcp:8800,tcp:443,udp:30000-65535,tcp:30000-65535,tcp:6443
 
 agent variable set SANDBOX_ID "$_SANDBOX_ID"
 agent variable set ADMIN_CONSOLE_PORT 8800
