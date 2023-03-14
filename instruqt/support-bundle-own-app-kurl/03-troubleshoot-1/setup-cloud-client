@@ -34,7 +34,9 @@ done
 set -u
 
 # backup resource before we edit it for later
-kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)'
+kubectl get deployment -n "${namespace}" "${deployment}" -o json \
+| jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
+| tee /opt/deployment_backup.json
 
 # if the deployment doesn't have a requests object, we need to add it, otherwise replace it
 if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.requests // empty'; then
