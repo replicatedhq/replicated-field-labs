@@ -1,0 +1,4 @@
+#!/bin/bash
+set -exuo pipefail
+
+kubectl apply -f /opt/service_backup.js
