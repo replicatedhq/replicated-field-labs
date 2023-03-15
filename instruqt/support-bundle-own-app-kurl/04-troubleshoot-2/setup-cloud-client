@@ -3,6 +3,13 @@ set -exuo pipefail
 
 debug-message "Matriculating unmatriculated vectors..."
 
+if [ ! -d /root/.kube ]; then
+  # generate and fetch kubeconfig for cluster
+  mkdir /root/.kube
+  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
+  scp kurl-node-1:root.conf /root/.kube/config
+fi
+
 # patch a random service to use a random port
 
 app_slug=$(agent variable get APP_SLUG)

@@ -5,10 +5,9 @@
 mkdir ~/troubleshoot-1 && cd ~/troubleshoot-1 || true
 
 # generate and fetch kubeconfig for cluster
+mkdir /root/.kube
 ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-scp kurl-node-1:root.conf /opt/root.conf
-
-export KUBECONFIG=/opt/root.conf
+scp kurl-node-1:root.conf /root/.kube/config
 
 # break stuff
 debug-message "Reticulating Splines..."
