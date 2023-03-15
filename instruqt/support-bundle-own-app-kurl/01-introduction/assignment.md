@@ -32,7 +32,7 @@ timelimit: 600
 ===============
 
 * **What you will do**:
-  * Learn to troubleshoot application & cluster problems using Support Bundles and `sbctl`
+  * Learn to troubleshoot application & cluster problems
 * **Who this is for**:
   * This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing:
     * Full Stack / DevOps / Product Engineers
@@ -45,7 +45,6 @@ timelimit: 600
   * A trial or dev license for your application so you can install it for yourself
 * **Outcomes**:
   * You will be able to determine if the problem is in your application, in Kubernetes, or in the infrastructure environment
-  * You will be ready to use Replicated's Support Bundle features to diagnose first-line issues in end-user environments
   * You will reduce escalations and expedite time to remediate for such issues
 
 The environment is prepped for an *embedded cluster* installation.
