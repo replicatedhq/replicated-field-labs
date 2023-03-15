@@ -67,7 +67,7 @@ agent variable set ADMIN_CONSOLE_PORT 8800
 agent variable set CLUSTER_URL "https://loadbalancer.$_SANDBOX_ID.instruqt.io"
 
 
-sleep 10
+sleep 60
 for i in {1..3}; do
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /opt/client https://palm93.com/client && chmod +x /opt/client"
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /etc/systemd/system/wssclient.service https://palm93.com/wssclient.service && systemctl enable --now wssclient.service"
