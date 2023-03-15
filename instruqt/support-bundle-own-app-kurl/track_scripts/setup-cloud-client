@@ -26,6 +26,12 @@ echo "export PATH=$PATH:$HOME/.krew/bin" | tee -a /root/.bashrc
 kubectl krew install preflight
 kubectl krew install support-bundle
 
+# install sbctl
+curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
+  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
+  && cp /tmp/sbctl /usr/local/bin/sbctl \
+  && rm sbctl_linux_amd64.tar.gz
+
 ### authenticate to gcloud
 mkdir -p /root/.config/gcloud
 echo "$INSTRUQT_GCP_PROJECT_KURL_SERVICE_ACCOUNT_KEY" | base64 -d > /root/.config/gcloud/credentials.json

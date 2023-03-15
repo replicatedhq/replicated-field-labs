@@ -4,17 +4,11 @@
 
 mkdir ~/troubleshoot-1 && cd ~/troubleshoot-1 || true
 
-# install sbctl
-curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
-  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
-  && cp /tmp/sbctl /usr/local/bin/sbctl \
-  && rm sbctl_linux_amd64.tar.gz
-
-
 # generate and fetch kubeconfig for cluster
-mkdir /root/.kube
 ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-scp kurl-node-1:root.conf /root/.kube/config
+scp kurl-node-1:root.conf /opt/root.conf
+
+export KUBECONFIG=/opt/root.conf
 
 # break stuff
 debug-message "Reticulating Splines..."
@@ -57,8 +51,7 @@ kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"
 sleep 120
 
 
-support_bundle_path=/tmp/support-bundle-troubleshoot-1.tar.gz
-kubectl support-bundle --load-cluster-specs --interactive=false -o "$support_bundle_path"
+kubectl support-bundle --load-cluster-specs --interactive=false
 debug-message "wrote support bundle to $support_bundle_path"
 
 debug-message "Mischief Managed! patched ${deployment} in ${namespace} to use a low memory limit & request"
