@@ -35,7 +35,11 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-Now we will explore solving an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.  Imagine: you are supporting a customer and they report to you that one of their application pods is crashing.  How do you begin to solve the problem?
+Let's imagine that the embedded cluster and app we just installed was for a customer, who are now experiencing an issue with their install.
+
+They've raised a rather vague issue to your support team suggesting that the application "doesn't work and pods are crashing" after one of their admins was playing with the setup.
+
+We'll start by exploring how to solve an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.
 
 
 💡 Hints
@@ -70,7 +74,7 @@ Describe the current state of the Pod with `kubectl describe pod -n <namespace> 
   - each Container's Ready status
   - the Events table
 
-For a Pod that is crashing, expect that the current state will be `Waiting` or `Terminated`, and the last state will probably also be `Terminated`.  Notice the reason for the termination, and especially notice the exit code.  There are standards for the exit code originally set by the `chroot` standards, but they are not strictly enforced since applications can always set their own exit codes.
+For a Pod that is crashing, expect that the current state will be `Waiting`, `Terminated` or `Error`, and the last state will probably also be `Terminated`.  Notice the reason for the termination, and especially notice the exit code.  There are standards for the exit code originally set by the `chroot` standards, but they are not strictly enforced since applications can always set their own exit codes.
 
 In short, if the exit code is >128, then the application exited as a result of Kubernetes killing the Pod.  If that's the case, you'll commonly see code 137 or 143, which is 128 + the value of the `kill` signal sent to the container.
 
