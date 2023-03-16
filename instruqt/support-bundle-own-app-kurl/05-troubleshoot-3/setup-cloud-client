@@ -25,7 +25,12 @@ port=$(shuf -i 30000-32700 -n1)
 # backup resource before we edit it for later
 kubectl get service -n "${namespace}" "${service}" -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
-| tee /opt/service_backup.json
+| tee /opt/service_backup.jso
+
+# export these for later
+agent variable set T3_SVC_NAME "${service}"
+agent variable set T3_SVC_NS "${namespace}"
+agent variable set T3_SVC_RANDPORT "${port}"
 
 kubectl patch service -n "${namespace}" "${service}" --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"${port}"'}]'
 
