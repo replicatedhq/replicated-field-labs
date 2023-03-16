@@ -40,6 +40,7 @@ They've raised a rather vague issue to your support team suggesting that the app
 
 We'll start by exploring how to solve an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.
 
+you should now have `kubectl` access to your cluster in the Workstation tab
 
 💡 Hints
 =================
