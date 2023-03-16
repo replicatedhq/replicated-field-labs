@@ -63,3 +63,7 @@ A random deployment has been selected and scaled to 0
 Remediation
 =================
 Patch or edit the affected deployment to increase the memory request and raise replicas to desired ammount.
+
+```bash
+kubectl scale deployment <deployment-name> --replicas=1
+```

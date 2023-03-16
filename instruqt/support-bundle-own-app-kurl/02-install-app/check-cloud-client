@@ -19,11 +19,9 @@ fi
 agent variable set APP_SLUG "${APP_SLUG}"
 agent variable set CHANNEL "${CHANNEL}"
 
-SANDBOX_ID=$(agent variable get SANDBOX_ID)
+URL=$(agent variable get CLUSTER_URL)
 
-URL="http://loadbalancer.${SANDBOX_ID}.instruqt.io:8800"
-
-if ! curl -LkSs "${URL}"; then
+if ! curl -LkSs "${URL}:8800"; then
   fail-message "The Admin Console is not available. please ensure you deployed the embedded cluster with KOTS."
   exit 1
 fi

@@ -29,6 +29,10 @@ kubectl get deployment -n "${namespace}" "${deployment}" -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
 | tee /opt/deployment_backup.json
 
+#expose these for later
+agent variable set T2_DEP_NAME "${deployment}"
+agent variable set T2_DEP_NS "${namespace}"
+
 # if the deployment doesn't have a requests object, we need to add it, otherwise replace it
 if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.requests // empty'; then
   op=add
@@ -36,15 +40,18 @@ else
   op=replace
 fi
 
-kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
+kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "512k"}]'
 
 if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.limits // empty'; then
   op=add
 else
   op=replace
 fi
-kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
+kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "512k"}]'
 
-sleep 120
+# get rid of the other replicasets that could be keeping the app up
+kubectl get replicasets --no-headers --sort-by='{.metadata.creationTimestamp}' | awk '{print $1}' | grep -E "^${deployment}-.+" | head -n -1 | xargs kubectl delete replicasets
+
+sleep 60
 
 debug-message "Mischief Managed! patched ${deployment} in ${namespace} to use a low memory limit & request"
