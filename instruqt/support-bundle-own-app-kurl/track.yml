@@ -13,9 +13,8 @@ owner: replicated
 developers:
 - danj@replicated.com
 - ada@replicated.com
-maintenance: true
 lab_config:
   overlay: false
   width: 25
   position: right
-checksum: "7854462154190196530"
+checksum: "6495161065990779138"
