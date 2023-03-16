@@ -33,8 +33,7 @@ timelimit: 3600
 [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
-=================
-
+================
 Let's imagine that the embedded cluster and app we just installed was for a customer, who are now experiencing an issue with their install.
 
 They've raised a rather vague issue to your support team suggesting that the application "doesn't work and pods are crashing" after one of their admins was playing with the setup.
