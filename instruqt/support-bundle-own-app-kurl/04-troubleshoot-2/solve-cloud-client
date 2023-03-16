@@ -1,4 +1,5 @@
 #!/bin/bash
-set -exuo pipefail
 
-kubectl apply -f /opt/service_backup.js
+# apply backed up resource from before we broke it
+kubectl apply -f /opt/deployment_backup.json
+

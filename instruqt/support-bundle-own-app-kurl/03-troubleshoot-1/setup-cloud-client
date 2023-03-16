@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# copy support bundle from node1 over to the workstation
-
-mkdir ~/troubleshoot-1 && cd ~/troubleshoot-1 || true
-
 # generate and fetch kubeconfig for cluster
 mkdir /root/.kube
 ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
@@ -11,7 +7,7 @@ scp kurl-node-1:root.conf /root/.kube/config
 
 # break stuff
 debug-message "Reticulating Splines..."
-debug-message "patch a random deployment to use a low memory limit & request"
+debug-message "scale a random deployment to 0"
 
 app_slug=$(agent variable get APP_SLUG)
 
@@ -31,26 +27,12 @@ kubectl get deployment -n "${namespace}" "${deployment}" -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
 | tee /opt/deployment_backup.json
 
-# if the deployment doesn't have a requests object, we need to add it, otherwise replace it
-if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.requests // empty'; then
-  op=add
-else
-  op=replace
-fi
+# export these as vars so we can see if they've been fixed later
+agent variable set T1_DEP_NAME "${deployment}"
+agent variable set T1_DEP_NS "${namespace}"
 
-kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
-
-if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.limits // empty'; then
-  op=add
-else
-  op=replace
-fi
-kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
+kubectl scale deployment -n "${namespace}" "${deployment}" --replicas=0
 
 sleep 120
 
-
-kubectl support-bundle --load-cluster-specs --interactive=false
-debug-message "wrote support bundle to $support_bundle_path"
-
-debug-message "Mischief Managed! patched ${deployment} in ${namespace} to use a low memory limit & request"
+debug-message "Mischief Managed! scaled ${deployment} in ${namespace} to 0"

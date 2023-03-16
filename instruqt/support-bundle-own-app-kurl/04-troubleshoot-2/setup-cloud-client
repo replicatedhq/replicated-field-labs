@@ -1,7 +1,4 @@
 #!/bin/bash
-set -exuo pipefail
-
-debug-message "Matriculating unmatriculated vectors..."
 
 if [ ! -d /root/.kube ]; then
   # generate and fetch kubeconfig for cluster
@@ -10,7 +7,9 @@ if [ ! -d /root/.kube ]; then
   scp kurl-node-1:root.conf /root/.kube/config
 fi
 
-# patch a random service to use a random port
+# break stuff
+debug-message "Reticulating Splines..."
+debug-message "patch a random deployment to use a low memory limit & request"
 
 app_slug=$(agent variable get APP_SLUG)
 
@@ -19,14 +18,33 @@ if [[ -z "${app_slug}" ]]; then
   exit 1
 fi
 
-read -r namespace service < <(kubectl get services -A -l kots.io/app-slug="${app_slug}" --no-headers | awk '{print $1,$2}' | shuf -n1)
-port=$(shuf -i 30000-32700 -n1)
+set +u
+until [[ -n $deployment  ]] ; do
+  read -r namespace deployment < <(kubectl get deployments -A --no-headers -l kots.io/app-slug="${app_slug}"  | awk '{print $1,$2}' | shuf -n1)
+done
+set -u
 
 # backup resource before we edit it for later
-kubectl get service -n "${namespace}" "${service}" -o json \
+kubectl get deployment -n "${namespace}" "${deployment}" -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
-| tee /opt/service_backup.json
+| tee /opt/deployment_backup.json
 
-kubectl patch service -n "${namespace}" "${service}" --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"${port}"'}]'
+# if the deployment doesn't have a requests object, we need to add it, otherwise replace it
+if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.requests // empty'; then
+  op=add
+else
+  op=replace
+fi
 
-debug-message "Mischief Managed! patched ${service} in ${namespace} to use port ${port}"
+kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "10Mi"}]'
+
+if kubectl get deployment -n "${namespace}" "${deployment}" -o json | jq '.spec.template.spec.containers[0].resources.limits // empty'; then
+  op=add
+else
+  op=replace
+fi
+kubectl patch deployment -n "${namespace}" "${deployment}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}]'
+
+sleep 120
+
+debug-message "Mischief Managed! patched ${deployment} in ${namespace} to use a low memory limit & request"

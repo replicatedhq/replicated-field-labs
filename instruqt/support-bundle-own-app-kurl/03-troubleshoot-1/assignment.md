@@ -3,7 +3,7 @@ slug: troubleshoot-1
 id: sgroektituzf
 type: challenge
 title: Correcting the broken application
-teaser: A Pod is crashing...
+teaser: Where are my pods?
 notes:
 - type: text
   contents: Time to fix the problem...
@@ -36,69 +36,30 @@ timelimit: 3600
 ================
 Let's imagine that the embedded cluster and app we just installed was for a customer, who are now experiencing an issue with their install.
 
-They've raised a rather vague issue to your support team suggesting that the application "doesn't work and pods are crashing" after one of their admins was playing with the setup.
+They've raised a rather vague issue to your support team suggesting that the application "doesn't work" after one of their admins was playing with the setup.
 
 We'll start by exploring how to solve an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.
 
 
 💡 Hints
 =================
-- How do you list pods?
+- How are applications deployed in kubernetes?
 
-- How do you describe pods?
-  - What if you wanted to see data from multiple pods at once?
-
-- How do you get logs from a pod?
-  - What if you wanted to see a previous version of the pod's logs?
-
-- When would you look at `describe` output vs. gathering pod logs?
-
-- Review the [Kubernetes documentation on debugging Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
+- What controlls a pod's lifecycle?
 
 💡 More Hints
 =================
-- How do you find the exit code of a Pod?
-
-- What could it mean if a Pod is exiting before it has a chance to emit any logs?
+- How do I see deployments?
 
 Troubleshooting Procedure
 =================
 
-Identify the problematic Pod from `kubectl get pods -n <namespace>`.  Notice any pods that are not in the Running state.
-
-Describe the current state of the Pod with `kubectl describe pod -n <namespace> <pod-name>`.  Here are some things to look out for:
-  - each Container's current State and Reason
-  - each Container's Last State and Reason
-    - the Last State's Exit Code
-  - each Container's Ready status
-  - the Events table
-
-For a Pod that is crashing, expect that the current state will be `Waiting`, `Terminated` or `Error`, and the last state will probably also be `Terminated`.  Notice the reason for the termination, and especially notice the exit code.  There are standards for the exit code originally set by the `chroot` standards, but they are not strictly enforced since applications can always set their own exit codes.
-
-In short, if the exit code is >128, then the application exited as a result of Kubernetes killing the Pod.  If that's the case, you'll commonly see code 137 or 143, which is 128 + the value of the `kill` signal sent to the container.
-
-If the exit code is <128, then the application crashed or exited abnormally.  If the exit code is 0, then the application exited normally (most commonly seen in init containers or Jobs/CronJobs)
-
-Look for any Events that may indicate a problem.  Events by default last 1 hour, unless they occur repeatedly.  Events in a repetition loop are especially noteworthy:
-
-```
-Events:
-  Type     Reason                  Age                      From     Message
-  ----     ------                  ----                     ----     -------
-  Warning  BackOff                 2d19h (x9075 over 4d4h)  kubelet  Back-off restarting failed container sentry-workers in pod sentry-worker-696456b57c-twpj7_default(82eb1dde-2987-4f58-af64-883470ffcb58)
-```
-
+Identify the problematic deployment from `kubectl get deployments -n <namespace>`.  Notice any pods that have 0 replicas.
 
 ✔️ Solution
 =================
-A random deployment has been selected and the memory limit reduced to 10Mi.  This will cause the application to crash.
+A random deployment has been selected and scaled to 0
 
 Remediation
 =================
-Patch or edit the affected deployment to increase the memory request and limit to a reasonable amount.
-
-- How can you edit or patch a resource in-place?
-
-- How can you edit or patch a resource from a file?
-
-- How can we make sure that this doesn't happen again?
+Patch or edit the affected deployment to increase the memory request and raise replicas to desired ammount.

@@ -1,0 +1,32 @@
+#!/bin/bash
+set -exuo pipefail
+
+debug-message "Matriculating unmatriculated vectors..."
+
+if [ ! -d /root/.kube ]; then
+  # generate and fetch kubeconfig for cluster
+  mkdir /root/.kube
+  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
+  scp kurl-node-1:root.conf /root/.kube/config
+fi
+
+# patch a random service to use a random port
+
+app_slug=$(agent variable get APP_SLUG)
+
+if [[ -z "${app_slug}" ]]; then
+  fail-message "APP_SLUG could not be parsed from env"
+  exit 1
+fi
+
+read -r namespace service < <(kubectl get services -A -l kots.io/app-slug="${app_slug}" --no-headers | awk '{print $1,$2}' | shuf -n1)
+port=$(shuf -i 30000-32700 -n1)
+
+# backup resource before we edit it for later
+kubectl get service -n "${namespace}" "${service}" -o json \
+| jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
+| tee /opt/service_backup.json
+
+kubectl patch service -n "${namespace}" "${service}" --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"${port}"'}]'
+
+debug-message "Mischief Managed! patched ${service} in ${namespace} to use port ${port}"

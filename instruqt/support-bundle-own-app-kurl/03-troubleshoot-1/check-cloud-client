@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails.
+#
+
+deployment=$(agent variable get T1_DEP_NAME)
+namespace=$(agent variable get T1_DEP_NS)
+
+replicas=$(kubectl -n "${namespace}" get deployment "${deployment}" -o jsonpath='{.status.replicas}')
+
+if [[ "$replicas" = "0" ]]; then
+  fail-message "It looks like our application is still down?"
+  exit 1
+fi

@@ -28,7 +28,7 @@ if ! curl -LkSs "${URL}"; then
   exit 1
 fi
 
-if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "No resources found." ]]; then
+if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "" ]]; then
   fail-message "No deployments found for app-slug ${APP_SLUG}. Please ensure that you've uploaded your license and the application is successfully deployed."
   exit 1
 fi

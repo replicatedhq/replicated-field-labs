@@ -1,12 +1,12 @@
 ---
-slug: troubleshoot-5
-id: kes4hs16aran
+slug: troubleshoot-6
+id: ti6bjfcpl5yr
 type: challenge
 title: Correcting the broken application
-teaser: Rook is unhealthy...
+teaser: Kubelet is unhealthy...
 notes:
 - type: text
-  contents: Time to fix the problem...
+  contents: Replace this text with your own text
 tabs:
 - title: Workstation
   type: terminal
@@ -27,15 +27,15 @@ tabs:
   type: terminal
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-difficulty: advanced
-timelimit: 3600
+difficulty: basic
+timelimit: 600
 ---
 [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
 =================
 
-rook/ceph problem - `dd` into a rook block device?
+bad kubelet certificate
 
 💡 Hints
 =================
