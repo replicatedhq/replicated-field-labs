@@ -28,6 +28,11 @@ if ! curl -LkSs "${URL}"; then
   exit 1
 fi
 
+# generate and fetch kubeconfig for cluster
+mkdir /root/.kube
+ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
+scp kurl-node-1:root.conf /root/.kube/config
+
 if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "" ]]; then
   fail-message "No deployments found for app-slug ${APP_SLUG}. Please ensure that you've uploaded your license and the application is successfully deployed."
   exit 1

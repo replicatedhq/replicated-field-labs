@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# generate and fetch kubeconfig for cluster
-mkdir /root/.kube
-ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-scp kurl-node-1:root.conf /root/.kube/config
+if [ ! -d /root/.kube ]; then
+  # generate and fetch kubeconfig for cluster
+  mkdir /root/.kube
+  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
+  scp kurl-node-1:root.conf /root/.kube/config
+fi
 
 # break stuff
 debug-message "Reticulating Splines..."
