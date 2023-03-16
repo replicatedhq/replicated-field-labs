@@ -35,6 +35,6 @@ agent variable set T1_DEP_NS "${namespace}"
 
 kubectl scale deployment -n "${namespace}" "${deployment}" --replicas=0
 
-sleep 120
+sleep 60
 
 debug-message "Mischief Managed! scaled ${deployment} in ${namespace} to 0"

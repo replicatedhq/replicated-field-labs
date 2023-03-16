@@ -9,9 +9,14 @@
 deployment=$(agent variable get T1_DEP_NAME)
 namespace=$(agent variable get T1_DEP_NS)
 
-replicas=$(kubectl -n "${namespace}" get deployment "${deployment}" -o jsonpath='{.status.replicas}')
+debug-message $deployment
+debug-message $namespace
+
+replicas=$(kubectl -n "${namespace}" get deployment "${deployment}" -o jsonpath='{.spec.replicas}')
+
+debug-message $replicas
 
 if [[ "$replicas" = "0" ]]; then
-  fail-message "It looks like our application is still down?"
+  fail-message "It looks like our application is still down, see the hints for how to proceed."
   exit 1
 fi
