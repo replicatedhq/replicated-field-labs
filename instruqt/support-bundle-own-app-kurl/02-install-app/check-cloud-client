@@ -18,3 +18,17 @@ fi
 
 agent variable set APP_SLUG "${APP_SLUG}"
 agent variable set CHANNEL "${CHANNEL}"
+
+SANDBOX_ID=$(agent variable get SANDBOX_ID)
+
+URL="http://loadbalancer.${SANDBOX_ID}.instruqt.io:8800"
+
+if ! curl -LkSs "${URL}"; then
+  fail-message "The Admin Console is not available. please ensure you deployed the embedded cluster with KOTS."
+  exit 1
+fi
+
+if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "No resources found." ]]; then
+  fail-message "No deployments found for app-slug ${APP_SLUG}. Please ensure that you've uploaded your license and the application is successfully deployed."
+  exit 1
+fi
