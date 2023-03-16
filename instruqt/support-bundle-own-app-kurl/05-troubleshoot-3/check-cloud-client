@@ -16,6 +16,3 @@ if [[ "${targetport}" = "${port}" ]]; then
  fail-message "It looks like our service is still broken, check the hints for more information"
  exit 1
 fi
-
-fail-message "testing"
-exit 1
