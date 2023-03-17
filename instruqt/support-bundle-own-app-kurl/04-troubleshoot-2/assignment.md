@@ -34,11 +34,9 @@ timelimit: 3600
 
 🚀 Let's start
 ================
-Let's imagine that the embedded cluster and app we just installed was for a customer, who are now experiencing an issue with their install.
+The customer opens another issue about pods, but this time pods seem to be crashing.
 
-They've raised a rather vague issue to your support team suggesting that the application "doesn't work and pods are crashing" after one of their admins was playing with the setup.
-
-We'll start by exploring how to solve an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.
+Let's investigate our app and see if we can identify the issue.
 
 
 💡 Hints
