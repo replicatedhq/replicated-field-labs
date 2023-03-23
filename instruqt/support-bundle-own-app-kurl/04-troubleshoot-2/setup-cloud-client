@@ -27,7 +27,7 @@ set -u
 # backup resource before we edit it for later
 kubectl get deployment -n "${namespace}" "${deployment}" -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
-| tee /opt/deployment_backup.json
+| tee /opt/backups/t2.json
 
 #expose these for later
 agent variable set T2_DEP_NAME "${deployment}"

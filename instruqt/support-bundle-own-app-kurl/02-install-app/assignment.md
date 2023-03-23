@@ -63,6 +63,8 @@ echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
 ## Setup Cluster Node 1
 **In the ***Cluster Node 1*** tab** begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
 
+We recommend doing this inside a tmux session, so we don't lose the script output if we get disconnected
+
 Example: for an HA installation (3 primary nodes)
 - `curl -sSL https://kurl.sh/<installer-name> | bash -s ha`
 
@@ -84,6 +86,8 @@ After installation succeeds, navigate to the [App Installer Admin Console](http:
 
 In the admin console, continue to configure your application, run preflight checks, and deploy your application.
 
-Once your application is deployed and the admin console reports it is ready to use, we can move on to the interactive troubleshooting exercises.
+Once your application is deployed and the admin console reports it is ready to use, check that your application pods are all "Running" before we move on to the interactive troubleshooting exercises.
+
+On "cluster node 1": `kubectl get pods -n <your application namespace>`
 
 Click "Check" to continue.

