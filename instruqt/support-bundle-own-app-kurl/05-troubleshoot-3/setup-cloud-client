@@ -35,3 +35,6 @@ agent variable set T3_SVC_RANDPORT "${port}"
 kubectl patch service -n "${namespace}" "${service}" --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"${port}"'}]'
 
 debug-message "Mischief Managed! patched ${service} in ${namespace} to use port ${port}"
+
+# restart all app pods
+kubectl delete pods -l kots.io/app-slug="${app_slug}"
