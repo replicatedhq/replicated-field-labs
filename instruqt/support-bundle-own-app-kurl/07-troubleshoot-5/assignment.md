@@ -61,8 +61,15 @@ How do you begin to troubleshoot the problem?
 
 - The DNS service in the cluster can be user-configured.  How would a cluster admin customize the DNS configs?
 
+- The DNS zone for a Kubernetes cluster is expected to be `cluster.local`.  The fully-qualified domain name for a Service would be `<namespace>.svc.cluster.local`.
+
+
 ✔️ Solution
 =================
 
+The `coredns` deployment has been reconfigured to only answer for a DNS zone of `cluster.nonlocal`.  This is causing DNS resolution failures for Pods that are expecting to resolve names in the `cluster.local` zone.
+
 Remediation
 =================
+
+Edit the `coredns` ConfigMap and change the `cluster.nonlocal` zone back to `cluster.local`.
