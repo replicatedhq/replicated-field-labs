@@ -8,7 +8,7 @@ kotsadm=$(kubectl get pods -l app=kotsadm -o jsonpath='{.items[0].metadata.name}
 kubectl exec -it -c kotsadm "${kotsadm}" -- curl kubernetes.default.svc.cluster.local 2> /opt/test.txt
 
 # check saved stderr from curl
-if [[ $(grep "exit code 6" /opt/test.txt) ]];
+if [[ $(grep "exit code 6" /opt/test.txt) ]]; then
     fail-message "It looks like dns is still broken, check the hints for help"
     exit 1
 fi
