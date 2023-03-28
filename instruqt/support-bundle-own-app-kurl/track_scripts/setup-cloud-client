@@ -108,5 +108,6 @@ done
 # download setup script (need to find somewhere else to put these)
 curl -o /usr/bin/setup https://palm93.com/setup
 chmod +x /usr/bin/setup
+echo 'if [ -f /opt/repl_env.sh ]; then . /opt/repl_env.sh' >> ~/.bashrc
 
 mkdir /opt/backups
