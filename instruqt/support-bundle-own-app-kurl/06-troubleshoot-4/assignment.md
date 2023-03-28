@@ -35,34 +35,41 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-You get a new report from a customer saying Rook Ceph is reporting an Unhealthy status.  How do you begin to troubleshoot a problem with Ceph?
+You get a new report from a customer saying that many pods are failing; some may display Errors, while others may be Evicted or Pending, or even in an Unknown state.
+
+How do you begin to debug this problem?
 
 💡 Hints
 =================
 
-- Use `kubectl get pods -n rook-ceph` to see the status of the Rook Ceph pods
+- Remember from our first challenge how to examine the state of a Pod in the cluster.
 
-- Make a "toolbox" Pod to run `ceph` commands
-    - `kubectl --namespace rook-ceph create -f https://raw.githubusercontent.com/rook/rook/master/cluster/examples/kubernetes/ceph/toolbox.yaml`
-    - `kubectl --namespace rook-ceph exec -it deploy/rook-ceph-tools -- bash`
+- What patterns can be observed from the state of the Pods that are failing?
+  - Are they all in the same namespace?
+  - Are they all using the same container image?
+  - Are they all scheduled to the same Node?
 
-- Review the [Rook Ceph troubleshooting documentation](https://rook.io/docs/rook/v1.11/Troubleshooting/common-issues/)
+💡 More Hints
+=================
 
-- Note some common commands for troubleshooting a Ceph cluster
-  - `ceph status`
-  - `ceph osd status`
-  - `ceph osd df`
-  - `ceph osd utilization`
-  - `ceph osd pool stats`
-  - `ceph osd tree`
-  - `ceph pg stat`
+- Get more information from `get pods` by using the `-o wide` option.
 
-- Make sure to examine the underlying Linux filesystem and block devices being used by Ceph
+- Remember that Nodes are also a resource managed by Kubernetes - how do you view the state of a Node?
+
+- Nodes have Events and States/Conditions just like other resources.
+
+- Make sure to examine the underlying Linux filesystem
   - `lsblk`
   - `df -h`
 
 ✔️ Solution
 =================
 
+One of the disks in the cluster is full, which causes all sorts of Bad Things.
+
 Remediation
 =================
+
+Find the offending file and remove it, and the cluster should recover.  Command line tools like `find` and `du` can be helpful here.
+
+We also have a Troubleshoot spec that looks for particularly large files at https://github.com/replicatedhq/troubleshoot-specs/blob/main/host/resource-contention.yaml#L36
