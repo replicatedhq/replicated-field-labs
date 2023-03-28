@@ -35,14 +35,31 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-iptables/coredns issue
+A new issue has been reported saying that there are DNS resolution failures in some Pod logs.
 
-TODO: find the iptables rules for the coredns pod, and drop them
-
-should simulate DNS failures across the cluster
+How do you begin to troubleshoot the problem?
 
 💡 Hints
 =================
+
+- How do Pods resolve DNS names?
+
+- Start by checking for any pods that may be failing or in a crash loop, and have a look at the pod logs.  You may want to use the `--previous` flag to see the logs from the previous instance of the Pod.
+
+- Keep on the lookout for `tcp: lookup <hostname>: no such host`,  `getaddrinfo failed` or `Name or service not found` to confirm DNS resolution failures.
+
+- Try to determine any patterns that may be present.  Does the problem affect a single Pod, multiple Pods, or all Pods?
+  - Is there a pattern that affects only Pods on a specific Node or Namespace?
+
+- If the behaviour affects only a single Pod, it might be a good idea to delete the Pod and let Kubernetes recreate it.  But, if the problem affects multiple Pods, it's more likely a problem in `coredns` or `kube-dns` itself.
+
+- Review the [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/) article from the Kubernetes project.
+
+
+💡 More Hints
+=================
+
+- The DNS service in the cluster can be user-configured.  How would a cluster admin customize the DNS configs?
 
 ✔️ Solution
 =================
