@@ -1,23 +1,15 @@
 #!/bin/bash
 set -exuo pipefail
 
-debug-message "Matriculating unmatriculated vectors..."
-
 app_slug=$(agent variable get APP_SLUG)
 
-# generate and fetch kubeconfig for cluster if we don't already have one
-if [ ! -d /root/.kube ]; then
-  mkdir /root/.kube
-  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-  scp kurl-node-1:root.conf /root/.kube/config
-fi
-
-# take a backup of the coredns configmap
-kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t4.yaml
-
-# change the cluster dns zone name
-sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t4.yaml \
-| kubectl apply -f -
+# fill up the disks on the nodes
+for i in {1..3}; do
+  #get remaining space
+  sizek=$(ssh -oStrictHostKeyChecking=no kurl-node-${i} "df -k / --output=avail | tail -n 1")k
+  #make a big file
+  ssh -oStrictHostKeyChecking=no kurl-node-${i} "mkdir -p /var/lib/chaos && cd /var/lib/chaos && fallocate -l $sizek bigfile"
+done
 
 # restart all app pods
-kubectl delete pods -l kots.io/app-slug="${app_slug}"
+kubectl delete pods -l kots.io/app-slug="${app_slug}" --wait=false

@@ -3,7 +3,7 @@ slug: troubleshoot-5
 id: kes4hs16aran
 type: challenge
 title: Correcting the broken application
-teaser: Rook is unhealthy...
+teaser: It's not DNS...
 notes:
 - type: text
   contents: Time to fix the problem...
@@ -35,7 +35,11 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-rook/ceph problem - `dd` into a rook block device?
+iptables/coredns issue
+
+TODO: find the iptables rules for the coredns pod, and drop them
+
+should simulate DNS failures across the cluster
 
 💡 Hints
 =================

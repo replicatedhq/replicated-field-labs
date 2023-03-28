@@ -2,8 +2,8 @@
 slug: troubleshoot-4
 id: ksonxafcrrhe
 type: challenge
-title: Correcting the broken application
-teaser: It's not DNS...
+title: it's all made of stars
+teaser: The final frontier...
 notes:
 - type: text
   contents: Time to fix the problem...
@@ -35,11 +35,7 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-iptables/coredns issue
-
-TODO: find the iptables rules for the coredns pod, and drop them
-
-should simulate DNS failures across the cluster
+Disk space go brr
 
 💡 Hints
 =================

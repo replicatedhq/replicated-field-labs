@@ -1,0 +1,23 @@
+#!/bin/bash
+set -exuo pipefail
+
+debug-message "Matriculating unmatriculated vectors..."
+
+app_slug=$(agent variable get APP_SLUG)
+
+# generate and fetch kubeconfig for cluster if we don't already have one
+if [ ! -d /root/.kube ]; then
+  mkdir /root/.kube
+  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
+  scp kurl-node-1:root.conf /root/.kube/config
+fi
+
+# take a backup of the coredns configmap
+kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t4.yaml
+
+# change the cluster dns zone name
+sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t4.yaml \
+| kubectl apply -f -
+
+# restart all app pods
+kubectl delete pods -l kots.io/app-slug="${app_slug}"
