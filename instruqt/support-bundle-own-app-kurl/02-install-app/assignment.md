@@ -47,16 +47,7 @@ Navigate to the Vendor Portal tab and download the license that you've provision
 # Configure the VM environment
 
 ## Set up the Workstation
-Next, configure the VM environment for automation by exporting the name of your app slug and the release channel.  In the Workstation shell, type:
-- `export APP_SLUG=app && export CHANNEL=stable`
-replacing `app` and `stable` with your app slug and release channel, and hit Enter.
-
-Then run the following snippet to add these variables to your shell environment - they'll be used to set up the challenges.  You can paste the following snippet entirely:
-
-```shell
-echo "export APP_SLUG=${APP_SLUG}" >> ~/.bashrc
-echo "export CHANNEL=${CHANNEL}" >> ~/.bashrc
-```
+Next, configure the VM environment for automation by exporting the name of your app slug and the release channel.  In the Workstation shell, run the command: `setup`
 
 # Install the Replicated embedded cluster
 
