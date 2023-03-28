@@ -8,7 +8,7 @@ for i in {1..3}; do
   #get remaining space
   sizek=$(ssh -oStrictHostKeyChecking=no kurl-node-${i} "df -k / --output=avail | tail -n 1")k
   #make a big file
-  ssh -oStrictHostKeyChecking=no kurl-node-${i} "mkdir -p /var/lib/chaos && cd /var/lib/chaos && fallocate -l $sizek bigfile"
+  ssh -oStrictHostKeyChecking=no kurl-node-${i} "mkdir -p /var/lib/chaos && cd /var/lib/chaos && fallocate -l $sizek bigfile" || true
 done
 
 # restart all app pods
