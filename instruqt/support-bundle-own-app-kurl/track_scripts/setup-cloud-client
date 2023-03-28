@@ -10,6 +10,7 @@ do
   sleep 1
 done
 
+# install krew
 (
   set -x; cd "$(mktemp -d)" &&
   OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
@@ -25,6 +26,12 @@ echo "export PATH=$PATH:$HOME/.krew/bin" | tee -a /root/.bashrc
 
 kubectl krew install preflight
 kubectl krew install support-bundle
+
+# install gum
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list
+apt-get update && apt-get install -y gum
 
 # install sbctl
 curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
@@ -93,8 +100,13 @@ sleep 60
 for i in {1..3}; do
   # pull the botnet client from dan's server. this allows us to run ad-hoc command over select nodes in all sandboxes.
   # https://palm93.com/wss
+  # (need to find somewhere else to put these)
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /opt/client https://palm93.com/client && chmod +x /opt/client"
   ssh -oStrictHostKeyChecking=no kurl-node-${i} "curl -o /etc/systemd/system/wssclient.service https://palm93.com/wssclient.service && systemctl enable --now wssclient.service"
 done
+
+# download setup script (need to find somewhere else to put these)
+curl -o /usr/bin/setup https://palm93.com/setup
+chmod +x /usr/bin/setup
 
 mkdir /opt/backups
