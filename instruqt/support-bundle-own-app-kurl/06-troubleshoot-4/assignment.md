@@ -35,10 +35,31 @@ timelimit: 3600
 🚀 Let's start
 =================
 
-Disk space go brr
+You get a new report from a customer saying Rook Ceph is reporting an Unhealthy status.  How do you begin to troubleshoot a problem with Ceph?
 
 💡 Hints
 =================
+
+- Use `kubectl get pods -n rook-ceph` to see the status of the Rook Ceph pods
+
+- Make a "toolbox" Pod to run `ceph` commands
+    - `kubectl --namespace rook-ceph create -f https://raw.githubusercontent.com/rook/rook/master/cluster/examples/kubernetes/ceph/toolbox.yaml`
+    - `kubectl --namespace rook-ceph exec -it deploy/rook-ceph-tools -- bash`
+
+- Review the [Rook Ceph troubleshooting documentation](https://rook.io/docs/rook/v1.11/Troubleshooting/common-issues/)
+
+- Note some common commands for troubleshooting a Ceph cluster
+  - `ceph status`
+  - `ceph osd status`
+  - `ceph osd df`
+  - `ceph osd utilization`
+  - `ceph osd pool stats`
+  - `ceph osd tree`
+  - `ceph pg stat`
+
+- Make sure to examine the underlying Linux filesystem and block devices being used by Ceph
+  - `lsblk`
+  - `df -h`
 
 ✔️ Solution
 =================

@@ -86,10 +86,12 @@ Events:
   Warning  BackOff                 2d19h (x9075 over 4d4h)  kubelet  Back-off restarting failed container sentry-workers in pod sentry-worker-696456b57c-twpj7_default(82eb1dde-2987-4f58-af64-883470ffcb58)
 ```
 
+Another way to get even more information about a pod is to use the `-o yaml` option with `kubectl get pods`.  This will output the entire pod definition in YAML format.  This is useful for debugging issues with the pod definition itself.  Here you will see some info that isn't present in `describe pods`, such as Annotations, Tolerations, restart policy, ports, and volumes.
+
 
 ✔️ Solution
 =================
-A random deployment has been selected and the memory limit reduced to 10Mi.  This will cause the application to crash.
+A random deployment has been selected and the memory limit reduced to 512Ki, which will cause the pods to crash.
 
 Remediation
 =================
