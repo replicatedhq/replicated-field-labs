@@ -37,8 +37,8 @@ timelimit: 3600
 
 You get another report from a customer saying that the application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
 
-- What component handles communication between Kubernetes workloads?
-- What component handles communication between workloads and the outside world?
+- What cluster component handles communication between Pods?
+- What cluster component handles load balancing for Pods and exposes Pods to connections from outside the cluster?
 
 💡 Hints
 =================
@@ -176,5 +176,5 @@ A random Service's `targetPort` has been patched to be something in the 30k rang
 Remediation
 =================
 
-Patch or edit the affected service to correct the port number. you may have to refer to the other resources in the cluster to identify the correct port number.
+Patch or edit the affected service to correct the port number. You may have to refer to the other resources in the cluster to identify the correct port number.
 
