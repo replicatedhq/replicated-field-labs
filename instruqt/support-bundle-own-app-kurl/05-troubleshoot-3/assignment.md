@@ -60,7 +60,7 @@ You get another report from a customer saying that the application isn't working
 
   ![Services at a glance](../assets/services-explained.png)
 
- Troubleshooting Procedure
+Troubleshooting Procedure
 =================
 
 #### Understand the limits of the problem

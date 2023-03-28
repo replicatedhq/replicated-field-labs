@@ -63,6 +63,12 @@ How do you begin to troubleshoot the problem?
 
 - The DNS zone for a Kubernetes cluster is expected to be `cluster.local`.  The fully-qualified domain name for a Service would be `<namespace>.svc.cluster.local`.
 
+- You can verify if queries are being received by `coredns` by [configuring logging](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#are-dns-queries-being-received-processed).  Enable logging for `coredns` and then send some test queries.  What responses do you get?
+
+💡 Even More Hints
+=================
+
+- an NXDOMAIN response is returned when a DNS query is made for a name that does not exist in the DNS zone.  This is a valid response, so DNS is _working_; if we expect the Kubernetes zone to be `cluster.local`, why are we getting `NXDOMAIN` responses for `cluster.local`?
 
 ✔️ Solution
 =================
