@@ -1,0 +1,11 @@
+#!/bin/bash
+set -exuo pipefail
+
+for i in {1..3}; do
+  # check for the file we created in the setup script
+  ssh -oStrictHostKeyChecking=no kurl-node-${i} "bash -c [[ -f /var/lib/chaos/bigfile ]]"
+  if [[ $? = 1 ]]; then
+    fail-message "There seems to be one node still low on space"
+    exit 1
+  fi
+done
