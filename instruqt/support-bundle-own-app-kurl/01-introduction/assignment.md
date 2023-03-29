@@ -12,18 +12,18 @@ tabs:
 - title: Workstation
   type: terminal
   hostname: cloud-client
-- title: Cluster Node 1
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
-- title: Cluster Node 2
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
-- title: Cluster Node 3
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
+# - title: Cluster Node 1
+#   type: terminal
+#   hostname: cloud-client
+#   cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
+# - title: Cluster Node 2
+#   type: terminal
+#   hostname: cloud-client
+#   cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
+# - title: Cluster Node 3
+#   type: terminal
+#   hostname: cloud-client
+#   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
 difficulty: intermediate
 timelimit: 600
 ---
@@ -47,6 +47,11 @@ timelimit: 600
   * You will be able to determine if the problem is in your application, in Kubernetes, or in the infrastructure environment
   * You will reduce escalations and expedite time to remediate for such issues
 
+
+# Configure the VM environment
+
+## Set up the Workstation
+
 The environment is prepped for an *embedded cluster* installation.
 
 Before we begin, select the text editor you're most comfortable with by running
@@ -54,5 +59,7 @@ Before we begin, select the text editor you're most comfortable with by running
 ```bash
 update-alternatives --config editor
 ```
+
+Next, configure the VM environment for automation by running the command: `setup` and enter your app slug and release channel when prompted.
 
 Press **Next** when you're ready to begin.

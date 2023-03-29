@@ -11,10 +11,7 @@ tabs:
 - title: Workstation
   type: terminal
   hostname: cloud-client
-- title: Vendor Portal
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
+
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
@@ -27,6 +24,10 @@ tabs:
   type: terminal
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
+- title: Vendor Portal
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 difficulty: intermediate
 timelimit: 3600
 ---
