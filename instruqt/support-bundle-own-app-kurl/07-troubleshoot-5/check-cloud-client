@@ -1,11 +1,15 @@
 #!/bin/bash
 set -exuo pipefail
 
-# find kotsadm pod name
-kotsadm=$(kubectl get pods -l app=kotsadm -o jsonpath='{.items[0].metadata.name}')
+
+set +u
+until [[ -n $deployment  ]] ; do
+  read -r namespace deployment < <(kubectl get deployments -A --no-headers -l app=kotsadm  | awk '{print $1,$2}' | shuf -n1)
+done
+set -u
 
 # try to use curl to resolve the kubernetes api, grab stderr to check later
-kubectl exec -it -c kotsadm "${kotsadm}" -- curl kubernetes.default.svc.cluster.local 2> /opt/test.txt
+kubectl -n "${namespace}" exec -it -c kotsadm "${deployment}" -- curl kubernetes.default.svc.cluster.local 2> /opt/test.txt
 
 # check saved stderr from curl
 if [[ $(grep "exit code 6" /opt/test.txt) ]]; then
