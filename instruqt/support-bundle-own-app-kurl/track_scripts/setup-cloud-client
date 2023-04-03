@@ -106,50 +106,50 @@ for i in {1..3}; do
 done
 
 
-cat <<EOF > /usr/bin/setup
-#!/bin/bash
-APP_SLUG=""
-CHANNEL=""
+# cat <<EOF > /usr/bin/setup
+# #!/bin/bash
+# APP_SLUG=""
+# CHANNEL=""
 
-clear
+# clear
 
-gum style --border=rounded --padding 1 "Welcome to Replicated's hands on training"
+# gum style --border=rounded --padding 1 "Welcome to Replicated's hands on training"
 
-echo ""
-echo "We're going to start by asking you some basic questions"
-echo "simply re-run this script if you want to change your answers"
-echo ""
+# echo ""
+# echo "We're going to start by asking you some basic questions"
+# echo "simply re-run this script if you want to change your answers"
+# echo ""
 
-while [[ $APP_SLUG = "" ]]; do
-  echo "first off, type your app slug"
-  APP_SLUG=$(gum input --placeholder="app slug")
-  echo ""
-done
+# while [[ $APP_SLUG = "" ]]; do
+#   echo "first off, type your app slug"
+#   APP_SLUG=$(gum input --placeholder="app slug")
+#   echo ""
+# done
 
-while [[ $CHANNEL = "" ]]; do
-  echo "now your app channel"
-  CHANNEL=$(gum input --placeholder="channel")
-  echo ""
-done
+# while [[ $CHANNEL = "" ]]; do
+#   echo "now your app channel"
+#   CHANNEL=$(gum input --placeholder="channel")
+#   echo ""
+# done
 
-clear
+# clear
 
-printf 'app slug: `%s`\n channel: `%s`\n' "${APP_SLUG}" "${CHANNEL}" \
-| gum format -t markdown \
-| gum style --border=rounded --padding 1
+# printf 'app slug: `%s`\n channel: `%s`\n' "${APP_SLUG}" "${CHANNEL}" \
+# | gum format -t markdown \
+# | gum style --border=rounded --padding 1
 
-gum confirm "is this correct?"
+# gum confirm "is this correct?"
 
-if [[ $? = 0 ]]; then
-  printf "export APP_SLUG=%s\nexport CHANNEL=%s\n" "${APP_SLUG}" "${CHANNEL}" > /opt/repl_env.sh
-else
-  gum format -t markdown 're-run `setup` to correct your answers'
-fi
+# if [[ $? = 0 ]]; then
+#   printf "export APP_SLUG=%s\nexport CHANNEL=%s\n" "${APP_SLUG}" "${CHANNEL}" > /opt/repl_env.sh
+# else
+#   gum format -t markdown 're-run `setup` to correct your answers'
+# fi
 
-exec bash
-EOF
+# exec bash
+# EOF
 
-chmod +x /usr/bin/setup
+# chmod +x /usr/bin/setup
 echo 'if [ -f /opt/repl_env.sh ]; then . /opt/repl_env.sh; fi' >> ~/.bashrc
 
 mkdir /opt/backups

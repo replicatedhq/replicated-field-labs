@@ -48,4 +48,4 @@ Before we begin, select the text editor you're most comfortable with by running
 update-alternatives --config editor
 ```
 
-Press **Next** when you're ready to begin.
+Press **Check** when you're ready to begin.

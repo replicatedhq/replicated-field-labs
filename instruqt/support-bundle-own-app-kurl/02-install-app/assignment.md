@@ -29,11 +29,12 @@ timelimit: 3600
 ---
 
 🚀 Let's begin!
+
+1. Install kURL
 =================
 
 # Install the Replicated embedded cluster
 
-## Setup Cluster Node 1
 **In the ***Cluster Node 1*** tab** begin your embedded cluster installation.  You're already `root` so you don't need to use `sudo`:
 
 We recommend doing this inside a tmux session, so we don't lose the script output if we get disconnected
@@ -48,8 +49,14 @@ Your embedded installer command may have additional [advanced installation optio
 
 *When prompted for the loadbalancer IP address, leave it blank to use the internal LB*
 
-## If you need to add more nodes to the cluster, do the following, otherwise skip to the "Upload your license" step
+2. (Optional) Add More Nodes
+=================
+
+# If you need to add more nodes to the cluster, do the following, otherwise skip to the "Upload your license" step
 **When the install script completes,** copy the primary or secondary node join command printed in green at the end of the installation and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab.
+
+3. Upload License and Deploy
+=================
 
 # Upload your license and install your application
 
@@ -63,6 +70,6 @@ In the admin console, continue to configure your application, run preflight chec
 
 Once your application is deployed and the admin console reports it is ready to use, check that your application pods are all "Running" before we move on to the interactive troubleshooting exercises.
 
-On "cluster node 1": `kubectl get pods -n <your application namespace>`
+On "Cluster Node 1": `kubectl get pods -n <your application namespace>`
 
 Click "Check" to continue.
