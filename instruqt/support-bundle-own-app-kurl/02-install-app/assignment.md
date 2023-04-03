@@ -24,9 +24,6 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-# - title: Workstation
-#   type: terminal
-#   hostname: cloud-client
 difficulty: intermediate
 timelimit: 3600
 ---
