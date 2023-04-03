@@ -8,10 +8,6 @@ notes:
 - type: text
   contents: Let's install your Application
 tabs:
-- title: Workstation
-  type: terminal
-  hostname: cloud-client
-
 - title: Cluster Node 1
   type: terminal
   hostname: cloud-client
@@ -28,27 +24,15 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+# - title: Workstation
+#   type: terminal
+#   hostname: cloud-client
 difficulty: intermediate
 timelimit: 3600
 ---
 
 🚀 Let's begin!
 =================
-
-# Vendor Portal login
-
-Log into the Vendor Portal with your existing account, and note your application *app slug*, *release channel*, and the "embedded cluster install command".  It should look something like `curl -sSL https://kurl.sh/<appslug>-<channel> | sudo bash`.  You don't need to install it yet! We have a little bit of setup to complete, first.
-
-# Download your test license
-
-Navigate to the Vendor Portal tab and download the license that you've provisioned for your development work.
-
-  ![Support Bundle Customer](../assets/support-bundle-customer.png)
-
-# Configure the VM environment
-
-## Set up the Workstation
-Next, configure the VM environment for automation by exporting the name of your app slug and the release channel.  In the Workstation shell, run the command: `setup`
 
 # Install the Replicated embedded cluster
 
@@ -72,7 +56,9 @@ Your embedded installer command may have additional [advanced installation optio
 
 # Upload your license and install your application
 
-After installation succeeds, navigate to the [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800), login and upload your license.
+## Navigate to the [Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+
+After installation succeeds, navigate to the **[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)**, login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 

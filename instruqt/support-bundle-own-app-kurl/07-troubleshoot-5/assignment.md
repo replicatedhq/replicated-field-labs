@@ -30,7 +30,7 @@ tabs:
 difficulty: advanced
 timelimit: 3600
 ---
-[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
 =================

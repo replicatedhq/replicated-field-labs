@@ -27,10 +27,10 @@ tabs:
   type: terminal
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-difficulty: intermediate
+difficulty: basic
 timelimit: 3600
 ---
-[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
 ================
@@ -38,15 +38,13 @@ Let's imagine that the embedded cluster and app we just installed was for a cust
 
 They've raised a rather vague issue to your support team suggesting that the application "doesn't work" after one of their admins was playing with the setup.
 
-We'll start by exploring how to solve an application problem in *[[ Instruqt-Var key="APP_SLUG" hostname="cloud-client" ]]/[[ Instruqt-Var key="CHANNEL" hostname="cloud-client" ]]*.
-
-you should now have `kubectl` access to your cluster in the Workstation tab
+You should now have `kubectl` access to your cluster in the Workstation tab
 
 💡 Hints
 =================
 - How are applications deployed in kubernetes?
 
-- What controlls a pod's lifecycle?
+- What controls a pod's lifecycle?
 
 💡 More Hints
 =================

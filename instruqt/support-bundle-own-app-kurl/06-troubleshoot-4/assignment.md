@@ -27,10 +27,10 @@ tabs:
   type: terminal
   hostname: cloud-client
   cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-difficulty: advanced
+difficulty: intermediate
 timelimit: 3600
 ---
-[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
 🚀 Let's start
 =================
