@@ -73,3 +73,15 @@ Once your application is deployed and the admin console reports it is ready to u
 On "Cluster Node 1": `kubectl get pods -n <your application namespace>`
 
 Click "Check" to continue.
+
+Common Problems
+=================
+
+If you get an error message like this:
+
+```
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+```
+
+run `bash -l` to reload the shell and try again.
+

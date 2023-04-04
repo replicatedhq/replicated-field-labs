@@ -6,9 +6,6 @@ where they can practice troubleshooting and support techniques.
 
 ## Deployment Architecture
 
-In order to utilize Instruqt.io's DNS for sending back the user's admin console URL, we needed a machine
-
-
 Hosts:
 managed by Instruqt.io  | managed by sandbox instanced GCP
 ----------------------- | ---------------------------------
