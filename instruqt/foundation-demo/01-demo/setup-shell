@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+cat <<'SAVE_SCRIPT' >> /home/replicant/trigger.sh
+#!/bin/bash 
+
+source /etc/profile.d/header.sh
+
+# Setup REPLICATED_APP and REPLICATED_API_TOKEN
+password=$(get_password)
+login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
+token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+
+i=0
+while [[ "$token" == "null" && $i -lt 20 ]]
+do
+    sleep 2
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+    echo "Token: ${token} value"
+    i=$((i+1))
+done
+
+UUID=$(cat /proc/sys/kernel/random/uuid)
+apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
+access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+echo "export REPLICATED_API_TOKEN=${access_token}" >> /home/replicant/.bashrc
+echo "export REPLICATED_APP=foundation-demo-$INSTRUQT_PARTICIPANT_ID" >> /home/replicant/.bashrc
+echo "export KUBECONFIG=/home/replicant/.kube/config" >> /home/replicant/.bashrc
+
+# Set environment variables
+export REPLICATED_API_TOKEN=${access_token}
+export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID
+
+# Download license and install demo app
+replicated customer download-license --customer "Some big bank" > /home/replicant/license.yaml
+echo "{}" > /home/replicant/license-fields.yaml
+channelId=$(replicated channel ls | grep Stable | awk '{print $1}')
+export KUBECONFIG=/home/replicant/.kube/config
+
+# Install demo app
+helm create demo-app
+helm package -u demo-app -d .
+helm upgrade --install demo-app demo-app-0.1.0.tgz
+
+# Install foundation chart
+helm upgrade --install --version 0.0.1-alpha.6 kots-sdk oci://registry.staging.replicated.com/library/kots-sdk \
+    --namespace default \
+    --set-file license=license.yaml \
+    --set-file licenseFields=license-fields.yaml \
+    --set channelID=${channelId} \
+    --set channelName=Stable \
+    --set channelSequence=1 \
+    --set releaseSequence=1 \
+    --set versionLabel="v1.0.0"
+
+SAVE_SCRIPT
+
+chmod a+x /home/replicant/trigger.sh
+chown -R replicant /home/replicant/trigger.sh
+nohup /home/replicant/trigger.sh > /home/replicant/trigger.out 2> /home/replicant/trigger.err < /dev/null & disown
+
+exit 0

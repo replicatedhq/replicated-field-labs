@@ -1,0 +1,7 @@
+{
+    "name": "Foundation Demo",
+    "slug": "foundation-demo",
+    "customer": "Some big bank",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}

@@ -1,0 +1,63 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: support-bundle
+spec:
+  collectors:
+    - clusterInfo: {}
+    - clusterResources: {}
+    - logs:
+        selector:
+          - app=nginx
+        namespace: '{{repl Namespace }}'
+  analyzers:
+    - clusterVersion:
+        outcomes:
+          - fail:
+              when: "< 1.20.0"
+              message: Spooky requires a Kubernetes 1.21.0 or later, and recommends 1.24.0.
+              uri: https://www.kubernetes.io
+          - warn:
+              when: "< 1.21.0"
+          - pass:
+              message: "Your version of Kubernetes is OK"
+    - nodeResources:
+        checkName: Allocatable Storage
+        outcomes:
+          - fail:
+              when: "max(ephemeralStorageAllocatable) < 10Gi"
+              message: No Node has more than 10Gi storage allocatable
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - warn:
+              when: "max(ephemeralStorageAllocatable) < 20Gi"
+              message: No Node has more than 20Gi storage allocatable
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - pass:
+              message: All nodes have at least 20 GB of allocatable ephemeral storage.
+    - nodeResources:
+        checkName: Allocatable Memory
+        outcomes:
+          - fail:
+              when: "max(memoryAllocatable) < 1Gi"
+              message: All nodes have less than 1Gi allocatable memory
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - warn:
+              when: "max(memoryAllocatable) < 2Gi"
+              message: All nodes have less than 2Gi allocatable memory
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - pass:
+              message: All nodes have at least 2 Gi of allocatable memory
+    - nodeResources:
+        checkName: Allocatable CPU
+        outcomes:
+          - fail:
+              when: "max(cpuAllocatable) < 500m"
+              message: All nodes have less than 500m allocatable CPU
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - warn:
+              when: "max(cpuAllocatable) < 1"
+              message: All nodes have less than 1 allocatable CPU
+              uri: https://kurl.sh/docs/install-with-kurl/system-requirements
+          - pass:
+              message: All nodes have at least 1 allocatable CPUs
+

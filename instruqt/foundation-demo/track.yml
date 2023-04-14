@@ -1,0 +1,19 @@
+slug: foundation-demo
+id: za9fvylmmk7v
+title: foundation-demo
+teaser: Demo environment for the foundation plan
+description: |-
+  A Demo Environmnet for the foundation plan
+
+  Contains:
+  * A pre installed application, including the foundation Helm Chart
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+checksum: "3942660622833030186"
