@@ -34,7 +34,7 @@ echo "export KUBECONFIG=/home/replicant/.kube/config" >> /home/replicant/.bashrc
 
 # Set environment variables
 export REPLICATED_API_TOKEN=${access_token}
-export REPLICATED_APP=short-demo-$INSTRUQT_PARTICIPANT_ID
+export REPLICATED_APP=foundation-demo-$INSTRUQT_PARTICIPANT_ID
 
 # Download license and install demo app
 replicated customer download-license --customer "Some big bank" > /home/replicant/license.yaml
