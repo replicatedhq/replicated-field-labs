@@ -1,0 +1,5 @@
+:80
+
+root * /var/www/html
+file_server
+header * Access-Control-Allow-Origin *
