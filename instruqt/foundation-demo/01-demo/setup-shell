@@ -49,7 +49,7 @@ helm package -u demo-app -d .
 helm upgrade --install demo-app demo-app-0.1.0.tgz
 
 # Install foundation chart
-helm upgrade --install --version 0.0.1-alpha.7 kots-sdk oci://registry.staging.replicated.com/library/kots-sdk \
+helm upgrade --install --version 0.0.0 kots-sdk oci://ttl.sh/jdewinne/kots-sdk \
     --namespace default \
     --set-file license=/home/replicant/license.yaml \
     --set-file licenseFields=/home/replicant/license-fields.yaml \
