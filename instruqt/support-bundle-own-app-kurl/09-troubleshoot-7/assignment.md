@@ -34,13 +34,20 @@ timelimit: 600
 🚀 Let's start
 =================
 
-rook got broke
+Time for a new challenge! Now, a customer has reported that Rook-Ceph is unhealthy. Let's see if we can figure out what's going on.
 
 💡 Hints
 =================
 
+- Ceph status is available from `ceph status` inside the rook-ceph-tools pod
+  - `kubectl -n rook-ceph exec -it rook-ceph-tools-xxxxx-yyyyyy -- ceph status`
+
 ✔️ Solution
 =================
 
+One of the Ceph monitor (`mon`) deployments has a PriorityClass that is not available on the cluster. This causes the deployment to be stuck in a `Pending` state.
+
 Remediation
 =================
+
+Edit the `rook-ceph-mon` deployment and edit the `priorityClassName` field to `system-cluster-critical`.
