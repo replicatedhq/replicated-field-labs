@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# Wait for the Instruqt host bootstrap to finish
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+    sleep 1
+done
+
+curl https://kurl.sh/latest > install.sh
+chmod +x install.sh
+nohup sudo ./install.sh > kurl.log 2> kurl.err < /dev/null & disown
+
+exit 0

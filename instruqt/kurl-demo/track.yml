@@ -1,0 +1,18 @@
+slug: kurl-demo
+id: euitx6sz5rzl
+title: kurl-demo
+teaser: No k8s cluster in the customer environment
+description: |-
+  Your customer doesn't have access to Kubernetes. Or they might have access to a managed k8s offering like EKS, GKE, ... but never used it before.
+
+  This is where kURL (The Embedded Kubernetes) will come to the rescue.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+checksum: "3775661129209548877"
