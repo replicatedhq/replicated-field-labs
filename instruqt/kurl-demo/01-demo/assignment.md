@@ -30,10 +30,10 @@ timelimit: 3600
 
 * The environment consist of the following setup
   * Vanilla: A single node VM allowing to show the single command install
-  * kURL Installed: A single node VM with kURL Pre-installed
+  * kURL Installed: A single node VM with kURL pre-installed
     * The script is started when the Track is started and runs in the background.
     * Tail the log with: `tail -f kurl.log`
-  * kURL Multi-Node: A 3 node HA cluster with kURL installed
+  * kURL Multi-Node: A 3 node HA cluster with kURL pre-installed
 
 ### Commands:
 
