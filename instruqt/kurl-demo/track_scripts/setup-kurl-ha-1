@@ -9,19 +9,44 @@ do
     sleep 1
 done
 
-cat <<'SAVE_PATCH' >> patch.yaml
-apiVersion: "cluster.kurl.sh/v1beta1"
-kind: "Installer"
-metadata:
-  name: "patch"
-spec:
-  ekco:
-    enableInternalLoadBalancer: true
-SAVE_PATCH
+# simple SSH client setup so we can SSH to/from other primary nodes
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    PubkeyAcceptedKeyTypes +ssh-rsa
+EOF
 
 curl https://kurl.sh/latest > install.sh
 chmod +x install.sh
+sed -i '5146s/.*/    if \[ "$HA_CLUSTER" = "1" \] \&\& \[ "$EKCO_ENABLE_INTERNAL_LOAD_BALANCER" != "1" \]; then/' install.sh
 
-nohup ./install.sh ha installer-spec-file="./patch.yaml" > kurl.log 2> kurl.err < /dev/null & disown
+nohup sudo ./install.sh ha ekco-enable-internal-load-balancer > kurl.log 2> kurl.err < /dev/null & disown
+
+cat <<'SAVE_SCRIPT' >> trigger.sh
+#!/bin/bash 
+
+sleep 60
+sed -e $'s/\x1b\[[0-9;]*m//g' kurl.log > kurl-raw.log
+while ! grep "To add MASTER nodes to this installation, run the following script on your other nodes:" kurl-raw.log;
+do 
+    sleep 30;
+    sed -e $'s/\x1b\[[0-9;]*m//g' kurl.log > kurl-raw.log
+done
+
+sed -e $'s/\x1b\[[0-9;]*m//g' kurl.log > kurl-raw.log
+sed -n '/To add MASTER nodes to this installation, run the following script on your other nodes:/,$p' kurl-raw.log | sed '1d' > kurl-join.sh
+
+chmod +x kurl-join.sh
+scp kurl-join.sh kurl-ha-2:~/kurl-join.sh
+scp kurl-join.sh kurl-ha-3:~/kurl-join.sh
+
+ssh kurl-ha-2 "./kurl-join.sh" 2> ssh.err &
+ssh kurl-ha-3 "./kurl-join.sh" 2> ssh.err &
+
+SAVE_SCRIPT
+
+chmod a+x trigger.sh
+nohup ./trigger.sh > trigger.out 2> trigger.err < /dev/null & disown
 
 exit 0
