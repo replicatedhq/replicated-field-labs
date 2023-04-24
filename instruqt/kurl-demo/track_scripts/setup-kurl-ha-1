@@ -19,7 +19,6 @@ EOF
 
 curl https://kurl.sh/latest > install.sh
 chmod +x install.sh
-sed -i '5146s/.*/    if \[ "$HA_CLUSTER" = "1" \] \&\& \[ "$EKCO_ENABLE_INTERNAL_LOAD_BALANCER" != "1" \]; then/' install.sh
 
 nohup sudo ./install.sh ha ekco-enable-internal-load-balancer > kurl.log 2> kurl.err < /dev/null & disown
 
@@ -41,8 +40,8 @@ chmod +x kurl-join.sh
 scp kurl-join.sh kurl-ha-2:~/kurl-join.sh
 scp kurl-join.sh kurl-ha-3:~/kurl-join.sh
 
-ssh kurl-ha-2 "./kurl-join.sh" 2> ssh.err &
-ssh kurl-ha-3 "./kurl-join.sh" 2> ssh.err &
+ssh kurl-ha-2 "./kurl-join.sh" 2> ssh-ha-2.err &
+ssh kurl-ha-3 "./kurl-join.sh" 2> ssh-ha-3.err &
 
 SAVE_SCRIPT
 
