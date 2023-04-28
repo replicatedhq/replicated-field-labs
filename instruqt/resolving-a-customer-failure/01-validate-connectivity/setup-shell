@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+kubectl kots install hello-world --kubeconfig /home/replicant/.kube/config \
+  --shared-password ${INSTRUQT_PARTICIPANT_ID} \
+  --namespace hello \
+  --no-port-forward
