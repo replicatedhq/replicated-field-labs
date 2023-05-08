@@ -4,7 +4,7 @@ set -exuo pipefail
 app_slug=$(agent variable get APP_SLUG)
 
 # restore our previously backed-up copy of the coredns configmap
-kubectl apply -f /opt/backups/t4.yaml
+kubectl apply -f /opt/backups/t5.yaml
 
 # restart all app pods
 kubectl delete pods -l kots.io/app-slug="${app_slug}"

@@ -1,5 +1,6 @@
 ---
 slug: troubleshoot-7
+id: nuxfa0vjx8yc
 type: challenge
 title: Correcting the broken application
 teaser: Rook-Ceph is unhealthy...
@@ -34,13 +35,22 @@ timelimit: 600
 🚀 Let's start
 =================
 
-Time for a new challenge! Now, a customer has reported that Rook-Ceph is unhealthy. Let's see if we can figure out what's going on.
+Time for a new challenge! Now, a customer has reported that they've recently upgraded their kURL cluster, and afterward Rook-Ceph is unhealthy. Let's see if we can figure out what's going on.
 
 💡 Hints
 =================
 
-- Ceph status is available from `ceph status` inside the rook-ceph-tools pod
+- Ceph status is available from `ceph status` inside the rook-ceph-tools pod.
   - `kubectl -n rook-ceph exec -it rook-ceph-tools-xxxxx-yyyyyy -- ceph status`
+
+- Generally, Ceph expects a `mon` deployment to be running on each node in the cluster.
+
+- The `rook-ceph-operator` is responsible for reconciling the Ceph cluster.
+
+💡 More Hints
+=================
+
+- Remember that Deployments manage ReplicaSets, which in turn manage Pods.
 
 ✔️ Solution
 =================

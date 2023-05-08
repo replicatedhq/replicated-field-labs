@@ -13,10 +13,10 @@ if [ ! -d /root/.kube ]; then
 fi
 
 # take a backup of the coredns configmap
-kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t4.yaml
+kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t5.yaml
 
 # change the cluster dns zone name
-sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t4.yaml \
+sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t5.yaml \
 | kubectl apply -f -
 
 # restart all app pods
