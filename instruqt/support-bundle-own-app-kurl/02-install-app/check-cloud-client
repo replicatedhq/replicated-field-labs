@@ -28,4 +28,4 @@ if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${app}"  | 
   exit 1
 fi
 
-agent variable set APP_SLUG="${app}"
+agent variable set APP_SLUG "${app}"
