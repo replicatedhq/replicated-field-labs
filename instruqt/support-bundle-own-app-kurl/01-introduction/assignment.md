@@ -42,6 +42,7 @@ timelimit: 600
 The environment is prepped for an *embedded cluster* installation.
 
 ### Configure your editor
+
 Before we begin, select the text editor you're most comfortable with by running
 
 ```bash
