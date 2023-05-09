@@ -63,9 +63,9 @@ Your embedded installer command may have additional [advanced installation optio
 
 # Upload your license and install your application
 
-## Navigate to the [Admin Console](<http://loadbalancer.[[> Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+## Navigate to the [Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
-After installation succeeds, navigate to the **[App Installer Admin Console](<http://loadbalancer.[[> Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)**, login and upload your license.
+After installation succeeds, navigate to the **[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)**, login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 
