@@ -80,10 +80,15 @@ Click "Check" to continue.
 Common Problems
 =================
 
-If you get an error message like this:
+### The connection to the server localhost:8080 was refused - did you specify the right host or port?
+
+Run `bash -l` to reload the shell and try again.
+
+### Reset the Admin Console password
+
+Use the `kots` cli to reset the password in a namespace:
 
 ```
-The connection to the server localhost:8080 was refused - did you specify the right host or port?
+kubectl kots reset-password <namespace>
+kubectl kots reset-password default
 ```
-
-run `bash -l` to reload the shell and try again.
