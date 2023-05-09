@@ -39,20 +39,23 @@ timelimit: 3600
 
 We recommend doing this inside a tmux session, so we don't lose the script output if we get disconnected
 
-Example: for an HA installation (3 primary nodes)
+Example: **for an HA installation (3 primary nodes)**
+
 - `curl -sSL https://kurl.sh/<installer-name> | bash -s ha`
 
-Example: for an installation with a single primary node
+Example: **for an installation with a single primary node**
+
 - `curl -sSL https://kurl.sh/<installer-name> | bash`
 
 Your embedded installer command may have additional [advanced installation options](https://kurl.sh/docs/install-with-kurl/advanced-options).  Double check with your team for the expected options to use.
 
-*When prompted for the loadbalancer IP address, leave it blank to use the internal LB*
+*When prompted for the loadbalancer IP address, **leave it blank** to use the internal LB*
 
 2. (Optional) Add More Nodes
 =================
 
 # If you need to add more nodes to the cluster, do the following, otherwise skip to the "Upload your license" step
+
 **When the install script completes,** copy the primary or secondary node join command printed in green at the end of the installation and run it in the *Cluster Node 2* tab and the *Cluster Node 3* tab.
 
 3. Upload License and Deploy
@@ -60,9 +63,9 @@ Your embedded installer command may have additional [advanced installation optio
 
 # Upload your license and install your application
 
-## Navigate to the [Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+## Navigate to the [Admin Console](<http://loadbalancer.[[> Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
 
-After installation succeeds, navigate to the **[App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)**, login and upload your license.
+After installation succeeds, navigate to the **[App Installer Admin Console](<http://loadbalancer.[[> Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)**, login and upload your license.
 
   ![Application installer](../assets/deploy.png)
 
@@ -84,4 +87,3 @@ The connection to the server localhost:8080 was refused - did you specify the ri
 ```
 
 run `bash -l` to reload the shell and try again.
-
