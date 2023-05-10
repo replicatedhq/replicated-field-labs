@@ -9,8 +9,12 @@ This hands-on lab is designed to be delivered by an instructor.  It can be run s
 ## Instructor's Prerequisites
 
 - A class of not more than 6-8 people.  More than this starts to hinder the discussion-based nature of the lab
-- An Instruqt platform invitation link
-- A calendar invite with a Zoom link for the session and the Instruqt invitation link
+- An [Instruqt platform invitation link](#making-an-instruqt-invitation-link)
+- A Google Forms link to the post-engagement survey
+- A Google Calendar invite with
+  - a Zoom link for the session and
+  - the Instruqt invitation link
+  - the Google Forms link to the survey
 - This guide available in a tab
 
 ## Setup
@@ -21,7 +25,11 @@ Coordinate with the Account Executive who handles the customer account to schedu
 
 ### 1-2 weeks before the session
 
-In the time before the session, the instructor needs to make sure that an Instruqt invitation link has been configured and a Google Calendar invite goes out to the attendees.
+In the time before the session, the instructor needs to make sure that an Instruqt invitation link has been configured and a Google Calendar invite goes out to the attendees.  Google Calendar should be able to add a Zoom invitation link automatically if you have the extension installed.
+
+#### Google Forms survey
+
+A form already lives on [Google Drive](https://docs.google.com/forms/d/1xZokluh_P1EfLdGyHUSMh7Ngb2bRMB7_4G-XSluETuw/edit?pli=1).  Click "Send" in the upper right corner and get a shareable link to the form, and add it to the Google Calendar invite.
 
 #### Making an Instruqt invitation link
 
@@ -37,7 +45,7 @@ Navigate to the [Invitation Management](https://play.instruqt.com/replicated/inv
   - **How Many Unique Users**: depends on how the session is coordinated
 - **Access Settings**: Anyone leaving their details (recommended)
 
-Click "Create Invite" to create the invitation link.  Copy the link and paste it into the calendar invite.
+Click "Create Invite" to create the invitation link.  Copy the link and add it into the calendar invite.
 
 #### (Optional) Configure Hot Start on Instruqt
 
@@ -78,3 +86,9 @@ Click "Create Hot Start"
 ### Lab 6: Expired cluster certs (WIP)
 
 ### Lab 7: Rook-Ceph failures (WIP)
+
+## Wrap-up
+
+### Survey
+
+### Next steps
