@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# save the entire session to check user inputs and outputs
+tmux capture-pane -t shell -S -
+SESSION=$(tmux save-buffer -)
+
+# check for disconnection
+if ! grep -qE 'echo' <(echo ${SESSION}) ; then
+  fail-message 'Please make sure you can still access `$THIS`'
+  exit 1
+fi
+
