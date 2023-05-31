@@ -37,8 +37,10 @@ in this lab environment.
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
    the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
-
-Everything else you need we'll do as part of the lab.
+3. An application on the Replicated Vendor Portal. We've also 
+   created that for you as part of the lab setup.
+4. A customer for that application. We've created the customer as
+   well.
 
 🔤 Getting Started
 ==================
@@ -55,5 +57,13 @@ Let's also set up our shell for interacting with the Replicated
 platform.
 
 ```
-export REPLICATED_API_TOKEN="[[ Instruqt-Var key="API_TOKEN" hostname="shell" ]]"
+export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
+
+And lastly make sure we are working with the Mastadon app
+
+```
+export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
+```
+
+
