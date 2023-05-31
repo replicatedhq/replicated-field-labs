@@ -15,4 +15,14 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 
-tmux send-keys -t shell echo SPACE '$THIS' ENTER
+# updat the chart version
+tmux send-keys -t shell 'yq -i ''.version = "1.6.0"'' mastodon/Chart.yaml'
+
+# add the SDK dependency
+tmux send-keys -t shell 'yq -i ''.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.11"}'' mastodon/Chart.yaml'
+
+# update dependencies
+tmux send-keys -t shell 'cd mastodon ; helm dependency update ; cd' 
+
+# re-package the chart
+tmux send-keys -t shell 'helm package mastodon --destination release'

@@ -3,13 +3,29 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-# save the entire session to check user inputs and outputs
-tmux capture-pane -t shell -S -
-SESSION=$(tmux save-buffer -)
-
-# check for disconnection
-if ! grep -qE 'echo' <(echo ${SESSION}) ; then
-  fail-message 'Please make sure you can still access `$THIS`'
-  exit 1
+result=0
+# check for an updated version number
+if [[ "$(yq .version mastodon/Chart.yaml)" != "1.6.0"  ]] ; then
+  fail-message 'Please be sure to update the version of the Mastodon Helm chart to reflect your changes'
+  let "result = result + 1"
 fi
 
+# check for the Replicated SDK dependency
+if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
+  fail-message 'Please be sure to include the Replicated SDK dependency in the Mastodon Helm chart'
+  let "result = result + 1"
+fi
+
+# check for dependency updates 
+if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
+  fail-message 'Please be sure to update the Mastodon Helm chart''s dependencies to include the Replicated SDK'
+  let "result = result + 1"
+fi
+
+# check for the repackaged Helm chart
+if [[ ! -f /home/replicant/release/mastodon-1.6.0..tgz ]] ; then
+  fail-message 'Please be sure to update and repackage the Mastodon Helm chart' 
+  let "result = result + 1"
+fi
+
+exit ${result}
