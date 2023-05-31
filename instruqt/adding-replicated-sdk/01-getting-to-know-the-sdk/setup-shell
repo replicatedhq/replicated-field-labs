@@ -31,7 +31,7 @@ UUID=$(cat /proc/sys/kernel/random/uuid)
 apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
 access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
 
-app_slug=$(curl --header 'Accept: application/json' --header 'Authorization: ${token}' https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select ( .name == "Mastodon" ) | .slug')
+app_slug=$(curl --header 'Accept: application/json' --header 'Authorization: ${access_token}' https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select ( .name == "Mastodon" ) | .slug')
 
 agent variable set USERNAME ${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com
 agent variable set PASSWORD ${password}
