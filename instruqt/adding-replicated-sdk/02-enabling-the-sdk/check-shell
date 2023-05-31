@@ -5,7 +5,7 @@ set -euxo pipefail
 
 result=0
 # check for an updated version number
-if [[ "$(yq .version mastodon/Chart.yaml)" != "1.6.0"  ]] ; then
+if [[ "$(yq .version mastodon/Chart.yaml)" -ne "1.6.0"  ]] ; then
   fail-message 'Please be sure to update the version of the Mastodon Helm chart to reflect your changes'
   let "result = result + 1"
 fi

@@ -13,7 +13,7 @@ tabs:
   hostname: shell
 - title: Manifest Editor
   type: code
-  hostname: jumpbox
+  hostname: shell
   path: /home/replicant
 difficulty: basic
 timelimit: 300
@@ -23,7 +23,7 @@ Now that we've got our environment set up, let's incorporate the
 SDK into our application. We make it easy for you to do this by
 providing a Helm chart you can drop into your chart as a
 dependency. When you deliver your Helm chart from the Replicated
-regisry, we'll embed your customer's license into the final 
+regisry, we'll embed your customer's license into the final
 chart.
 
 This injection serves a few purposes:
@@ -40,7 +40,7 @@ Adding the Dependency
 
 Go to the the "Code Editor" tab and edit the file `Chart.yaml` in
 the source directory `mastodon`. You're going to make two changes to
-this file. 
+this file.
 
 First, you're going to add a dependency on the Replicated SDK Helm
 chart.
@@ -51,13 +51,21 @@ chart.
   version: 0.0.1-alpha.11
 ```
 
-You should also bump the version number of your chart. Adding 
+![Adding the Dependency](../assets/adding-the-dependency.png)
+
+You should also bump the version number of your chart. Adding
 telemetry and preparing to distribute with Replicated feels like
 a fairly large change. It's not a breaking change, though, so
 let's just bump the minor version number.
 
-After making the changes, make sure you save them using the save 
-icon in the editor tab. It's easy to miss, so check the image 
+```
+version: 1.6.0
+```
+
+![Bumping the Chart Version](../assets/bumping-the-version.png)
+
+After making the changes, make sure you save them using the save
+icon in the editor tab. It's easy to miss, so check the image
 below if you can't find it.
 
 ![Saving Your Changes](../assets/saving-your-changes.png)
@@ -66,8 +74,7 @@ After saving, drop back in to the "Shell" tab and update your
 dependencies.
 
 ```shell
-cd mastodon
-helm dependncy update
+helm dependency update mastodon
 ```
 
 Repackging Your Chart
@@ -77,12 +84,12 @@ After updating dependencies, you should repackage your Helm
 chart into a new tarball including the changes.
 
 ```
-helm package --destination ../release
+helm package mastodon --destination ../release
 ```
 
 You should now have a tarball in directory `release` in your
 home directoy.
 
 ```
-ls ~/release
+ls release
 ```
