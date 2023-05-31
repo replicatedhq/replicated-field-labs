@@ -11,16 +11,17 @@ SESSION=$(tmux save-buffer -)
 result=0
 if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z "]+' <(echo ${SESSION}) ; then
   fail-message 'Please set the variable `$REPLICATED_API_TOKEN` so you will be able to use the `replicated` command in future steps'
-  let "result = result + $?"
+  let "result = result + 1" 
 fi
 
 if ! grep -qE 'REPLICATED_APP=[A-Za-z "]+' <(echo ${SESSION}) ; then
   fail-message 'Please set the variable `$REPLICATED_APP` so you will be working with the right application in future steps'
-  let "result = result + $?"
+  let "result = result + 1" 
 fi
 
-if ! find . -type d -name "mastodon" ; then
-  let "result = result + $?"
+if [[ ! -d /home/replicant/mastodon ]]; then
+  fail-message 'Please download the Mastodon Helm chart so that we can add the SDK to it in the next step'
+  let "result = result + 1" 
 fi
 
 exit $result
