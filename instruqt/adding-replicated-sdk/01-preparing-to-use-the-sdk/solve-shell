@@ -15,4 +15,6 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 
-tmux send-keys -t shell export SPACE 'THIS="the way"' ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+tmux send-keys -t shell 'helm pull oci://registry-1.docker.io/bitnamicharts/mastodon --untar' ENTER
