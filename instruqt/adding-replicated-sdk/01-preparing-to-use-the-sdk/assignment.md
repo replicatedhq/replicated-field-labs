@@ -1,12 +1,12 @@
 ---
-slug: getting-to-know-the-sdk
+slug: preparing-to-use-the-sdk
 id: svl7xy6jgkzb
 type: challenge
-title: Getting to Know the SDK
-teaser: Learn about the Replicated SDK
+title: Preparing to Use the SDK
+teaser: Getting ready to use the Replicated SDK
 notes:
 - type: text
-  contents: Let's learn about the Replicated SDK
+  contents: Let's get ready to use the Replicated SDK
 tabs:
 - title: Shell
   type: terminal
@@ -37,7 +37,7 @@ in this lab environment.
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
    the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
-3. An application on the Replicated Vendor Portal. We've also 
+3. An application on the Replicated Vendor Portal. We've also
    created that for you as part of the lab setup.
 4. A customer for that application. We've created the customer as
    well.
@@ -65,5 +65,4 @@ And lastly make sure we are working with the Mastadon app
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
 ```
-
 
