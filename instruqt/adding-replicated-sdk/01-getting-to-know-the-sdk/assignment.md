@@ -48,7 +48,7 @@ Helm chart. Let's pull down the chart so that we can get
 started.
 
 ```bash
-helm pull my-release oci://registry-1.docker.io/bitnamicharts/mastodon
+helm pull oci://registry-1.docker.io/bitnamicharts/mastodon --untar
 ```
 
 Let's also set up our shell for interacting with the Replicated
