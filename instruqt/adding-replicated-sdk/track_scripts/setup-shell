@@ -14,6 +14,11 @@ EOF
 # assure an RSA key for Dropbear
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/feature-replicated-sdk/libs/header.sh
+
 # change the cluster URI
 yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
 chown -R replicant /home/replicant/.kube
+
+
