@@ -1,11 +1,34 @@
-#!/bin/sh
-#
-# This script runs when the platform setup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
 
-echo "This is the setup script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
 
-exit 0
+# update the application to foundation plan only
+api_token=$(get_api_token)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+
+curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
+  --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
+  --header "Content-Type: application/json" \
+  --data '{ "is_foundation": true }'
+
+# get the customer id, since it's the password for the Helm installation
+# and users like to copy/paste
+customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customers" | jq -r '.customers[0].id')
+
+# set the customer email so the user doesn't have to do it
+customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
+
+updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  jq -c --arg email "${customer_email}" '.customer.email = $email')
+
+curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
+  --request PUT --header 'Accept: application/json' --header "Authorization: ${api_token}" \
+  --header "Content-Type: application/json" \
+  --data "${updated_customer}"
+ 
+agent variable set APP_ID ${app_id}
+agent variable set CUSTOMER_ID ${customer_id}
+agent variable set CUSTOMER_EMAIL ${customer_email}
+agent variable set REGISTRY_PASSWORD ${customer_id}

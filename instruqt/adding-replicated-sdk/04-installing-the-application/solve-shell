@@ -1,11 +1,14 @@
-#!/bin/sh
-#
-# This script runs when the platform solve the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
 
-echo "This is the solve script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
 
-exit 0
+
+# login to the registry
+helm registry login registry.replicated.com \
+  --username $(agent variable get USERNAME) \ 
+  --password $(agent variable get REGISTRY_PASSWORD) 
+
+# install the application
+helm install mastodon oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/stable/mastodon --kubeconfig /home/replicated/.kube/config --wait
