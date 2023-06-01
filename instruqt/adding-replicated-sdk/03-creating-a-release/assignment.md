@@ -11,10 +11,6 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
-- title: Vendor
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
 difficulty: basic
 timelimit: 300
 ---
@@ -83,14 +79,14 @@ replicated release create --promote Unstable --yaml-dir ./release --version 1.6.
 This creates a release for version `1.6.0` of your Mastodon Helm
 Chart, and promotes it to the `Unstable` channel. To release it
 to another channel, use `replicated release promote`. The `create`
-command output sequence number that you'll need for `promote` (it 
+command output sequence number that you'll need for `promote` (it
 will be `2` if you haven't explored releasing a bit more).
 
 ```
-  _ Reading manifests from ./release _  
-  _ Creating Release _  
+  _ Reading manifests from ./release _
+  _ Creating Release _
     _ SEQUENCE: 2
-  _ Promoting _  
+  _ Promoting _
     _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 2
 ```
 
@@ -110,3 +106,4 @@ and then
 replicated release promote 2 Stable --version 1.6.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
+
