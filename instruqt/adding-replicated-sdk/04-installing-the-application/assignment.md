@@ -98,6 +98,6 @@ tack on an additional flag, `--wait`. This helps us make sure the
 installation is complete before we move onto the next step in the lab.
 
 ```
-helm install mastodon oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/stable/mastodon --wait
+helm install mastodon oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/mastodon --wait
 ```
 
