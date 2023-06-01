@@ -19,7 +19,7 @@ fi
 tmux send-keys -t shell $'yq -i \'.version = "1.6.0"\' mastodon/Chart.yaml' ENTER
 
 # add the SDK dependency
-tmux send-keys -t shell $'yq -i \'.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.11"}\' mastodon/Chart.yaml' ENTER
+tmux send-keys -t shell $'yq -i \'.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.13"}\' mastodon/Chart.yaml' ENTER
 
 # update dependencies
 tmux send-keys -t shell 'helm dependency update mastodon'  ENTER
