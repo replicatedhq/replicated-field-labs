@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+result=0
+
+# check for release to Unstable
+api_token=$(get_api_token)
+unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
+if [[ ! "${unstable_version}" == "1.6.0"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`1.6.0\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Beta
+beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
+if [[ ! "${beta_version}" == "1.6.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`1.6.0\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Stable
+stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
+if [[ ! "${stable_version}" == "1.6.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`1.6.0\`'
+  let "result = result + 1"
+fi
+
+exit ${result}
