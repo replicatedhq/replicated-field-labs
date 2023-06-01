@@ -81,7 +81,7 @@ dependencies.
 helm dependency update mastodon
 ```
 
-Repackging Your Chart
+Repackaging Your Chart
 =====================
 
 After updating dependencies, you should repackage your Helm
