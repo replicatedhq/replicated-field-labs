@@ -5,7 +5,7 @@ set -euxo pipefail
 
 result=0
 # check for an updated version number
-if [[ "$(yq .version mastodon/Chart.yaml)" -ne "1.6.0"  ]] ; then
+if [[ "$(yq .version mastodon/Chart.yaml)" == "1.6.0"  ]] ; then
   fail-message 'Please be sure to update the version of the Mastodon Helm chart to reflect your changes'
   let "result = result + 1"
 fi
@@ -23,7 +23,7 @@ if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "
 fi
 
 # check for the repackaged Helm chart
-if [[ ! -f /home/replicant/release/mastodon-1.6.0..tgz ]] ; then
+if [[ ! -f /home/replicant/release/mastodon-1.6.0.tgz ]] ; then
   fail-message 'Please be sure to update and repackage the Mastodon Helm chart' 
   let "result = result + 1"
 fi
