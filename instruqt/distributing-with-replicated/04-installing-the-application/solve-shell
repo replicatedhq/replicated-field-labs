@@ -4,6 +4,9 @@
 set -euxo pipefail
 source /etc/profile.d/header.sh
 
+# get the application slug for the chart URL
+api_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
 # login to the registry
 helm registry login registry.replicated.com \
@@ -11,4 +14,6 @@ helm registry login registry.replicated.com \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
 # install the application
-helm install mastodon oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/stable/mastodon --kubeconfig /home/replicated/.kube/config --wait
+helm install --set localDomain=omozan.io \ 
+  --set webDomain=$(agent variable get WEB_HOST) \
+  mastodon oci://registry.replicated.com/${app_slug)/mastodon --wait
