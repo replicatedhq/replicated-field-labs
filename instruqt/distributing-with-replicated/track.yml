@@ -1,11 +1,10 @@
-slug: adding-replicated-sdk
-id: hye0hdv9lugy
-title: Adding the Replicated SDK to Your Helm Chart
+slug: distributing-with-replicated
+id: evmpzv6ycpgs
+title: Distributing Your Application with Replicated
 description: |-
   Learn how to quicky take advantage of the Replicated Platform for
   your application. We'll take an existing Helm chart, add a dependency
   on the Replicated SDK, and see Replicated in action..
-
    **This track demonstrates how to:**
 
    * Add the Replicated SDK to your Helm chart
@@ -26,4 +25,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "4640654249044736233"
+checksum: "6092149816224892711"
