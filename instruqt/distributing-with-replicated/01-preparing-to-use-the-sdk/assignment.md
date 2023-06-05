@@ -1,6 +1,6 @@
 ---
 slug: preparing-to-use-the-sdk
-id: svl7xy6jgkzb
+id: kkhcf1j4eaym
 type: challenge
 title: Preparing to Use the SDK
 teaser: Getting ready to use the Replicated SDK
@@ -32,7 +32,9 @@ things. In the lab environment. They've been set up for you
 in this lab environment.
 
 1. A Helm chart for your application. We're going to use the
-   Open Source Bitnami Helm chat for the Mastadoon social network.
+   Open Source Bitnami Helm chat for the Mastadoon social network
+   for this lab, but it could be the Helm chart for your product
+   or any other Helm chart you wanted to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and

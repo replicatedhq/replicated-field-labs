@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: hxvxfxzkz5vk
+id: k2xalui3fpuw
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
@@ -88,7 +88,7 @@ After updating dependencies, you should repackage your Helm
 chart into a new tarball including the changes.
 
 ```
-helm package mastodon --destination ../release
+helm package mastodon --destination ./release
 ```
 
 You should now have a tarball in directory `release` in your
