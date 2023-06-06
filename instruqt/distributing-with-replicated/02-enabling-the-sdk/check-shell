@@ -23,7 +23,7 @@ if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "
 fi
 
 # check for the repackaged Helm chart
-if [[ ! -f /home/replicant/release/mastodon-16.7.0.tgz ]] ; then
+if [[ ! -f /home/replicant/release/harbor-16.7.0.tgz ]] ; then
   fail-message 'Please be sure to update and repackage the Harbor Helm chart' 
   let "result = result + 1"
 fi
