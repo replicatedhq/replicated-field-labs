@@ -98,9 +98,6 @@ tack on an additional flag, `--wait`. This helps us make sure the
 installation is complete before we move onto the next step in the lab.
 
 ```
-helm install harbor oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
-  --set localDomain=omozan.io \
-  --set webDomain=[[ Instruqt-Var key="WEB_DOMAIN" hostname="cluster" ]] \
-  --wait
+helm install harbor oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
 ```
 
