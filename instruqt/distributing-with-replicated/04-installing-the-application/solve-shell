@@ -14,4 +14,8 @@ helm registry login registry.replicated.com \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
 # install the application
-helm install harbor oci://registry.replicated.com/${app_slug)/harbor --wait
+
+helm install harbor \
+  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/harbor \
+  --set service.type=NodePort --set nodePort.https=443 \
+  --set externalURL=https://$(agent variable get EXTERNAL_URL)

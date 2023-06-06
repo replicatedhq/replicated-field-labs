@@ -7,7 +7,7 @@ source /etc/profile.d/header.sh
 result=0
 
 # check for release to Unstable
-installed_chart=$(helm list -o yaml | yq '.[0].chart')
+installed_chart=$(helm list -o yaml --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
 if [[ ! "${installed_chart}" == "harbor-16.7.0"  ]] ; then
   fail-message 'Please be sure to install the Harbor Helm chart'
   let "result = result + 1"

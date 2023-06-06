@@ -3,5 +3,5 @@ usr/bin/env bash
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
  
-agent variable set WEB_DOMAIN harbor.${HOSTNAME}.${_SANDBOX_ID}.instruqt.io
+agent variable set EXTERNAL_URL harbor.${HOSTNAME}.${_SANDBOX_ID}.instruqt.io
 
