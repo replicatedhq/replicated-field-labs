@@ -22,9 +22,9 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
  
 # get the registry password (which is the license id)
 registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}/license-download" | \
-  yq .spec.licenseID)
+  yq .spec.licenseID) 
 
-# update the application to foundation plan only
+# toggle the app to builders mode 
 curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
   --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
   --header "Content-Type: application/json" \
@@ -33,4 +33,4 @@ curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
 agent variable set CUSTOMER_EMAIL ${customer_email}
-agent variable set REGISTRY_PASSWORD ${registry_id}
+agent variable set REGISTRY_PASSWORD ${registry_password}
