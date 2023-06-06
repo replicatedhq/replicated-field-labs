@@ -32,7 +32,7 @@ things. In the lab environment. They've been set up for you
 in this lab environment.
 
 1. A Helm chart for your application. We're going to use the
-   Open Source Bitnami Helm chat for the Mastadoon social network
+   Open Source Bitnami Helm chat for the Harbor container registry
    for this lab, but it could be the Helm chart for your product
    or any other Helm chart you wanted to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
@@ -47,12 +47,12 @@ in this lab environment.
 🔤 Getting Started
 ==================
 
-To use the SDK, we need to add a dependency to the Mastodon
+To use the SDK, we need to add a dependency to the Harbor
 Helm chart. Let's pull down the chart so that we can get
 started.
 
 ```bash
-helm pull oci://registry-1.docker.io/bitnamicharts/mastodon --untar
+helm pull oci://registry-1.docker.io/bitnamicharts/harbor --untar
 ```
 
 Let's also set up our shell for interacting with the Replicated
@@ -62,7 +62,7 @@ platform.
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-And lastly make sure we are working with the Mastadon app
+And lastly make sure we are working with the Harbor app
 
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"

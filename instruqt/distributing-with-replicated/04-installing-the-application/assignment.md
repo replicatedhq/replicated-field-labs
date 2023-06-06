@@ -22,7 +22,7 @@ timelimit: 600
 Now that we have a release in the Replicated Platform, you can
 distribute it's Helm chart to you customers using entitlements
 that we manage for you. In this step, we're going to install the
-Mastodon Helm chart the same way a customer would install your
+Harbor Helm chart the same way a customer would install your
 application.
 
 Logging Into the Vendor Portal
@@ -42,7 +42,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each channel shows the current version `1.6.0`.
+each channel shows the current version `16.7.0`.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
 
@@ -98,7 +98,7 @@ tack on an additional flag, `--wait`. This helps us make sure the
 installation is complete before we move onto the next step in the lab.
 
 ```
-helm install mastodon oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/mastodon \
+helm install harbor oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
   --set localDomain=omozan.io \
   --set webDomain=[[ Instruqt-Var key="WEB_DOMAIN" hostname="cluster" ]] \
   --wait

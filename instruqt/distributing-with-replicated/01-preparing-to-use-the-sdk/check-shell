@@ -19,8 +19,8 @@ if ! grep -qE 'REPLICATED_APP=[A-Za-z "]+' <(echo ${SESSION}) ; then
   let "result = result + 1" 
 fi
 
-if [[ ! -d /home/replicant/mastodon ]]; then
-  fail-message 'Please download the Mastodon Helm chart so that we can add the SDK to it in the next step'
+if [[ ! -d /home/replicant/harbor ]]; then
+  fail-message 'Please download the Harbor Helm chart so that we can add the SDK to it in the next step'
   let "result = result + 1" 
 fi
 

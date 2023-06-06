@@ -39,7 +39,7 @@ Adding the Dependency
 ======================
 
 Go to the the "Code Editor" tab and edit the file `Chart.yaml` in
-the source directory `mastodon`. You're going to make two changes to
+the source directory `harbor`. You're going to make two changes to
 this file.
 
 First, you're going to add a dependency on the Replicated SDK Helm
@@ -63,7 +63,7 @@ a fairly large change. It's not a breaking change, though, so
 let's just bump the minor version number.
 
 ```
-version: 1.6.0
+version: 16.7.0
 ```
 
 ![Bumping the Chart Version](../assets/bumping-the-version.png)
@@ -78,7 +78,7 @@ After saving, drop back in to the "Shell" tab and update your
 dependencies.
 
 ```shell
-helm dependency update mastodon
+helm dependency update harbor
 ```
 
 Repackaging Your Chart
@@ -88,7 +88,7 @@ After updating dependencies, you should repackage your Helm
 chart into a new tarball including the changes.
 
 ```
-helm package mastodon --destination ./release
+helm package harbor --destination ./release
 ```
 
 You should now have a tarball in directory `release` in your

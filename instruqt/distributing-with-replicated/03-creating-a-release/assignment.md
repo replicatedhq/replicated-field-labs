@@ -19,7 +19,7 @@ To take advantage of the Replicated Platform to distribute
 an application we need to let the platform know about the
 application, its releases, and the customers who are entitled
 to access it. The lab environment has created the application
-Mastodon application for us, and created a customer "Omozan"
+Harbor application for us, and created a customer "Omozan"
 that has access to it. All we need to do is to create a
 release and we'll be ready to go.
 
@@ -72,11 +72,11 @@ Creating Your Release
 To create a release, run the following command:
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 1.6.0  \
+replicated release create --promote Unstable --yaml-dir ./release --version 16.7.0  \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
-This creates a release for version `1.6.0` of your Mastodon Helm
+This creates a release for version `16.7.0` of your Harbor Helm
 Chart, and promotes it to the `Unstable` channel. To release it
 to another channel, use `replicated release promote`. The `create`
 command output sequence number that you'll need for `promote` (it
@@ -96,14 +96,14 @@ ultimately releasing on `Stable`. For the purposes of the lab,
 let's just promote the release straight through.
 
 ```
-replicated release promote 2 Beta --version 1.6.0 \
+replicated release promote 2 Beta --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
 and then
 
 ```
-replicated release promote 2 Stable --version 1.6.0 \
+replicated release promote 2 Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 

@@ -14,6 +14,4 @@ helm registry login registry.replicated.com \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
 # install the application
-helm install --set localDomain=omozan.io \ 
-  --set webDomain=$(agent variable get WEB_HOST) \
-  mastodon oci://registry.replicated.com/${app_slug)/mastodon --wait
+helm install harbor oci://registry.replicated.com/${app_slug)/harbor --wait
