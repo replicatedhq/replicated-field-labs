@@ -139,5 +139,5 @@ kubectl preflight ./harbor-preflights.yaml
 You'll see that your check has been run and it should report
 that it has passed with a supported version of Kubernetes.
 
-![Passing Kubernets Version Preflight Check](../assets/passing-version-check.yaml)
+![Passing Kubernetes Version Preflight Check](../assets/passing-version-check.yaml)
 
