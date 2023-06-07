@@ -9,7 +9,32 @@ show_credentials () {
     echo -e "${GREEN}Password: ${CYAN}${password}${NC}"
 }
 
+get_username () {
+  echo ${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com
+}
+
 get_password () {
     password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}" | sha256sum)
     echo ${password::20}
+}
+
+get_api_token () {
+  password=$(get_password)
+  login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
+  token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+
+  i=0
+  while [[ "$token" == "null" && $i -lt 20 ]]
+  do
+      sleep 2
+      token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+      echo "Token: ${token} value"
+      i=$((i+1))
+  done
+
+  UUID=$(cat /proc/sys/kernel/random/uuid)
+  apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
+  access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+  echo ${access_token}
 }
