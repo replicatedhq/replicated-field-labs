@@ -34,7 +34,7 @@ To make use of the Replicated SDK, you'll need a couple of
 things. They've been set up for you in this lab environment.
 
 1. A Helm chart for your application. We're going to use the
-   Open Source Bitnami Helm chat for the Harbor container registry
+   Open Source Bitnami Helm chart for the Harbor container registry
    for this lab, but it could be the Helm chart for your product
    or any other Helm chart you wanted to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
