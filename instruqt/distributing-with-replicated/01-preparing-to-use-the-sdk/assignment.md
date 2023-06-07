@@ -31,8 +31,7 @@ including doing updates checks and showing version history.
 ===========================
 
 To make use of the Replicated SDK, you'll need a couple of
-things. In the lab environment. They've been set up for you
-in this lab environment.
+things. They've been set up for you in this lab environment.
 
 1. A Helm chart for your application. We're going to use the
    Open Source Bitnami Helm chat for the Harbor container registry
