@@ -19,6 +19,15 @@ source /etc/profile.d/header.sh
 access_token=$(get_api_token)
 app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
+cat <<EMPTY_PREFLIGHT > empty-preflight.yaml
+apiVersion: troubleshoot.sh/v1beta2
+kind: Preflight
+metadata:
+  name: preflight-tutorial
+spec:
+  analyzers: []
+EMPTY_PREFLIGHT
+
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
 agent variable set REPLICATED_API_TOKEN ${access_token}
