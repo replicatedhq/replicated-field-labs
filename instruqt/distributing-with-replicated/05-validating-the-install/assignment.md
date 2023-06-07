@@ -38,7 +38,7 @@ Observing the Customer Instance
 
 Instance Insights is a feature of the Replicated Vendor portal
 that provides you detailed insights into the experience your
-customer is having with your applications. It is automatically
+customer is having with your application(s). It is automatically
 available when you included the Replicated SDK in your application.
 The SDK sends telemetry events to the vendor portal to reflect
 details about the application, the cluster it's running on, and
@@ -52,15 +52,15 @@ active customer indicated.
 ![Active Customer in Stable Channel](../assets/active-customer-in-channel.png)
 
 If you click on "Details" you'll be brought to a filtered view of
-the Customer's page showing all customers that are entitled to releases
+the Customers page showing all customers that are entitled to releases
 on the _Stable_ channel. You'll see the customer Omozan there, and
-you'll notice it shows once instance. The specific status of the
+you'll notice it shows one instance. The specific status of the
 instance will depend on how quickly you navigated to the page after
 starting the install.
 
 ![Stable Channel Customer List](../assets/stable-channel-customers.png)
 
-Click on the name "Omozon" to see more information about Omozan
+Click on the name "Omozan" to see more information about Omozan
 and their instances, then click on the one instance identifier
 for the one instance you see.
 
@@ -82,5 +82,5 @@ you'll see the status change to "Ready."
 =========
 
 Once Omozan's instance is in the _Ready_ state, you've successfully
-distributed the application to the custonmer Omozan using the
+distributed the application to the customer Omozan using the
 Replicated Platform.

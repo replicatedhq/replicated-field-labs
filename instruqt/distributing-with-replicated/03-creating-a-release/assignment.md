@@ -16,12 +16,12 @@ timelimit: 300
 ---
 
 To take advantage of the Replicated Platform to distribute
-an application we need to let the platform know about the
+an application, we need to let the platform know about the
 application, its releases, and the customers who are entitled
-to access it. The lab environment has created the application
-Harbor application for us, and created a customer "Omozan"
-that has access to it. All we need to do is to create a
-release and we'll be ready to go.
+to access it. The lab environment has created the Harbor 
+application for us, and created a customer "Omozan" that 
+has access to it. All we need to do is to create a release
+and we'll be ready to go.
 
 Replicated Release Channels
 ===========================
@@ -29,12 +29,12 @@ Replicated Release Channels
 There's one more part of the equation that we didn't mention
 above. The Replicated platform provides a way to connect
 each customer to the right release(s) for them. It does this
-by organizing release into _channels_, and assigning each
+by organizing releases into _channels_, and assigning each
 customer license to the appropriate channel.
 
 We encounter this concept in our day-to-day use of software
 all the time. For some applications, you're signed up to
-receive beta releases, while others your receive updates only
+receive beta releases, while others you receive updates only
 when they're GA. You may even have some software, for example
 your Linux distribution, where you use only releases that
 have long term support.
@@ -46,8 +46,8 @@ three release channels for each application:
 * `Unstable` is, as it sounds, releases that may be unstable
    and subject to defects and/or constant change. You may have
    every merge PR hit this channel, for example.
-* `Beta` represents release that have release beta quality, for
-  those customer you have as part of a beta program for new
+* `Beta` represents releases that have release beta quality, for
+  those customers you have as part of a beta program for new
   releases.
 * `Stable` is for GA release that you want to be available
   broadly to your customer base. This would be the default
@@ -62,7 +62,7 @@ release process. Some examples:
 * `Edge` for customer who want continuous delivery of your
    software to their environmnets.
 * Channels named after the feature branches in your source
-  code. These can help product teams validate release before
+  code. These can help product teams validate releases before
   they are merged for release on your primary channels.
   Replicated recommends all teams follow this approach.
 
@@ -77,10 +77,10 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.7
 ```
 
 This creates a release for version `16.7.0` of your Harbor Helm
-Chart, and promotes it to the `Unstable` channel. To release it
+chart, and promotes it to the `Unstable` channel. To release it
 to another channel, use `replicated release promote`. The `create`
-command output sequence number that you'll need for `promote` (it
-will be `2` if you haven't explored releasing a bit more).
+command outputs the sequence number that you'll need for `promote`
+(it will be `2` if you haven't explored releasing a bit more).
 
 ```
   _ Reading manifests from ./release _

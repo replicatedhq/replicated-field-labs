@@ -20,7 +20,7 @@ timelimit: 600
 ---
 
 Now that we have a release in the Replicated Platform, you can
-distribute it's Helm chart to you customers using entitlements
+distribute it's Helm chart to your customers using entitlements
 that we manage for you. In this step, we're going to install the
 Harbor Helm chart the same way a customer would install your
 application.
@@ -63,16 +63,14 @@ installed anywhere yet.
 ![Customers Landing Page](../assets/customers-page.png)
 
 Below the graph you'll see the list of customers, with the customer
-"Omozon" as the only one in the list. Click on their name and you'll
+"Omozan" as the only one in the list. Click on their name and you'll
 be brought to their customer page. In the top right corner you'll
 see a link to their install instructions.
 
 ![Customers Landing Page](../assets/single-customer-page.png)
 
-Click on the link and you'll be prompted to enter a customer
-email. You can use any address you want, but the rest of the
-instructions assume you used the username above
-(`[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`).
+Click on the link and you'll be brought to the Helm install
+instructions.
 
 ![Install Instructions](../assets/helm-install-instructions.png)
 
@@ -83,9 +81,9 @@ added any to our chart.
 Installing the Application
 ==========================
 
-Your customer starts their installation by logging into our 
-registry with the `helm` command. This gives them access to 
-your Helm chart via the Replicated Platform.
+Your customer starts their installation by logging into our
+registry with the `helm registry login` command. This gives 
+them access to your Helm chart via the Replicated Platform.
 
 ```
 helm registry login registry.replicated.com \
@@ -94,7 +92,7 @@ helm registry login registry.replicated.com \
 ```
 
 From there, they do a simple Helm install. In our case, we're going to
-tack some additional values that Harbor needs to come up correctly. 
+tack some additional values that Harbor needs to come up correctly.
 This helps us make sure the installation is complete before we move
 onto the next step in the lab.
 

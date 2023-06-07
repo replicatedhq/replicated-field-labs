@@ -23,22 +23,24 @@ Now that we've got our environment set up, let's incorporate the
 SDK into our application. We make it easy for you to do this by
 providing a Helm chart you can drop into your chart as a
 dependency. When you deliver your Helm chart from the Replicated
-regisry, we'll embed your customer's license into the final
+registry, we'll embed your customer's license into the final
 chart.
 
 This injection serves a few purposes:
 
-1. The licese is available to your application logic through a
+1. The license is available to your application logic through a
    call to an in-cluster SDK
-2. Accesss to your container images and other registry
-   assets is secured using customer-specific credentials
+2. Provides customer-specific credentials to Accesss to your 
+   container images and other registry assets. We inject these
+   into your Helm values so that you can use them to create the
+   appropriate image pull secrets.
 3. The in-cluster service can connect securely to the Replicated
    vendor portal for telemetry, upgrade checks, etc.
 
 Adding the Dependency
 ======================
 
-Go to the the "Code Editor" tab and edit the file `Chart.yaml` in
+Go to the the "Manifest Editor" tab and edit the file `Chart.yaml` in
 the source directory `harbor`. You're going to make two changes to
 this file.
 
