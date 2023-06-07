@@ -1,5 +1,6 @@
 ---
 slug: releasing-the-application
+id: 14xfg2xrtgef
 type: challenge
 title: Releasing the Application
 teaser: Some tips and recomended defaults

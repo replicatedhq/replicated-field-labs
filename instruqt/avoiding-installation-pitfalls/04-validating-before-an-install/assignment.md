@@ -1,5 +1,6 @@
 ---
 slug: validating-before-an-install
+id: aray1djn6poy
 type: challenge
 title: Validating Before an Install
 teaser: A short description of the challenge.
@@ -13,3 +14,5 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+
+Placeholder

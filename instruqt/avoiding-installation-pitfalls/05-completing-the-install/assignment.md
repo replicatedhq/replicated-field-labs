@@ -1,5 +1,6 @@
 ---
 slug: completing-the-install
+id: yfgaomzczvea
 type: challenge
 title: Completing the Install
 teaser: A short description of the challenge.
@@ -13,3 +14,5 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+
+Placeholder
