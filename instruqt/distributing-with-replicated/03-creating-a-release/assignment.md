@@ -34,10 +34,10 @@ customer license to the appropriate channel.
 
 We encounter this concept in our day-to-day use of software
 all the time. For some applications, you're signed up to
-receive beta releases, while others you receive updates only
-when they're GA. You may even have some software, for example
-your Linux distribution, where you use only releases that
-have long term support.
+receive beta releases, while for others you receive updates
+only when they're GA. You may even have some software, for
+example your Linux distribution, where you use only releases
+that have long-term support.
 
 Release channels help you account for these different release
 cadences for your software. By default, Replicated creates
@@ -46,9 +46,8 @@ three release channels for each application:
 * `Unstable` is, as it sounds, releases that may be unstable
    and subject to defects and/or constant change. You may have
    every merge PR hit this channel, for example.
-* `Beta` represents releases that have release beta quality, for
-  those customers you have as part of a beta program for new
-  releases.
+* `Beta` represents releases that arebeta quality, for those 
+  customers you have as part of a beta program for new releases.
 * `Stable` is for GA release that you want to be available
   broadly to your customer base. This would be the default
   channel for any customer who did not opt-in to an alternative.

@@ -20,8 +20,8 @@ timelimit: 600
 ---
 
 Now that we have a release in the Replicated Platform, you can
-distribute it's Helm chart to your customers using entitlements
-that we manage for you. In this step, we're going to install the
+distribute its Helm chart to your customers using entitlements
+we manage for you. In this step, we're going to install the
 Harbor Helm chart the same way a customer would install your
 application.
 

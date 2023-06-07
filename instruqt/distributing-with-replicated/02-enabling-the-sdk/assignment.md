@@ -30,7 +30,7 @@ This injection serves a few purposes:
 
 1. The license is available to your application logic through a
    call to an in-cluster SDK
-2. Provides customer-specific credentials to Accesss to your 
+2. Provides customer-specific credentials to access your 
    container images and other registry assets. We inject these
    into your Helm values so that you can use them to create the
    appropriate image pull secrets.
