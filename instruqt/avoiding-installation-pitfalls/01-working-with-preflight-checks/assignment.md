@@ -1,11 +1,14 @@
 ---
 slug: working-with-preflight-checks
+id: 2pg7yavlxy31
 type: challenge
 title: Working with Preflight Checks
-teaser: Some tips and tricks for using this template
+teaser: |-
+  Learn how preflight checks help you avoid common install
+  mistakes
 notes:
 - type: text
-  contents: Let's learn about this template
+  contents: Let's learn about Preflights
 tabs:
 - title: Shell
   type: terminal

@@ -12,13 +12,16 @@ do
   sleep 1
 done
 
-# Display PARTICIPANT_ID info for Vendor Portal
-cat<<SCRIPT >> ${HOME_DIR}/.bashrc
-show_credentials () {
-  echo Credentials for https://vendor.replicated.com
-  echo Username: $INSTRUQT_PARTICIPANT_ID@replicated-labs.com
-  echo Password: $INSTRUQT_PARTICIPANT_ID
-}
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
 
-show_credentials
-SCRIPT
+# there's only one app created by the automation, so just grab the first in the list
+access_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+agent variable set USERNAME $(get_username)
+agent variable set PASSWORD $(get_password)
+agent variable set REPLICATED_API_TOKEN ${access_token}
+agent variable set REPLICATED_APP ${app_slug}
+
+
