@@ -52,7 +52,7 @@ active customer indicated.
 ![Active Customer in Stable Channel](../assets/active-customer-in-channel.png)
 
 If you click on "Details" you'll be brought to a filtered view of
-the Customer's page showing all customers are entitled to releases
+the Customer's page showing all customers that are entitled to releases
 on the _Stable_ channel. You'll see the customer Omozan there, and
 you'll notice it shows once instance. The specific status of the
 instance will depend on how quickly you navigated to the page after
