@@ -83,9 +83,9 @@ added any to our chart.
 Installing the Application
 ==========================
 
-Your customer starts their installation by logging into the
-our registry with the `helm` command. This gives them access
-to your Helm chart via the Replicated Platform.
+Your customer starts their installation by logging into our 
+registry with the `helm` command. This gives them access to 
+your Helm chart via the Replicated Platform.
 
 ```
 helm registry login registry.replicated.com \
@@ -94,8 +94,9 @@ helm registry login registry.replicated.com \
 ```
 
 From there, they do a simple Helm install. In our case, we're going to
-tack on an additional flag, `--wait`. This helps us make sure the
-installation is complete before we move onto the next step in the lab.
+tack some additional values that Harbor needs to come up correctly. 
+This helps us make sure the installation is complete before we move
+onto the next step in the lab.
 
 ```
 helm install harbor \

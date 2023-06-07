@@ -52,7 +52,7 @@ chart.
 ```
 
 You should put the dependency into the array with the other
-chart dependencies as show in the iamge. Use the version shown
+chart dependencies as show in the image. Use the version shown
 above, since it may be newer than the one in the screenshot.
 
 ![Adding the Dependency](../assets/adding-the-dependency.png)

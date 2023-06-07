@@ -1,8 +1,8 @@
 ---
-slug: validating-the-instsall
+slug: validating-the-install
 id: vibqdrrlurin
 type: challenge
-title: Observing the Custopmer Instance
+title: Observing the Customer Instance
 teaser: Observing your customer install
 notes:
 - type: text
@@ -19,7 +19,7 @@ timelimit: 600
 Now that we've installed the application the way your customer
 will, let's turn back to your perspective on what's going on
 in their environment. We're going to log back into the Vendor
-Portal in orderr to check the status of Omozan's instance.
+Portal in order to check the status of Omozan's instance.
 
 Logging Into the Vendor Portal
 ==============================
@@ -54,7 +54,7 @@ active customer indicated.
 If you click on "Details" you'll be brought to a filtered view of
 the Customer's page showing all customers are entitled to releases
 on the _Stable_ channel. You'll see the customer Omozan there, and
-you'll noticed shows once instance. The specific status of the
+you'll notice it shows once instance. The specific status of the
 instance will depend on how quickly you navigated to the page after
 starting the install.
 

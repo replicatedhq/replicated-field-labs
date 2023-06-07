@@ -64,7 +64,7 @@ release process. Some examples:
 * Channels named after the feature branches in your source
   code. These can help product teams validate release before
   they are merged for release on your primary channels.
-  Replicated recomments all teams follow this approach.
+  Replicated recommends all teams follow this approach.
 
 Creating Your Release
 =====================
