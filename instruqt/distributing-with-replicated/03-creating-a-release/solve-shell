@@ -17,7 +17,8 @@ api_token=$(get_api_token)
 app_slug=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
 # create the LTS channel
-replicated channel create --name LTS --description "Releases with long-term support available"
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
 
 # release to the `Unstable` channel
 replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
