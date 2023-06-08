@@ -38,7 +38,7 @@ This injection serves a few purposes:
 Adding the Dependency
 ======================
 
-Go to the the "Code Editor" tab and edit the file `Chart.yaml` in
+Go to the the "Manifest Editor" tab and edit the file `Chart.yaml` in
 the source directory `harbor`. You're going to make two changes to
 this file.
 
