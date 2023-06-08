@@ -29,7 +29,7 @@ chart.
 This injection serves a few purposes:
 
 1. The licese is available to your application logic through a
-   call to an in-cluster SDK
+   call to an API provided by an in-cluster service.
 2. Accesss to your container images and other registry
    assets is secured using customer-specific credentials
 3. The in-cluster service can connect securely to the Replicated
