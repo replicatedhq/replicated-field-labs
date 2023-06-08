@@ -20,7 +20,7 @@ timelimit: 300
 ---
 
 Now that we've got our environment set up, let's incorporate the
-SDK into our application. Replicated makes it easy for you to do 
+SDK into our application. Replicated makes it easy for you to do
 this by providing a Helm chart you can drop into your chart as a
 dependency. When you deliver your Helm chart from the Replicated
 regisry, we'll embed your customer's license into the final

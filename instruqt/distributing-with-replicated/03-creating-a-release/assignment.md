@@ -62,7 +62,7 @@ You should see three channels in the output:
 You may consider a few other uses for release channels in your
 release process. For examples, let's add a channel called `LTS`
 for customer those customer who want longer term gaurantees of
-support and fitness that you provide for your standard releases. 
+support and fitness that you provide for your standard releases.
 
 ```
 replicated channel create LTS
@@ -89,8 +89,8 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.7
 ```
 
 This creates a release for version `16.7.0` of your Harbor Helm
-Chart, and promotes it to the `Unstable` channel.  The `create` 
-command output sequence number that you'll need for `promote` 
+Chart, and promotes it to the `Unstable` channel.  The `create`
+command output sequence number that you'll need for `promote`
 (it will be `2` if you haven't explored releasing a bit more).
 
 ```
@@ -102,14 +102,14 @@ command output sequence number that you'll need for `promote`
 ```
 
 The sequence number uniquely identifies a release among all the
-releases you've made of your application. You can list your 
-releases using 
+releases you've made of your application. You can list your
+releases using
 
 ```
 replicated release ls
 ```
 
-which should show the initial release made during lab 
+which should show the initial release made during lab
 set up as well as the release you just created. It will
 also show the channel each release is currently available on,
 if any.
@@ -120,7 +120,7 @@ SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z    Stable
 ```
 
-To make an existing release availble on another channel, use 
+To make an existing release availble on another channel, use
 `replicated release promote`. In your actual release process,
 there may be a lot of activity between releasing to `Unstable`,
 promoting to `Beta`, and ultimately releasing on `Stable`.
@@ -143,5 +143,5 @@ You can see they were promoted by listing your releases again:
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z    
+1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
 ```

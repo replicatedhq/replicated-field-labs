@@ -23,7 +23,7 @@ alongside your application and enables access to the Replicated
 Platform. The SDK allows you to enforce your entitlements and
 take advantage of the telemetry that Replicated provides to help
 you better understand customer instances. It also allows your
-to get information about your application and it's releases, 
+to get information about your application and it's releases,
 including doing updates checks and showing version history.
 
 
