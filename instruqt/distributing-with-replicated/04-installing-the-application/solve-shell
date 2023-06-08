@@ -18,4 +18,5 @@ helm registry login registry.replicated.com \
 helm install harbor \
   oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/harbor \
   --set service.type=NodePort --set nodePort.https=443 \
-  --set externalURL=https://$(agent variable get EXTERNAL_URL)
+  --set externalURL=https://$(agent variable get EXTERNAL_URL) \
+  --kubeconfig /home/replicant/.kube/config
