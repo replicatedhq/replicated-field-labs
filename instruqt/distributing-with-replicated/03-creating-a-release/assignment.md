@@ -61,7 +61,7 @@ You should see three channels in the output:
 
 You may consider a few other uses for release channels in your
 release process. For examples, let's add a channel called `LTS`
-for customer those customer who want longer term gaurantees of
+for those customers who want longer term gaurantees of
 support and fitness that you provide for your standard releases.
 
 ```
