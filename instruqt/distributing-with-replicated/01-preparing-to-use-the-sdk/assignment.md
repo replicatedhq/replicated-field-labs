@@ -38,9 +38,8 @@ things. They've been set up for you in this lab environment.
    for this lab, but it could be the Helm chart for your product
    or any other Helm chart you wanted to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
-   access for the duration of this lab with the username
-   `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
-   the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
+   access for the duration of this lab. When you need them, the
+   lab instructions will show your username and password.
 3. An application on the Replicated Vendor Portal. We've also
    created that for you as part of the lab setup.
 4. A customer for that application. We've created the customer as
