@@ -30,4 +30,4 @@ spec:
               message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
 HARBOR_PREFLIGHTS
 
-chown replicant /home/replicated/harbor-preflights.yaml
+chown replicant /home/replicant/harbor-preflights.yaml

@@ -7,7 +7,7 @@ results=0
 
 # check whether the preflight has been created, we can assume that if it
 # has the right number of outcomes they've probably done the work
-if [[ $(yq '.spec.analyzers[0].bob.outcomes | length' /home/replicant/harbor-preflights.yaml) -ne 3 ]] ; then
+if [[ $(yq '.spec.analyzers[0].clusterVersion.outcomes | length' /home/replicant/harbor-preflights.yaml) -ne 3 ]] ; then
   fail-message 'Please check your preflights to make sure you have added the Kubernetes version check'
   let "reasult = result + 1"
 fi
