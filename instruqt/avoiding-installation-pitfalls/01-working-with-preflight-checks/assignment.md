@@ -123,14 +123,17 @@ Getting Started
 ===============
 
 Let's start by creating a new file for our prefight checks
-using the Kubernetes version example above. Click on the
-"Manifest Editor" tab and create a new file named
+using the Kubernetes cluster version example above. Click on
+the "Manifest Editor" tab and create a new file named
 `harbor-prefights.yaml`.
 
-SCREEN SHOT HERE
+![Creating the Preflights File](../assets/creating-harbor-preflights.png)
 
-Paste the YAML above into the new file and save it. Now let's
-run the preflight.
+Paste the YAML above into the new file and save it.
+
+![Saving the Preflight File](../assets/saving-harbor-preflights.png)
+
+Now let's run our preflight checks.
 
 ```
 kubectl preflight ./harbor-preflights.yaml
@@ -139,5 +142,4 @@ kubectl preflight ./harbor-preflights.yaml
 You'll see that your check has been run and it should report
 that it has passed with a supported version of Kubernetes.
 
-![Passing Kubernetes Version Preflight Check](../assets/passing-version-check.yaml)
-
+![Passing Kubernetes Version Preflight Check](../assets/passing-version-check.png)

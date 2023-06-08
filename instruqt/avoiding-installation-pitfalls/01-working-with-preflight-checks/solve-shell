@@ -3,16 +3,31 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-### Assure the tmux session exists
-#
-# In a test scenario Instuqt does not run the user shell for the
-# challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to 
-# succeed, so let's create it here.
-#
+cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor-preflights.yaml
+apiVersion: troubleshoot.sh/v1beta2
+kind: Preflight
+metadata:
+  name: harbor-preflight-checks
+spec:
+  analyzers:
+    - clusterVersion:
+        outcomes:
+          - fail:
+              when: "< 1.19.x"
+              message: |-
+                Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
+                registry and your installation will not succeed. Please upgrade your cluster or install to a different
+                cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
+              uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+          - warn:
+              when: "< 1.24.0"
+              message: |-
+                Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
+                community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+              uri: https://kubernetes.io
+          - pass:
+              message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+HARBOR_PREFLIGHTS
 
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
-
-tmux send-keys -t shell export SPACE 'THIS="the way"' ENTER
+chown replicant /home/replicated/harbor-preflights.yaml

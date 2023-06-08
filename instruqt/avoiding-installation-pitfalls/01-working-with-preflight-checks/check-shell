@@ -3,13 +3,13 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-# save the entire session to check user inputs and outputs
-tmux capture-pane -t shell -S -
-SESSION=$(tmux save-buffer -)
+results=0
 
-# check for disconnection
-if ! grep -qE 'THIS=[A-Za-z "]+' <(echo ${SESSION}) ; then
-  fail-message 'Please try it out by setting the environment variable `$THIS`'
-  exit 1
+# check whether the preflight has been created, we can assume that if it
+# has the right number of outcomes they've probably done the work
+if [[ $(yq '.spec.analyzers[0].bob.outcomes | length' /home/replicant/harbor-preflights.yaml) -ne 3 ]] ; then
+  fail-message 'Please check your preflights to make sure you have added the Kubernetes version check'
+  let "reasult = result + 1"
 fi
 
+return result
