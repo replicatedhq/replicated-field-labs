@@ -46,6 +46,9 @@ each channel shows the current version `16.7.0`.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
 
+_Note: If you are already a user of the Replicated Vendor Portral
+you may need to log out using the settings menu in the top right
+corner before you can log in as the lab user._
 
 Getting the Install Instructions
 ================================
@@ -63,7 +66,7 @@ installed anywhere yet.
 ![Customers Landing Page](../assets/customers-page.png)
 
 Below the graph you'll see the list of customers, with the customer
-"Omozon" as the only one in the list. Click on their name and you'll
+"Omozan" as the only one in the list. Click on their name and you'll
 be brought to their customer page. In the top right corner you'll
 see a link to their install instructions.
 
@@ -104,3 +107,6 @@ helm install harbor \
   --set service.type=NodePort --set nodePort.https=443 \
   --set externalURL=https://[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
 ```
+
+It's normal for this command to take a little bit of time to
+complete as various components of the Harbor registry come up.

@@ -97,3 +97,9 @@ home directoy.
 ```
 ls release
 ```
+
+which shows
+
+```
+harbor-16.7.0.tgz
+```
