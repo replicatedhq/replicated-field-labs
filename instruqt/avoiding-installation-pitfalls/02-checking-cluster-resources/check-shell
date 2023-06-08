@@ -3,13 +3,23 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-# save the entire session to check user inputs and outputs
-tmux capture-pane -t shell -S -
-SESSION=$(tmux save-buffer -)
+results=0
 
-# check for disconnection
-if ! grep -qE 'echo' <(echo ${SESSION}) ; then
-  fail-message 'Please make sure you can still access `$THIS`'
-  exit 1
+# check whether the preflight has been created, we can assume that if it
+# has the right number of outcomes they've probably done the work
+if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("CPU")' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
+  fail-message 'Please add the CPU resources preflight check to the Harbor preflights manifest'
+  let "reasult = result + 1"
 fi
 
+if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("memory")' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
+  fail-message 'Please add the memory preflight check to the Harbor preflights manifest'
+  let "reasult = result + 1"
+fi
+
+if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("storage")' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
+  fail-message 'Please add the storagmemorye preflight check to the Harbor preflights manifest'
+  let "reasult = result + 1"
+fi
+
+return result

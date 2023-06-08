@@ -124,7 +124,7 @@ To round out the resource checks, add a similar check for memory
 
 ```
     - nodeResources:
-        checkName: Cluster memory is are sufficient to install and run Harbor
+        checkName: Cluster memory is sufficient to install and run Harbor
         outcomes:
           - fail:
               when: "sum(memoryAllocatable) < 4G"
@@ -145,6 +145,7 @@ To round out the resource checks, add a similar check for memory
 ```
 
 and also one for storage
+
 ```
     - nodeResources:
         checkName: Cluster has sufficient storage to install and run Harbor
@@ -167,4 +168,31 @@ and also one for storage
               message: Your cluster has sufficient storage available to run Harbor
 ```
 
+Running the Revised Preflights
+==============================
 
+Now that we have a thorough set of preflights for cluster resources, let's run
+them:
+
+```
+kubeclt preflight ./harbor-preflights.yaml
+```
+
+You'll see that all four preflights are run, and that the storage
+preflight has failed. This is an expected failure, since we have
+single node cluster that uses just that node's disk for storage. That
+disk is smaller than the storage requirements for Harbor.
+
+![Failing Storage Preflight](../assets/storage-preflight-failure.png)
+
+If you completed the [Distributing Your Application with Replicated]
+lab, you may be surprised at this failure. In that lab, we deployed
+Harbor and it came up successfully. This is another value provided by
+your checks. They can detect latent failures, like the fact that 
+Harbor could rapidly exhaust the disk available in this cluster 
+even though it started successfully.
+
+In fact, installing the Harbor Helm chart requests 28 GB of storage.
+The cluster, in the previous lab with only 20 GB of disk available, 
+fulfilled all of those requests. That could creat quite the challenge
+to diagnose in the future.
