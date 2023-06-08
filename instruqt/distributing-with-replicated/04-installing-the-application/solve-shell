@@ -10,11 +10,10 @@ app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${a
 
 # login to the registry
 helm registry login registry.replicated.com \
-  --username $(agent variable get USERNAME) \ 
+  --username $(agent variable get CUSTOMER_EMAIL) \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
 # install the application
-
 helm install harbor \
   oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/harbor \
   --set service.type=NodePort --set nodePort.https=443 \
