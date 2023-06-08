@@ -65,7 +65,8 @@ for those customers who want longer term gaurantees of
 support and fitness that you provide for your standard releases.
 
 ```
-replicated channel create LTS
+replicated channel create --name LTS \
+  --description "Releases with long-term support available"
 ```
 
 Other examples:
