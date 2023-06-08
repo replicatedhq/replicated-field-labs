@@ -11,6 +11,9 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
+- title: Cluster
+  type: terminal
+  hostname: cluster
 - title: Manifest Editor
   type: code
   hostname: shell
@@ -85,23 +88,83 @@ and paste this new analyzer after the one checking the Kubernetes version.
 
 ```
     - nodeResources:
-        checkName: Cluster CPU resources are sufficient to install Harbor
+        checkName: Cluster CPU resources are sufficient to install and run Harbor
         outcomes:
           - fail:
               when: "sum(cpuAllocatable) < 2"
               message: |-
                 Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
-                at 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
                 workloads. Please increase cluster capacity or install into a different cluster.
               uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
           - warn:
               when: "sum(cpuAllocatable) < 4"
               message: |-
                 Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
-                than 4 CPU cores available to run Kubernetes workloads. You may want to consider
-                increasing cluster capacity or installing into a different cluster for the best
-                experience
+                than 4 CPU cores available to run workloads. For the best experience, consider
+                increasing cluster capacity or installing into a different cluster.
               uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
           - pass:
               message: Your cluster has sufficient CPU resources available to run Harbor
 ```
+
+After saving your changes run the update preflight checks to see the outcome.
+
+```
+kubectl preflight ./harbor-preflights.yaml
+```
+
+You'll see that our cluster generates a warning since it has only two CPU
+cores available. This should be fine for our lab environment, so we can
+ignore the warning for now.
+
+![CPU Preflight Warning](../assets/cpu-preflight-warning.png)
+
+To round out the resource checks, add a similar check for memory
+
+```
+    - nodeResources:
+        checkName: Cluster memory is are sufficient to install and run Harbor
+        outcomes:
+          - fail:
+              when: "sum(memoryAllocatable) < 4G"
+              message: |-
+                Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                workloads. Please increase cluster capacity or install into a different cluster.
+              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+          - warn:
+              when: "sum(memoryAllocatable) < 8Gi"
+              message: |-
+                Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                than 8 GB of memory available to run workloads. For the best experience, consider
+                increasing cluster capacity or installing into a different cluster.
+              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+          - pass:
+              message: Your cluster has sufficient memory available to run Harbor
+```
+
+and also one for storage
+```
+    - nodeResources:
+        checkName: Cluster has sufficient storage to install and run Harbor
+        outcomes:
+          - fail:
+              when: "sum(storageAllocatable) < 40G"
+              message: |-
+                Harbor requires a minimum of 40 GB of storage in order to run, and runs best with
+                at least 160 GB. Your current cluster has less than 40 GB available to Kubernetes
+                workloads. Please increase cluster capacity or install into a different cluster.
+              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+          - warn:
+              when: "sum(storageAllocatable) < 160Gi"
+              message: |-
+                Harbor runs best with a minimum of 160 GB of storage. Your current cluster has less
+                than 160 GB of storage available to run workloads. For the best experience, consider
+                increasing cluster capacity or installing into a different cluster.
+              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+          - pass:
+              message: Your cluster has sufficient storage available to run Harbor
+```
+
+
