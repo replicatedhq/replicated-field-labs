@@ -188,11 +188,11 @@ disk is smaller than the storage requirements for Harbor.
 If you completed the [Distributing Your Application with Replicated]
 lab, you may be surprised at this failure. In that lab, we deployed
 Harbor and it came up successfully. This is another value provided by
-your checks. They can detect latent failures, like the fact that 
-Harbor could rapidly exhaust the disk available in this cluster 
+your checks. They can detect latent failures, like the fact that
+Harbor could rapidly exhaust the disk available in this cluster
 even though it started successfully.
 
 In fact, installing the Harbor Helm chart requests 28 GB of storage.
-The cluster, in the previous lab with only 20 GB of disk available, 
+The cluster, in the previous lab with only 20 GB of disk available,
 fulfilled all of those requests. That could creat quite the challenge
 to diagnose in the future.
