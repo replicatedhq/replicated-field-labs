@@ -193,6 +193,6 @@ Harbor could rapidly exhaust the disk available in this cluster
 even though it started successfully.
 
 In fact, installing the Harbor Helm chart requests 28 GB of storage.
-The cluster, in the previous lab with only 20 GB of disk available,
+The cluster in the previous lab with only 20 GB of disk available,
 fulfilled all of those requests. That could creat quite the challenge
 to diagnose in the future.
