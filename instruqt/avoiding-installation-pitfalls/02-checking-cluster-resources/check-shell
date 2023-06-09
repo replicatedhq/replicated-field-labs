@@ -22,4 +22,4 @@ if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("stora
   let "reasult = result + 1"
 fi
 
-return result
+return ${result}

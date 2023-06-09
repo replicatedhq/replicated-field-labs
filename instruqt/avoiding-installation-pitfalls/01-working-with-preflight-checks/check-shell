@@ -12,4 +12,4 @@ if [[ $(yq '.spec.analyzers[0].clusterVersion.outcomes | length' /home/replicant
   let "reasult = result + 1"
 fi
 
-return result
+return ${result}
