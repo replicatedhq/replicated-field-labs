@@ -3,10 +3,10 @@ slug: releasing-the-application
 id: 14xfg2xrtgef
 type: challenge
 title: Releasing the Application
-teaser: Some tips and recomended defaults
+teaser: Releasing with preflights on the Replicated Platform
 notes:
 - type: text
-  contents: Making the most of this template
+  contents: Time to release an update with our preflight checks
 tabs:
 - title: Shell
   type: terminal
@@ -15,97 +15,128 @@ difficulty: basic
 timelimit: 300
 ---
 
-💡 Tips and Tricks
-==================
+Since we're distributing our application with the Replicated
+Platform, we need to let the platform know about the changes
+we've made to the application by creating a new release. This
+process will be familiar to you if you have completed
+the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
+lab. If not, you may want to go throght lab to learn a bit
+more about how releases and release channels work.
 
-## Checking What Happened
+A Quick Look at Release Channels
+================================
 
-As mentioned above, you can capture what went on during a challenge
-using a pair of `tmux` commands. Here's an example of how you might
-capture the entire history of a challenge:
+The Replicated platform provides a way to connect
+each customer to the right release(s) for them. It does this
+by organizing release into _channels_, and assigning each
+customer license to the appropriate channel. Release channels
+help you account for these different release cadences for
+your software.
 
-```shell
-# save the entire session to check user inputs and outputs
-tmux capture-pane -t shell -S -
-SESSION=$(tmux save-buffer -)
+By default, Replicated creates three release channels for
+each application: `Unstable`, `Beta`, and `Stable`. We're
+going to release our updates to Harbor across all three of
+those channels.
+
+Preparing to Release
+====================
+
+Before we release, we need to make sure we're authenticated
+to the Replicated Platform. We're going to use an API
+token to do that. The lab setup created one for you. Let's
+set it into an environment variable.
+
+
+```
+export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-You may want to capture a subset of what was done. In this example,
-we get the last ten lines.
+We also need to tell the `replicated` commmand which
+application to work with. We can do this with every command,
+but it's easier to just set an environment variable.
 
-```shell
-# save the last _LINES_ lines to check inputs and outputs
-LINES=10
-HEIGHT=$(tmux list-panes -F "#{pane_height}")
-SESSION=$(tmux capture-pane -t shell -S $(expr $HEIGHT - $LINES) -p)
+```
+export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
 ```
 
-In either case, you can use `grep` or either shell commands to examine
-`SESSION` and see if they user followed you instructions.
+Creating a New Release
+======================
 
-## Entering Commands in Solve
+There are two releases already available for the Harbor
+applicaiton. We're going to releaea a third that includes
+the preflight checks.
 
-Your solve command can run as usual and not interact with the learner's
-shell. That's the recommended approach for most challenges. Some solve
-scripts can be done that way, for example setting environment variables
-you'll need in another challenge. In that case, you can use `send-keys`
-in your solve script to change the environment.
-
-```shell
-tmux send-keys -t shell export SPACE REPLICATED_APP=wordpress-civet ENTER
+```
+replicated release ls
 ```
 
-Note that since the shell isn't restarted with each challenge, you'll
-need to do this for any variable you want to persist in the environment
-after the first challenge.
+You'll see that the the same release is current across
+all three channels, and it has the sequence number `2`.
+All releases are assigned a sequence number base on the
+order in which they are created.
 
-## Default Cleanup Script
-
-The following is a good default cleanup script. Use this to make the
-shell look clean and new just like it does in tracks that don't use
-`tmux`.
-
-```shell
-#!/usr/bin/env bash
-
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
-
-# clear the tmux pane and scrollback to look like a fresh shell
-tmux clear-history -t shell
-tmux send-keys -t shell clear ENTER
+```
+SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
+2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
+1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
 ```
 
-This is the cleanup script for this track, when you click **Check** to
-move on to the next challenge you can see it's results.
+To release our new version, we create a new releaes and
+(optionally) assign it to a channel. It's a good practice
+to make new releases on either the `Unstable` channel or
+a channel specific to the feature you are working on. Let's
+use the `Unstable` channel for this lab, since the latter
+approach is best for teams working with feature branches.
 
-## Testing
-
-If you use any `tmux` commands in your lifecycle scripts, you will need
-to make sure that the session is created if you want to run tests with
-`instruqt track test`. This is necessary since the test lifecycle does not
-run the shell commands in `config.yml`.
-
-Put the following early in your `solve-shell` script for your first
-challenge to make sure testing behaves.
-
-```shell
-### Assure the tmux session exists
-#
-# In a test scenario Instuqt does not run the user shell for the
-# challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to
-# succeed, so let's create it here.
-#
-
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
+```
+replicated release create --promote Unstable --yaml-dir ./release --version 16.8.0  \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 
-🏁 Finish
-=========
+This creates a release for version `16.8.0` of the Harbor Helm
+chart, and promotes it to the `Unstable` channel. The `create`
+command output sequence number that you'll need for `promote` (it
+will be `3` if you haven't explored releasing a bit more).
 
-You've now had a bit of a tour through this template. You're ready to
-base a lab on it. Feel free to browse through the source code to see
-examples of these tips in action.
+```
+  _ Reading manifests from ./release _
+  _ Creating Release _
+    _ SEQUENCE: 3
+  _ Promoting _
+    _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 2
+```
+
+For the lab, we're going to assume this release can be directly
+shared on the `Beta` and `Stable` channels. Your actual release
+process may have many more activities before releasing to either
+of those channels---ther team processes, steps in a continuous
+delivery pipeline, or both.
+
+```
+replicated release promote 3 Beta --version 16.8.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
+```
+
+and then
+
+```
+replicated release promote 3 Stable --version 16.8.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
+```
+
+List your releases again to see that the release has been
+promoted.
+
+```
+replicated release ls
+```
+
+Your list of releases will now show three releases with the third
+release available on the `Unstable`, `Beta`, and `Unstable` channels.
+
+```
+SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
+3           2023-06-10T20:22:14Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
+2           2023-06-10T20:21:13Z    0001-01-01T00:00:00Z    
+1           2023-06-10T20:20:02Z    0001-01-01T00:00:00Z
+```
