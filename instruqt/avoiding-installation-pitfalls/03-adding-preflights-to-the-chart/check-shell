@@ -15,7 +15,9 @@ helm template /home/replicant/harbor > /home/replicant/template.yaml
 chown replicant /home/replicant/template.yaml
 
 if [[ "$(helm template /home/replicant/harbor | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "preflight" ) | .stringData | has("preflight.yaml")')" == "true" ]] ; then
+  set +e pipefail
   check_results="$(helm template /home/replicant/harbor | kubectl preflight --interactive=false --format yaml --kubeconfig /home/replicant/.kube/config -)"
+  set -e pipefail
 else
   fail-message 'Please add your preflight checks to the preflights template file'
   let "result = result + 1"
@@ -23,25 +25,28 @@ fi
 
 # check whether the preflight has been created, we can assume that if it
 # has the right number of outcomes they've probably done the work
-if [[ echo "${check_results}" | kubectl preflight --interactive=false --format yaml - | yq '.pass | length' -ne "1" ]] ; then
+passes=$(echo "${check_results}" | yq '.pass | length') 
+if [[ "${passes}" != "1" ]] ; then
   fail-message 'Please add the Kubernetes version preflight check to the preflights template'
   let "result = result + 1"
 fi
 
-if [[ echo "${check_results}" | kubectl preflight --interactive=false --format yaml - | yq '.warn | length' -ne "2" ]] ; then
+warns=$(echo "${check_results}" | yq '.warn | length')
+if [[ "${warns}" -ne "2" ]] ; then
   fail-message 'Please make sure you added both the CPU and memory preflight checks to the preflights template'
   let "result = result + 1"
 fi
 
-if [[ echo "${check_results}" | kubectl preflight --interactive=false --format yaml - | yq '.fail | length' -ne "1" ]] ; then
+fails=$(echo "${check_results}" | yq '.fail | length') 
+if [[ "${fails}" -ne "1" ]] ; then
   fail-message 'Please add the storage preflight to the preflights template'
   let "result = result + 1"
 fi
 
 # look for the preflight template file
-if [[ ! -f /home/replicant/harbor/release/harbor-16.8.0 ]] ; then
+if [[ ! -f /home/replicant/release/harbor-16.8.0.tgz ]] ; then
   fail-message $'Please make sure you\'ve bumped the version of your Helm chart and re-packaged it'
   let "result = result + 1"
 fi
 
-return ${result}
+exit ${result}

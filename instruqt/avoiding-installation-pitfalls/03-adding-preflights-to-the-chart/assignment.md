@@ -243,7 +243,7 @@ the verison in the Manifest Editor or run the following command to do it from
 the shell.
 
 ```
-yq -i '.version = "16.8.0" harbor/Chart.yaml
+yq -i '.version = "16.8.0"' harbor/Chart.yaml
 ```
 
 and run the `helm package` command to package the updated version
