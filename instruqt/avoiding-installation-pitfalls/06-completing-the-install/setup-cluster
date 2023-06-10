@@ -1,11 +1,7 @@
-#!/bin/sh
-#
-# This script runs when the platform setup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+usr/bin/env bash
 
-echo "This is the setup script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+ 
+agent variable set EXTERNAL_URL harbor.${HOSTNAME}.${_SANDBOX_ID}.instruqt.io
 
-exit 0
