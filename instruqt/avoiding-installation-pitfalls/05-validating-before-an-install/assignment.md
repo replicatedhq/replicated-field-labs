@@ -53,3 +53,46 @@ that.
 Creating a Customer
 ===================
 
+To create a customer, select "Customers" from the menu on the left
+the click the "Create Customer" button.
+
+IMAGE GOES HERE
+
+Call your customer "Geeglo" and assign them to the `Stable` channel.
+Let's assume this customer is not yet a customer, but prospect who
+is evaluating our application. Let's assume allow our customers to
+evaluate our software on a trial license for 30 days.  Set them up
+as a "Trial" customer with a license that has an expiration date
+of [[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]. Set
+their email to [[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]].
+
+IMAGE  GOES HERE
+
+Running Preflight Checks
+========================
+
+Your customer will prepare for their installation by running
+the preflights checks. Since the preflights are embedded in 
+the Harbor Helm chart, they first need to log into the Replicated
+registry with the `helm` command. This gives them access to 
+your Helm chart via the Replicated Platform.
+
+```
+helm registry login registry.replicated.com \
+  --username [[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]] \
+  --password [[ Instruqt-Var key="REGISTRY_PASSWORD" hostname="shell" ]]
+```
+
+From there, they can use the `helm template` command to extract the
+preflight checks to run with `kubectl preflight`.
+
+```
+helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+  | kubectl preflight -
+```
+
+Running the checks this way shows them the same screen you saw when
+you tested the preflights earlier, with the Kubernetes version check
+passing, the storage check failing, and two warnings.
+
+![Customer Preflight Checks](../assets/storage-preflight-failure.png)
