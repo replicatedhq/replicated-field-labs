@@ -61,6 +61,9 @@ replicated release promote ${release_sequence} Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
+# create LTS channel from the "distributing" lab so things look consistent
+replicated channel create LTS --app ${app_slug} --token ${api_tokent}
+
 # remove the helm chart we used to create the release
 rm /home/replicant/release/harbor-16.7.0.tgz
 
