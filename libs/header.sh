@@ -31,7 +31,6 @@ get_api_token () {
   do
       sleep 2
       token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
-      echo "Token: ${token} value"
       i=$((i+1))
   done
 
