@@ -7,7 +7,7 @@ cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "harbor.core" . }}
+  name: {{ include "common.names.fullname" . }}-preflight
   namespace: {{ .Release.Namespace | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- if .Values.commonLabels }}
