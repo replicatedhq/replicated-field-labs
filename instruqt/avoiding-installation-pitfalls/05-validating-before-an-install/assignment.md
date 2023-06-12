@@ -56,7 +56,7 @@ Creating a Customer
 To create a customer, select "Customers" from the menu on the left
 the click the "Create Customer" button.
 
-IMAGE GOES HERE
+![Creating a Customer](../assets/create-customer-button.png)
 
 Call your customer "Geeglo" and assign them to the `Stable` channel.
 Let's assume this customer is not yet a customer, but prospect who
@@ -66,22 +66,29 @@ as a "Trial" customer with a license that has an expiration date
 of [[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]. Set
 their email to [[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]].
 
-IMAGE  GOES HERE
+![Customer Details](../assets/new-customer-details.png)
 
 Running Preflight Checks
 ========================
 
 Your customer will prepare for their installation by running
-the preflights checks. Since the preflights are embedded in 
+the preflights checks. Since the preflights are embedded in
 the Harbor Helm chart, they first need to log into the Replicated
-registry with the `helm` command. This gives them access to 
+registry with the `helm` command. This gives them access to
 your Helm chart via the Replicated Platform.
 
-```
-helm registry login registry.replicated.com \
-  --username [[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]] \
-  --password [[ Instruqt-Var key="REGISTRY_PASSWORD" hostname="shell" ]]
-```
+If you compelted the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
+lab, you'll remember that each customer has their own login
+credentials that are specific to their entitlements to your
+application. You can get those instructions by clicking the
+"Helm Install Instructions" button on the customer page.
+
+![Install instruction](../assets/install-instructions.png)
+
+In lab, we only want to execut the first step in the process,
+which is the log into the registry. Because you just created
+the customer, you'll have to copy the login command from the
+vendor portal page.
 
 From there, they can use the `helm template` command to extract the
 preflight checks to run with `kubectl preflight`.
@@ -95,4 +102,4 @@ Running the checks this way shows them the same screen you saw when
 you tested the preflights earlier, with the Kubernetes version check
 passing, the storage check failing, and two warnings.
 
-![Customer Preflight Checks](../assets/storage-preflight-failure.png)
+![Customer Preflight Checks](../assets/customer-preflight-checks.png)
