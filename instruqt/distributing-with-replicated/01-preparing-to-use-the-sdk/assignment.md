@@ -41,10 +41,10 @@ things. They've been set up for you in this lab environment.
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
    the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
-3. An application on the Replicated Vendor Portal. We've also
-   created that for you as part of the lab setup.
-4. A customer for that application. We've created the customer as
-   well.
+3. An application on the Replicated Vendor Portal. It was also
+   created for you as part of the lab setup.
+4. A customer for that application. The automation created the 
+   customer as well.
 
 🔤 Getting Started
 ==================
@@ -64,7 +64,8 @@ platform.
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-And lastly make sure we are working with the Harbor app
+And lastly make sure we are working with the Harbor app that was
+created by the lab setup.
 
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"

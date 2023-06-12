@@ -43,6 +43,12 @@ Release channels help you account for these different release
 cadences for your software. By default, Replicated creates
 three release channels for each application:
 
+```
+replicated channel ls
+```
+
+You should see three channels in the output:
+
 * `Unstable` is, as it sounds, releases that may be unstable
    and subject to defects and/or constant change. You may have
    every merge PR hit this channel, for example.
@@ -54,13 +60,19 @@ three release channels for each application:
   channel for any customer who did not opt-in to an alternative.
 
 You may consider a few other uses for release channels in your
-release process. Some examples:
+release process. For examples, let's add a channel called `LTS`
+for those customers who want longer term guarantees of
+support and fitness that you provide for your standard releases.
 
-* `LTS` for those customer who want longer term gaurantees
-  of support and fitness that you provide for your standard
-  releases.
+```
+replicated channel create --name LTS \
+  --description "Releases with long-term support available"
+```
+
+Other examples:
+
 * `Edge` for customer who want continuous delivery of your
-   software to their environmnets.
+   software to their environments.
 * Channels named after the feature branches in your source
   code. These can help product teams validate release before
   they are merged for release on your primary channels.
@@ -69,7 +81,8 @@ release process. Some examples:
 Creating Your Release
 =====================
 
-To create a release, run the following command:
+To create a release, run the following command. We're using the
+`Unstable` channel since we're releasing our most recent change.
 
 ```
 replicated release create --promote Unstable --yaml-dir ./release --version 16.7.0  \
@@ -77,10 +90,9 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.7
 ```
 
 This creates a release for version `16.7.0` of your Harbor Helm
-Chart, and promotes it to the `Unstable` channel. To release it
-to another channel, use `replicated release promote`. The `create`
-command output sequence number that you'll need for `promote` (it
-will be `2` if you haven't explored releasing a bit more).
+Chart, and promotes it to the `Unstable` channel.  The `create`
+command output sequence number that you'll need for `promote`
+(it will be `2` if you haven't explored releasing a bit more).
 
 ```
   _ Reading manifests from ./release _
@@ -90,10 +102,30 @@ will be `2` if you haven't explored releasing a bit more).
     _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 2
 ```
 
-In your actual release process, there may be a lot of activity
-between releasing to `Unstable`, promoting to `Beta`, and
-ultimately releasing on `Stable`. For the purposes of the lab,
-let's just promote the release straight through.
+The sequence number uniquely identifies a release among all the
+releases you've made of your application. You can list your
+releases using
+
+```
+replicated release ls
+```
+
+which should show the initial release made during lab
+set up as well as the release you just created. It will
+also show the channel each release is currently available on,
+if any.
+
+```
+SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
+2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Unstable
+1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z    Stable
+```
+
+To make an existing release available on another channel, use
+`replicated release promote`. In your actual release process,
+there may be a lot of activity between releasing to `Unstable`,
+promoting to `Beta`, and ultimately releasing on `Stable`.
+For the purposes of the lab, let's just promote the release straight through.
 
 ```
 replicated release promote 2 Beta --version 16.7.0 \
@@ -107,3 +139,10 @@ replicated release promote 2 Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
+You can see they were promoted by listing your releases again:
+
+```
+SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
+2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
+1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
+```

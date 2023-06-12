@@ -16,8 +16,12 @@ api_token=$(get_api_token)
 # get the app slug in order to release the app
 app_slug=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
+# create the LTS channel
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
+
 # release to the `Unstable` channel
-replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 1.6.0 \
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -25,11 +29,11 @@ replicated release create --promote Unstable --yaml-dir /home/replicant/release 
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 1.6.0 \
+replicated release promote ${release_sequence} Beta --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 1.6.0 \
+replicated release promote ${release_sequence} Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
