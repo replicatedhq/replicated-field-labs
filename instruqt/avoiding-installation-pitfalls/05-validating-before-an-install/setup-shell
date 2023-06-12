@@ -34,7 +34,7 @@ curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
 customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
 
 # help the user out by telling them the expiration date for a 30-day trial
-license_expirty=$(date -d "+30 days" "+%B %d, %Y")
+license_expiry=$(date -d "+30 days" "+%B %d, %Y")
 
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
