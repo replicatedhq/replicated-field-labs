@@ -102,4 +102,8 @@ Running the checks this way shows them the same screen you saw when
 you tested the preflights earlier, with the Kubernetes version check
 passing, the memmory check failing, and a warning for the CPU available.
 
-![Customer Preflight Checks](../assets/customer-preflight-checks.png)
+![Customer Preflight Checks](../assets/customer-preflight-checks-before.png)
+
+To have a succecssful installation, the customer has to make a decision
+about whether they should install to a different cluster or add
+more resources to this cluster.
