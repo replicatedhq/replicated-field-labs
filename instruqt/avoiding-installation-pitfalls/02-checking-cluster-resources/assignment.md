@@ -30,13 +30,13 @@ The default `clusterResources` collector collects information
 about all of the nodes in the cluster. This allows us to
 write analyzers that check whether the cluster has sufficient
 resources to run our cluster: most often we write checks to
-determine whether CPU, memmory, and storage meet the base
+determine whether CPU, memory, and storage meet the base
 requirements of the application.
 
 When analyzing resources in the cluster, we can write expressions
-baesd on whether the node has the
-[capacity required and whether that capacity isallocatable](https://kubernetes.io/docs/concepts/architecture/nodes/#capacity).
-Alloctable has a very specific meaning to Kubernetes, and is not
+based on whether the node has the
+[capacity required and whether that capacity is allocatable](https://kubernetes.io/docs/concepts/architecture/nodes/#capacity).
+Allocatable has a very specific meaning to Kubernetes, and is not
 the same as "free" or "available". It means only that he capacity
 is not being reserved by Kubernetes or the underlying system. This
 distinction often trips up developer who are new to Kubernetes.
@@ -146,7 +146,7 @@ them:
 kubeclt preflight ./harbor-preflights.yaml
 ```
 
-You'll see that all three preflights are run, and that the memoery
+You'll see that all three preflights are run, and that the memory
 preflight has failed. This is an expected failure, since we have
 single node cluster that does not have enough memory to run Harbor.
 

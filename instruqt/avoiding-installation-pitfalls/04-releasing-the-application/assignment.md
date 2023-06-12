@@ -20,7 +20,7 @@ Platform, we need to let the platform know about the changes
 we've made to the application by creating a new release. This
 process will be familiar to you if you have completed
 the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
-lab. If not, you may want to go throght lab to learn a bit
+lab. If not, you may want to go through that lab to learn a bit
 more about how releases and release channels work.
 
 A Quick Look at Release Channels
@@ -51,7 +51,7 @@ set it into an environment variable.
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-We also need to tell the `replicated` commmand which
+We also need to tell the `replicated` command which
 application to work with. We can do this with every command,
 but it's easier to just set an environment variable.
 
@@ -63,7 +63,7 @@ Creating a New Release
 ======================
 
 There are two releases already available for the Harbor
-applicaiton. We're going to releaea a third that includes
+application. We're going to release a third that includes
 the preflight checks.
 
 ```
@@ -81,7 +81,7 @@ SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
 ```
 
-To release our new version, we create a new releaes and
+To release our new version, we create a new release and
 (optionally) assign it to a channel. It's a good practice
 to make new releases on either the `Unstable` channel or
 a channel specific to the feature you are working on. Let's
@@ -109,8 +109,8 @@ will be `3` if you haven't explored releasing a bit more).
 For the lab, we're going to assume this release can be directly
 shared on the `Beta` and `Stable` channels. Your actual release
 process may have many more activities before releasing to either
-of those channels---ther team processes, steps in a continuous
-delivery pipeline, or both.
+of those channels---their teams review and approval processes, 
+steps in a continuous delivery pipeline, or both.
 
 ```
 replicated release promote 3 Beta --version 16.8.0 \

@@ -28,7 +28,7 @@ timelimit: 600
 ---
 
 We're going to continue playing the role of the customer
-who had a failing prelight check for the Harbor registry.
+who had a failing preflight check for the Harbor registry.
 Let's also assume that the customer decided to increase
 the capacity of the cluster and is ready to perform
 the installation.
@@ -36,7 +36,7 @@ the installation.
 Validating the Added Capacity
 =============================
 
-The first step to resuming the installattion process is
+The first step to resuming the installation process is
 to make sure that the cluster has been upgraded with the
 necessary resources. We can do that by re-running the
 preflight checks against the now expanded cluster.
@@ -56,10 +56,10 @@ checks confirm this change.
 Installing the Application
 ==========================
 
-Now the the preflight checks have passed, it's safe to
+Now that the preflight checks have passed, it's safe to
 install the application. You can find the installation
-commannd for the customer "Geeglo" in the Replicated
-vendor portal. Since we've alreay run the first two
+command for the customer "Geeglo" in the Replicated
+vendor portal. Since we've already run the first two
 steps of logging into the registry and running our
 preflight checks, we have only the installation
 with the Helm command to complete.
@@ -111,7 +111,7 @@ echo Password: $(kubectl get secret --namespace default harbor-core-envvars -o j
 🏁 Finish
 =========
 
-You've now successully seen how you can provide preflight
+You've now successfully seen how you can provide preflight
 checks to your customer to help them avoid potential pitfalls
 installing your application. You've also seen how those
 preflights can help your customer understand what they need

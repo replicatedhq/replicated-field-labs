@@ -28,7 +28,7 @@ One of the areas teams worry about most when distributing software
 to customer clusters is whether those clusters will be properly
 configured for the application to run. To address this challenge,
 the Replicated Platform provides for the implementation and
-management for preflight checks that can describe your expecations
+management for preflight checks that can describe your expectations
 and validate them. Preflights are part of the
 [Troubleshoot](https://troubleshoot.sh) open source project.
 
@@ -36,13 +36,13 @@ and validate them. Preflights are part of the
 ===========================
 
 Preflight checks analyze your customer's cluster as a client without
-installing anything into it. This allows customres to run Preflight
+installing anything into it. This allows customers to run Preflight
 checks at any time before installing your software and keep the
-cluster unchanged. They codify the pre-requisities you would catalog
+cluster unchanged. They codify the pre-requisites you would catalog
 in your documentation and make the executable.
 
 You define your checks in a YAML file that follows the same format
-as a Kubernets object. The simplest preflight object looks like this,
+as a Kubernetes object. The simplest preflight object looks like this,
 and it's in the file `empty-preflights.yaml`:
 
 ```
@@ -78,7 +78,7 @@ collectors, since two collectors are included in all preflights
 by default.
 
 The `clusterInfo` collector collects information about the running
-clusster like the Kubernetes version an other info you'd see when
+cluster like the Kubernetes version an other info you'd see when
 running `kubectl version`. The other default collector is
 `clusterResources` which collects information about resources of
 several known types across all namespaces that the user has
@@ -122,7 +122,7 @@ This analyzer is the first of a handful of analyzers we will add in this lab.
 Getting Started
 ===============
 
-Let's start by creating a new file for our prefight checks
+Let's start by creating a new file for our preflight checks
 using the Kubernetes cluster version example above. Click on
 the "Manifest Editor" tab and create a new file named
 `harbor-prefights.yaml`.

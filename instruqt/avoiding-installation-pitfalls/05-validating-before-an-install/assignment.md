@@ -77,7 +77,7 @@ the Harbor Helm chart, they first need to log into the Replicated
 registry with the `helm` command. This gives them access to
 your Helm chart via the Replicated Platform.
 
-If you compelted the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
+If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
 lab, you'll remember that each customer has their own login
 credentials that are specific to their entitlements to your
 application. You can get those instructions by clicking the
@@ -85,7 +85,7 @@ application. You can get those instructions by clicking the
 
 ![Install instruction](../assets/install-instructions.png)
 
-In lab, we only want to execut the first step in the process,
+In lab, we only want to execute the first step in the process,
 which is the log into the registry. Because you just created
 the customer, you'll have to copy the login command from the
 vendor portal page.
@@ -100,10 +100,10 @@ helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP"
 
 Running the checks this way shows them the same screen you saw when
 you tested the preflights earlier, with the Kubernetes version check
-passing, the memmory check failing, and a warning for the CPU available.
+passing, the memory check failing, and a warning for the CPU available.
 
 ![Customer Preflight Checks](../assets/customer-preflight-checks-before.png)
 
-To have a succecssful installation, the customer has to make a decision
+To have a successful installation, the customer has to make a decision
 about whether they should install to a different cluster or add
 more resources to this cluster.

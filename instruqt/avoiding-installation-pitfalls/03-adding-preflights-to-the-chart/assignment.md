@@ -25,8 +25,8 @@ deliver these checks as part of the application. To do this,
 we're going to incorporate them into our Helm chart and
 release a new version using the Replicated Platform.
 
-Makeing Preflights Available with Your Application
-==================================================
+Making Preflights Available with Your Application
+=================================================
 
 We defined our preflight checks in a manifest that looks a
 lot like a Kubernetes resource. It's useful to think of it as
@@ -87,7 +87,7 @@ Error: no data has been collected
 ```
 
 _Note: The preflight check can also be stored as a `ConfigMap`
-with the same annoation._
+with the same annotation._
 
 Adding Preflight Checks into the Harbor Helm Chart
 ==================================================
@@ -110,7 +110,7 @@ After creating the file, you may have to click on the filename
 to make sure it is opened.
 
 Add the following to the file. As noted above, there's a lot of
-templating to make sure nanming, labels, and annotations are
+templating to make sure naming, labels, and annotations are
 consistent. If you look beyond that, we're really just creating a
 secret that will have for some string data at the key `preflight.yaml`.
 Also note the label `troubleshoot.sh/kind: preflight` which
@@ -220,7 +220,7 @@ helm template harbor | kubectl preflight -
 
 If your satisfied with tests, bump the version of your Helm chart in the file
 `harbor/Chart.yaml` (from `16.7.0` to `16.8.0`) the repackage it. You can edit
-the verison in the Manifest Editor or run the following command to do it from
+the version in the Manifest Editor or run the following command to do it from
 the shell.
 
 ```
