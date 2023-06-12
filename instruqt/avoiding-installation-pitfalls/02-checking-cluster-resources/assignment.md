@@ -11,9 +11,6 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
-- title: Cluster
-  type: terminal
-  hostname: cluster
 - title: Manifest Editor
   type: code
   hostname: shell
