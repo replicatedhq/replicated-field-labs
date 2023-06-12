@@ -3,10 +3,10 @@ slug: validating-before-an-install
 id: aray1djn6poy
 type: challenge
 title: Validating Before an Install
-teaser: A short description of the challenge.
+teaser: How your customer uses preflights to validate their environment
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: Experience how your customer executes your preflight checks
 tabs:
 - title: Shell
   type: terminal
