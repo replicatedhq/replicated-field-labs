@@ -61,7 +61,7 @@ You should see three channels in the output:
 
 You may consider a few other uses for release channels in your
 release process. For examples, let's add a channel called `LTS`
-for those customers who want longer term gaurantees of
+for those customers who want longer term guarantees of
 support and fitness that you provide for your standard releases.
 
 ```
@@ -72,7 +72,7 @@ replicated channel create --name LTS \
 Other examples:
 
 * `Edge` for customer who want continuous delivery of your
-   software to their environmnets.
+   software to their environments.
 * Channels named after the feature branches in your source
   code. These can help product teams validate release before
   they are merged for release on your primary channels.
@@ -121,7 +121,7 @@ SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z    Stable
 ```
 
-To make an existing release availble on another channel, use
+To make an existing release available on another channel, use
 `replicated release promote`. In your actual release process,
 there may be a lot of activity between releasing to `Unstable`,
 promoting to `Beta`, and ultimately releasing on `Stable`.

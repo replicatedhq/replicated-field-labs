@@ -82,5 +82,5 @@ you'll see the status change to "Ready."
 =========
 
 Once Omozan's instance is in the _Ready_ state, you've successfully
-distributed the application to the custonmer Omozan using the
+distributed the application to the customer Omozan using the
 Replicated Platform.

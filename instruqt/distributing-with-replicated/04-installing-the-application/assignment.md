@@ -46,7 +46,7 @@ each channel shows the current version `16.7.0`.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
 
-_Note: If you are already a user of the Replicated Vendor Portral
+_Note: If you are already a user of the Replicated Vendor Portal
 you may need to log out using the settings menu in the top right
 corner before you can log in as the lab user._
 
