@@ -20,24 +20,15 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
   --header "Content-Type: application/json" \
   --data "${updated_customer}"
  
-# get the registry password (which is the license id)
-registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}/license-download" | \
-  yq .spec.licenseID) 
-
 # toggle the app to builders mode 
 curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
   --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
   --header "Content-Type: application/json" \
   --data '{ "is_foundation": true }'
 
-# provide an email address for the new customer
-customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
-
 # help the user out by telling them the expiration date for a 30-day trial
 license_expiry=$(date -d "+30 days" "+%B %d, %Y")
 
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
-agent variable set CUSTOMER_EMAIL ${customer_email}
-agent variable set REGISTRY_PASSWORD ${registry_password}
-agent variable set LICENSE_EXPIRY ${license_expiry}
+agent variable set LICENSE_EXPIRY "${license_expiry}"
