@@ -23,7 +23,7 @@ alongside your application and enables access to the Replicated
 Platform. The SDK allows you to enforce your entitlements and
 take advantage of the telemetry that Replicated provides to help
 you better understand customer instances. It also allows your
-to get information about your application and it's releases,
+to get information about your application and it's releases, 
 including doing updates checks and showing version history.
 
 
@@ -38,12 +38,13 @@ things. They've been set up for you in this lab environment.
    for this lab, but it could be the Helm chart for your product
    or any other Helm chart you wanted to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
-   access for the duration of this lab. When you need them, the
-   lab instructions will show your username and password.
-3. An application on the Replicated Vendor Portal. We've also
-   created that for you as part of the lab setup.
-4. A customer for that application. We've created the customer as
-   well.
+   access for the duration of this lab with the username
+   `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
+   the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
+3. An application on the Replicated Vendor Portal. It was also
+   created for you as part of the lab setup.
+4. A customer for that application. The automation created the 
+   customer as well.
 
 🔤 Getting Started
 ==================
@@ -63,8 +64,8 @@ platform.
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-And lastly make sure we are working with the Harbor app we
-created for the lab.
+And lastly make sure we are working with the Harbor app that was
+created by the lab setup.
 
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
