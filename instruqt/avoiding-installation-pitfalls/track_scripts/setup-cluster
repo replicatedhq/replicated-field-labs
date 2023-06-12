@@ -17,6 +17,12 @@ while ! ssh shell true; do
   sleep 1
 done
 
+# Wait for the Kubernetes API server to become available
+while ! curl --fail --output /dev/null http://localhost:8001/api 
+do
+    sleep 1 
+done
+
 ssh shell "mkdir /home/replicant/.kube"
 
 while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do

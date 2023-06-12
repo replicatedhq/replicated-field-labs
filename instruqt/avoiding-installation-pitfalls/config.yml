@@ -7,4 +7,20 @@ virtualmachines:
 - name: cluster
   image: instruqt/k3s-v1-27-1
   shell: /bin/bash
-  machine_type: n1-standard-2
+  environment:
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: e2-small
+- name: worker1
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_CONTROL_PLANE_HOSTNAME: cluster
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: n1-standard-1
+- name: worker2
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_CONTROL_PLANE_HOSTNAME: cluster
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: n1-standard-1
