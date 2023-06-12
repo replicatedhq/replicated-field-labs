@@ -81,7 +81,7 @@ the installation will complete.
 ```
 helm install harbor \
   oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
-  --set service.type=NodePort --set nodePorts.https=30443 \
+  --set service.type=NodePort --set service.nodePorts.https=30443 \
   --set externalURL=[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
 ```
 
