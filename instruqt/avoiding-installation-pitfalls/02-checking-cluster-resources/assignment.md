@@ -6,7 +6,7 @@ title: Checking Cluster Resources
 teaser: Use preflight checks to validate minimum cluster requirements
 notes:
 - type: text
-  contents: Making sure your cluster has sufficient resources to run your application
+  contents: Making sure a cluster has sufficient resources to run your application
 tabs:
 - title: Shell
   type: terminal
