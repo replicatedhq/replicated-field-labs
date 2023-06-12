@@ -100,6 +100,6 @@ helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP"
 
 Running the checks this way shows them the same screen you saw when
 you tested the preflights earlier, with the Kubernetes version check
-passing, the storage check failing, and two warnings.
+passing, the memmory check failing, and a warning for the CPU available.
 
 ![Customer Preflight Checks](../assets/customer-preflight-checks.png)

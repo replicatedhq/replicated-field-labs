@@ -17,9 +17,4 @@ if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("memor
   let "result = result + 1"
 fi
 
-if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("storage")' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
-  fail-message 'Please add the storagmemorye preflight check to the Harbor preflights manifest'
-  let "result = result + 1"
-fi
-
 exit ${result}

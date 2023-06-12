@@ -32,7 +32,7 @@ if [[ "${passes}" != "1" ]] ; then
 fi
 
 warns=$(echo "${check_results}" | yq '.warn | length')
-if [[ "${warns}" -ne "2" ]] ; then
+if [[ "${warns}" -ne "1" ]] ; then
   fail-message 'Please make sure you added both the CPU and memory preflight checks to the preflights template'
   let "result = result + 1"
 fi

@@ -73,11 +73,6 @@ for guidance on our preflights.
 <td>4 GB</td>
 <td>8 GB</td>
 </tr>
-<tr>
-<td>Disk</td>
-<td>40 GB</td>
-<td>160 GB</td>
-</tr>
 </tbody>
 </table>
 
@@ -144,30 +139,6 @@ To round out the resource checks, add a similar check for memory
               message: Your cluster has sufficient memory available to run Harbor
 ```
 
-and also one for storage
-
-```
-    - nodeResources:
-        checkName: Cluster has sufficient storage to install and run Harbor
-        outcomes:
-          - fail:
-              when: "sum(storageAllocatable) < 40G"
-              message: |-
-                Harbor requires a minimum of 40 GB of storage in order to run, and runs best with
-                at least 160 GB. Your current cluster has less than 40 GB available to Kubernetes
-                workloads. Please increase cluster capacity or install into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
-          - warn:
-              when: "sum(storageAllocatable) < 160Gi"
-              message: |-
-                Harbor runs best with a minimum of 160 GB of storage. Your current cluster has less
-                than 160 GB of storage available to run workloads. For the best experience, consider
-                increasing cluster capacity or installing into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
-          - pass:
-              message: Your cluster has sufficient storage available to run Harbor
-```
-
 Running the Revised Preflights
 ==============================
 
@@ -178,21 +149,9 @@ them:
 kubeclt preflight ./harbor-preflights.yaml
 ```
 
-You'll see that all four preflights are run, and that the storage
+You'll see that all three preflights are run, and that the memoery
 preflight has failed. This is an expected failure, since we have
-single node cluster that uses just that node's disk for storage. That
-disk is smaller than the storage requirements for Harbor.
+single node cluster that does not have enough memory to run Harbor.
 
-![Failing Storage Preflight](../assets/storage-preflight-failure.png)
+![Failing Memory Preflight](../assets/memory-preflight-failure.png)
 
-If you completed the [Distributing Your Application with Replicated]
-lab, you may be surprised at this failure. In that lab, we deployed
-Harbor and it came up successfully. This is another value provided by
-your checks. They can detect latent failures, like the fact that
-Harbor could rapidly exhaust the disk available in this cluster
-even though it started successfully.
-
-In fact, installing the Harbor Helm chart requests 28 GB of storage.
-The cluster in the previous lab with only 20 GB of disk available,
-fulfilled all of those requests. That could creat quite the challenge
-to diagnose in the future.

@@ -203,25 +203,6 @@ the indentation is correct.
                   uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - pass:
                   message: Your cluster has sufficient memory available to run Harbor
-        - nodeResources:
-            checkName: Cluster has sufficient storage to install and run Harbor
-            outcomes:
-              - fail:
-                  when: "sum(storageAllocatable) < 40G"
-                  message: |-
-                    Harbor requires a minimum of 40 GB of storage in order to run, and runs best with
-                    at least 160 GB. Your current cluster has less than 40 GB available to Kubernetes
-                    workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
-              - warn:
-                  when: "sum(storageAllocatable) < 160Gi"
-                  message: |-
-                    Harbor runs best with a minimum of 160 GB of storage. Your current cluster has less
-                    than 160 GB of storage available to run workloads. For the best experience, consider
-                    increasing cluster capacity or installing into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
-              - pass:
-                  message: Your cluster has sufficient storage available to run Harbor
 ```
 
 ![Saving the Preflights Template](../assets/saving-the-preflights-template.png)
