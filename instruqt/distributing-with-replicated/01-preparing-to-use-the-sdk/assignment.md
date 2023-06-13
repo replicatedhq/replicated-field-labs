@@ -23,7 +23,7 @@ alongside your application and enables access to the Replicated
 Platform. The SDK allows you to enforce your entitlements and
 take advantage of the telemetry that Replicated provides to help
 you better understand customer instances. It also allows your
-to get information about your application and it's releases, 
+to get information about your application and it's releases,
 including doing updates checks and showing version history.
 
 
@@ -43,7 +43,7 @@ things. They've been set up for you in this lab environment.
    the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 3. An application on the Replicated Vendor Portal. It was also
    created for you as part of the lab setup.
-4. A customer for that application. The automation created the 
+4. A customer for that application. The automation created the
    customer as well.
 
 🔤 Getting Started

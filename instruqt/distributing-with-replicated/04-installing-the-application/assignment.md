@@ -74,8 +74,8 @@ see a link to their install instructions.
 
 Click on the link and you'll be prompted to enter a customer
 email. You can use any address you want, but the rest of the
-instructions assume you used the username above
-(`[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`).
+instructions assume you used the email
+`[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`.
 
 ![Install Instructions](../assets/helm-install-instructions.png)
 
@@ -104,7 +104,7 @@ onto the next step in the lab.
 ```
 helm install harbor \
   oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
-  --set service.type=NodePort --set nodePort.https=443 \
+  --set service.type=NodePort --set service.nodePort.https=443 \
   --set externalURL=https://[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
 ```
 
