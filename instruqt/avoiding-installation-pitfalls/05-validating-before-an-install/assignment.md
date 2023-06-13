@@ -62,9 +62,11 @@ Call your customer "Geeglo" and assign them to the `Stable` channel.
 Let's assume this customer is not yet a customer, but prospect who
 is evaluating our application. Let's assume allow our customers to
 evaluate our software on a trial license for 30 days.  Set them up
-as a "Trial" customer with a license that has an expiration date
-of [[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]. Set
-their email to [[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]].
+as a "Trial" customer and set up the expiration date and customer
+email as follows:
+
+Expiration Date: `[[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]`<br/>
+Customer Email: `[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`
 
 ![Customer Details](../assets/new-customer-details.png)
 
