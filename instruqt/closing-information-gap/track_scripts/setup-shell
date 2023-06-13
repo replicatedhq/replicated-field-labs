@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# simple SSH client setup so we can SSH to/from the shell
+
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+EOF
+
+# assure an RSA key for Dropbear
+ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
+
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/feature-helm-preflights/libs/header.sh
+source /etc/profile.d/header.sh
+
+# change the cluster URI
+yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
+chown -R replicant /home/replicant/.kube
+
+# setup for Vendor Portal access
+# there's only one app created by the automation, so just grab the first in the list
+api_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+export REPLICATED_API_TOKEN=${api_token}
+export REPLICATED_APP=${app_slug}
+
+cd /home/replicant
+mkdir release
+helm pull oci://registry-1.docker.io/bitnamicharts/harbor --untar
+yq -i '.version = "16.7.0"' harbor/Chart.yaml
+yq -i '.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.16"}' harbor/Chart.yaml
+
+# update dependencies
+helm dependency update harbor
+
+# re-package the chart
+helm package harbor --destination release
+
+# release and promote the app with the SDK added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# create LTS channel from the "distributing" lab so things look consistent
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm /home/replicant/release/harbor-16.7.0.tgz
+
+# add preflight checks to the Helm chart
+cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "common.names.fullname" . }}-preflight
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/component: preflight
+    troubleshoot.sh/kind: preflight
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+type: Opaque
+stringData:
+  preflight.yaml: | 
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: Preflight
+    metadata:
+      name: harbor-preflight-checks
+    spec:
+      analyzers:
+        - clusterVersion:
+            outcomes:
+              - fail:
+                  when: "< 1.19.x"
+                  message: |-
+                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
+                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
+                  uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+              - warn:
+                  when: "< 1.24.0"
+                  message: |-
+                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
+                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+        - nodeResources:
+            checkName: Cluster CPU resources are sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                    Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                    Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    than 4 CPU cores available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Harbor
+        - nodeResources:
+            checkName: Cluster memory is sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                    Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                    Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    than 8 GB of memory available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient memory available to run Harbor
+HARBOR_PREFLIGHTS
+
+# bump the version
+yq -i '.version = "16.8.0"' /home/replicant/harbor/Chart.yaml
+helm package /home/replicant/harbor --destination /home/replicant/release
+chown -R replicant /home/replicant/harbor /home/replicant/release
+#
+# release and promote the preflight checks added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.8.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 16.8.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 16.8.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# create LTS channel from the "distributing" lab so things look consistent
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm /home/replicant/release/harbor-16.8.0.tgz
+
+# make sure permissions are good
+chown -R replicant /home/replicant/harbor /home/replicant/release
