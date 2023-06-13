@@ -109,7 +109,7 @@ will be `3` if you haven't explored releasing a bit more).
 For the lab, we're going to assume this release can be directly
 shared on the `Beta` and `Stable` channels. Your actual release
 process may have many more activities before releasing to either
-of those channels---their teams review and approval processes, 
+of those channels---your teams review and approval processes,
 steps in a continuous delivery pipeline, or both.
 
 ```
