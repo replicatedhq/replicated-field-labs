@@ -143,7 +143,7 @@ Now that we have a thorough set of preflights for cluster resources, let's run
 them:
 
 ```
-kubeclt preflight ./harbor-preflights.yaml
+kubectl preflight ./harbor-preflights.yaml
 ```
 
 You'll see that all three preflights are run, and that the memory
