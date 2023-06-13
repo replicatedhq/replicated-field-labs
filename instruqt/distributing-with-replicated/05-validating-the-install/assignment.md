@@ -12,6 +12,11 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Customer's Harbor Registry
+  type: service
+  hostname: cluster
+  port: 30443
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -78,9 +83,31 @@ you'll see the status change to "Ready."
 
 ![Customer Instance Details](../assets/instance-details.png)
 
-🏁 Finish
-=========
-
 Once Omozan's instance is in the _Ready_ state, you've successfully
 distributed the application to the customer Omozan using the
 Replicated Platform.
+
+Returning to the Customer Perspective
+=====================================
+
+Now that you've seen the customer become active in the Vendor
+Portal, let's quickly return to their perspective to see the
+running application. Click on the "Customer Harbor Registry"
+tab and you'll see the login page for Harbor.
+
+![Harbor Registry Login](../assets/harbor-login-page.png)
+
+You can even log in if you run the following commands to get
+the username and password.
+
+```
+echo Username: "admin"
+echo Password: $(kubectl get secret --namespace default harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d)
+```
+
+🏁 Finish
+=========
+
+You've successfully confirmed, both from your perspective
+and from your customer's, that your software is installed in
+their environment.
