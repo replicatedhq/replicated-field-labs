@@ -1,7 +1,8 @@
 ---
 slug: working-with-support-bundles
+id: gejrijpn0r1a
 type: challenge
-title: Working with Support Bundkes
+title: Working with Support Bundles
 teaser: |-
   Learn how support bundles help you understand what is going
   on with a customer instance
@@ -17,7 +18,7 @@ tabs:
   hostname: shell
   path: /home/replicant
 difficulty: basic
-timelimit: 300
+timelimit: 600
 ---
 
 👋 Introduction
@@ -26,22 +27,21 @@ timelimit: 300
 When your software is running in a customer cluster, you no longer
 have direct access to troubleshoot when things go wrong. You won't
 be able to see what's running, read logs, or even confirm that the
-ever started up. Your cutsomer can do these things, but they may
-need your guidance to do them correctly and coordinating that 
+ever started up. Your customer can do these things, but they may
+need your guidance to do them correctly and coordinating that
 information sharing can be challenging.
 
 The Replicated Platform let's you define a support bundles that
-your customer can send to you to bring you the visbility you need.
-Support bundles can also surface specific issues and provide 
+your customer can send to you to bring you the visibility you need.
+Support bundles can also surface specific issues and provide
 guidance to your customer in order to repair issues on their own.
-They are part of the [Troubleshoot](https://troubleshoot.sh) open 
+They are part of the [Troubleshoot](https://troubleshoot.sh) open
 source project.
 
-What is a Support Bundle?
-=========================
+What is a Support Bundle? =========================
 
 Support Bundles collect the information you need to understand their
-cluster and how your application is running in it. The Replicated 
+cluster and how your application is running in it. The Replicated
 Platform allows you to do this without installing anything else
 into the cluster
 
@@ -59,8 +59,7 @@ spec:
   analyzers: []
 ```
 
-As the name `empty-` suggests, this is an empty set
-of checks and will not execute. Let's try it out.
+Let's try it out.
 
 ```
 kubectl support-bundle ./simplest-support-bundle.yaml
@@ -78,3 +77,119 @@ tar -tzf support-bundle-*.tar.gz | less
 You'll see the files that were collected cataloging all of the
 resources in the cluster and some information about the cluster
 itself.
+
+Analyzers and Collectors
+========================
+
+Your support bundle both collects information about the cluster
+and analyzes it to provide more insight into its state. If you
+have completed the [Avoiding Installation Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
+lab these concepts will be familiar to you as the two types of
+objects that make up preflight checks. Support bundles are also
+make up of _collectors_ that collect data and _analyzers_ that
+analyze it.
+
+There two default collectors included in every support bundle.
+The `clusterInfo` collector collects information about the running
+cluster, while the `clusterResources` collector which collects
+information about many of the resources running in the cluster.
+These give you some baseline support information, but you will
+generally want to add more collectors to gather logs and other
+details about your application state.
+
+Log collection is the first thing most teams add to their
+support bundle. Let's add some logging collectors so that we
+our support bundle will collect logs from the Harbor
+application.
+
+```
+- logs:
+    selector:
+      - app=harbor
+```
+
+This definition specifies that the logs from any workload
+where the label `app` has the value `harbor`. The Harbor
+Helm chart we're using for this lab applies that label to
+all of the workloads for the application.
+
+The first analyzers teams add are generally those that
+identify if different workloads are running (i.e. in a
+`Ready` state). Harbor has many services, let's just take
+one for this first step.
+
+```
+- deploymentStatus:
+    name: harbor-core
+    outcomes:
+      - fail:
+          when: "absent"
+          message: |
+            The Harbor core workload has not been deployed to this
+            cluster. Please sure to install the Harbor registry
+            application using its Helm chart.
+      - fail:
+          when: "< 1"
+          message: |
+            The Harbor core workload is not currently running on
+            this cluster. Please review the logs in this support
+            bundle to locate any errors.
+      - pass:
+          message: |
+            Ther Harbor core workload is running on this cluster
+            and ready for use.
+```
+
+Taken together, your support bundle definition will look like
+this:
+
+```
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: harbor-support-bundle
+spec:
+  collectors:
+    - logs:
+        selector:
+          - app=harbor
+  analyzers:
+    - deploymentStatus:
+        name: harbor-core
+        namespace: default
+        outcomes:
+          - fail:
+              when: "absent"
+              message: |
+                The Harbor core workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+          - fail:
+              when: "< 1"
+              message: |
+                The Harbor core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+          - pass:
+              message: |
+                Ther Harbor core workload is running on this cluster and ready for use.
+```
+
+Getting Started
+===============
+
+Let's creating a support bundle using this definition. Click on the
+"Manifest Editor" tab and create a new file named `harbor-support-bundle.yaml`.
+
+![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
+
+Paste the YAML above into the new file and save it.
+
+![Saving the Support Bundle File](../assets/saving-harbor-support-bundle.png)
+
+Now collect a support bundle using this definition.
+
+```
+kubectl support-bundle ./harbor-support-bundle.yaml
+```
+
+You'll see that that your bundle has been collected and get a
+screen showing the result for the analyzer you added.
+
+![Harbor Core is Running](../assets/passing-harbor-core-status.png)

@@ -1,4 +1,5 @@
 slug: closing-information-gap
+id: hfb41xqkyx0q
 title: Closing the Support Information Gap
 teaser: |-
   Use the Replicated Platform to close the information gap between your
@@ -29,3 +30,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
+checksum: "6736683944822734387"
