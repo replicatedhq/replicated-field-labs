@@ -1,0 +1,14 @@
+version: "3"
+containers:
+- name: shell
+  image: gcr.io/kots-field-labs/shell:feature-helm-preflights
+  shell: tmux new-session -A -s shell su - replicant
+virtualmachines:
+- name: cluster
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: n1-standard-2
+  allow_external_ingress:
+  - high-ports
