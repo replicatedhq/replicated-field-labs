@@ -125,31 +125,16 @@ one for this first step.
       - fail:
           when: "absent"
           message: |
-<<<<<<< HEAD
             The Harbor core workload has not been deployed to this cluster. Please sure to install the Harbor registry
-=======
-            The Harbor core workload has not been deployed to this
-            cluster. Please sure to install the Harbor registry
->>>>>>> 2b4374f (Finishes initial draft of first challenge)
             application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-<<<<<<< HEAD
             The Harbor core workload is not currently running on this cluster. Please review the logs in this support
             bundle to locate any errors.
       - pass:
           message: |
             Ther Harbor core workload is running on this cluster and ready for use.
-=======
-            The Harbor core workload is not currently running on
-            this cluster. Please review the logs in this support
-            bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Harbor core workload is running on this cluster
-            and ready for use.
->>>>>>> 2b4374f (Finishes initial draft of first challenge)
 ```
 
 Taken together, your support bundle definition will look like
@@ -163,14 +148,11 @@ metadata:
 spec:
   collectors:
     - logs:
-<<<<<<< HEAD
         name: /app/harbor/logs
         selector:
           - app.kubernetes.io/name=harbor
-=======
         selector:
           - app=harbor
->>>>>>> 2b4374f (Finishes initial draft of first challenge)
   analyzers:
     - deploymentStatus:
         name: harbor-core
