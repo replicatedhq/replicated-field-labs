@@ -1,0 +1,226 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+cat <<HARBOR_SUPPORT_BUNDLE > /home/replicant/harbor/templates/support-bundle.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "common.names.fullname" . }}-support-bundle
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/component: support-bundle
+    troubleshoot.sh/kind: support-bundle
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+type: Opaque
+stringData:
+  support-bundle-spec: |
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: SupportBundle
+    metadata:
+      name: harbor-support-bundle
+    spec:
+      collectors:
+        - logs:
+            name: /app/harbor/logs
+            selector:
+                - app.kubernetes.io/name=harbor
+        - configMap:
+            namespace: default
+            selector:
+            - app.kubernetes.io/name=harbor
+        - configMap:
+            name: harbor-core
+            namespace: default
+            key: EXT_ENDPOINT
+            includeValue: true
+        - secret:
+            name: harbore-core
+            namespace: default
+            key: tls.crt
+            includeValue: true
+        - secret:
+            name: harbor-ingress
+            key: ca.crt
+            includeVale: true
+        - secret:
+            name: harbor-ingress
+            key: tls.crt
+            includeVale: true
+        - secret:
+            namespace: default
+            selector:
+            - app.kubernetes.io/name=harbor
+      analyzers:
+        - deploymentStatus:
+            name: harbor-core
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor core workload has not been deployed to this cluster. Please be sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor core workload is running on this cluster and ready for use.
+        - clusterVersion:
+            outcomes:
+              - fail:
+                  when: "< 1.19.x"
+                  message: |-
+                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
+                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
+                  uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+              - warn:
+                  when: "< 1.24.0"
+                  message: |-
+                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
+                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+        - nodeResources:
+            checkName: Cluster CPU resources are sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                    Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                    Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    than 4 CPU cores available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Harbor
+        - nodeResources:
+            checkName: Cluster memory is sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                    Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                    Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    than 8 GB of memory available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient memory available to run Harbor
+        - deploymentStatus:
+            name: harbor-jobservice
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor job service has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor job service is running on this cluster and ready for use.
+        - deploymentStatus:
+            name: harbor-portal
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor portal workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor portal workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor portal workload is running on this cluster and ready for use.
+        - deploymentStatus:
+            name: harbor-registry
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor registry workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor registry workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor registry workload is running on this cluster and ready for use.
+        - statefulsetStatus:
+            name: harbor-postgresql
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor database has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor database is running on this cluster and ready for use.
+        - statefulsetStatus:
+            name: harbor-redis-master
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Harbor cache has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Harbor cache is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    Ther Harbor cache is running on this cluster and ready for use.
+        - statefulsetStatus:
+            name: harbor-trivy
+            namespace: default
+            outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                    The Trivy iamge scanner has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                    The Trivy image scanner is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                    The Trivy image scanner is running on this cluster and ready for use.
+HARBOR_SUPPORT_BUNDLE
+
+yq -i '.version = "16.9.0"' /home/replicant/harbor/Chart.yaml
+helm package /home/replicant/harbor --destination /home/replicant/release
+chown -R replicant /home/replicant/harbor /home/replicant/release
