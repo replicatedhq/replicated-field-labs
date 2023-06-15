@@ -146,12 +146,12 @@ them:
 kubeclt preflight ./harbor-preflights.yaml
 ```
 
-You'll see that all three preflights are run, and that the memoery
+You'll see that all three preflights are run, and that the memory
 preflight has failed. This is an expected failure, since we have
 single node cluster that ses just that node's disk for storage. That
 disk is smaller than the storage requirements for Harbor.
 
-![Failing Storage Preflight](../assets/storage-preflight-failure.png)
+![Failing Storage Preflight](../assets/memory-preflight-failure.png)
 
 If you completed the [Distributing Your Application with Replicated]
 lab, you may be surprised at this failure. In that lab, we deployed
