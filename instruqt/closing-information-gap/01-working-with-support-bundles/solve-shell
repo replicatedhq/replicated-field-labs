@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# create the preflight file
+cat <<HARBOR_BUNDLE > /home/replicant/harbor-support-bundle.yaml
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: harbor-support-bundle
+spec:
+  collectors:
+    - logs:
+        name: /app/harbor/logs
+        selector:
+            - app.kubernetes.io/name=harbor
+  analyzers:
+    - deploymentStatus:
+        name: harbor-core
+        namespace: default
+        outcomes:
+          - fail:
+              when: "absent"
+              message: |
+                The Harbor core workload has not been deployed to this cluster. Please be sure to install the Harbor registry application using its Helm chart.
+          - fail:
+              when: "< 1"
+              message: |
+                The Harbor core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+          - pass:
+              message: |
+                Ther Harbor core workload is running on this cluster and ready for use.
+HARBOR_BUNDLE
+
+chown replicant /home/replicant/harbor-support-bundle.yaml
+
+# collect the two support bundles from the challenge
+kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/baseline-support-bundle.yaml
+kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/harbor-support-bundle.yaml
+chown replicant /home/replicant/support-bundle*.tar.gz

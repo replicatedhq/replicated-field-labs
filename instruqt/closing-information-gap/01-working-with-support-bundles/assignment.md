@@ -38,7 +38,8 @@ guidance to your customer in order to repair issues on their own.
 They are part of the [Troubleshoot](https://troubleshoot.sh) open
 source project.
 
-What is a Support Bundle? =========================
+What is a Support Bundle?
+=========================
 
 Support Bundles collect the information you need to understand their
 cluster and how your application is running in it. The Replicated
@@ -125,19 +126,16 @@ one for this first step.
       - fail:
           when: "absent"
           message: |
-            The Harbor core workload has not been deployed to this
-            cluster. Please sure to install the Harbor registry
+            The Harbor core workload has not been deployed to this cluster. Please sure to install the Harbor registry
             application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Harbor core workload is not currently running on
-            this cluster. Please review the logs in this support
+            The Harbor core workload is not currently running on this cluster. Please review the logs in this support
             bundle to locate any errors.
       - pass:
           message: |
-            Ther Harbor core workload is running on this cluster
-            and ready for use.
+            Ther Harbor core workload is running on this cluster and ready for use.
 ```
 
 Taken together, your support bundle definition will look like
@@ -151,8 +149,9 @@ metadata:
 spec:
   collectors:
     - logs:
+        name: /app/harbor/logs
         selector:
-          - app=harbor
+          - app.kubernetes.io/name=harbor
   analyzers:
     - deploymentStatus:
         name: harbor-core
