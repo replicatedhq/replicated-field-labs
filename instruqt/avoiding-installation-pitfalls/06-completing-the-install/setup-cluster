@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+ 
+agent variable set EXTERNAL_URL https://cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com/
+

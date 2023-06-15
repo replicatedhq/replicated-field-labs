@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# simple SSH client setup so we can SSH to/from the shell
+
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+EOF
+
+# assure an RSA key for Dropbear
+ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
+
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/feature-helm-preflights/libs/header.sh
+source /etc/profile.d/header.sh
+
+# change the cluster URI
+yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
+chown -R replicant /home/replicant/.kube
+
+# setup for Vendor Portal access
+# there's only one app created by the automation, so just grab the first in the list
+api_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+export REPLICATED_API_TOKEN=${api_token}
+export REPLICATED_APP=${app_slug}
+
+cd /home/replicant
+mkdir release
+helm pull oci://registry-1.docker.io/bitnamicharts/harbor --untar
+yq -i '.version = "16.7.0"' harbor/Chart.yaml
+yq -i '.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.16"}' harbor/Chart.yaml
+
+# update dependencies
+helm dependency update harbor
+
+# re-package the chart
+helm package harbor --destination release
+
+# release and promote the app
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 16.7.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# create LTS channel from the "distributing" lab so things look consistent
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm /home/replicant/release/harbor-16.7.0.tgz
+
+# make sure permissions are good
+chown -R replicant /home/replicant/harbor /home/replicant/release

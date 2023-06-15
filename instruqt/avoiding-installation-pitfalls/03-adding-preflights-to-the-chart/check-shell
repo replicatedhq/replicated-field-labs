@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+result=0
+
+# look for the preflight template file
+if [[ ! -f /home/replicant/harbor/templates/preflights.yaml ]] ; then
+  fail-message 'Please create the preflights template file in the Harbor Helm chart template directory'
+  let "reasult = result + 1"
+fi
+
+helm template /home/replicant/harbor > /home/replicant/template.yaml
+chown replicant /home/replicant/template.yaml
+
+if [[ "$(helm template /home/replicant/harbor | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "preflight" ) | .stringData | has("preflight.yaml")')" == "true" ]] ; then
+  set +e pipefail
+  check_results="$(helm template /home/replicant/harbor | kubectl preflight --interactive=false --format yaml --kubeconfig /home/replicant/.kube/config -)"
+  set -e pipefail
+else
+  fail-message 'Please add your preflight checks to the preflights template file'
+  let "result = result + 1"
+fi
+
+# check whether the preflight has been created, we can assume that if it
+# has the right number of outcomes they've probably done the work
+passes=$(echo "${check_results}" | yq '.pass | length') 
+if [[ "${passes}" != "1" ]] ; then
+  fail-message 'Please add the Kubernetes version preflight check to the preflights template'
+  let "result = result + 1"
+fi
+
+warns=$(echo "${check_results}" | yq '.warn | length')
+if [[ "${warns}" -ne "1" ]] ; then
+  fail-message 'Please make sure you added both the CPU and memory preflight checks to the preflights template'
+  let "result = result + 1"
+fi
+
+fails=$(echo "${check_results}" | yq '.fail | length') 
+if [[ "${fails}" -ne "1" ]] ; then
+  fail-message 'Please add the storage preflight to the preflights template'
+  let "result = result + 1"
+fi
+
+# look for the preflight template file
+if [[ ! -f /home/replicant/release/harbor-16.8.0.tgz ]] ; then
+  fail-message $'Please make sure you\'ve bumped the version of your Helm chart and re-packaged it'
+  let "result = result + 1"
+fi
+
+exit ${result}

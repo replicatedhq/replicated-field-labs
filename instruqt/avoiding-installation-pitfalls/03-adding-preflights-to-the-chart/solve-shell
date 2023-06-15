@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "common.names.fullname" . }}-preflight
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/component: preflight
+    troubleshoot.sh/kind: preflight
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+type: Opaque
+stringData:
+  preflight.yaml: | 
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: Preflight
+    metadata:
+      name: harbor-preflight-checks
+    spec:
+      analyzers:
+        - clusterVersion:
+            outcomes:
+              - fail:
+                  when: "< 1.19.x"
+                  message: |-
+                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
+                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
+                  uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+              - warn:
+                  when: "< 1.24.0"
+                  message: |-
+                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
+                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+        - nodeResources:
+            checkName: Cluster CPU resources are sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                    Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                    Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    than 4 CPU cores available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Harbor
+        - nodeResources:
+            checkName: Cluster memory is sufficient to install and run Harbor
+            outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                    Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                    Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    than 8 GB of memory available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              - pass:
+                  message: Your cluster has sufficient memory available to run Harbor
+HARBOR_PREFLIGHTS
+
+yq -i '.version = "16.8.0"' /home/replicant/harbor/Chart.yaml
+helm package /home/replicant/harbor --destination /home/replicant/release
+chown -R replicant /home/replicant/harbor /home/replicant/release

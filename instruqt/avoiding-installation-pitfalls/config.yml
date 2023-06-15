@@ -1,0 +1,32 @@
+version: "3"
+containers:
+- name: shell
+  image: gcr.io/kots-field-labs/shell:feature-helm-preflights
+  shell: tmux new-session -A -s shell su - replicant
+virtualmachines:
+- name: cluster
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: e2-small
+  allow_external_ingress:
+  - high-ports 
+- name: worker1
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_CONTROL_PLANE_HOSTNAME: cluster
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: n1-standard-1
+  allow_external_ingress:
+  - high-ports 
+- name: worker2
+  image: instruqt/k3s-v1-27-1
+  shell: /bin/bash
+  environment:
+    K3S_CONTROL_PLANE_HOSTNAME: cluster
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
+  machine_type: n1-standard-1
+  allow_external_ingress:
+  - high-ports 
