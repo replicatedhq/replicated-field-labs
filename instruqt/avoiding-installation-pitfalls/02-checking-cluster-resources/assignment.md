@@ -47,7 +47,7 @@ Verify Resource Requirements
 The best way to define your preflight checks for cluster resources
 is to make sure they align with your documentation for the minimum
 and recommended values. The preflight check makes those prerequisites
-executable and lets your customer know whether there install will
+executable and lets your customer know whether their install will
 succeed. Let's look at [Harbor's documentation](https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/)
 for guidance on our preflights.
 
