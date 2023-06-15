@@ -19,7 +19,7 @@ source /etc/profile.d/header.sh
 access_token=$(get_api_token)
 app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
-cat <<EMPTY_PREFLIGHT > /home/replicant/empty-preflight.yaml
+cat <<EMPTY_PREFLIGHT > /home/replicant/empty-preflights.yaml
 apiVersion: troubleshoot.sh/v1beta2
 kind: Preflight
 metadata:
@@ -27,7 +27,7 @@ metadata:
 spec:
   analyzers: []
 EMPTY_PREFLIGHT
-chown replicant /home/replicant/empty-preflight.yaml
+chown replicant /home/replicant/empty-preflights.yaml
 
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)

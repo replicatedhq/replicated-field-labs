@@ -93,7 +93,7 @@ Verifying the Installation
 
 From the customer perspective, the installation is
 complete when they can log into the application and
-see that is was complete. Once your install is complete,
+see that it was complete. Once your install is complete,
 the tab "Harbor Registry" should show the login page
 for Harbor.
 

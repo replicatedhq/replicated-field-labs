@@ -30,13 +30,13 @@ The default `clusterResources` collector collects information
 about all of the nodes in the cluster. This allows us to
 write analyzers that check whether the cluster has sufficient
 resources to run our cluster: most often we write checks to
-determine whether CPU, memory, and storage meet the base
+determine whether CPU, memmory, and storage meet the base
 requirements of the application.
 
 When analyzing resources in the cluster, we can write expressions
-based on whether the node has the
-[capacity required and whether that capacity is allocatable](https://kubernetes.io/docs/concepts/architecture/nodes/#capacity).
-Allocatable has a very specific meaning to Kubernetes, and is not
+baesd on whether the node has the
+[capacity required and whether that capacity isallocatable](https://kubernetes.io/docs/concepts/architecture/nodes/#capacity).
+Alloctable has a very specific meaning to Kubernetes, and is not
 the same as "free" or "available". It means only that he capacity
 is not being reserved by Kubernetes or the underlying system. This
 distinction often trips up developer who are new to Kubernetes.
@@ -143,12 +143,24 @@ Now that we have a thorough set of preflights for cluster resources, let's run
 them:
 
 ```
-kubectl preflight ./harbor-preflights.yaml
+kubeclt preflight ./harbor-preflights.yaml
 ```
 
-You'll see that all three preflights are run, and that the memory
+You'll see that all three preflights are run, and that the memoery
 preflight has failed. This is an expected failure, since we have
-single node cluster that does not have enough memory to run Harbor.
+single node cluster that ses just that node's disk for storage. That
+disk is smaller than the storage requirements for Harbor.
 
-![Failing Memory Preflight](../assets/memory-preflight-failure.png)
+![Failing Storage Preflight](../assets/storage-preflight-failure.png)
 
+If you completed the [Distributing Your Application with Replicated]
+lab, you may be surprised at this failure. In that lab, we deployed
+Harbor and it came up successfully. This is another value provided by
+your checks. They can detect latent failures, like the fact that
+Harbor could rapidly exhaust the disk available in this cluster
+even though it started successfully.
+
+In fact, installing the Harbor Helm chart requests 28 GB of storage.
+The cluster in the previous lab with only 20 GB of disk available,
+fulfilled all of those requests. That could creat quite the challenge
+to diagnose in the future.

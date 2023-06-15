@@ -76,7 +76,7 @@ To run it, we can use the `preflight` plugin to `kubectl`
 like we did before
 
 ```
-kubeclt preflight ./empty-preflight-secret.yaml
+kubectl preflight ./empty-preflight-secret.yaml
 ```
 
 Remember that this preflight check won't run successfully

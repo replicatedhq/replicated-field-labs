@@ -39,7 +39,7 @@ Preflight checks analyze your customer's cluster as a client without
 installing anything into it. This allows customers to run Preflight
 checks at any time before installing your software and keep the
 cluster unchanged. They codify the pre-requisites you would catalog
-in your documentation and make the executable.
+in your documentation and make them executable.
 
 You define your checks in a YAML file that follows the same format
 as a Kubernetes object. The simplest preflight object looks like this,
@@ -82,7 +82,7 @@ cluster like the Kubernetes version an other info you'd see when
 running `kubectl version`. The other default collector is
 `clusterResources` which collects information about resources of
 several known types across all namespaces that the user has
-access to. You can also add customer collectors, which will look
+access to. You can also add custom collectors, which we'll look
 at later in the lab.
 
 The majority of your work on preflight checks will be with the
