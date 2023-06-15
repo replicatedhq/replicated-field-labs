@@ -18,7 +18,7 @@ tabs:
   hostname: shell
   path: /home/replicant
 difficulty: basic
-timelimit: 600
+timelimit: 420
 ---
 
 👋 Introduction
