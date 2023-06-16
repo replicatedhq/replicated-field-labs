@@ -186,10 +186,6 @@ replicated release promote ${release_sequence} Stable --version 16.8.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
 
-# create LTS channel from the "distributing" lab so things look consistent
-replicated channel create --name LTS --description "Releases with long-term support available" \
-  --app ${app_slug} --token ${api_token}
-
 # remove the helm chart we used to create the release
 rm /home/replicant/release/harbor-16.8.0.tgz
 
