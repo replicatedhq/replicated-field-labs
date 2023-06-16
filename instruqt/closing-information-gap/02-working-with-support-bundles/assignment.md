@@ -21,22 +21,20 @@ difficulty: basic
 timelimit: 420
 ---
 
-👋 Introduction
-===============
+Instance Insights is a powerful tool to help you understand information you
+need to know to assist a customer. It's the first tool you should pick up to
+get context for the issue and can lead you toward the right troubleshooting
+path. It was built to provide a set of insights for any application distributed
+with the Replicated application. This limits it to information that's common
+across applications.
 
-When your software is running in a customer cluster, you no longer
-have direct access to troubleshoot when things go wrong. You won't
-be able to see what's running, read logs, or even confirm that the
-ever started up. Your customer can do these things, but they may
-need your guidance to do them correctly and coordinating that
-information sharing can be challenging.
-
-The Replicated Platform let's you define a support bundles that
-your customer can send to you to bring you the visibility you need.
-Support bundles can also surface specific issues and provide
-guidance to your customer in order to repair issues on their own.
-They are part of the [Troubleshoot](https://troubleshoot.sh) open
-source project.
+Support bundles are another crticial tool for troubleshooting customer issues.
+The Replicated Platform allows you to define a bundle that your customer can
+send to give you even more visibility inot their environment. Since you define
+the support bundle, it can collect details that are specific to troubleshooting
+your application. Support bundles can also surface specific issues and provide
+guidance to your customer in order to repair issues on their own. They are part
+of the [Troubleshoot](https://troubleshoot.sh) open source project.
 
 What is a Support Bundle? =========================
 
