@@ -77,6 +77,7 @@ replicated channel create --name LTS --description "Releases with long-term supp
 # remove the helm chart we used to create the release
 rm /home/replicant/release/harbor-16.7.0.tgz
 
+## release the application with the Replicated SDK
 # add preflight checks to the Helm chart
 cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
 apiVersion: v1
