@@ -1,6 +1,6 @@
 ---
 slug: adding-to-the-chart
-id: dqije46wlors
+id: tvkvu4hgnpuv
 type: challenge
 title: Adding the Support Bundle to the Harbor Helm Chart
 teaser: Learn how to incorporate your support bundle into your chart
@@ -52,6 +52,8 @@ kind: Secret
 type: Opaque
 metadata:
   name: simplest-support-bundle
+  labels:
+    troubleshoot.sh/kind: support-bundle
 stringData:
   support-bundle-spec: |-
     apiVersion: troubleshoot.sh/v1beta2
@@ -63,12 +65,11 @@ stringData:
       analyzers: []
 ```
 
-The `support-bundle` plugin to `kubectl` understands this format. This means
-you can run `kubeclt support-bundle` like  you did before, but with the secret
-manifest instead of the support bundle manifest.
+Let's add this secret to our cluster and execute it.
 
 ```
-kubeclt support-bundle ./simplest-support-bundle-secret.yaml
+kubectl create -f simplest-support-bundle-secret.yaml
+kubeclt support-bundle --load-cluster-spec
 ```
 
 _Note: The support bundle definition can also be stored as a `ConfigMap`
@@ -122,21 +123,10 @@ content you just pasted in and tab twice in order to indent to the right place.
 
 ![Saving the Support Bundle Template](../assets/saving-the-support-bundle-template.png)
 
-Testing and Repackaging Your Chart
-==================================
+Repackaging Your Chart
+======================
 
-You can test out your changes by piping the output of `helm template` to
-`kubectl support-bundle`.
 
-```
-helm template harbor | kubectl support-budle -
-```
-
-Your customers will be able to run this in a simpler way since the
-specification will be stored in a secret in their cluster. We'll see that in
-the next step of the lab.
-
-If your satisfied with tests, bump the version of your Helm chart in the file
 `harbor/Chart.yaml` (from `16.8.0` to `16.9.0`) the repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell.
