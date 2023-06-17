@@ -72,9 +72,14 @@ flavor for what's in the bundle by running
 tar -tzf support-bundle-*.tar.gz | less
 ```
 
-You'll see the files that were collected cataloging all of the
-resources in the cluster and some information about the cluster
-itself.
+You'll see the files that were collected cataloging all of the resources in the
+cluster and some information about the cluster itself. If you completed the
+[Avoiding Installation
+Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
+lab this may surprise you, since a preflight check definition with an empty
+`analzers` array caused an error. This is because the bundle is valid if it
+only collects information, and by default both preflight checks and support
+bundles will collect a minimum set of information.
 
 Analyzers and Collectors
 ========================
