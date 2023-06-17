@@ -327,3 +327,10 @@ You'll see that that your bundle has been collected and get a
 text interface showing the results of the analyzers you added.
 
 ![Complete Support Bundle Analysis](../assets/complete-support-bundle-analysis.png)
+
+Note the failure in for the `harbor-jobservice` workload. This may be the cause
+of the unavailable application that we observed in the Vendor Portal. We'll
+take a look into the support bundle in the next step to see if it helps us
+diagnose the issue.
+
+Press `q` to leave the support bundle analyzers interface.
