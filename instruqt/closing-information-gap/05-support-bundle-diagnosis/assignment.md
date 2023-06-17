@@ -1,5 +1,6 @@
 ---
 slug: support-bundle-diagnosis
+id: pvyigv0ockwz
 type: challenge
 title: Using the Support Bundle to Diagnose the Issue
 teaser: Discover the cause of Geeglo's outage using a support bundle
