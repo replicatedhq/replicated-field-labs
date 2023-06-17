@@ -37,10 +37,3 @@ stringData:
 SIMPLEST_SUPPORT_BUNDLE_SECRET
 
 chown replicant /home/replicant/simplest-support-bundle-secret.yaml
-
-agent variable set USERNAME $(get_username)
-agent variable set PASSWORD $(get_password)
-agent variable set REPLICATED_API_TOKEN ${access_token}
-agent variable set REPLICATED_APP ${app_slug}
-
-
