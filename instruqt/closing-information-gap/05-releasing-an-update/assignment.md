@@ -62,8 +62,9 @@ number `3`
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
+3           2023-06-20T14:52:16Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
+2           2023-06-20T14:52:08Z    0001-01-01T00:00:00Z
+1           2023-06-20T14:50:52Z    0001-01-01T00:00:00Z
 ```
 
 To release our update, we're going to create a new release including our
@@ -122,14 +123,14 @@ to determine whether a release should be promoted to each of those
 channels---hopefully automated as part of your continuous delivery pipelines.
 
 ```
-replicated release promote 3 Beta --version 16.9.0 \
+replicated release promote 4 Beta --version 16.9.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
 and then
 
 ```
-replicated release promote 3 Stable --version 16.9.0 \
+replicated release promote 4 Stable --version 16.9.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
@@ -144,8 +145,8 @@ available on the `Unstable`, `Beta`, and `Unstable` channels.
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-4           2023-06-10T20:33:23Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-3           2023-06-10T20:22:14Z    0001-01-01T00:00:00Z
-2           2023-06-10T20:21:13Z    0001-01-01T00:00:00Z
-1           2023-06-10T20:20:02Z    0001-01-01T00:00:00Z
+4           2023-06-20T14:55:32Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
+3           2023-06-20T14:52:16Z    0001-01-01T00:00:00Z
+2           2023-06-20T14:52:08Z    0001-01-01T00:00:00Z
+1           2023-06-20T14:50:52Z    0001-01-01T00:00:00Z
 ```

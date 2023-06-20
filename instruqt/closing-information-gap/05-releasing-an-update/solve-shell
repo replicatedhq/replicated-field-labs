@@ -30,7 +30,7 @@ app_slug=$(curl --header "Accept: application/json" --header "Authorization: ${a
 
 # release to the `Unstable` channel
 replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.9.0 \
-  --release-notes "Adds a support bundle spec to facilitate troubleshooting"
+  --release-notes "Adds a support bundle spec to facilitate troubleshooting" \
   --app ${app_slug} --token ${api_token}
 
 # get the sequence number for the release to promote
@@ -38,10 +38,10 @@ release_sequence=$(curl --header "Accept: application/json" --header "Authorizat
 
 # promote to the `Beta` channel
 replicated release promote ${release_sequence} Beta --version 16.9.0 \
-  --release-notes "Adds a support bundle spec to facilitate troubleshooting"
+  --release-notes "Adds a support bundle spec to facilitate troubleshooting" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
 replicated release promote ${release_sequence} Stable --version 16.9.0 \
-  --release-notes "Adds a support bundle spec to facilitate troubleshooting"
+  --release-notes "Adds a support bundle spec to facilitate troubleshooting" \
   --app ${app_slug} --token ${api_token}
