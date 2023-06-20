@@ -79,7 +79,8 @@ rm /home/replicant/release/harbor-16.7.0.tgz
 
 ## release the application with the Replicated SDK
 # add preflight checks to the Helm chart
-cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
+mkdir /home/replicant/harbor/templates/troubleshoot
+cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/troubleshoot/preflights.yaml
 apiVersion: v1
 kind: Secret
 metadata:
