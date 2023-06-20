@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# no op since this challenge doesn't change anything
+exit 0
+
