@@ -11,12 +11,8 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
-  type: code
-  hostname: shell
-  path: /home/replicant
 difficulty: basic
-timelimit: 900
+timelimit: 420
 ---
 
 Now that your application contains a support bundle definition, your support
@@ -217,60 +213,5 @@ Including a support bundle in your release is an important practice to make
 sure the support bundle is available for their instance. In this example, we've
 just made the support bundle is available for the first time while our customer
 Geeglo is having an issue. This means they have to upgrade in order to collect
-a support bundle. That might not alway be desirable, or even possible.
-
-The support bundle command just needs a specification to run, and it doesn't
-matter how it locates it. It can load it from a local file, a URI, or (as we
-did above) a secret in the cluster. You can provide the specification at a
-publically available URL to make it easy for them to collect a bundle with
-changing their cluster.
-
-The support bundle specification for this lab is publically available on a
-Google Cloud Storage bucket. To collect a support bundle using that spec, run
-the following command:
-
-```
-kubectl support-bundle https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/harbor/support-bundle.yaml
-```
-
-You'll see the now familiar analzer screen showing your customer's cluster.
-Since they've now resolved the incident, it will the job service running. If
-you look closely, you'll also notice an additional analyzer in this version of
-the support bundle.
-
-![Results from Running the Support Bundle from a URI](../assets/analyzers-from-the-uri.png)
-
-You can also use this mechanism to release your support bundle independent of
-your application. This can allow the support team to evolve the bundle
-independent of your development team and without requiring a full system
-release. If you choose to distribute your support bundle at it's own URI, you should
-still include it in your application. The support bundle spec allows has a
-`uri` property that will be checked before using the specification as is. If
-the spec can be retrieved, it will replace the spec that references it.
-
-Let's finish of our work with the Harbor support bundle by adding a `uri` to
-the spec. For simplicity, we're going to add it to the local YAML then collect
-a support bundle using that file. Edit the file `harbor-support-bundle.yaml` in
-the Manifest Editor and add the URI from the command at the top of the `spec`, before the collectors.
-
-```
-  uri: https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/harbor/support-bundle.yaml
-```
-
-Don't forget to the save the file.
-
-![Adding a URI to the Support Bundle spec](../assets/adding-a-uri-to-the-spec.png)
-
-If you collect a support bundle using the updated spec, you'll notice that you
-see the added analyzer result. This is because the command checked the URI for an updated
-spec before executing, found one, and used it.
-
-```
-kubectl support-bundle harbor-support-bundle.yaml
-```
-
-![Additional Analzer Result After Spec is Updated](../assets/additional-analyzer-result.png)
-
-You can also add this to your Helm chart and go through the release cycle top
-be able to run it from within the cluster. Those steps are left for your to
-explore on your own. The time limit for the lab has been adjusted accordingly.
+a support bundle. That might not always be desirable, or even possible. The
+next step in this lab will explore what you can do in these scenarios.
