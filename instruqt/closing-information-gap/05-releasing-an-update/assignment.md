@@ -1,6 +1,6 @@
 ---
 slug: releasing-an-update
-id: 14xfg2xrtgef
+id: zmlgdclvm9hr
 type: challenge
 title: Releasing an Update with the Support Bundle
 teaser: Releasing a new version with the support bundle included
@@ -145,7 +145,7 @@ available on the `Unstable`, `Beta`, and `Unstable` channels.
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 4           2023-06-10T20:33:23Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-3           2023-06-10T20:22:14Z    0001-01-01T00:00:00Z    
+3           2023-06-10T20:22:14Z    0001-01-01T00:00:00Z
 2           2023-06-10T20:21:13Z    0001-01-01T00:00:00Z
 1           2023-06-10T20:20:02Z    0001-01-01T00:00:00Z
 ```
