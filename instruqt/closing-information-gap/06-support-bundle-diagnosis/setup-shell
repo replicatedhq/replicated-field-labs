@@ -5,6 +5,9 @@ set -euxo pipefail
 
 HOME_DIR=/home/replicant
 
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
+
 # Wait for Instruqt bootstrap to be complete
 while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
 do
@@ -17,7 +20,7 @@ kubectl rollout pause deployment -l app.kubernetes.io/component=jobservice --kub
 kubectl delete replicaset -l app.kubernetes.io/component=jobservice --kubeconfig ${HOME_DIR}/.kube/config
 
 ## prepare for upgrade
-
+api_token=$(get_api_token)
 customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
 
 # get the registry password (which is the license id)
