@@ -89,7 +89,7 @@ Add these values after the `logs` collector in the file
 
 ```
     - secret:
-        name: harbore-core
+        name: harbor-core
         namespace: default
         key: tls.crt
         includeValue: true

@@ -19,7 +19,7 @@ yq -i ".spec.analyzers += env(CONFIGMAP_COLLECTORS)" /home/replicant/harbor-supp
 
 export SECRET_COLLECTORS=$(cat <<SECRET_COLLECTORS
 - secret:
-    name: harbore-core
+    name: harbor-core
     namespace: default
     key: tls.crt
     includeValue: true
