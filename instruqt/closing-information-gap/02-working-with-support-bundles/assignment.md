@@ -36,7 +36,8 @@ your application. Support bundles can also surface specific issues and provide
 guidance to your customer in order to repair issues on their own. They are part
 of the [Troubleshoot](https://troubleshoot.sh) open source project.
 
-What is a Support Bundle? =========================
+What is a Support Bundle?
+=========================
 
 Support Bundles collect the information you need to understand their
 cluster and how your application is running in it. The Replicated
