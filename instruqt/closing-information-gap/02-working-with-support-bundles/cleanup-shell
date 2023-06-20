@@ -16,7 +16,7 @@ if ! tmux has-session -t shell ; then
 fi
 
 # just in case they didn't quit the support bundle command
-tmux send-keys q
+tmux send-keys q ENTER
 # clear the tmux pane and scrollback to look like a fresh shell
 tmux clear-history -t shell 
 tmux send-keys -t shell clear ENTER
