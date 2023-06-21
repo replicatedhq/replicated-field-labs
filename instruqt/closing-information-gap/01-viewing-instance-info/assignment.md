@@ -22,9 +22,9 @@ timelimit: 600
 
 When your software is running in a customer cluster, you no longer have direct
 access to troubleshoot when things go wrong. You won't be able to see what's
-running, read logs, or even confirm that the ever started up. Your customer can
-do these things, but they may need your guidance to do them correctly and
-  coordinating that information sharing can be challenging.
+running, read logs, or even confirm that the instance ever started up. Your
+customer can do these things, but they may need your guidance to do them
+correctly and coordinating that information sharing can be challenging.
 
 In this lab, we're going to use the Harbor registry as a substitute for your
 application and assume we have two customers "Omozan" and "Geeglo" that are
@@ -41,7 +41,7 @@ enabled implicitly when you incorporate the Replicated SDK into your
 application. The insights provided include the version of your application the
 customer is running, details about the cluster, and current instance health.
 
-There starting point for any support ticket should be to log into the
+The starting point for any support ticket should be to log into the
 Replicated Vendor Portal to look at the details on the customer's instance.
 Click on the Vendor Portal tab to open up a new browser window and access the
 portal. The labs setup has configure credentials for you that you can use to
@@ -81,7 +81,7 @@ Geeglo on their support ticket:
 
 * A general overview of how stable this instance has been in from the uptime
   graph. You can change the timeline of the graph to gain more insight.
-* The current version of you application they are running, and how long that
+* The current version of your application they are running, and how long that
   version has been installed. You can also at a glance if it's the current
   version or if they have fallen behind.
 * What type of Kubernetes cluster they are running on, what version of
@@ -133,7 +133,7 @@ instance in order to more quickly resolve their issues.
 </tbody>
 </table>
 
-This information help you form a more thorough picture of Geeglo's instance and
+This information helps you form a more thorough picture of Geeglo's instance and
 narrow down the questions you need to ask to help troubleshoot. They can also
 help you find solutions more quickly as search through your support knowledge
 base.

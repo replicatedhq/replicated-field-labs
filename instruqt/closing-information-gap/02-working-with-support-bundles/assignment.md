@@ -28,9 +28,9 @@ path. It was built to provide a set of insights for any application distributed
 with the Replicated application. This limits it to information that's common
 across applications.
 
-Support bundles are another crticial tool for troubleshooting customer issues.
+Support bundles are another critical tool for troubleshooting customer issues.
 The Replicated Platform allows you to define a bundle that your customer can
-send to give you even more visibility inot their environment. Since you define
+send to give you even more visibility into their environment. Since you define
 the support bundle, it can collect details that are specific to troubleshooting
 your application. Support bundles can also surface specific issues and provide
 guidance to your customer in order to repair issues on their own. They are part
@@ -39,14 +39,13 @@ of the [Troubleshoot](https://troubleshoot.sh) open source project.
 What is a Support Bundle?
 =========================
 
-Support Bundles collect the information you need to understand their
-cluster and how your application is running in it. The Replicated
-Platform allows you to do this without installing anything else
-into the cluster
+Support Bundles collect the information you need to understand your customer's
+cluster and how your application is running in it. The Replicated Platform
+allows you to do this without installing anything else into the cluster.
 
-You define your bundle in a YAML file that follows the same format
-as a Kubernetes object. The simplest support bundle object looks
-like this, and it's in the file `simplest-support-bundle.yaml`:
+You define your bundle in a YAML file that follows the same format as a
+Kubernetes object. The simplest support bundle object looks like this, and it's
+in the file `simplest-support-bundle.yaml`:
 
 ```
 apiVersion: troubleshoot.sh/v1beta2
@@ -64,10 +63,9 @@ Let's try it out.
 kubectl support-bundle ./simplest-support-bundle.yaml
 ```
 
-It will take a few seconds to generate a support bundle in a
-file named `support-bundle-$TIMESTAMP.tar.gz` that contains
-some simplest information about the cluster. You can get a
-flavor for what's in the bundle by running
+It will take a few seconds to generate a support bundle in a file named
+`support-bundle-$TIMESTAMP.tar.gz` that contains some simplest information
+about the cluster. You can get a flavor for what's in the bundle by running
 
 ```
 tar -tzf support-bundle-*.tar.gz | less
@@ -85,26 +83,24 @@ bundles will collect a minimum set of information.
 Analyzers and Collectors
 ========================
 
-Your support bundle both collects information about the cluster
-and analyzes it to provide more insight into its state. If you
-have completed the [Avoiding Installation Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
-lab these concepts will be familiar to you as the two types of
-objects that make up preflight checks. Support bundles are also
-make up of _collectors_ that collect data and _analyzers_ that
-analyze it.
+Your support bundle both collects information about the cluster and analyzes it
+to provide more insight into its state. If you have completed the [Avoiding
+Installation
+Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
+lab these concepts will be familiar to you as the two types of objects that
+make up preflight checks. Support bundles are also make up of _collectors_ that
+collect data and _analyzers_ that analyze it.
 
-There two default collectors included in every support bundle.
-The `clusterInfo` collector collects information about the running
-cluster, while the `clusterResources` collector which collects
-information about many of the resources running in the cluster.
-These give you some baseline support information, but you will
-generally want to add more collectors to gather logs and other
-details about your application state.
+There two default collectors included in every support bundle. The
+`clusterInfo` collector collects information about the running cluster, while
+the `clusterResources` collector which collects information about many of the
+resources running in the cluster. These give you some baseline support
+information, but you will generally want to add more collectors to gather logs
+and other details about your application state.
 
-Log collection is the first thing most teams add to their
-support bundle. Let's add some logging collectors so that we
-our support bundle will collect logs from the Harbor
-application.
+Log collection is the first thing most teams add to their support bundle. Let's
+add some logging collectors so that we our support bundle will collect logs
+from the Harbor application.
 
 ```
 - logs:
@@ -112,15 +108,13 @@ application.
       - app=harbor
 ```
 
-This definition specifies that the logs from any workload
-where the label `app` has the value `harbor`. The Harbor
-Helm chart we're using for this lab applies that label to
-all of the workloads for the application.
+This definition specifies that the logs from any workload where the label `app`
+has the value `harbor`. The Harbor Helm chart we're using for this lab applies
+that label to all of the workloads for the application.
 
-The first analyzers teams add are generally those that
-identify if different workloads are running (i.e. in a
-`Ready` state). Harbor has many services, let's just take
-one for this first step.
+The first analyzers teams add are generally those that identify if different
+workloads are running (i.e. in a `Ready` state). Harbor has many services,
+let's just take one for this first step.
 
 ```
 - deploymentStatus:
@@ -141,8 +135,7 @@ one for this first step.
             Ther Harbor core workload is running on this cluster and ready for use.
 ```
 
-Taken together, your support bundle definition will look like
-this:
+Taken together, your support bundle definition will look like this:
 
 ```
 apiVersion: troubleshoot.sh/v1beta2
@@ -178,8 +171,8 @@ spec:
 Getting Started
 ===============
 
-Let's creating a support bundle using this definition. Click on the
-"Manifest Editor" tab and create a new file named `harbor-support-bundle.yaml`.
+Let's create a support bundle using this definition. Click on the "Manifest
+Editor" tab and create a new file named `harbor-support-bundle.yaml`.
 
 ![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
 
@@ -193,7 +186,7 @@ Now collect a support bundle using this definition.
 kubectl support-bundle ./harbor-support-bundle.yaml
 ```
 
-You'll see that that your bundle has been collected and get a
-screen showing the result for the analyzer you added.
+You'll see that that your bundle has been collected and get a screen showing
+the result for the analyzer you added.
 
 ![Harbor Core is Running](../assets/passing-harbor-core-status.png)

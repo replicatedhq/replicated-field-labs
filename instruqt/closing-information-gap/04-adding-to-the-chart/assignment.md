@@ -26,14 +26,14 @@ they can collect a support bundle when you need it.
 Making the Support Bundle Available
 ===================================
 
-The Support Bundle specification looks a lot like Kubernetes customer resource,
+The Support Bundle specification looks a lot like Kubernetes custom resource,
 but strictly speaking it isn't. Instead it runs outside of the cluster and is
 interpreted by the `support-bundle` plugin to the `kubectl` command.
 
-Even if it isn't a Kubernetes resources, we still want to distribute the
-support bundle specification as part of the application Helm chart. This saves
-you from having to find a different distribution mechanism. It also makes it
-easier for your customer to gather a support bundle for you.
+Even if it isn't a Kubernetes resource, we still want to distribute the support
+bundle specification as part of the application Helm chart. This saves you from
+having to find a different distribution mechanism. It also makes it easier for
+your customer to gather a support bundle for you.
 
 To include the support bundle definition with your application, you're going to
 store it in a Kubernetes secret. There are a couple of constraints on this
@@ -45,6 +45,7 @@ secret:
 
 If we consider the baseline support bundle from the first step in the lab, it
 becomes a secret that looks like this
+
 
 ```
 apiVersion: v1
@@ -69,11 +70,12 @@ Let's add this secret to our cluster and execute it.
 
 ```
 kubectl create -f simplest-support-bundle-secret.yaml
-kubeclt support-bundle --load-cluster-spec
+kubeclt support-bundle --load-cluster-specs
 ```
 
-_Note: The support bundle definition can also be stored as a `ConfigMap`
-with the same annotation._
+_Note: The support bundle definition can also be stored as a `ConfigMap` with
+the same annotation._
+
 
 Adding Your Definition to the Harbor Helm Chart
 ===============================================

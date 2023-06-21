@@ -41,8 +41,8 @@ troubleshooting clues, so you can specify collectors to include them.
 You don't want to collect too much information when adding Secrets and
 ConfigMaps to your support bundle. The support bundle collection process
 redacts many sensitive values, but application configurations are likely to
-contain more sensitive details than logs or other data you might collect.
-This is especially true of values stored in secrets.
+contain more sensitive details than logs or other data you might collect. This
+is especially true of values stored in secrets.
 
 We're going to define collectors for some ConfigMaps and Secrets that are
 critical to operating the Harbor registry. ConfigMaps are collected with the
@@ -56,9 +56,9 @@ absolutely necessary and when it is likely to be known to you already.
 ## Collecting ConfigMaps
 
 For our `configMap` collectors, we're going to collect all of the ConfigMaps
-installed by the application without their values. We'll also collect the
-value of the endpoint that is configured for Harbor to confirm it is set to
-where the customer is trying to access it.
+installed by the application without their values. We'll also collect the value
+of the endpoint that is configured for Harbor to confirm it is set to where the
+customer is trying to access it.
 
 ```
     - configMap:
@@ -81,8 +81,9 @@ support bundle definition after the `logs` collector from the previous step.
 
 There are several secrets that are critical to Harbor running successfully. We
 can use collectors to gather the information we need to know necessary secrets
-are present, and in some case their values. We start with a few secrets that its
-safe to know the value of, like TLS certificates which are essentially public.
+are present, and in some case their values. We start with a few secrets that
+its safe to know the value of, like TLS certificates which are essentially
+public.
 
 Add these values after the `logs` collector in the file
 `harbor-support-bundle.yaml`.
@@ -115,10 +116,10 @@ bundle specification file.
 Analyzing Workloads
 ===================
 
-In your initial support bundle definition you added a `deplomentStatus`
+In your initial support bundle definition you added a `deplogymentStatus`
 analyzer that checked whether the Harbor Core workload was running. Core is one
 of several workloads in the application. Some are Deployments, while others are
-Stateful Sets. The is a `statefulSetStatus` analyzer that works the same way
+Stateful Sets. There is a `statefulSetStatus` analyzer that works the same way
 for those resources.
 
 To get a quick glimpse as to whether all the workloads that make up the Harbor
@@ -241,7 +242,7 @@ One Last Step
 Let's add the analyzers that are part of the Harbor preflight checks to the
 support bundle, just to make sure nothing troublesome has changed about the
 cluster since could cause trouble for the instance. If you didn't complete the
-[Avoding Installation
+[Avoiding Installation
 Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
 lab you may not have seen these before. They test to make sure the Kubernetes
 version, CPU, and memory of the cluster will support running the Harbor
@@ -327,10 +328,5 @@ You'll see that that your bundle has been collected and get a
 text interface showing the results of the analyzers you added.
 
 ![Complete Support Bundle Analysis](../assets/complete-support-bundle-analysis.png)
-
-Note the failure in for the `harbor-jobservice` workload. This may be the cause
-of the unavailable application that we observed in the Vendor Portal. We'll
-take a look into the support bundle in the next step to see if it helps us
-diagnose the issue.
 
 Press `q` to leave the support bundle analyzers interface.
