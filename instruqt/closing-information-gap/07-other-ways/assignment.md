@@ -95,7 +95,9 @@ replicated release promote 5 Stable --version 16.9.1 \
 Running the New Bundle as Geeglo
 ================================
 
-You can now resume acting as Geeglo to upgrade your installation and collect a new support bundle containing your
+You can now resume acting as Geeglo to upgrade your installation and collect a
+new support bundle containing a reference to your independently released
+bundle.
 
 ```
 kubectl support-bundle --load-cluster-specs
