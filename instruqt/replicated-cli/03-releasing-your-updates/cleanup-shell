@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t shell 
+tmux send-keys -t shell clear ENTER
+
+exit 0

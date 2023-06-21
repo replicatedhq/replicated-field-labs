@@ -15,12 +15,6 @@ done
 
 # convenience library for Replicated lab lifecycle scripts
 source /etc/profile.d/header.sh
-cat <<'SAVE_SCRIPT' >> /home/replicant/.bashrc
-function save_lab_setup () {
-  echo "export REPLICATED_API_TOKEN=${REPLICATED_API_TOKEN}" >> /home/replicant/.bashrc
-  echo "export REPLICATED_APP=${REPLICATED_APP}" >> /home/replicant/.bashrc
-}
-SAVE_SCRIPT
 
 # there's only one app created by the automation, so just grab the first in the list
 access_token=$(get_api_token)

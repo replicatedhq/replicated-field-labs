@@ -1,12 +1,19 @@
 #!/bin/bash
 
-if ! grep -qE "REPLICATED_API_TOKEN=[[:alnum:]]+" /home/replicant/.bashrc ; then
-  fail-message "Please make sure you've set your API token and run save_lab_setup"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# save the session
+tmux capture-pane -t shell -S -
+SESSION=$(tmux save-buffer -)
+
+if ! grep -qE "REPLICATED_API_TOKEN=[[:alnum:]]+" <(echo ${SESSION}) ; then
+  fail-message "Please make sure you've set your API token"
   exit 1
 fi
 
-if ! grep -qE "REPLICATED_APP=\w+" /home/replicant/.bashrc ; then
-  fail-message "Please make sure you've set your Replicated app slug and run save_lab_setup"
+if ! grep -qE "REPLICATED_APP=\w+" <(echo ${SESSION}) ; then
+  fail-message "Please make sure you've set your Replicated app slug"
   exit 1
 fi
 
