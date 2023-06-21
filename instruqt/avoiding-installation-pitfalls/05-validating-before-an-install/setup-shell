@@ -9,6 +9,7 @@ source /etc/profile.d/header.sh
 api_token=$(get_api_token)
 app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
 customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customers" | jq -r '.customers[0].id')
+customer_email=${INSTRUQT_PARTICIPANT_ID}@geeglo.io
 
 # set the customer email so the user doesn't have to do it, also make it a paid license for the optics
 omozan_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
@@ -32,3 +33,4 @@ license_expiry=$(date -d "+30 days" "+%B %d, %Y")
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
 agent variable set LICENSE_EXPIRY "${license_expiry}"
+agent variable set CUSTOMER_EMAIL "${customer_email}"
