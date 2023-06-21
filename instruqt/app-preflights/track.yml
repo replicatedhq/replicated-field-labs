@@ -14,6 +14,8 @@ tags: []
 owner: replicated
 developers:
 - graham@replicated.com
-private: true
-published: false
-checksum: "4354451173904343354"
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "11046364313407114438"
