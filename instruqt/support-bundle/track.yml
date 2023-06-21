@@ -10,6 +10,8 @@ tags: []
 owner: replicated
 developers:
 - joshd@replicated.com
-private: false
-published: false
-checksum: "5042143457672378244"
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "14789403535061346620"
