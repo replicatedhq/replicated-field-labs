@@ -2,20 +2,24 @@
 slug: kotsadm-ui
 id: bisphrzpeuon
 type: challenge
-title: kotsadm UI
-teaser: Access the kotsadm UI and view pre-flight check output
+title: Admin Console UI
+teaser: Access the Admin Console UI and view pre-flight check output
 notes:
 - type: text
-  contents: Navigate the kotsadm ui and complete app install
+  contents: Navigate the Admin Console ui and complete app install
 tabs:
-- title: KotsAdm
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+- title: Admin Console
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   new_window: true
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
   new_window: true
+- title: Shell
+  type: terminal
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
@@ -25,7 +29,7 @@ timelimit: 600
 
 **In this exercise you will:**
 
- * Access kotsadm ui, login and upload license
+ * Access Admin Console, login and upload license
  * View the initial run of the preflights
  * After the app is running view the preflight log for current deployment
 
@@ -36,14 +40,14 @@ In the previous challenge the kots services were installed for the application o
 
 In this challenge the installation is completed and as part of that the application install pre-flight checks will be run.
 
-Launch the kotsadm console UI using the **Open external window** launch button in the KotsAdm tab
+Launch the Admin Console console UI using the **Open external window** launch button in the KotsAdm tab
 
 
-### 2. KotsAdm web UI authentication and License upload
+### 2. Admin Console authentication and License upload
 
 ![preflight-login](../assets/preflight-login.png)
 
-Login to the kotsadm UI using the password you set in the previous challenge.
+Login to the Admin Console UI using the password you set in the previous challenge.
 After authenticating you will be prompted to upload an application license file, select the file that you downloaded earlier for the **Hola Preflight Customer**.
 
 ![preflight-login](../assets/preflight-license-upload1.png)

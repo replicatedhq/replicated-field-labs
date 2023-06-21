@@ -80,7 +80,7 @@ Once complete you can check the install using `kubectl`:
 kubectl get all -n [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
-Note: If you did not use the default namespace, substitute [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]] with the namespace you chose when installing.
+Note: If you did not use the default namespace, substitute the namespace you chose for `[[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]`.
 
 
 ```
@@ -106,4 +106,4 @@ statefulset.apps/kotsadm-postgres   1/1     5m12s
 
 ```
 
-Once done, move onto the next challenge.
+Once done, move on to the next challenge.

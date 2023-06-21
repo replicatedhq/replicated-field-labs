@@ -12,9 +12,6 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---
@@ -26,12 +23,15 @@ timelimit: 600
 
  * Access vendor portal and view preflights and download license
  * Use vendor portal invite email to register and set password for temporary account
- * Grab the kots install command from the app-preflights channel Existing cluster
+ * Grab the kots install command from the "Stable" release channel
 
 
 ### 1. Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+To access the Vendor Portal, you need a username and password. Outside of the
+lab environment, you can get these by signing up for a free trial or being
+invited by one of your team members. For the lab, the following credentials
+have been set up for you.
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
@@ -51,7 +51,7 @@ Navigate to the Releases tab and click on the latest active releases **View YAML
 
 ![preflight-release-yaml](../assets/preflight-view-yaml-link.png)
 
-The UI code editor has the file list down the left hand side, there is a line separating the kots feature config and the application itself.
+The UI code editor has the file list down the left hand side, there is a line separating the KOTS feature config and the application itself.
 The file that contains the application preflights in this example is called **kots-preflight**, select this file and note the header type:
 
 ```yaml
