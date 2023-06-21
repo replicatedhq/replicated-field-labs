@@ -1,15 +1,34 @@
-#!/bin/sh
-#
-# This script runs when the platform setup the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+HOME_DIR=/home/replicant
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
 cat <<'SAVE_SCRIPT' >> /home/replicant/.bashrc
 function save_lab_setup () {
   echo "export REPLICATED_API_TOKEN=${REPLICATED_API_TOKEN}" >> /home/replicant/.bashrc
   echo "export REPLICATED_APP=${REPLICATED_APP}" >> /home/replicant/.bashrc
 }
 SAVE_SCRIPT
+
+# there's only one app created by the automation, so just grab the first in the list
+access_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+agent variable set USERNAME $(get_username)
+agent variable set PASSWORD $(get_password)
+agent variable set REPLICATED_API_TOKEN ${access_token}
+agent variable set REPLICATED_APP ${app_slug}
 
 exit 0
