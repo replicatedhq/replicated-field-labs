@@ -27,10 +27,13 @@ curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
   --header "Content-Type: application/json" \
   --data '{ "is_foundation": true }'
 
+# set a customer email
+customer_email=${INSTRUQT_PARTICIPANT_ID}@geeglo.com`
 # help the user out by telling them the expiration date for a 30-day trial
 license_expiry=$(date -d "+30 days" "+%B %d, %Y")
 
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
+agent variable set CUSTOMER_EMAIL=${customer_email}
 agent variable set LICENSE_EXPIRY "${license_expiry}"
 agent variable set CUSTOMER_EMAIL "${customer_email}"
