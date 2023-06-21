@@ -27,9 +27,9 @@ tags: []
 owner: replicated
 developers:
 - chuck@replicated.com
-- joshd@replicated.com
-- fernando@replicated.com
-- graham@replicated.com
+- vladimir@replicated.com
+- beck@replicated.com
+- jackee@replicated.com
 private: false
 published: false
 maintenance: false
