@@ -41,7 +41,7 @@ This will take the form of:
 
 ```bash
 curl https://kots.io/install | bash
-kubectl kots install application-preflight-checks-abcdefgh
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
 ### 2. Perform the existing cluster app install
@@ -54,7 +54,7 @@ A password will be prompted for too, enter a value you can remember, you will us
 Sample install output:
 ```
 root@kubernetes-vm:~# curl https://kots.io/install | bash
-kubectl kots install application-preflight-checks-abcdefgh --no-port-forward
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]] --no-port-forward
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  3697  100  3697    0     0   5032      0 --:--:-- --:--:-- --:--:--  5029
@@ -77,10 +77,10 @@ Enter a new password to be used for the Admin Console: ••••••••�
 Once complete you can check the install using `kubectl`:
 
 ```bash
-kubectl get all -n <your-namespace>
+kubectl get all -n [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
-Note: Subsitute `<your-namespace>` with the namespace you chose when installing.
+Note: If you did not use the default namespace, substitute [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]] with the namespace you chose when installing.
 
 
 ```
