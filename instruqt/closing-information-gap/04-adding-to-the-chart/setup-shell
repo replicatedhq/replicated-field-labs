@@ -24,7 +24,9 @@ apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: baseline-support-bundle
+  name: simplest-support-bundle
+  labels:
+    troubleshoot.sh/kind: support-bundle
 stringData:
   support-bundle-spec: |-
     apiVersion: troubleshoot.sh/v1beta2
