@@ -31,21 +31,21 @@ Logging Into the Vendor Portal
 ==============================
 
 To run the preflights as a customer, we need to have their
-login credentials to the Replicated registry. The lab setup
+login credentials to the Replicated registry. The lab set up
 process configured a customer for the Harbor application,
-but in this step we're going to add a new customer. We'll
-do this in the Replicated Vendor Portal,.
+but in this step we are going to add a new customer. We will
+do this in the Replicated Vendor Portal.
 
 Click on the Vendor Portal tab to open up a new browser window and
-access the portal. Log in with these credentials
+access the portal. Log in with these credentials:
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
-You'll land on the "Channels" page for your app, which will show
+You will land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
 each of the default channels shows the current version `16.8.0`,
-while the channel LTS, which we haven't released to, reflects
+while the channel LTS, which we have not released to, reflects
 that.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
@@ -53,14 +53,14 @@ that.
 Creating a Customer
 ===================
 
-To create a customer, select "Customers" from the menu on the left
-the click the "Create Customer" button.
+To create a customer, select "Customers" from the menu on the left,
+then click the "+ Create Customer" button.
 
 ![Creating a Customer](../assets/create-customer-button.png)
 
 Call your customer "Geeglo" and assign them to the `Stable` channel.
-Let's assume this customer is not yet a customer, but prospect who
-is evaluating our application. Let's assume allow our customers to
+Let's assume this customer is not yet a customer, but a prospect who
+is evaluating our application. Let's allow our customer to
 evaluate our software on a trial license for 30 days.  Set them up
 as a "Trial" customer and set up the expiration date and customer
 email as follows:
@@ -80,17 +80,17 @@ registry with the `helm` command. This gives them access to
 your Helm chart via the Replicated Platform.
 
 If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
-lab, you'll remember that each customer has their own login
+lab, you will remember that each customer has their own login
 credentials that are specific to their entitlements to your
 application. You can get those instructions by clicking the
 "Helm Install Instructions" button on the customer page.
 
 ![Install instruction](../assets/install-instructions.png)
 
-In lab, we only want to execute the first step in the process,
-which is the log into the registry. Because you just created
-the customer, you'll have to copy the login command from the
-vendor portal page.
+In this lab, we only want to execute the first step in the process,
+which is to log into the registry. Because you just created
+the customer, you will have to copy the login command from the
+customer page.
 
 From there, they can use the `helm template` command to extract the
 preflight checks to run with `kubectl preflight`.

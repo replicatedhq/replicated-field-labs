@@ -6,7 +6,7 @@ title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
 notes:
 - type: text
-  contents: Intoducing the Replicated SDK into your application
+  contents: Introducing the Replicated SDK into your application
 tabs:
 - title: Shell
   type: terminal
@@ -19,7 +19,7 @@ difficulty: basic
 timelimit: 300
 ---
 
-Now that we've got our environment set up, let's incorporate the
+Now that we have our environment set up, let's incorporate the
 SDK into our application. Replicated makes it easy for you to do
 this by providing a Helm chart you can drop into your chart as a
 dependency. When you deliver your Helm chart from the Replicated
@@ -31,9 +31,9 @@ This injection serves a few purposes:
 1. The license is available to your application logic through a
    call to an API provided by an in-cluster service.
 2. Access to your container images and other registry
-   assets is secured using customer-specific credentials
+   assets is secured using customer-specific credentials.
 3. The in-cluster service can connect securely to the Replicated
-   vendor portal for telemetry, upgrade checks, etc.
+   Vendor Portal for telemetry, upgrade checks, etc.
 
 Adding the Dependency
 ======================
@@ -42,7 +42,7 @@ Go to the the "Manifest Editor" tab and edit the file `Chart.yaml` in
 the source directory `harbor`. You're going to make two changes to
 this file.
 
-First, you're going to add a dependency on the Replicated SDK Helm
+First, you are going to add a dependency to the Replicated SDK Helm
 chart.
 
 ```

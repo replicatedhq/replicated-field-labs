@@ -22,27 +22,27 @@ timelimit: 600
 There are many more preflight checks we could define for the
 Harbor registry, but let's stop here and shift to how we can
 deliver these checks as part of the application. To do this,
-we're going to incorporate them into our Helm chart and
+we are going to incorporate them into our Helm chart and
 release a new version using the Replicated Platform.
 
 Making Preflights Available with Your Application
 =================================================
 
 We defined our preflight checks in a manifest that looks a
-lot like a Kubernetes resource. It's useful to think of it as
-one, since it's an important part of successfully distributing
-and supporting an application. But it's different in one
-important way: it's a resource we expect to run _outside_ of
+lot like a Kubernetes resource. It is useful to think of it as
+one, since it is an important part of successfully distributing
+and supporting an application. But it is different in one
+important way: it is a resource we expect to run _outside_ of
 the destination cluster.
 
 To accommodate this distinction, but still make it available
 as part of our Helm chart, we are going to store it in a
-Kubernetes secret that that chart creates. This helps us in
+Kubernetes secret that our chart creates. This helps us in
 two ways:
 
-1. We don't try to create a resource the cluster doesn't
+1. We will not try to create a resource the cluster does not
    know about.
-2. It's available in the cluster as part of the application
+2. It is available in the cluster as part of the application
    for the customer to run at any time.
 
 We identify this secret with a label that we add to the
@@ -54,7 +54,7 @@ troubleshoot.sh/kind: preflight
 
 If we consider the "simplest possible" preflight spec from
 the first step in the lab, it would become a secret that
-looks like this
+looks like this:
 
 ```
 apiVersion: v1
@@ -67,7 +67,7 @@ stringData:
     apiVersion: troubleshoot.sh/v1beta2
     kind: Preflight
     metadata:
-      name: preflight-tutorial
+      name: empty-preflight-checks
     spec:
       analyzers: []
 ```
@@ -79,11 +79,11 @@ like we did before
 kubectl preflight ./empty-preflight-secret.yaml
 ```
 
-Remember that this preflight check won't run successfully
-since we haven't defined any analyzers to check anything.
+Remember that this preflight check will not run successfully
+since we have not defined any analyzers to check anything.
 
 ```
-Error: no data has been collected
+Error: no results
 ```
 
 _Note: The preflight check can also be stored as a `ConfigMap`
@@ -95,7 +95,7 @@ Adding Preflight Checks into the Harbor Helm Chart
 Now that you know how to include your preflight checks into a
 Helm chart, let's add them to the Harbor Helm chart. To make
 the secret fit in with Bitnami's naming, labeling, and annotation
-conventions there's a little bit of boiler plate required. You'll
+conventions, there is a little bit of boiler plate required. You will
 likely need to do something similar to follow your team's
 conventions when working with your own chart.
 
@@ -106,13 +106,13 @@ chart is installed.
 
 ![Creating the Preflights Template](../assets/creating-the-preflights-template.png)
 
-After creating the file, you may have to click on the filename
+After creating the file, click on the filename
 to make sure it is opened.
 
-Add the following to the file. As noted above, there's a lot of
+Add the following to the file. As noted above, there is a lot of
 templating to make sure naming, labels, and annotations are
-consistent. If you look beyond that, we're really just creating a
-secret that will have for some string data at the key `preflight.yaml`.
+consistent. If you look beyond that, we are really just creating a
+secret that will have some string data at the key `preflight.yaml`.
 Also note the label `troubleshoot.sh/kind: preflight` which
 identifies the secret for the `preflight` command.
 
@@ -218,16 +218,16 @@ will run the checks from your released chart as well.
 helm template harbor | kubectl preflight -
 ```
 
-If your satisfied with tests, bump the version of your Helm chart in the file
-`harbor/Chart.yaml` (from `16.7.0` to `16.8.0`) the repackage it. You can edit
+If you are satisfied with the tests, bump the version of your Helm chart in the file
+`harbor/Chart.yaml` from `16.7.0` to `16.8.0`, then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
-the shell.
+the shell:
 
 ```
 yq -i '.version = "16.8.0"' harbor/Chart.yaml
 ```
 
-and run the `helm package` command to package the updated version
+Then run the `helm package` command to package the updated version:
 
 ```
 helm package harbor --destination ./release
