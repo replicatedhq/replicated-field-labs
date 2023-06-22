@@ -11,9 +11,6 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
-- title: Cluster
-  type: terminal
-  hostname: cluster
 - title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
@@ -93,7 +90,7 @@ Verifying the Installation
 
 From the customer perspective, the installation is
 complete when they can log into the application and
-see that it was complete. Once your install is complete,
+see that it was complete. Once their install is complete,
 the tab "Harbor Registry" should show the login page
 for Harbor.
 
