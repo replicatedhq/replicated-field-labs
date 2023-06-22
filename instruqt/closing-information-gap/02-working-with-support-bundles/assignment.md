@@ -89,7 +89,7 @@ to provide more insight into its state. If you have completed the [Avoiding
 Installation
 Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
 lab these concepts will be familiar to you as the two types of objects that
-make up preflight checks. Support bundles are also make up of _collectors_ that
+make up preflight checks. Support bundles are also made up of _collectors_ that
 collect data and _analyzers_ that analyze it.
 
 There two default collectors included in every support bundle. The
