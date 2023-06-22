@@ -10,6 +10,7 @@ notes:
 tabs:
 - title: Application Installer
   type: service
+  hostname: kubernetes-vm
   port: 8800
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
