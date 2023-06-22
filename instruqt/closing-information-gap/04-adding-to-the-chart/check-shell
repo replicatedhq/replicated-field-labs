@@ -7,7 +7,7 @@ result=0
 
 # look for the preflight template file
 if [[ ! -f /home/replicant/harbor/templates/troubleshoot/support-bnundle.yaml ]] ; then
-  fail-message 'Please create the support bundle spec template file in the Harbor Helm chart template directory'j
+  fail-message 'Please create the support bundle spec template file in the Harbor Helm chart template directory'
   let "reasult = result + 1"
 fi
 

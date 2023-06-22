@@ -26,7 +26,7 @@ they can collect a support bundle when you need it.
 Making the Support Bundle Available
 ===================================
 
-The Support Bundle specification looks a lot like Kubernetes custom resource,
+The Support Bundle specification looks a lot like a Kubernetes custom resource,
 but strictly speaking it isn't. Instead it runs outside of the cluster and is
 interpreted by the `support-bundle` plugin to the `kubectl` command.
 
@@ -70,7 +70,7 @@ Let's add this secret to our cluster and execute it.
 
 ```
 kubectl create -f simplest-support-bundle-secret.yaml
-kubeclt support-bundle --load-cluster-specs
+kubectl support-bundle --load-cluster-specs
 ```
 
 _Note: The support bundle definition can also be stored as a `ConfigMap` with
@@ -87,7 +87,7 @@ conventions used in the chart. Bitnami, who provided the chart we're working
 with, has a set of these. Your team likely has some as well.
 
 Open the manifest editor and create a new file named `support-bundle.yaml` in
-the directory `harbor/templates`. This will be the template that creates the
+the directory `harbor/templates/troubleshoot`. This will be the template that creates the
 support bundle specification secret when the Helm chart is installed.
 
 ![Creating the Support Bundle Template](../assets/creating-the-support-bundle-template.png)
@@ -128,8 +128,8 @@ content you just pasted in and tab twice in order to indent to the right place.
 Repackaging Your Chart
 ======================
 
-
-`harbor/Chart.yaml` (from `16.8.0` to `16.9.0`) the repackage it. You can edit
+To distribute your support bundle, you should bump the version number in
+`harbor/Chart.yaml` (from `16.8.0` to `16.9.0`) adn then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell.
 

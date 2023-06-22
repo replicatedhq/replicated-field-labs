@@ -25,7 +25,7 @@ Instance Insights is a powerful tool to help you understand information you
 need to know to assist a customer. It's the first tool you should pick up to
 get context for the issue and can lead you toward the right troubleshooting
 path. It was built to provide a set of insights for any application distributed
-with the Replicated application. This limits it to information that's common
+with the Replicated Platform. This limits it to information that's common
 across applications.
 
 Support bundles are another critical tool for troubleshooting customer issues.
@@ -33,7 +33,7 @@ The Replicated Platform allows you to define a bundle that your customer can
 send to give you even more visibility into their environment. Since you define
 the support bundle, it can collect details that are specific to troubleshooting
 your application. Support bundles can also surface specific issues and provide
-guidance to your customer in order to repair issues on their own. They are part
+guidance to your customer in order to resolve issues on their own. They are part
 of the [Troubleshoot](https://troubleshoot.sh) open source project.
 
 What is a Support Bundle?
@@ -57,14 +57,15 @@ spec:
   analyzers: []
 ```
 
-Let's try it out.
+You can view the file in the Manifest Editor tab or from the command line.
+Let's try colelcting a support bunglde with it..
 
 ```
 kubectl support-bundle ./simplest-support-bundle.yaml
 ```
 
 It will take a few seconds to generate a support bundle in a file named
-`support-bundle-$TIMESTAMP.tar.gz` that contains some simplest information
+`support-bundle-$TIMESTAMP.tar.gz` that contains some simple information
 about the cluster. You can get a flavor for what's in the bundle by running
 
 ```
@@ -74,11 +75,11 @@ tar -tzf support-bundle-*.tar.gz | less
 You'll see the files that were collected cataloging all of the resources in the
 cluster and some information about the cluster itself. If you completed the
 [Avoiding Installation
-Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
-lab this may surprise you, since a preflight check definition with an empty
-`analzers` array caused an error. This is because the bundle is valid if it
-only collects information, and by default both preflight checks and support
-bundles will collect a minimum set of information.
+Pitfalls](https://play.instruqt.com/embed/replicated/tracks/avoiding-installation-pitfalls?token=em_gJjtIzzTTtdd5RFG)
+lab you might be surprised this doesn't return an error since the comparable
+preflight check failed. This is because the bundle is valid if it only collects
+information, while a preflight check is not. By default both preflight checks
+and support bundles will collect a minimum set of information.
 
 Analyzers and Collectors
 ========================
@@ -92,14 +93,14 @@ make up preflight checks. Support bundles are also make up of _collectors_ that
 collect data and _analyzers_ that analyze it.
 
 There two default collectors included in every support bundle. The
-`clusterInfo` collector collects information about the running cluster, while
-the `clusterResources` collector which collects information about many of the
-resources running in the cluster. These give you some baseline support
-information, but you will generally want to add more collectors to gather logs
-and other details about your application state.
+`clusterInfo` collector collects information about the running cluster, and the
+`clusterResources` collector collects information about many of the resources
+running in the cluster. These give you some baseline support information, but
+you will generally want to add more collectors to gather logs and other details
+about your application state.
 
 Log collection is the first thing most teams add to their support bundle. Let's
-add some logging collectors so that we our support bundle will collect logs
+add some logging collectors so that our support bundle will collect logs
 from the Harbor application.
 
 ```
@@ -110,7 +111,7 @@ from the Harbor application.
 
 This definition specifies that the logs from any workload where the label `app`
 has the value `harbor`. The Harbor Helm chart we're using for this lab applies
-that label to all of the workloads for the application.
+that label to all of the resources it creates for the application.
 
 The first analyzers teams add are generally those that identify if different
 workloads are running (i.e. in a `Ready` state). Harbor has many services,
@@ -123,16 +124,16 @@ let's just take one for this first step.
       - fail:
           when: "absent"
           message: |
-            The Harbor core workload has not been deployed to this cluster. Please sure to install the Harbor registry
+            The Harbor core component has not been deployed to this cluster. Please be sure to install the Harbor registry
             application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Harbor core workload is not currently running on this cluster. Please review the logs in this support
+            The Harbor core component is not currently running on this cluster. Please review the logs in this support
             bundle to locate any errors.
       - pass:
           message: |
-            Ther Harbor core workload is running on this cluster and ready for use.
+            Ther Harbor core component is running on this cluster and ready for use.
 ```
 
 Taken together, your support bundle definition will look like this:
@@ -158,21 +159,22 @@ spec:
           - fail:
               when: "absent"
               message: |
-                The Harbor core workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+                The Harbor core component has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Harbor core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Harbor core component is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
           - pass:
               message: |
-                Ther Harbor core workload is running on this cluster and ready for use.
+                Ther Harbor core component is running on this cluster and ready for use.
 ```
 
 Getting Started
 ===============
 
 Let's create a support bundle using this definition. Click on the "Manifest
-Editor" tab and create a new file named `harbor-support-bundle.yaml`.
+Editor" tab and create a new file named `harbor-support-bundle.yaml` in the
+`/home/replicant` directory.
 
 ![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
 

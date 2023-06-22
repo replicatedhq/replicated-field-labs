@@ -22,8 +22,8 @@ difficulty: basic
 timelimit: 600
 ---
 
-You have pretty useful support bundle right now. You can collect all the logs
-from the Harbor registry and you're able to verify if it's core service is
+You have a pretty useful support bundle right now. You can collect all the logs
+from the Harbor registry and you're able to verify if its core service is
 running. This can be very useful information to help your team resolve support
 cases more quickly with minimal back-and-forth with your customer.
 
@@ -80,13 +80,10 @@ support bundle definition after the `logs` collector from the previous step.
 ## Secret Collectors
 
 There are several secrets that are critical to Harbor running successfully. We
-can use collectors to gather the information we need to know necessary secrets
+can use collectors to gather the information we need to know if the necessary secrets
 are present, and in some case their values. We start with a few secrets that
 its safe to know the value of, like TLS certificates which are essentially
 public.
-
-Add these values after the `logs` collector in the file
-`harbor-support-bundle.yaml`.
 
 ```
     - secret:
@@ -241,7 +238,7 @@ One Last Step
 
 Let's add the analyzers that are part of the Harbor preflight checks to the
 support bundle, just to make sure nothing troublesome has changed about the
-cluster since could cause trouble for the instance. If you didn't complete the
+cluster that could cause trouble for the instance. If you didn't complete the
 [Avoiding Installation
 Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
 lab you may not have seen these before. They test to make sure the Kubernetes
