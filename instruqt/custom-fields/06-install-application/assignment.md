@@ -15,7 +15,7 @@ tabs:
   new_window: true
 - title: Shell
   type: terminal
-  hostname: kubernetes-vm  
+  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---

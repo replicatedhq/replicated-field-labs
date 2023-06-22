@@ -24,7 +24,7 @@ tabs:
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
-  new_window: true  
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -44,7 +44,7 @@ Both values for these are in the Vendor Portal. Click on the **Vendor** tab to g
 
 Once you are logged in to the Vendor Portal, head over to the **Dev** tab to set the Environment Variables.
 
-Set the `REPLICATED_APP` to be the **application slug** found in the setting in the vendor portal. 
+Set the `REPLICATED_APP` to be the **application slug** found in the setting in the vendor portal.
 
 <p align="center"><img src="../assets/cf-app-slug.png" width=450></img></p>
 
@@ -88,7 +88,7 @@ replicated release download 1 -d ./manifests
 A succesful download will yield results similar to this:
 
 ```shell
-  • Fetching Release 1 ✓  
+  • Fetching Release 1 ✓
   • Writing files to ./manifests
     • k8s-app.yaml
     • kots-app.yaml
@@ -103,7 +103,7 @@ Now we are ready to update the application.
 
 ## Making Updates to the Application
 
-We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled. 
+We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled.
 
 Head over to the **Code Editor** tab, which contains a directory tree that should look similar to this
 
@@ -173,7 +173,7 @@ Below is what a diff would look like after the change:
 
 The above basically states that if the Custom License Field is set to true, the value of the `name` key is `nginx-feature-on`, otherwise the value will be `nginx-feature-off`
 
-To save changes, click on the save icon on the file tab in the editor. 
+To save changes, click on the save icon on the file tab in the editor.
 
 Now we are ready to create a new release. Head back to the **Dev** tab and run the following command (make sure you are on the `custom-fields-app` directory):
 
