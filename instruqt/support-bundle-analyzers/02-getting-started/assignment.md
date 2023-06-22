@@ -28,7 +28,7 @@ timelimit: 600
 
 ### Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
+On the **Vendor** tab, login to the Vendor Portal using the credentials below.
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
