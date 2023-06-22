@@ -9,13 +9,12 @@ notes:
   contents: Now that we have installed the Admin Console, let's use it to deploy the
     sample app
 tabs:
-- title: Application Installer
-  type: website
+- title: Admin Console
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
   new_window: true
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 600
 ---

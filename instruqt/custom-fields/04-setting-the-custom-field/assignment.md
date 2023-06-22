@@ -10,9 +10,6 @@ notes:
     In this challenge we will create a customer license and set the value of our custom field to `false`.
     While in the Vendor Portal, we'll also grab the install command.
 tabs:
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -31,7 +28,10 @@ Go back to your browser that has the Vendor Portal open. If you closed it, no wo
 
 <p align="center"><img src="../assets/external-window.png" width=600></img></p>
 
-If your session expired, go to the **Shell** tab to get your credentials.
+If your session expired, log in again with your credentials.
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
 
 Let's create a customer, which will create the license file we need to install our sample application. To do this, navigate to **Customers** and click on the **Create Customer** button highlighted below.
 
@@ -52,37 +52,7 @@ Once you save the customer, you should see the **Download License** link highlig
 
 <p align="center"><img src="../assets/license.png" width=600></img></p>
 
-Click on the link to download the file. The license file is a YAML file that you can open with your favorite editor. An example is included below. Note that the license file includes a signature (ommitted below for brevity) which is used to verify at install time that the license file was not tampered.
-
-```yaml
-apiVersion: kots.io/v1beta1
-kind: License
-metadata:
-  name: licensecustomer
-spec:
-  appSlug: fernando-replicated-com
-  channelID: 2FinlqqbXVCkqD8DxHOosnYKkoW
-  channelName: CustomFields
-  customerName: License Customer
-  endpoint: https://replicated.app
-  entitlements:
-    enable-feature:
-      title: Enable Feature
-      value: false
-      valueType: Boolean
-    expires_at:
-      description: License Expiration
-      title: Expiration
-      value: ""
-      valueType: String
-  isGitOpsSupported: true
-  isNewKotsUiEnabled: true
-  isSnapshotSupported: true
-  licenseID: 2Fia5D7MVFBmV5xsnB8FaAmo6vF
-  licenseSequence: 5
-  licenseType: dev
-  signature: eyJsaWNlbnNlRGF...
-  ```
+Click on the link to download the file. The license is a YAML file with a signature embedded in it to assure it has't been tampered with. Since you downloaded it to your local computer, you can open it in your favorite text editor if you want to take a look.
 
 ## Get Install Command
 

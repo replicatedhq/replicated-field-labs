@@ -6,8 +6,7 @@ title: Install Admin Console
 teaser: Install the Admin Console, which we'll use to deploy our sample app
 notes:
 - type: text
-  contents: In this challenge we will use a terminal to install the Admin Console
-    powered by KOTS
+  contents: In this challenge we will use a terminal to install Admin Console
 tabs:
 - title: Shell
   type: terminal
@@ -25,7 +24,7 @@ timelimit: 600
 In the previous challenge you already copied the installation command for an existing cluster. It looked like:
 ```bash
 curl https://kots.io/install | bash
-kubectl kots install [YOUR-APP-NAME]
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
 If you don't have the command anymore, you can always go back to the `Vendor` tab and copy it from `Channels > Stable` (the existing cluster install command).
