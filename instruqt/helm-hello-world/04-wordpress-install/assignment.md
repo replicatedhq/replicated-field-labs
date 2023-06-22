@@ -32,7 +32,7 @@ Go to the Application Installer tab, and login using the password you used in th
 
 Upload the license for the `Helm Customer` you downloaded in Challenge #2
 
-<p align="center"><img src="../assets/helm-license.png" width=600></img></p>
+<p align="center"><img src="../assets/helm-license.png" width=600></im></p>
 
 ## Step 03
 
