@@ -15,8 +15,9 @@ tags: []
 owner: replicated
 developers:
 - fernando@replicated.com
+- chuck@replicated.com
 lab_config:
   overlay: false
   width: 25
   position: right
-checksum: "11723188988640980536"
+checksum: "17200034804437274232"

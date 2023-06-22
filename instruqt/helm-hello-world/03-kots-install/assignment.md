@@ -23,7 +23,7 @@ In the previous challenge you already copied the installation command for an exi
 
 ```bash
 curl https://kots.io/install | bash
-kubectl kots install [YOUR-APP-NAME]
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
 Run this command in the `Shell` tab. When asked for the `namespace`, you can just press enter and use the one suggested.
