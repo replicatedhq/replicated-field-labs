@@ -8,11 +8,14 @@ description: |-
   What you will do:
   * Learn to download and manage support bundles when analyzers cannot immediately resolve the issue
   * Learn to write new analyzers to detect more complex issues as they arise
-icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/analyze.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/commands.png
 tags: []
 owner: replicated
 developers:
 - joshd@replicated.com
-private: false
-published: false
-checksum: "669151410369602198"
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "7713171754459216624"
