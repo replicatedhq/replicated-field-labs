@@ -16,6 +16,9 @@ owner: replicated
 developers:
 - fernando@replicated.com
 - joshd@replicated.com
-private: false
-published: false
-checksum: "16001512551640665646"
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "7158397029775686739"
