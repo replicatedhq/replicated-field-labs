@@ -1,13 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # This script runs when the platform setup the challenge.
 #
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
-echo "Starting challenge 02 setup-kubernetes-vm"
 
-#set -eux
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
 
 # set up troubleshoot deployment blocker files
 # not creating the config.txt so it can be created during execrise
@@ -19,12 +22,20 @@ chmod 400 /etc/support/restraining-bolt.txt
 chmod 400 /etc/support/secretkey.txt
 
 
-# pre-install the kots app
-kubectl kots install support-cli-$INSTRUQT_PARTICIPANT_ID --name support-cli-$INSTRUQT_PARTICIPANT_ID --namespace default --shared-password $INSTRUQT_PARTICIPANT_ID --no-port-forward 
+
+# install the application
+kots_password_base=$(get_password| sha256sum)
+kots_password=${kots_password_base::20}
+kubectl kots install support-cli-$INSTRUQT_PARTICIPANT_ID \
+  --name support-cli-$INSTRUQT_PARTICIPANT_ID \
+  --namespace default \
+  --shared-password ${kots_password} \
+  --no-port-forward
 
 # expose kotsadm
 kubectl expose deployment kotsadm -n $(kubectl get pods -A -l app=kotsadm --no-headers | awk '{ print $1 }' ) --type=LoadBalancer --name=kotsadm-ingress --port=8800 --target-port=3000
 
+# make sure we can access the password in the instructions
+agent variable set KOTS_PASSWORD ${kots_password}
 
-echo "exiting challenge 02 setup-kubernetes-vm"
 exit 0
