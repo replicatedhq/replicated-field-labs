@@ -30,10 +30,8 @@ timelimit: 600
 
 To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
 
-```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
-```
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
 
 Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
 
@@ -50,9 +48,7 @@ In this case, the Application Installer is already deployed. So you can download
 
 The password for the application installer is your `PARTICIPANT_ID`, which can be obtained running the following in the Shell tab:
 
-```
-echo $INSTRUQT_PARTICIPANT_ID
-```
+[[ Instruqt-Var key="KOTS_PASSWORD" hostname="kubernetes-vm" ]]
 
 Go to the `Application Installer` tab (external window), login and upload the license that was downloaded from the Vendor Portal. You can accept the defaults for the Last mile Configuration.
 
