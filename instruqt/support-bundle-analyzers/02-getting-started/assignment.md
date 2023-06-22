@@ -46,9 +46,11 @@ In this case, the Application Installer is already deployed. So you can download
 
 ### 2. Install the application
 
-The password for the application installer is your `PARTICIPANT_ID`, which can be obtained running the following in the Shell tab:
+The password for the application installer is shown below.
 
+```
 [[ Instruqt-Var key="KOTS_PASSWORD" hostname="kubernetes-vm" ]]
+```
 
 Go to the `Application Installer` tab (external window), login and upload the license that was downloaded from the Vendor Portal. You can accept the defaults for the Last mile Configuration.
 
