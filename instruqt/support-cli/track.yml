@@ -18,7 +18,7 @@ description: |-
       * You will be ready to use the support-bundle CLI to collect a bundle & analysis
         in the rare case that an instance is struggling to the point that the KOTS
         admin console is unavailable
-icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/tools.png
 tags: []
 owner: replicated
 developers:

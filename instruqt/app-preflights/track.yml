@@ -9,7 +9,7 @@ description: |-
    - Configure various Application Preflight Checks
    - Install application via kots cli
    - Complete install via kotsadm ui and View preflight checks
-icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/checklist.png
 tags: []
 owner: replicated
 developers:

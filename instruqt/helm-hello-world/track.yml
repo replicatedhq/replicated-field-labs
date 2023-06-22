@@ -10,7 +10,7 @@ description: |-
     - Install Replicated's application installer
     - Deploy the wordpress application on Kubernetes using Replicated
     - Set the intial Blog during the installation
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/app.png 
 tags: []
 owner: replicated
 developers:

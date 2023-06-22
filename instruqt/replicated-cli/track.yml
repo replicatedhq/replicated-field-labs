@@ -10,7 +10,7 @@ description: |-
     - Find your download URL without leaving your shell
     - Begin and installation using `kubectl` and the KOTS plugin
     - Put it together to iterate on your work
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/commands.png
 tags: []
 owner: replicated
 developers:

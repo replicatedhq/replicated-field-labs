@@ -10,7 +10,7 @@ description: |-
     - How to view redacted information in a support bundle
     - How to add a custom redactor
     - Testing the custom redactor
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/redactor.png
 tags: []
 owner: replicated
 developers:

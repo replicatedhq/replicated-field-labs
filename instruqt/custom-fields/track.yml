@@ -6,7 +6,7 @@ teaser: Learn how to use Custom License Fields to manage which features to enabl
 description: -|
   In this track we take a deeper look at using Licenses with Replicated.
   In this track, you will learn how to define Custom License Fields and how to use them to manage features.
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/licensing.png
 tags: []
 owner: replicated
 developers:

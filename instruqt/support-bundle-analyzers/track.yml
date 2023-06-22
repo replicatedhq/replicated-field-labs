@@ -8,7 +8,7 @@ description: |-
   What you will do:
   * Learn to download and manage support bundles when analyzers cannot immediately resolve the issue
   * Learn to write new analyzers to detect more complex issues as they arise
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/analyze.png
 tags: []
 owner: replicated
 developers:
