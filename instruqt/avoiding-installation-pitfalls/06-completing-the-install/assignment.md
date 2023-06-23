@@ -27,7 +27,7 @@ difficulty: basic
 timelimit: 600
 ---
 
-We are going to continue playing the role of the customer
+We're going to continue playing the role of the customer
 who had a failing preflight check for the Harbor registry.
 Let's also assume that the customer decided to increase
 the capacity of the cluster and is ready to perform
@@ -59,7 +59,7 @@ Installing the Application
 Now that the preflight checks have passed, it is safe to
 install the application. You can find the installation
 command for the customer "Geeglo" in the Replicated
-Vendor Portal. Since we have already run the first two
+Vendor Portal. Since we've already run the first two
 steps of logging into the registry and running our
 preflight checks, we have only the installation
 with the Helm command to complete.
@@ -85,8 +85,8 @@ helm install harbor \
   --set externalURL=[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
 ```
 
-Note that the cluster we are using is fairly limited, so
-we are using `NodePort` to simplify access.
+Note that the cluster we're using is fairly limited, so
+we're using `NodePort` to simplify access.
 
 Verifying the Installation
 ==========================
@@ -111,9 +111,9 @@ echo Password: $(kubectl get secret --namespace default harbor-core-envvars -o j
 🏁 Finish
 =========
 
-You have now successfully seen how you can provide preflight
+You've now successfully seen how you can provide preflight
 checks to your customer to help them avoid potential pitfalls
-installing your application. You have also seen how those
+installing your application. You've also seen how those
 preflights can help your customer understand what they need
 to do to prepare for an install, and how they can complete
 a successful install once the preflight checks pass.

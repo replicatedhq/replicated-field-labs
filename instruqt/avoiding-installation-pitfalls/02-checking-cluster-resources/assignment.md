@@ -19,7 +19,7 @@ difficulty: basic
 timelimit: 300
 ---
 
-Now that we know we are installing to a supported version of
+Now that we know we're installing to a supported version of
 Kubernetes, let's see if that cluster has the resources to
 support running Harbor.
 
@@ -106,7 +106,7 @@ After saving your changes run the preflight checks command to see the outcome.
 kubectl preflight ./harbor-preflights.yaml
 ```
 
-You will see that our cluster generates a warning since it has only two CPU
+You'll see that our cluster generates a warning since it has only two CPU
 cores available. This should be fine for our lab environment, so we can
 ignore the warning for now.
 
@@ -146,7 +146,7 @@ them:
 kubectl preflight ./harbor-preflights.yaml
 ```
 
-You will see that all three preflights are run, and that the memory
+You'll see that all three preflights are run, and that the memory
 preflight has failed. This is an expected failure, since we have
 single node cluster that uses just that node's disk for storage. That
 disk is smaller than the storage requirements for Harbor.

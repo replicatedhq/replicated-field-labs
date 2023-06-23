@@ -19,7 +19,7 @@ difficulty: basic
 timelimit: 300
 ---
 
-Now that we have our environment set up, let's incorporate the
+Now that we've got our environment set up, let's incorporate the
 SDK into our application. Replicated makes it easy for you to do
 this by providing a Helm chart you can drop into your chart as a
 dependency. When you deliver your Helm chart from the Replicated
@@ -42,7 +42,7 @@ Go to the the "Manifest Editor" tab and edit the file `Chart.yaml` in
 the source directory `harbor`. You're going to make two changes to
 this file.
 
-First, you are going to add a dependency to the Replicated SDK Helm
+First, you're going to add a dependency to the Replicated SDK Helm
 chart.
 
 ```

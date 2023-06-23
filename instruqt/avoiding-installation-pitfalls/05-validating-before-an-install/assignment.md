@@ -33,7 +33,7 @@ Logging Into the Vendor Portal
 To run the preflights as a customer, we need to have their
 login credentials to the Replicated registry. The lab set up
 process configured a customer for the Harbor application,
-but in this step we are going to add a new customer. We will
+but in this step we're going to add a new customer. We'll
 do this in the Replicated Vendor Portal.
 
 Click on the Vendor Portal tab to open up a new browser window and
@@ -42,10 +42,10 @@ access the portal. Log in with these credentials:
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
-You will land on the "Channels" page for your app, which will show
+You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
 each of the default channels shows the current version `16.8.0`,
-while the channel LTS, which we have not released to, reflects
+while the channel LTS, which we haven't released to, reflects
 that.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
@@ -80,7 +80,7 @@ registry with the `helm` command. This gives them access to
 your Helm chart via the Replicated Platform.
 
 If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
-lab, you will remember that each customer has their own login
+lab, you'll remember that each customer has their own login
 credentials that are specific to their entitlements to your
 application. You can get those instructions by clicking the
 "Helm Install Instructions" button on the customer page.
@@ -89,7 +89,7 @@ application. You can get those instructions by clicking the
 
 In this lab, we only want to execute the first step in the process,
 which is to log into the registry. Because you just created
-the customer, you will have to copy the login command from the
+the customer, you'll have to copy the login command from the
 customer page.
 
 From there, they can use the `helm template` command to extract the

@@ -43,7 +43,7 @@ in your documentation and make them executable.
 
 You define your checks in a YAML file that follows the same format
 as a Kubernetes object. The simplest preflight object looks like this,
-and it is in the file `empty-preflights.yaml`:
+and it's in the file `empty-preflights.yaml`:
 
 ```
 apiVersion: troubleshoot.sh/v1beta2
@@ -61,7 +61,7 @@ of checks and will not execute. Let's try it out.
 kubectl preflight ./empty-preflights.yaml
 ```
 
-You will get an error, since there needs to be at least one analyzer
+You'll get an error, since there needs to be at least one analyzer
 defined in order to check the cluster.
 
 ```
@@ -78,11 +78,11 @@ collectors, since two collectors are included in all preflights
 by default.
 
 The `clusterInfo` collector collects information about the running
-cluster, like the Kubernetes version and other info you would see when
+cluster, like the Kubernetes version and other info you'd see when
 running `kubectl version`. The other default collector is
 `clusterResources`, which collects information about resources of
 several known types across all namespaces that the user has
-access to. You can also add custom collectors, which we will look
+access to. You can also add custom collectors, which we'll look
 at later in the lab.
 
 The majority of your work on preflight checks will be with
@@ -139,7 +139,7 @@ Now let's run our preflight checks.
 kubectl preflight ./harbor-preflights.yaml
 ```
 
-You will see that your check has been run and it should report
+You'll see that your check has been run and it should report
 that it has passed with a supported version of Kubernetes.
 
 ![Passing Kubernetes Version Preflight Check](../assets/passing-version-check.png)

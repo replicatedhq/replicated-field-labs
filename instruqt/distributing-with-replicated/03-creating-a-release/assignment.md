@@ -21,12 +21,12 @@ application, its releases, and the customers who are entitled
 to access it. The lab environment has created the
 Harbor application for us, and created a customer, "Omozan",
 that has access to it. All we need to do is create a
-release and we will be ready to go.
+release and we'll be ready to go.
 
 Replicated Release Channels
 ===========================
 
-There is one more part of the equation that we didn't mention
+There's one more part of the equation that we didn't mention
 above. The Replicated Platform provides a way to connect
 each customer to the right release(s) for them. It does this
 by organizing releases into _channels_, and assigning each
@@ -81,8 +81,8 @@ Other examples:
 Creating Your Release
 =====================
 
-To create a release, run the following command. We are using the
-`Unstable` channel since we are releasing our most recent change.
+To create a release, run the following command. We're using the
+`Unstable` channel since we're releasing our most recent change.
 
 ```
 replicated release create --promote Unstable --yaml-dir ./release --version 16.7.0  \
@@ -103,7 +103,7 @@ command output a sequence number that you'll need for `promote`
 ```
 
 The sequence number uniquely identifies a release among all the
-releases you have made for your application. You can list your
+releases you've made for your application. You can list your
 releases using
 
 ```

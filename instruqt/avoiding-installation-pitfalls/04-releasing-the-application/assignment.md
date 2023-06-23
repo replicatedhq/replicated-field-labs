@@ -15,9 +15,9 @@ difficulty: basic
 timelimit: 300
 ---
 
-Since we are distributing our application with the Replicated
+Since we're distributing our application with the Replicated
 Platform, we need to let the platform know about the changes
-we have made to the application by creating a new release. This
+we've made to the application by creating a new release. This
 process will be familiar to you if you have completed
 the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
 lab. If not, you may want to go through that lab to learn a bit
@@ -34,15 +34,15 @@ help you account for these different release cadences for
 your software.
 
 By default, Replicated creates three release channels for
-each application: `Unstable`, `Beta`, and `Stable`. We are
+each application: `Unstable`, `Beta`, and `Stable`. We're
 going to release our updates to Harbor across all three of
 those channels.
 
 Preparing to Release
 ====================
 
-Before we release, we need to make sure we are authenticated
-to the Replicated Platform. We are going to use an API
+Before we release, we need to make sure we're authenticated
+to the Replicated Platform. We're going to use an API
 token to do that. The lab setup created one for you. Let's
 set it in an environment variable.
 
@@ -53,7 +53,7 @@ export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname
 
 We also need to tell the `replicated` command which
 application to work with. We can do this with every command,
-but it is easier to just set an environment variable.
+but it's easier to just set an environment variable.
 
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
@@ -63,14 +63,14 @@ Creating a New Release
 ======================
 
 There are two releases already available for the Harbor
-application. We are going to release a third that includes
+application. We're going to release a third that includes
 the preflight checks.
 
 ```
 replicated release ls
 ```
 
-You will see that the the same release is current across
+You'll see that the the same release is current across
 all three channels, and it has the sequence number `2`.
 All releases are assigned a sequence number based on the
 order in which they were created.
@@ -82,7 +82,7 @@ SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
 ```
 
 To release our new version, we create a new release and
-(optionally) assign it to a channel. It is a good practice
+(optionally) assign it to a channel. It's a good practice
 to make new releases on either the `Unstable` channel or
 a channel specific to the feature you are working on. Let's
 use the `Unstable` channel for this lab, since the latter
@@ -95,7 +95,7 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.8
 
 This creates a release for version `16.8.0` of the Harbor Helm
 chart, and promotes it to the `Unstable` channel. The `create`
-command output a sequence number that you will need for `promote` (it
+command output a sequence number that you'll need for `promote` (it
 will be `3` if you haven not explored releasing a bit more).
 
 ```
@@ -106,7 +106,7 @@ will be `3` if you haven not explored releasing a bit more).
     _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 2
 ```
 
-For the lab, we are going to assume this release can be directly
+For the lab, we're going to assume this release can be directly
 shared on the `Beta` and `Stable` channels. Your actual release
 process may have many more activities before releasing to either
 of those channels---your teams review and approval processes,
