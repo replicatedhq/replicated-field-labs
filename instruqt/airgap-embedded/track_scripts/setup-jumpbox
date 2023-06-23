@@ -11,6 +11,7 @@ do
 done
 
 REPLICANT_HOME=/home/replicant
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
 
 ### make SSH key mismatches go away
 cat <<EOF >> "$REPLICANT_HOME/.ssh/config"
