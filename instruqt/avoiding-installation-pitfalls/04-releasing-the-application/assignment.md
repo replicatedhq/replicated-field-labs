@@ -96,7 +96,7 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.8
 This creates a release for version `16.8.0` of the Harbor Helm
 chart, and promotes it to the `Unstable` channel. The `create`
 command output a sequence number that you'll need for `promote` (it
-will be `3` if you haven not explored releasing a bit more).
+will be `3` if you haven't explored releasing a bit more).
 
 ```
   _ Reading manifests from ./release _
