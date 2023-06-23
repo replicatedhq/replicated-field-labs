@@ -46,7 +46,7 @@ create airgap builds for newly promoted release in this channel"
 
 ![Enabling Automatic Airgap Builds](../assets/channel-enable-airgap.png)
 
-After enabling the automatic build, you should make sure you current 
+After enabling the automatic build, you should make sure you current
 release has an airgap bundle built by clicking "Release history" for
 the channel and then "Build" next to the release.
 
