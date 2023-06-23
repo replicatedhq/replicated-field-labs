@@ -36,7 +36,7 @@ important way: it's a resource we expect to run _outside_ of
 the destination cluster.
 
 To accommodate this distinction, but still make it available
-as part of our Helm chart, we're going to store it in a
+as part of our Helm chart, we are going to store it in a
 Kubernetes secret that our chart creates. This helps us in
 two ways:
 
@@ -107,7 +107,7 @@ chart is installed.
 ![Creating the Preflights Template](../assets/creating-the-preflights-template.png)
 
 After creating the file, click on the filename
-to make sure it's opened.
+to make sure it is opened.
 
 Add the following to the file. As noted above, there's a lot of
 templating to make sure naming, labels, and annotations are

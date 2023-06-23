@@ -110,7 +110,7 @@ For the lab, we're going to assume this release can be directly
 shared on the `Beta` and `Stable` channels. Your actual release
 process may have many more activities before releasing to either
 of those channels---your teams review and approval processes,
-steps in a continuous delivery pipeline, or both. Run the following command to release to promote our release to the `Beta` channel:
+steps in a continuous delivery pipeline, or both. Run the following command to promote our release to the `Beta` channel:
 
 ```
 replicated release promote 3 Beta --version 16.8.0 \

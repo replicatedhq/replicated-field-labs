@@ -35,7 +35,7 @@ customer license to the appropriate channel.
 We encounter this concept in our day-to-day use of software
 all the time. For some applications, you sign up to
 receive beta releases, while others you may receive updates only
-when they are GA. You may even have some software, for example
+when they're GA. You may even have some software, for example
 your Linux distribution, where you use only releases that
 have long term support.
 
