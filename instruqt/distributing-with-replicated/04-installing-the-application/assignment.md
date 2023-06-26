@@ -73,7 +73,6 @@ see a link to their install instructions.
 
 Click on the link. Normally, if you had not configured your customer's email yet, you would first be prompted to enter a customer
 email. However, we have already done this as part of the lab set up, so you should see the install instructions for the customer.
-(`[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`).
 
 ![Install Instructions](../assets/helm-install-instructions.png)
 
