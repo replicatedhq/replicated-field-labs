@@ -31,13 +31,13 @@ Logging Into the Vendor Portal
 ==============================
 
 To run the preflights as a customer, we need to have their
-login credentials to the Replicated registry. The lab setup
+login credentials to the Replicated registry. The lab set up
 process configured a customer for the Harbor application,
 but in this step we're going to add a new customer. We'll
-do this in the Replicated Vendor Portal,.
+do this in the Replicated Vendor Portal.
 
 Click on the Vendor Portal tab to open up a new browser window and
-access the portal. Log in with these credentials
+access the portal. Log in with these credentials:
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
@@ -53,14 +53,14 @@ that.
 Creating a Customer
 ===================
 
-To create a customer, select "Customers" from the menu on the left
-the click the "Create Customer" button.
+To create a customer, select "Customers" from the menu on the left,
+then click the "+ Create Customer" button.
 
 ![Creating a Customer](../assets/create-customer-button.png)
 
 Call your customer "Geeglo" and assign them to the `Stable` channel.
-Let's assume this customer is not yet a customer, but prospect who
-is evaluating our application. Let's assume allow our customers to
+Let's assume this customer is not yet a customer, but a prospect who
+is evaluating our application. Let's allow our customer to
 evaluate our software on a trial license for 30 days.  Set them up
 as a "Trial" customer and set up the expiration date and customer
 email as follows:
@@ -87,10 +87,10 @@ application. You can get those instructions by clicking the
 
 ![Install instruction](../assets/install-instructions.png)
 
-In lab, we only want to execute the first step in the process,
-which is the log into the registry. Because you just created
+In this lab, we only want to execute the first step in the process,
+which is to log into the registry. Because you just created
 the customer, you'll have to copy the login command from the
-vendor portal page.
+customer page.
 
 From there, they can use the `helm template` command to extract the
 preflight checks to run with `kubectl preflight`.

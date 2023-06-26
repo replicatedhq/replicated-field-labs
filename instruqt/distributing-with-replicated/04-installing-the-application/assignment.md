@@ -20,7 +20,7 @@ timelimit: 600
 ---
 
 Now that we have a release in the Replicated Platform, you can
-distribute it's Helm chart to you customers using entitlements
+distribute its Helm chart to your customers using entitlements
 that we manage for you. In this step, we're going to install the
 Harbor Helm chart the same way a customer would install your
 application.
@@ -29,20 +29,21 @@ Logging Into the Vendor Portal
 ==============================
 
 We're going to use the Replicated Vendor Portal to look up the
-installation instructions of the customer Omozan. The Vendor
+installation instructions for the customer "Omozan". The Vendor
 Portal is a core interface into the platform. We'll use it again
 later in this lab to review the telemetry information we receive
 from the SDK.
 
 Click on the Vendor Portal tab to open up a new browser window and
-access the portal. Log in with these credentials
+access the portal. Log in with these credentials:
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each channel shows the current version `16.7.0`.
+each channel shows the current version `16.7.0` while the channel LTS, which we haven't released to, reflects
+that.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
 
@@ -58,22 +59,20 @@ require unique login credentials for the Replicated registry. We're
 going to install as the customer "Omozan" that has been set up as
 part of the lab.
 
-Select the "Customers" link from the left navigation. You'll be on
-the customer landing page and see the adoption graph for the application.
-The graph is currently empty because the application hasn't been
-installed anywhere yet.
+Select the "Customers" link from the left navigation. You'll end up on
+the Customers landing page.
 
 ![Customers Landing Page](../assets/customers-page.png)
 
-Below the graph you'll see the list of customers, with the customer
+You'll see the list of customers, with the customer
 "Omozan" as the only one in the list. Click on their name and you'll
 be brought to their customer page. In the top right corner you'll
 see a link to their install instructions.
 
 ![Customers Landing Page](../assets/single-customer-page.png)
 
-Click on the link and you'll be shown the installatioin instructions for
-Omozan, including their credentials for the Replicated registry.
+Click on the link. Normally, if you had not configured your customer's email yet, you would first be prompted to enter a customer
+email. However, we have already done this as part of the lab set up, so you should see the install instructions for the customer.
 
 ![Install Instructions](../assets/helm-install-instructions.png)
 

@@ -36,10 +36,10 @@ requirements of the application.
 When analyzing resources in the cluster, we can write expressions
 based on whether the node has the
 [capacity required and whether that capacity is allocatable](https://kubernetes.io/docs/concepts/architecture/nodes/#capacity).
-Alloctable has a very specific meaning to Kubernetes, and is not
+Allocatable has a very specific meaning in Kubernetes, and is not
 the same as "free" or "available". It means only that the capacity
 is not being reserved by Kubernetes or the underlying system. This
-distinction often trips up developer who are new to Kubernetes.
+distinction often trips up developers who are new to Kubernetes.
 
 Verify Resource Requirements
 ============================
@@ -100,7 +100,7 @@ and paste this new analyzer after the one checking the Kubernetes version.
               message: Your cluster has sufficient CPU resources available to run Harbor
 ```
 
-After saving your changes run the update preflight checks to see the outcome.
+After saving your changes run the preflight checks command to see the outcome.
 
 ```
 kubectl preflight ./harbor-preflights.yaml
@@ -143,17 +143,17 @@ Now that we have a thorough set of preflights for cluster resources, let's run
 them:
 
 ```
-kubeclt preflight ./harbor-preflights.yaml
+kubectl preflight ./harbor-preflights.yaml
 ```
 
 You'll see that all three preflights are run, and that the memory
 preflight has failed. This is an expected failure, since we have
-single node cluster that ses just that node's disk for storage. That
+single node cluster that uses just that node's disk for storage. That
 disk is smaller than the storage requirements for Harbor.
 
 ![Failing Storage Preflight](../assets/memory-preflight-failure.png)
 
-If you completed the [Distributing Your Application with Replicated]
+If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
 lab, you may be surprised at this failure. In that lab, we deployed
 Harbor and it came up successfully. This is another value provided by
 your checks. They can detect latent failures, like the fact that
@@ -161,6 +161,6 @@ Harbor could rapidly exhaust the disk available in this cluster
 even though it started successfully.
 
 In fact, installing the Harbor Helm chart requests 28 GB of storage.
-The cluster in the previous lab with only 20 GB of disk available,
-fulfilled all of those requests. That could creat quite the challenge
+The cluster in the previous lab with only 20 GB of disk available
+fulfilled all of those requests. That could create quite the challenge
 to diagnose in the future.

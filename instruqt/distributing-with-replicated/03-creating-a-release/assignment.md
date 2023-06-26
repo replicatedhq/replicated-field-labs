@@ -16,32 +16,32 @@ timelimit: 300
 ---
 
 To take advantage of the Replicated Platform to distribute
-an application we need to let the platform know about the
+an application, we need to let the platform know about the
 application, its releases, and the customers who are entitled
-to access it. The lab environment has created the application
-Harbor application for us, and created a customer "Omozan"
-that has access to it. All we need to do is to create a
+to access it. The lab environment has created the
+Harbor application for us, and created a customer, "Omozan",
+that has access to it. All we need to do is create a
 release and we'll be ready to go.
 
 Replicated Release Channels
 ===========================
 
 There's one more part of the equation that we didn't mention
-above. The Replicated platform provides a way to connect
+above. The Replicated Platform provides a way to connect
 each customer to the right release(s) for them. It does this
-by organizing release into _channels_, and assigning each
+by organizing releases into _channels_, and assigning each
 customer license to the appropriate channel.
 
 We encounter this concept in our day-to-day use of software
-all the time. For some applications, you're signed up to
-receive beta releases, while others your receive updates only
+all the time. For some applications, you sign up to
+receive beta releases, while others you may receive updates only
 when they're GA. You may even have some software, for example
 your Linux distribution, where you use only releases that
 have long term support.
 
-Release channels help you account for these different release
-cadences for your software. By default, Replicated creates
-three release channels for each application:
+Release channels help you account for the different release
+cadences of your software. By default, Replicated creates
+three release channels for each application.
 
 ```
 replicated channel ls
@@ -52,11 +52,11 @@ You should see three channels in the output:
 * `Unstable` is, as it sounds, releases that may be unstable
    and subject to defects and/or constant change. You may have
    every merge PR hit this channel, for example.
-* `Beta` represents release that have release beta quality, for
-  those customer you have as part of a beta program for new
+* `Beta` represents releases that have beta quality, for
+  the customers you have as part of a beta program for new
   releases.
-* `Stable` is for GA release that you want to be available
-  broadly to your customer base. This would be the default
+* `Stable` is for GA releases that you want to be broadly available
+  to your customer base. This would be the default
   channel for any customer who did not opt-in to an alternative.
 
 You may consider a few other uses for release channels in your
@@ -71,10 +71,10 @@ replicated channel create --name LTS \
 
 Other examples:
 
-* `Edge` for customer who want continuous delivery of your
+* `Edge` for customers who want continuous delivery of your
    software to their environments.
 * Channels named after the feature branches in your source
-  code. These can help product teams validate release before
+  code. These can help product teams validate releases before
   they are merged for release on your primary channels.
   Replicated recommends all teams follow this approach.
 
@@ -90,8 +90,8 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.7
 ```
 
 This creates a release for version `16.7.0` of your Harbor Helm
-Chart, and promotes it to the `Unstable` channel.  The `create`
-command output sequence number that you'll need for `promote`
+chart, and promotes it to the `Unstable` channel.  The `create`
+command output a sequence number that you'll need for `promote`
 (it will be `2` if you haven't explored releasing a bit more).
 
 ```
@@ -103,15 +103,15 @@ command output sequence number that you'll need for `promote`
 ```
 
 The sequence number uniquely identifies a release among all the
-releases you've made of your application. You can list your
+releases you've made for your application. You can list your
 releases using
 
 ```
 replicated release ls
 ```
 
-which should show the initial release made during lab
-set up as well as the release you just created. It will
+which should show the initial release created during lab
+set up, as well as the release you just created. It will
 also show the channel each release is currently available on,
 if any.
 

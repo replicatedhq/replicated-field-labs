@@ -23,7 +23,7 @@ cat <<EMPTY_PREFLIGHT > /home/replicant/empty-preflights.yaml
 apiVersion: troubleshoot.sh/v1beta2
 kind: Preflight
 metadata:
-  name: preflight-tutorial
+  name: empty-preflight-checks
 spec:
   analyzers: []
 EMPTY_PREFLIGHT

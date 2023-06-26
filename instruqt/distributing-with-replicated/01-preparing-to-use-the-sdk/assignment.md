@@ -2,7 +2,7 @@
 slug: preparing-to-use-the-sdk
 id: kkhcf1j4eaym
 type: challenge
-title: Preparing to Use the SDK
+title: Preparing to use the SDK
 teaser: Getting ready to use the Replicated SDK
 notes:
 - type: text
@@ -22,9 +22,9 @@ The Replicated SDK is implemented as a small service that runs
 alongside your application and enables access to the Replicated
 Platform. The SDK allows you to enforce your entitlements and
 take advantage of the telemetry that Replicated provides to help
-you better understand customer instances. It also allows your
-to get information about your application and it's releases, 
-including doing updates checks and showing version history.
+you better understand customer instances. It also allows you
+to get information about your application and its releases, 
+including checking for updates and showing version history.
 
 
 ✅ Preparing to use the SDK
@@ -36,15 +36,14 @@ things. They've been set up for you in this lab environment.
 1. A Helm chart for your application. We're going to use the
    Open Source Bitnami Helm chart for the Harbor container registry
    for this lab, but it could be the Helm chart for your product
-   or any other Helm chart you wanted to distribute this way.
+   or any other Helm chart you want to distribute this way.
 2. Access to the Replicated Vendor Portal. You've been given
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
    the password `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
-3. An application on the Replicated Vendor Portal. It was also
+3. An application on the Replicated Vendor Portal. This was
    created for you as part of the lab setup.
-4. A customer for that application. The automation created the 
-   customer as well.
+4. A customer for that application. This was created for you as part of the lab setup as well.
 
 🔤 Getting Started
 ==================
@@ -58,14 +57,14 @@ helm pull oci://registry-1.docker.io/bitnamicharts/harbor --untar
 ```
 
 Let's also set up our shell for interacting with the Replicated
-platform.
+Platform.
 
 ```
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-And lastly make sure we are working with the Harbor app that was
-created by the lab setup.
+And lastly, let's make sure we are working with the Harbor app that was
+created during the lab setup.
 
 ```
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"

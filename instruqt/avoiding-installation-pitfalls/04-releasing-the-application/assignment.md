@@ -26,9 +26,9 @@ more about how releases and release channels work.
 A Quick Look at Release Channels
 ================================
 
-The Replicated platform provides a way to connect
+The Replicated Platform provides a way to connect
 each customer to the right release(s) for them. It does this
-by organizing release into _channels_, and assigning each
+by organizing releases into _channels_, and assigning each
 customer license to the appropriate channel. Release channels
 help you account for these different release cadences for
 your software.
@@ -44,7 +44,7 @@ Preparing to Release
 Before we release, we need to make sure we're authenticated
 to the Replicated Platform. We're going to use an API
 token to do that. The lab setup created one for you. Let's
-set it into an environment variable.
+set it in an environment variable.
 
 
 ```
@@ -72,8 +72,8 @@ replicated release ls
 
 You'll see that the the same release is current across
 all three channels, and it has the sequence number `2`.
-All releases are assigned a sequence number base on the
-order in which they are created.
+All releases are assigned a sequence number based on the
+order in which they were created.
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
@@ -95,7 +95,7 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.8
 
 This creates a release for version `16.8.0` of the Harbor Helm
 chart, and promotes it to the `Unstable` channel. The `create`
-command output sequence number that you'll need for `promote` (it
+command output a sequence number that you'll need for `promote` (it
 will be `3` if you haven't explored releasing a bit more).
 
 ```
@@ -110,14 +110,14 @@ For the lab, we're going to assume this release can be directly
 shared on the `Beta` and `Stable` channels. Your actual release
 process may have many more activities before releasing to either
 of those channels---your teams review and approval processes,
-steps in a continuous delivery pipeline, or both.
+steps in a continuous delivery pipeline, or both. Run the following command to promote our release to the `Beta` channel:
 
 ```
 replicated release promote 3 Beta --version 16.8.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 
-and then
+Then promote to the `Stable` channel:
 
 ```
 replicated release promote 3 Stable --version 16.8.0 \

@@ -53,10 +53,10 @@ checks confirm this change.
 Installing the Application
 ==========================
 
-Now that the preflight checks have passed, it's safe to
+Now that the preflight checks have passed, it is safe to
 install the application. You can find the installation
 command for the customer "Geeglo" in the Replicated
-vendor portal. Since we've already run the first two
+Vendor Portal. Since we've already run the first two
 steps of logging into the registry and running our
 preflight checks, we have only the installation
 with the Helm command to complete.
@@ -71,7 +71,7 @@ the top right.
 
 ![Customer Installation Commands](../assets/install-instructions.png)
 
-We need to tack some additional values that Harbor
+We need to add some additional values that Harbor
 needs to come up correctly. This helps us make sure
 the installation will complete.
 
