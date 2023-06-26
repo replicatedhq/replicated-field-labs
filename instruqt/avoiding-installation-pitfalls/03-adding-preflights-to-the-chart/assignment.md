@@ -99,10 +99,19 @@ conventions, there's a little bit of boiler plate required. You'll
 likely need to do something similar to follow your team's
 conventions when working with your own chart.
 
-Open the manifest editor and create a new file named
-`preflights.yaml` in the directory `harbor/templates`. This will
-be the template that creates the preflight secret when the Helm
-chart is installed.
+Similarly, we're going to follow the conventions for the Harbor chart where
+different components are in their own directories and create a directory to
+store our preflight chart in. We're going to call the directory `troubleshoot`
+since preflight checks are one of two types troubleshooting resources provided
+by the Replicated Platform. Create the directory from the shell.
+
+```
+mkdir harbor/templates/troubleshoot
+```
+
+Open the manifest editor and create a new file named `preflights.yaml` in the
+directory `harbor/templates/troubleshoot`. This will be the template that
+creates the preflight secret when the Helm chart is installed.
 
 ![Creating the Preflights Template](../assets/creating-the-preflights-template.png)
 
@@ -126,7 +135,7 @@ metadata:
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
-    app.kubernetes.io/component: preflight
+    app.kubernetes.io/component: troubleshoot
     troubleshoot.sh/kind: preflight
   {{- if .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}

@@ -3,7 +3,8 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/preflights.yaml
+mkdir /home/replicant/harbor/templates/troubleshoot
+cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/troubleshoot/preflights.yaml
 apiVersion: v1
 kind: Secret
 metadata:

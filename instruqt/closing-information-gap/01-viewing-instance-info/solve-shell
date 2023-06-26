@@ -3,8 +3,6 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-# clear the tmux pane and scrollback to look like a fresh shell
-tmux clear-history -t shell 
-tmux send-keys -t shell clear ENTER
-
+# no op since this challenge doesn't change anything
 exit 0
+
