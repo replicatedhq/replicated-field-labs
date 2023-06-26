@@ -6,7 +6,7 @@ title: Admin Console UI
 teaser: Access the Admin Console UI and view pre-flight check output
 notes:
 - type: text
-  contents: Navigate the Admin Console ui and complete app install
+  contents: Navigate the Admin Console UI and complete app install
 tabs:
 - title: Admin Console
   type: service

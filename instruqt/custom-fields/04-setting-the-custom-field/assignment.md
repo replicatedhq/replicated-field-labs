@@ -52,7 +52,7 @@ Once you save the customer, you should see the **Download License** link highlig
 
 <p align="center"><img src="../assets/license.png" width=600></img></p>
 
-Click on the link to download the file. The license is a YAML file with a signature embedded in it to assure it has't been tampered with. Since you downloaded it to your local computer, you can open it in your favorite text editor if you want to take a look.
+Click on the link to download the file. The license is a YAML file with a signature embedded in it to assure it hasn't been tampered with. Since you downloaded it to your local computer, you can open it in your favorite text editor if you want to take a look.
 
 ## Get Install Command
 
