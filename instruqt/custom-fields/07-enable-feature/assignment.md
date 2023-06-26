@@ -11,16 +11,14 @@ notes:
     - Updating the Custom License Field
     - updating the deployed application
 tabs:
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
   new_window: true
 - title: Admin Console
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   new_window: true
 difficulty: basic
 timelimit: 600
@@ -30,7 +28,10 @@ timelimit: 600
 
 Let's now enable the feature for this customer.
 
-Navigate back to **Customers** in the Vendor Portal. If you closed the browser, no worries, head over to the **Vendor** tab to launch a new browser and use the credentials displayed under the **Shell** tab. Open the customer created earler and set the **Enable Fetaure** custom field to `true`:
+Navigate back to **Customers** in the Vendor Portal. If you closed the browser, no worries, head over to the **Vendor** tab to launch a new browser and use your crednetials to log in again.
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
 
 <p align="center"><img src="../assets/lic-updated-customer.png" width=600></img></p>
 

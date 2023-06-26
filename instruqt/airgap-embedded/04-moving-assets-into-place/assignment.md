@@ -26,11 +26,11 @@ Recall the three assets we need for an Air Gap installation:
 2. An Air Gap bundle containing the kURL cluster components
 3. An Air Gap bundle containing the application components
 
-We've already begun the download of item (2), since it's the largest
-one and we needed some time for it to complete. We also saw how your
-customer gets access to all three assets from the Replicated download
-portal, then grabbed their license file. Now we're going to grab the
-application bundle using the command line.
+We've already begun the download of item (2), since it's the largest one and we
+needed some time for it to complete. We also saw how your customer will get access
+to all three assets from the Replicated download portal, then grabbed their
+license file and application bundle. Now we're going to grab the application
+bundle using the command line.
 
 At this point, your download of the kURL bundle should be completed. If
 not, wait for it to complete before you continue.

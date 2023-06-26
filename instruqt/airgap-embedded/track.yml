@@ -6,7 +6,7 @@ teaser: Using Replicated to install, upgrade, and support your application into 
 description: |-
   In this exercise you will learn the Replicated workflow for installing and
   supporting your application when it's installed into an air-gapped network.
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/airgap_builder.png
 level: intermediate
 tags:
 - airgap
@@ -15,6 +15,8 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-private: true
-published: false
-checksum: "6095248493572279538"
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "790758288752192794"

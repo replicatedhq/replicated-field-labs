@@ -63,16 +63,16 @@ VERSION:        0.0.1
 EXISTING:
 
     curl -fsSL https://kots.io/install | bash
-    kubectl kots install installing-in-an-air-gapped-environment-q4b0wn3mzsqj/unstable
+    kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]/unstable
 
 EMBEDDED:
 
-    curl -fsSL https://k8s.kurl.sh/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable | sudo bash
+    curl -fsSL https://k8s.kurl.sh/[[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable | sudo bash
 
 AIRGAP:
-    curl -fSL -o installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
-    # ... scp or sneakernet installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz to airgapped machine, then
-    tar xvf installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
+    curl -fSL -o [[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable.tar.gz https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
+    # ... scp or sneakernet [[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable.tar.gz to airgapped machine, then
+    tar xvf [[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable.tar.gz
     sudo bash ./install.sh airgap
 ```
 
@@ -80,10 +80,8 @@ The file download we're interested in is in the `AIRGAP` section of the
 output. We're going to run the first command in that list to get the bundle
 onto our jumpbox.
 
-In my case:
-
 ```bash
-curl -fSL -o installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz https://k8s.kurl.sh/bundle/installing-in-an-air-gapped-environment-q4b0wn3mzsqj-unstable.tar.gz
+curl -fSL -o [[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable.tar.gz https://k8s.kurl.sh/bundle/[[Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]-unstable.tar.gz
 ```
 
 This will take several minutes, leave this running and proceed to the next step, we'll come back in a few minutes.

@@ -1,6 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "export REPLICATED_API_TOKEN=yourapitoken" >> /home/replicant/.bashrc
-echo "export REPLICATED_APP=your-app" >> /home/replicant/.bashrc
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
 
-exit 0
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
+fi
+
+# make sure the user will be authenticated and using the right app
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+tmux send-keys -t shell clear ENTER

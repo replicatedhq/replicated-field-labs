@@ -12,9 +12,6 @@ notes:
     - Walkthrough of the Application
     - Download the customer license
 tabs:
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
@@ -28,13 +25,12 @@ timelimit: 600
 
 ### 1. Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
-```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
-```
+On the **Vendor** tab, login to the Vendor Portal using the credentials below.
 
-Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
+
+You will land on the Release Channels page showing the release channels for the Wordpress application. Channels allow you to manage who has access to which releases of your application.
 
 ### 2. Review the Application
 

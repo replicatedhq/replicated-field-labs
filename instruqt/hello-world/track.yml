@@ -8,9 +8,14 @@ description: |-
   **This track demonstrates how to:**
     - Install Replicated's application installer
     - Deploy a webserver (NGINX) on Kubernetes using Replicated
-icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/app_open.png
 tags: []
 owner: replicated
 developers:
 - joshd@replicated.com
-checksum: "12839114704944038465"
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "2352879202844185805"

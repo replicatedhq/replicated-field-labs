@@ -40,13 +40,13 @@ Copy the code for the Existing Cluster install.
 This will take the form of:
 
 ```bash
-curl https://kots.io/install | bash 
-kubectl kots install application-preflight-checks-abcdefgh
+curl https://kots.io/install | bash
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
 ### 2. Perform the existing cluster app install
 
-Paste the install command copied in the previous step into the Shell tab window, add the `--no-port-forward` flag at the end of the install command and hit ENTER. The `--no-port-forward` flag will disable automatic port forwarding for the application installer, as we don't need this for this exercise. If you want to know all available flags for the `kots install` command, check out the [reference documentation](https://docs.replicated.com/reference/kots-cli-install). 
+Paste the install command copied in the previous step into the Shell tab window, add the `--no-port-forward` flag at the end of the install command and hit ENTER. The `--no-port-forward` flag will disable automatic port forwarding for the application installer, as we don't need this for this exercise. If you want to know all available flags for the `kots install` command, check out the [reference documentation](https://docs.replicated.com/reference/kots-cli-install).
 
 The installer will prompt to confirm or change the kubernetes namespace name to create and install in, you can accept the default.
 A password will be prompted for too, enter a value you can remember, you will use this later to login to the kotsadm console.
@@ -54,7 +54,7 @@ A password will be prompted for too, enter a value you can remember, you will us
 Sample install output:
 ```
 root@kubernetes-vm:~# curl https://kots.io/install | bash
-kubectl kots install application-preflight-checks-abcdefgh --no-port-forward
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]] --no-port-forward
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  3697  100  3697    0     0   5032      0 --:--:-- --:--:-- --:--:--  5029
@@ -77,10 +77,10 @@ Enter a new password to be used for the Admin Console: ••••••••�
 Once complete you can check the install using `kubectl`:
 
 ```bash
-kubectl get all -n <your-namespace>
+kubectl get all -n [[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
 ```
 
-Note: Subsitute `<your-namespace>` with the namespace you chose when installing.
+Note: If you did not use the default namespace, substitute the namespace you chose for `[[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]`.
 
 
 ```
@@ -106,4 +106,4 @@ statefulset.apps/kotsadm-postgres   1/1     5m12s
 
 ```
 
-Once done, move onto the next challenge.
+Once done, move on to the next challenge.

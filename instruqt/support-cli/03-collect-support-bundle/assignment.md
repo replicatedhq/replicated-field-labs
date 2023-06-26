@@ -6,14 +6,15 @@ title: Collect Support Bundle
 teaser: Collect an application support bundles and diagnose
 notes:
 - type: text
-  contents: Your next challenge is being initialised..
+  contents: Diagnosing the problem
 tabs:
 - title: Shell
   type: terminal
   hostname: kubernetes-vm
-- title: KotsAdm
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+- title: Admin Console
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   new_window: true
 difficulty: basic
 timelimit: 2700
@@ -46,7 +47,7 @@ Rather than diagnosing using kubectl, follow the steps to analyse using the trou
 
 ### 2. Support Bundle Collection
 
-In the KotsAdm UI, navigate to the Troubleshoot tab and select *Analyze support-cli track*
+In the Admin Console UI, navigate to the Troubleshoot tab and select *Analyze support-cli track*
 
 ![supportcli-kotsadm-supbundle1](../assets/supportcli-kotsadm-supbundle1.png)
 
@@ -72,8 +73,9 @@ curl https://krew.sh/support-bundle | bash
 Note: If the kubernetes cluster was kURL then the support-bundle plugin would have been pre-installed.
 
 Then the bundle generation command:
+
 ```
-kubectl support-bundle secret/default/kotsadm-support-cli-${INSTRUQT_PARTICIPANT_ID}-supportbundle --redactors=configmap/default/kotsadm-redact-spec/redact-spec,configmap/default/kotsadm-support-cli-${INSTRUQT_PARTICIPANT_ID}-redact-spec/redact-spec
+kubectl support-bundle --load-cluster-specs
 ```
 
 Run both of the above commands now to generate the CLI support bundle.

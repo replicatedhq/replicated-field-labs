@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
-
-HOME_DIR=/home/replicant
-
-# Wait for Instruqt bootstrap to be complete
-while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
-do
-  echo "Waiting for Instruqt to finish booting the VM"
-  sleep 1
-done
 
 # convenience library for Replicated lab lifecycle scripts
 source /etc/profile.d/header.sh
@@ -18,4 +15,4 @@ source /etc/profile.d/header.sh
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
 
-
+exit 0

@@ -15,13 +15,6 @@ tabs:
   type: website
   url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8080
   new_window: true
-- title: Vendor
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
-- title: Cluster
-  type: terminal
-  hostname: kubernetes-vm
 difficulty: basic
 timelimit: 1200
 ---
@@ -78,7 +71,7 @@ The command you'll use will look like this:
 
 ```
 curl -fsSL https://kots.io/install | bash
-kubectl kots install [YOUR APP NAME]
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="shell"]]
 ```
 
 We'll come back to that in a later step.
@@ -108,7 +101,7 @@ because we've done some setup ahead of time.
 
 ```
 curl -fsSL https://kots.io/install | bash
-kubectl kots install [YOUR APP NAME]
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="shell"]]
 ```
 
 This command installs the `kots` plugin to `kubectl` and then
@@ -130,7 +123,7 @@ setting it on the command-line, let's use `this-is-unsafe` as
 a reminder not to leak secrets in the real world.
 
 ```
-kubectl kots install ${REPLICATED_APP} --namespace kuard \
+kubectl kots install [[Instruqt-Var key="REPLICATED_APP" hostname="shell"]] --namespace kuard \
   --shared-password this-is-unsafe --license-file ~/license.yaml \
   --no-port-forward
 ```

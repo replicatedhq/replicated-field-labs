@@ -15,7 +15,10 @@ done
 # convenience library for Replicated lab lifecycle scripts
 source /etc/profile.d/header.sh
 
-agent variable set USERNAME $(get_username)
-agent variable set PASSWORD $(get_password)
+# there's only one app created by the automation, so just grab the first in the list
+access_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+agent variable set REPLICATED_APP ${app_slug}
 
 

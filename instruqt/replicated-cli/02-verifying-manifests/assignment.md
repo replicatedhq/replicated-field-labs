@@ -81,7 +81,7 @@ to have as available resources in the cluster. We have a pretty
 simple application, so we won't ask for much.
 
 Most times, you'll do this interactively in your favorite editor.
-To simplify for the lab, we're going to fix it from the CLI to 
+To simplify for the lab, we're going to fix it from the CLI to
 keep things moving.
 
 ```

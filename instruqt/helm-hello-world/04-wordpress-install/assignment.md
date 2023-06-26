@@ -12,8 +12,9 @@ notes:
     This challenge will walk through deploying the Wordpress application using the Admin Console.
 tabs:
 - title: Application Installer
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   new_window: true
 - title: Shell
   type: terminal
@@ -31,7 +32,7 @@ Go to the Application Installer tab, and login using the password you used in th
 
 Upload the license for the `Helm Customer` you downloaded in Challenge #2
 
-<p align="center"><img src="../assets/helm-license.png" width=600></img></p>
+<p align="center"><img src="../assets/helm-license.png" width=600></im></p>
 
 ## Step 03
 
