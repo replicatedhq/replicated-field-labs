@@ -62,9 +62,7 @@ lab.
 ![Vendor Portal Landing Page with Release Channels](../assets/vendor-portal-landing.png)
 
 Select the "Customers" link from the left navigation to go see a list of
-customers. At the top of the page is the Adoption Graph for your application.
-The graph has minimal data in the lab environment, since only one instance is
-running and it was installed as part of setting up the lab.
+customers. 
 
 ![Customers Landing Page with Geeglo Showing an Unavailable Instance](../assets/customers-page.png)
 
