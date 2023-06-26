@@ -72,10 +72,8 @@ see a link to their install instructions.
 
 ![Customers Landing Page](../assets/single-customer-page.png)
 
-Click on the link and you'll be prompted to enter a customer
-email. You can use any address you want, but the rest of the
-instructions assume you used the username above
-(`[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`).
+Click on the link and you'll be shown the installatioin instructions for
+Omozan, including their credentials for the Replicated registry.
 
 ![Install Instructions](../assets/helm-install-instructions.png)
 
