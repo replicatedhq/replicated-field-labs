@@ -208,8 +208,8 @@ updated_customer=$(curl --header 'Accept: application/json' --header "Authorizat
 # the `replicant` user
 
 # get the registry password (which is the license id)
-registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}/license-download" | \
-  yq .spec.licenseID)
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
  
 ## install the release so we have something to support
 
