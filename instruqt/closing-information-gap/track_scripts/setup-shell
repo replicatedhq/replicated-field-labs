@@ -31,12 +31,6 @@ app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${a
 export REPLICATED_API_TOKEN=${api_token}
 export REPLICATED_APP=${app_slug}
 
-## convert the application to the builders  experience
-curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
-  --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
-  --header "Content-Type: application/json" \
-  --data '{ "is_foundation": true }'
-
 ## release the application with the Replicated SDK
 cd /home/replicant
 mkdir release

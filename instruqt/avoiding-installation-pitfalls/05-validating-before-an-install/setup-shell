@@ -19,12 +19,6 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${omozan_customer
   --request PUT --header 'Accept: application/json' --header "Authorization: ${api_token}" \
   --header "Content-Type: application/json" \
   --data "${updated_existing_customer}"
- 
-# toggle the app to builders mode 
-curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
-  --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
-  --header "Content-Type: application/json" \
-  --data '{ "is_foundation": true }'
 
 # email for the customer the user will create
 new_customer_email=${INSTRUQT_PARTICIPANT_ID}@geeglo.io

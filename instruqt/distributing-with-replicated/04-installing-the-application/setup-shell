@@ -24,12 +24,6 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
 registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
   yq .customer.installationId) 
 
-# toggle the app to builders mode 
-curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
-  --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
-  --header "Content-Type: application/json" \
-  --data '{ "is_foundation": true }'
-
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
 agent variable set CUSTOMER_EMAIL ${customer_email}
