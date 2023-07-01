@@ -31,12 +31,6 @@ app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${a
 export REPLICATED_API_TOKEN=${api_token}
 export REPLICATED_APP=${app_slug}
 
-## convert the application to the builders  experience
-curl  --location "https://api.replicated.com/vendor/v3/app/${app_id}" \
-  --request POST --header 'Accept: application/json' --header "Authorization: ${api_token}" \
-  --header "Content-Type: application/json" \
-  --data '{ "is_foundation": true }'
-
 ## release the application with the Replicated SDK
 cd /home/replicant
 mkdir release
@@ -208,8 +202,8 @@ updated_customer=$(curl --header 'Accept: application/json' --header "Authorizat
 # the `replicant` user
 
 # get the registry password (which is the license id)
-registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}/license-download" | \
-  yq .spec.licenseID)
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
  
 ## install the release so we have something to support
 

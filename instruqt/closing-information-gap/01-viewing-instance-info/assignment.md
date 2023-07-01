@@ -62,7 +62,7 @@ lab.
 ![Vendor Portal Landing Page with Release Channels](../assets/vendor-portal-landing.png)
 
 Select the "Customers" link from the left navigation to go see a list of
-customers. 
+customers.
 
 ![Customers Landing Page with Geeglo Showing an Unavailable Instance](../assets/customers-page.png)
 
