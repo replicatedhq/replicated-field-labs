@@ -2,6 +2,7 @@
     "name": "Harbor",
     "slug": "harbor",
     "customer": "Omozan",
+    "version": "16.6.7",
     "yaml_dir": "./release",
     "k8s_installer_yaml_path": ""
 }
