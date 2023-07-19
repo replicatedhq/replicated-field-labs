@@ -34,9 +34,9 @@ export REPLICATED_APP=${app_slug}
 ## release the application with the Replicated SDK
 cd /home/replicant
 mkdir release
-helm pull oci://registry-1.docker.io/bitnamicharts/harbor --untar
+helm pull --version 16.6.8 oci://registry-1.docker.io/bitnamicharts/harbor --untar
 yq -i '.version = "16.7.0"' harbor/Chart.yaml
-yq -i '.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.16"}' harbor/Chart.yaml
+yq -i '.dependencies += { "name": "replicated", "repository": "oci://registry.replicated.com/library", "version": "0.0.1-alpha.17"}' harbor/Chart.yaml
 
 # update dependencies
 helm dependency update harbor
