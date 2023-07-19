@@ -22,7 +22,3 @@ agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
 agent variable set REPLICATED_API_TOKEN ${access_token}
 agent variable set REPLICATED_APP ${app_slug}
-
-# get the current SDK version
-sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
-agent variable set REPLICATED_SDK_VERSION=${sdk_version}
