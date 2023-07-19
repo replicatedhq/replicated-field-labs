@@ -6,7 +6,7 @@ spec:
   collectors:
     - registryImages:
         images:
-          - ghcr.io/replicatedhq/replicated:v0.0.1-alpha.16
+          - ghcr.io/replicatedhq/replicated:v0.0.1-alpha.22
           - docker.io/bitnami/harbor-core:2.8.1-debian-11-r5
           - docker.io/bitnami/harbor-jobservice:2.8.1-debian-11-r5
           - docker.io/bitnami/nginx:1.23.4-debian-11-r19
