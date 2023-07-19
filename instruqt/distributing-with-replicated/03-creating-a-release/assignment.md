@@ -92,12 +92,12 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.7
 This creates a release for version `16.7.0` of your Harbor Helm
 chart, and promotes it to the `Unstable` channel.  The `create`
 command output a sequence number that you'll need for `promote`
-(it will be `2` if you haven't explored releasing a bit more).
+(it will be `1` if you haven't explored releasing a bit more).
 
 ```
   _ Reading manifests from ./release _
   _ Creating Release _
-    _ SEQUENCE: 2
+    _ SEQUENCE: 1
   _ Promoting _
     _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 2
 ```
@@ -117,8 +117,7 @@ if any.
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Unstable
-1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z    Stable
+1           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Unstable
 ```
 
 To make an existing release available on another channel, use
@@ -128,21 +127,21 @@ promoting to `Beta`, and ultimately releasing on `Stable`.
 For the purposes of the lab, let's just promote the release straight through.
 
 ```
-replicated release promote 2 Beta --version 16.7.0 \
+replicated release promote 1 Beta --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
 and then
 
 ```
-replicated release promote 2 Stable --version 16.7.0 \
+replicated release promote 1 Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
-You can see they were promoted by listing your releases again:
+You can see they were promoted by listing your releases again. You should see
+similar output to the following:
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-2           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-1           2023-06-08T00:19:43Z    0001-01-01T00:00:00Z
+1           2023-06-08T00:23:40Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
 ```

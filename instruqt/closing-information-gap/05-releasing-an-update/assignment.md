@@ -58,12 +58,11 @@ All releases are assigned a sequence number based on the order in which they
 are created. They may also be assigned to zero or more release channels that
 provide specific streams of releases to specific customers. You'll see that the
 the same release is current across all three channels, and it has the sequence
-number `3`
+number `2`
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-3           2023-06-20T14:52:16Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-2           2023-06-20T14:52:08Z    0001-01-01T00:00:00Z
+2           2023-06-20T14:52:16Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
 1           2023-06-20T14:50:52Z    0001-01-01T00:00:00Z
 ```
 
@@ -79,13 +78,13 @@ replicated release create --promote Unstable --yaml-dir ./release --version 16.9
 
 This creates a release for version `16.9.0` of the Harbor Helm chart, and
 promotes it to the `Unstable` channel. The `create` command output sequence
-number that you'll need for `promote` (it will be `4` if you haven't explored
+number that you'll need for `promote` (it will be `3` if you haven't explored
 releasing a bit more).
 
 ```
   _ Reading manifests from ./release _
   _ Creating Release _
-    _ SEQUENCE: 4
+    _ SEQUENCE: 3
   _ Promoting _
     _ Channel 2Qa7rGeBiT3DaDK85s6FVKRC7Mn successfully set to release 4
 ```
@@ -123,14 +122,14 @@ to determine whether a release should be promoted to each of those
 channels---hopefully automated as part of your continuous delivery pipelines.
 
 ```
-replicated release promote 4 Beta --version 16.9.0 \
+replicated release promote 3 Beta --version 16.9.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
 and then
 
 ```
-replicated release promote 4 Stable --version 16.9.0 \
+replicated release promote 3 Stable --version 16.9.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
@@ -145,8 +144,7 @@ available on the `Unstable`, `Beta`, and `Unstable` channels.
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
-4           2023-06-20T14:55:32Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
-3           2023-06-20T14:52:16Z    0001-01-01T00:00:00Z
+3           2023-06-20T14:55:32Z    0001-01-01T00:00:00Z    Stable,Beta,Unstable
 2           2023-06-20T14:52:08Z    0001-01-01T00:00:00Z
 1           2023-06-20T14:50:52Z    0001-01-01T00:00:00Z
 ```
