@@ -48,7 +48,7 @@ chart.
 ```
 - name: replicated
   repository: oci://registry.replicated.com/library
-  version: 0.0.1-alpha.21
+  version: [[ Instruqt-Var key="REPLICATED_SDK_VERSION" hostname="shell" ]]
 ```
 
 You should put the dependency into the array with the other
