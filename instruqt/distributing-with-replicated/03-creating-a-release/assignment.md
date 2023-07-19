@@ -138,7 +138,8 @@ replicated release promote 1 Stable --version 16.7.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
-You can see they were promoted by listing your releases again:
+You can see they were promoted by listing your releases again. You should see
+similar output to the following:
 
 ```
 SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
