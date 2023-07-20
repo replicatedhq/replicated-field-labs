@@ -1,6 +1,6 @@
-slug: closing-information-gap
-id: hfb41xqkyx0q
-title: Closing the Support Information Gap
+slug: closing-information-gap-dev
+id: dtbfnrzyjuha
+title: DEV - Closing the Support Information Gap
 teaser: |-
   Use the Replicated Platform to close the information gap between your
   customers and your support team
@@ -22,9 +22,11 @@ tags:
 - builders-plan
 - helm
 - troubleshoot
+- dev
 owner: replicated
 developers:
 - chuck@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 33
