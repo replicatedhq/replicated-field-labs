@@ -1,6 +1,6 @@
 ---
 slug: validating-before-an-install
-id: aray1djn6poy
+id: agnr2vn44qs0
 type: challenge
 title: Validating Before an Install
 teaser: How your customer uses preflights to validate their environment
