@@ -1,6 +1,6 @@
 ---
 slug: troubleshooting
-id: 4k6uevizv2cp
+id: a0cvc186bru1
 type: challenge
 title: Troubleshooting
 teaser: Using the compatibility-matrix for Troubleshooting

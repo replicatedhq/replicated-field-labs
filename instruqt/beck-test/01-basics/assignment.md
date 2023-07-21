@@ -1,6 +1,6 @@
 ---
 slug: basics
-id: g3tiwhoxbxir
+id: fytbmwjxpo78
 type: challenge
 title: Compatibility Matrix Basics
 teaser: Learn the basic commands for working with the Compatibility Matrix CLI.

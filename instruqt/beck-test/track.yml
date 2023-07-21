@@ -1,18 +1,20 @@
-slug: beck-test
-id: 2t2xhwvh3x9t
-title: beck-test
+slug: beck-test-dev
+id: j6g0xp28yahm
+title: DEV - beck-test
 teaser: A short description of the track.
 description: |-
   A long description of the track.
 
   You can use any GitHub flavoured markdown.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+tags:
+- dev
 owner: replicated
 developers:
 - beck@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "17361771576998174835"
+checksum: "15748941208798911125"
