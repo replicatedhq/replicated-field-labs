@@ -1,0 +1,16 @@
+slug: beck-test
+title: beck-test
+teaser: A short description of the track.
+description: |-
+  A long description of the track.
+
+  You can use any GitHub flavoured markdown.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: replicated
+developers:
+- beck@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right

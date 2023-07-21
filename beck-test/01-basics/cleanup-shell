@@ -1,9 +1,11 @@
 #!/bin/sh
 #
-# This script runs when the platform check the challenge.
+# This script runs when the platform cleanup the challenge.
 #
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
 
-kubectl get nodes 
+echo "This is the cleanup script"
+
+exit 0
