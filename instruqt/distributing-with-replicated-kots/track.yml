@@ -1,0 +1,28 @@
+slug: distributing-with-replicated-kots
+id: evmpzv6ycpgs
+title: Distributing Your Application with Replicated KOTS
+description: |-
+  Learn how to quickly take advantage of the Replicated Platform for
+  your application. We'll take an existing Helm chart, wrap it into KOTS manifests and see the Replicated platform in action.
+   
+   **This track demonstrates how to:**
+
+   * Package your application using Replicated KOTS
+   * Distributed your Helm chart using the Replicated platform
+   * Prepare customer entitlements
+   * Understand your customer's application instance
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/appslug.png
+level: beginner
+tags:
+- business-plan
+- enterprise-plan
+- kots
+- helm
+owner: replicated
+developers:
+- vladimir@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+checksum: "11216567145031576492"

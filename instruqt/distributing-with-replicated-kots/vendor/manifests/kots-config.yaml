@@ -1,0 +1,46 @@
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: harbor-config
+spec:
+
+  groups:
+    - name: harbor-external-url
+      title: Harbor External URL
+      description: Harbor external URL configuration
+      items:
+        - name: harbor_external_url
+          title: Harbor external URL to use
+          type: text
+          default: 'http://localhost/harbor'
+    - name: harbor-expose
+      title: Harbor expose options
+      description: Expose Harbor as "ingress", "clusterIP", "nodePort" or "loadBalancer"
+      items:
+        - name: harbor_service_type
+          title: Select service type
+          type: select_one
+          default: NodePort
+          items:
+          - name: LoadBalancer
+            title: LoadBalancer
+          - name: ClusterIP
+            title: ClusterIP
+          - name: NodePort
+            title: NodePort
+        - name: harbor_http_node_port
+          title: Harbor HTTP NodePort
+          type: text
+          default: "30002"
+          when: '{{repl ConfigOptionEquals "harbor_service_type" "NodePort" }}'
+        - name: harbor_https_node_port
+          title: Harbor HTTPS NodePort
+          type: text
+          default: "30003"
+          when: '{{repl ConfigOptionEquals "harbor_service_type" "NodePort" }}'
+        - name: harbor_notary_port
+          title: Harbor Notary NodePort
+          type: text
+          default: "30004"
+          when: '{{repl ConfigOptionEquals "harbor_service_type" "NodePort" }}'
+        

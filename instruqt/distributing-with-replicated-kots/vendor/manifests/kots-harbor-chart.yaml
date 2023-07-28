@@ -1,0 +1,22 @@
+apiVersion: kots.io/v1beta2
+kind: HelmChart
+metadata:
+  name: harbor
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: harbor
+    chartVersion: 16.7.2
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values:
+    service:
+      type: repl{{ ConfigOption "harbor_service_type"}}
+      nodePorts:
+        http: repl{{ ConfigOption "harbor_http_node_port" }}
+        https: repl{{ ConfigOption "harbor_https_node_port" }}
+        notary: repl{{ ConfigOption "harbor_notary_port" }}
+    externalURL: repl{{ ConfigOption "harbor_external_url" }}
+
+  builder: {}

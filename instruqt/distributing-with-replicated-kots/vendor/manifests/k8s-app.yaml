@@ -1,0 +1,15 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "harbor"
+  labels:
+    app.kubernetes.io/name: "harbor"
+    app.kubernetes.io/version: "16.7.2"
+spec:
+  selector:
+    matchLabels:
+     app.kubernetes.io/name: "harbor"
+  componentKinds: []
+  descriptor:
+    version: "16.7.2"
+    description: "An open source trusted cloud native registry that stores, signs, and scans content."

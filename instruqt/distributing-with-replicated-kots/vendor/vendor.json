@@ -1,0 +1,7 @@
+{
+    "name": "Harbor",
+    "slug": "harbor",
+    "customer": "Omozan",
+    "yaml_dir": "./manifests",
+    "k8s_installer_yaml_path": ""
+}

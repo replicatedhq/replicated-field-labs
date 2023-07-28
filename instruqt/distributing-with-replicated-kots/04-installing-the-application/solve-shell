@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+# get the application slug for the chart URL
+api_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+# login to the registry
+helm registry login registry.replicated.com \
+  --username $(agent variable get CUSTOMER_EMAIL) \
+  --password $(agent variable get REGISTRY_PASSWORD) 
+
+# install the application
+helm install harbor \
+  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/harbor \
+  --set service.type=NodePort --set nodePort.https=443 \
+  --set externalURL=https://$(agent variable get EXTERNAL_URL) \
+  --kubeconfig /home/replicant/.kube/config

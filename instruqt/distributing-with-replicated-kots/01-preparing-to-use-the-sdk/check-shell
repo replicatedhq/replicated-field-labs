@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# save the entire session to check user inputs and outputs
+tmux capture-pane -t shell -S -
+SESSION=$(tmux save-buffer -)
+
+# check for disconnection
+result=0
+if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z "]+' <(echo ${SESSION}) ; then
+  fail-message 'Please set the variable `$REPLICATED_API_TOKEN` so you will be able to use the `replicated` command in future steps'
+  let "result = result + 1" 
+fi
+
+if ! grep -qE 'REPLICATED_APP=[A-Za-z "]+' <(echo ${SESSION}) ; then
+  fail-message 'Please set the variable `$REPLICATED_APP` so you will be working with the right application in future steps'
+  let "result = result + 1" 
+fi
+
+if [[ ! -d /home/replicant/harbor ]]; then
+  fail-message 'Please download the Harbor Helm chart so that we can add the SDK to it in the next step'
+  let "result = result + 1" 
+fi
+
+exit $result
