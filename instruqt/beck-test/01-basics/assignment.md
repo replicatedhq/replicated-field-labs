@@ -16,15 +16,15 @@ timelimit: 600
 ---
 Introduction
 ===============
-The Compatibility Matrix creates ephemeral lab-like environments which can be used for testing upgrades and deployments, troubleshooting customer issues, and exploring potential changes to systems. Because it is CLI-driven, it can be easily automated and integrated into existing (or planned) CI/CD processes without requiring a permanent lab environment. In this lab we'll explore how to use the Replicated Compatibility Matrix and some of the ways in which it can be incorporated into existing pipelines. Let's dive in!
+The Compatibility Matrix creates ephemeral lab-like environments which can be used for testing upgrades and deployments, troubleshooting customer issues, and exploring potential changes to systems. Because it is CLI-driven, it can be easily automated and integrated into existing (or planned) CI/CD processes without requiring a permanent lab environment. In this set of labs, we'll explore how to use the Replicated Compatibility Matrix and some of the ways in which it can be incorporated into existing pipelines. Let's dive in!
 
 Getting Started
 ===
-In this exercise we will examine the different matrix commands and their uses as well as build and tear down a few environments for practice.
+In this exercise we will examine the different matrix commands and their uses as well as build and tear down a few environments. The goal of this exercise is to familiarize us with the basics of the compatibility matrix and get us comfortable working with it.
 
 First we'll learn how to create an environment using the Compatibility Matrix. Once we understand the basics of creating an environment, we can use that to automate building environments to meet our testing, troubleshooting, and deployment goals. Because the environments we'll be building are customizable to match our customers' specs, they can mimic the actual environments our customers are using, and because they're ephemeral, they won't require any maintenance. 
 
-We'll start by looking at the new CLI commands that the `replicated` command offers:
+Let's start by looking at the new CLI commands that the `replicated` command offers:
 
 <link to docs>
 
@@ -90,7 +90,13 @@ First, we need to connect to our cluster. If we were to run a `kubectl get names
 
 Now, when we run `kubectl get namespaces` we can see a list of the current namespaces. 
 
-Congratulations! You've created your first few clusters using the Replicated compatibility matrix. Next, let's look at how we can use a customer's support dump to troubleshoot their errors.
+Let's go ahead and get our app installed to this cluster. This uses the same kots installer as a regular installation:
+
+``` kubectl kots install {{app-slug}} ```
+
+Now a `kubeadm get namespaces` shows that our app has installed in the namespace we chose during installation.
+
+Congratulations! You've created your first few clusters using the Replicated compatibility matrix and installed an app to an ephemeral CM cluster! Next, let's look at how we can use a customer's support dump to troubleshoot their errors.
 
 To complete this track, click the **Check** button.
 
