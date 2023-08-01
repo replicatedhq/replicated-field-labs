@@ -1,0 +1,11 @@
+slug: technical-peer-review
+id: nrjmvv9bmgky
+title: Technical Peer Review
+teaser: Solve some k8s problems
+description: Solve some k8s problems with the help from Replicated engineers.
+icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
+tags: []
+owner: replicated
+developers:
+- joshd@replicated.com
+checksum: "15144180777240178116"
