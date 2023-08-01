@@ -14,7 +14,7 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
-Introduction
+👋 Introduction
 ===============
 The Compatibility Matrix creates ephemeral lab-like environments which can be used for testing upgrades and deployments, troubleshooting customer issues, and exploring potential changes to systems. Because it is CLI-driven, it can be easily automated and integrated into existing (or planned) CI/CD processes without requiring a permanent lab environment. In this set of labs, we'll explore how to use the Replicated Compatibility Matrix and some of the ways in which it can be incorporated into existing pipelines. Let's dive in!
 
