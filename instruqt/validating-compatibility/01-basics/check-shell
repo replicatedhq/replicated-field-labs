@@ -1,11 +1,28 @@
-#!/bin/sh
-#
-# This script runs when the platform check the challenge.
-#
-# The platform determines if the script was successful using the exit code of this
-# script. If the exit code is not 0, the script fails. 
-#
+#!/usr/bin/env bash
+#WIP
 
-echo "This is the check script"
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
 
-exit 0
+# save the entire session to check user inputs and outputs
+tmux capture-pane -t shell -S -
+SESSION=$(tmux save-buffer -)
+
+# check for disconnection
+result=0
+if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z "]+' <(echo ${SESSION}) ; then
+  fail-message 'Please set the variable `$REPLICATED_API_TOKEN` so you will be able to use the `replicated` command in future steps'
+  let "result = result + 1" 
+fi
+
+if ! grep -qE 'REPLICATED_APP=[A-Za-z "]+' <(echo ${SESSION}) ; then
+  fail-message 'Please set the variable `$REPLICATED_APP` so you will be working with the right application in future steps'
+  let "result = result + 1" 
+fi
+
+if [[ ! -d /home/replicant/harbor ]]; then
+  fail-message 'Please download the Harbor Helm chart so that we can add the SDK to it in the next step'
+  let "result = result + 1" 
+fi
+
+exit $result
