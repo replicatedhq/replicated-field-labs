@@ -10,7 +10,7 @@ description: |-
    * Use the Compatibility Matrix to build, customize, and tear down temporary clusters
    * Examine support bundles in order to verify customer configurations
    * Incorporate temporary clusters into your existing CI/CD pipelines so that testing can be automated.
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/dependencies.png
 tags:
 - builders-plan
 - compatibility-matrix
@@ -23,4 +23,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "13296719078016868473"
+checksum: "7542468112412091888"
