@@ -1,8 +1,7 @@
 slug: validating-compatibility
 id: riga8tcknxdy
 title: Validating Compatibility with Customer Environments
-teaser: |-
-  How to use the Compatibility Matrix to validate customer environments.
+teaser: How to use the Compatibility Matrix to validate customer environments.
 description: |-
   How does the Compatibility Matrix help determine whether customers will be successful or not? Learn how to use the Compatibility Matrix to build custom environments that match your customers, troubleshoot their clusters without connecting to them, and how to integrate testing so that you don't need to perform it manually.
 
@@ -11,12 +10,11 @@ description: |-
    * Use the Compatibility Matrix to build, customize, and tear down temporary clusters
    * Examine support bundles in order to verify customer configurations
    * Incorporate temporary clusters into your existing CI/CD pipelines so that testing can be automated.
-
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: 
+tags:
 - builders-plan
-- helm
 - compatibility-matrix
+- helm
 owner: replicated
 developers:
 - beck@replicated.com
@@ -25,4 +23,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "845871537639622139"
+checksum: "13296719078016868473"

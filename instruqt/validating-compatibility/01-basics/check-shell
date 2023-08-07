@@ -10,19 +10,47 @@ SESSION=$(tmux save-buffer -)
 
 # check for disconnection
 result=0
-if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z "]+' <(echo ${SESSION}) ; then
-  fail-message 'Please set the variable `$REPLICATED_API_TOKEN` so you will be able to use the `replicated` command in future steps'
-  let "result = result + 1" 
+
+# Check various instructions were run
+
+if ! grep -qE 'replicated cluster --help' <(echo ${SESSION}) ; then
+  fail-message 'Please look at `replicated cluster --help` for a list of commands.'
 fi
 
-if ! grep -qE 'REPLICATED_APP=[A-Za-z "]+' <(echo ${SESSION}) ; then
-  fail-message 'Please set the variable `$REPLICATED_APP` so you will be working with the right application in future steps'
-  let "result = result + 1" 
+if ! grep -qE 'replicated cluster create' <(echo ${SESSION}) ; then
+  fail-message 'Please create a simple cluster using `replicated cluster create`.'
 fi
 
-if [[ ! -d /home/replicant/harbor ]]; then
-  fail-message 'Please download the Harbor Helm chart so that we can add the SDK to it in the next step'
-  let "result = result + 1" 
+if ! grep -qE 'replicated cluster ls' <(echo ${SESSION}) ; then
+  fail-message 'Please look at the active clusters using `replicated cluster ls`.'
+fi
+
+if ! grep -qE '--node-count' <(echo ${SESSION}) ; then
+  fail-message 'Please create a multi-node cluster.'
+fi
+
+if ! grep -qE 'replicated cluster rm' <(echo ${SESSION}) ; then
+  fail-message 'Please try deleting a cluster.'
+fi
+
+if ! grep -qE 'replicated cluster kubeconfig' <(echo ${SESSION}) ; then
+  fail-message 'Please try accessing a cluster with `replicated cluster kubeconfig.'
+fi
+
+# Verify app installation
+if ! grep -qE 'replicated cluster rm' <(echo ${SESSION}) ; then
+  fail-message 'Please try deleting a cluster.'
+fi
+
+# Verify app and api tokens are set
+if ! grep -qE "REPLICATED_API_TOKEN=[[:alnum:]]+" <(echo ${SESSION}) ; then
+  fail-message "Please make sure you've set your API token"
+  exit 1
+fi
+
+if ! grep -qE "REPLICATED_APP=\w+" <(echo ${SESSION}) ; then
+  fail-message "Please make sure you've set your Replicated app slug"
+  exit 1
 fi
 
 exit $result

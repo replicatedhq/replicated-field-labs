@@ -1,6 +1,6 @@
 ---
 slug: troubleshooting
-id: a0cvc186bru1
+id: rgkxp5f7zamn
 type: challenge
 title: Troubleshooting
 teaser: Using the compatibility-matrix for Troubleshooting
@@ -17,7 +17,7 @@ timelimit: 600
 
 As we saw in the previous exercise, the CM can create a variety of environments. Now let’s look at how we might use it to troubleshoot existing customer installations without connecting to the live/production/airgap installations our customer is running. In this case, we'll be looking at a voting app that our customer BigBank is having trouble with. They are having trouble with their voting app, which they need up and running before an important presentation next week where they will use the voting app to interact with the audience. In their testing, whenever more than a few people at a time access the app, it crashes.
 
-Because BigBank is strictly controlled, we aren't able to connect directly to their environment. The support dumps we've gotten so far aren't giving us any indications as to why they might be crashing. We also haven't been able to reproduce the issue on our testing environment. Let's see if we can use the Compatibility Matrix to figure something out.  
+Because BigBank is strictly controlled, we aren't able to connect directly to their environment. The support dumps we've gotten so far aren't giving us any indications as to why they might be crashing. We also haven't been able to reproduce the issue on our testing environment. Let's see if we can use the Compatibility Matrix to figure something out.
 
 The lastest support bundle can be downloaded from the “Bundle” tab at the top of this lab. Go ahead and download it now.
 
@@ -49,10 +49,10 @@ All nodes must have at least 20 GB of memory.
 After a little bit of testing we are able to duplicate the error. Using the CM again, we can try increasing memory to see if that resolves the issue:
 
 ``` replicated cluster create --memory 32 --vcpu 8 --distribution kind --version 1.27.0 --name big-bank-voting-more-mem ```
-``` replicated cluster kubeconfig --name big-bank-voting-more-mem ``` 
+``` replicated cluster kubeconfig --name big-bank-voting-more-mem ```
 ``` kube kods install {{app-slug}}}
 
-With additional testing, we are no longer able to reproduce the problem. In other words, BigBank is having trouble due to resource constraints with memory. We can recommend that they increase the memory on their cluster node(s) to 32GB and see if that fixes the issues they're seeing. 
+With additional testing, we are no longer able to reproduce the problem. In other words, BigBank is having trouble due to resource constraints with memory. We can recommend that they increase the memory on their cluster node(s) to 32GB and see if that fixes the issues they're seeing.
 
 Now that we've figured it out, we can clean up our testing clusters. They will disappear automatically in 8 hours, but since we're done with them we can clean up now.
 

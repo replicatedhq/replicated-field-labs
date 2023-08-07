@@ -1,6 +1,6 @@
 ---
 slug: basics
-id: fytbmwjxpo78
+id: ubhlgibmd01h
 type: challenge
 title: Compatibility Matrix Basics
 teaser: Learn the basic commands for working with the Compatibility Matrix CLI.
@@ -22,7 +22,7 @@ Getting Started
 ===
 In this exercise we will examine the different matrix commands and their uses as well as build and tear down a few environments. The goal of this exercise is to familiarize us with the basics of the compatibility matrix and get us comfortable working with it.
 
-First we'll learn how to create an environment using the Compatibility Matrix. Once we understand the basics of creating an environment, we can use that to automate building environments to meet our testing, troubleshooting, and deployment goals. Because the environments we'll be building are customizable to match our customers' specs, they can mimic the actual environments our customers are using, and because they're ephemeral, they won't require any maintenance. 
+First we'll learn how to create an environment using the Compatibility Matrix. Once we understand the basics of creating an environment, we can use that to automate building environments to meet our testing, troubleshooting, and deployment goals. Because the environments we'll be building are customizable to match our customers' specs, they can mimic the actual environments our customers are using, and because they're ephemeral, they won't require any maintenance.
 
 Let's start by looking at the new CLI commands that the `replicated` command offers:
 
@@ -59,7 +59,7 @@ Let's create a more complex cluster. Our BigBank customer is running a standard 
 
 Specs:
 
-Version: kind 1.27.0 
+Version: kind 1.27.0
 Memory: 8GB
 vCPU: 8
 Nodes: 3
@@ -82,17 +82,19 @@ We don't need the first cluster we created, since now we have a cluster that rep
 
 This cluster drops off our cluster list immediately, though in the background it is still cleaning up.
 
-Now we have one running cluster with the same configurations as Big Bank. Let's go ahead and install our app into that cluster so we can begin using it to do testing and troubleshooting. 
+Now we have one running cluster with the same configurations as Big Bank. Let's go ahead and install our app into that cluster so we can begin using it to do testing and troubleshooting.
 
 First, we need to connect to our cluster. If we were to run a `kubectl get namespaces` right now, we wouldn't be interacting with the testing cluster. The `kubeconfig` subcommand allows us to interact with the cluster directly:
 
 ``` replicated cluster kubeconfig --name {{name}} ```
 
-Now, when we run `kubectl get namespaces` we can see a list of the current namespaces. 
+Now, when we run `kubectl get namespaces` we can see a list of the current namespaces.
 
-Let's go ahead and get our app installed to this cluster. This uses the same kots installer as a regular installation:
+Let's go ahead and get our app installed to this cluster. As always when interacting with an application from the CLI, the app-slug and API token will need to be set. This lab has already set them, but if you are unfamiliar with these commands, a great place to familiarize yourself with them is https://play.instruqt.com/replicated/tracks/hello-world. 
 
-``` kubectl kots install {{app-slug}} ```
+The installation process as a regular kots installation:
+
+``` kubectl kots install $REPLICATED_APP ```
 
 Now a `kubeadm get namespaces` shows that our app has installed in the namespace we chose during installation.
 
