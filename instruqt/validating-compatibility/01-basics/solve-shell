@@ -14,27 +14,12 @@ exit 0
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-
-# collect the two support bundles from the challenge
-kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
-kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/harbor-support-bundle.yaml
-
-# make sure support bundle files are in the users home directory
-mv support-bundle-*.tar.gz /home/replicant
-
-# make sure all files have the correct ownership
-chown -R replicant /home/replicant
-
-# verify looked at possible commands
-if ! grep -qE 'replicated cluster versions+' <(echo ${SESSION}) ; then
-  fail-message 'You can see what cluster distributions are supported with `replicated cluster versions`. Take a look!'
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
 fi
 
-# Verify simple cluster creation
-# verify custom cluster creation
-# List clusters
-# remove clusters
-# connect to cluster
-# install app in cluster
-
+# make sure the user will be authenticated and using the right app
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+tmux send-keys -t shell clear ENTER
 
