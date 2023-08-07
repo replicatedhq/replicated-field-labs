@@ -66,13 +66,11 @@ Nodes: 3
 
 This is an unusual config, so let's verify we've assembled the correct command before building. The`--dry-run` flag will allow us to verify that our specs are supported:
 
-``` replicated cluster create --distribution kind --version 1.27.0 --name bigbank-testing --memory 8 --vcpu 8 --node-count
- 3 --dry-run ```
+``` replicated cluster create --distribution kind --version 1.27.0 --name bigbank-testing --memory 8 --vcpu 8 --node-count --dry-run ```
 
 As we can see, the dry run was a success so we can go ahead and build this new testing cluster:
 
-``` replicated cluster create --distribution kind --version 1.27.0 --name bigbank-testing --memory 8 --vcpu 8 --node-count
- 3 ```
+``` replicated cluster create --distribution kind --version 1.27.0 --name bigbank-testing --memory 8 --vcpu 8 --node-count 3 ```
 
 As it builds, we can see both clusters are up and running/provisioning  with another `replicated cluster ls`.
 
@@ -90,7 +88,7 @@ First, we need to connect to our cluster. If we were to run a `kubectl get names
 
 Now, when we run `kubectl get namespaces` we can see a list of the current namespaces.
 
-Let's go ahead and get our app installed to this cluster. As always when interacting with an application from the CLI, the app-slug and API token will need to be set. This lab has already set them, but if you are unfamiliar with these commands, a great place to familiarize yourself with them is https://play.instruqt.com/replicated/tracks/hello-world. 
+Let's go ahead and get our app installed to this cluster. As always when interacting with an application from the CLI, the app-slug and API token will need to be set. This lab has already set them, but if you are unfamiliar with these commands, a great place to familiarize yourself with them is https://play.instruqt.com/replicated/tracks/hello-world.
 
 The installation process as a regular kots installation:
 
