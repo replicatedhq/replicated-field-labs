@@ -6,7 +6,7 @@ title: Troubleshooting
 teaser: Using the compatibility-matrix for Troubleshooting
 notes:
 - type: text
-  contents: contents go here
+  contents: Let's do some troubleshooting with the Compatibility Matrix
 tabs:
 - title: Shell
   type: terminal
