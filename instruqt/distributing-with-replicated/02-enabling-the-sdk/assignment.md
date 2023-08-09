@@ -63,7 +63,7 @@ a fairly large change. It's not a breaking change, though, so
 let's just bump the minor version number.
 
 ```
-version: 16.7.0
+version: 16.7.5
 ```
 
 ![Bumping the Chart Version](../assets/bumping-the-version.png)
@@ -101,5 +101,5 @@ ls release
 which shows
 
 ```
-harbor-16.7.0.tgz
+harbor-16.7.5.tgz
 ```
