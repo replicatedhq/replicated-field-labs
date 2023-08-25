@@ -11,7 +11,7 @@ virtualmachines:
     K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
   machine_type: e2-small
   allow_external_ingress:
-  - high-ports 
+  - high-ports
 - name: worker1
   image: instruqt/k3s-v1-27-1
   shell: /bin/bash
@@ -20,7 +20,7 @@ virtualmachines:
     K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
   machine_type: n1-standard-1
   allow_external_ingress:
-  - high-ports 
+  - high-ports
 - name: worker2
   image: instruqt/k3s-v1-27-1
   shell: /bin/bash
@@ -29,4 +29,4 @@ virtualmachines:
     K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
   machine_type: n1-standard-1
   allow_external_ingress:
-  - high-ports 
+  - high-ports

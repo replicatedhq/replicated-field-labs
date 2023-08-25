@@ -1,5 +1,5 @@
 slug: avoiding-installation-pitfalls
-id: amjfqroa5bfk
+id: 
 title: Avoiding Installation Pitfalls
 teaser: |-
   Use Preflight checks to avoid common installation pitfalls
@@ -22,9 +22,11 @@ tags:
 - builders-plan
 - helm
 - troubleshoot
+- prod
 owner: replicated
 developers:
 - chuck@replicated.com
+maintenance: false
 lab_config:
   overlay: false
   width: 33

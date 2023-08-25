@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: k2xalui3fpuw
+id: wy7eklcxxw6c
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
@@ -48,7 +48,7 @@ chart.
 ```
 - name: replicated
   repository: oci://registry.replicated.com/library
-  version: 0.0.1-alpha.21
+  version: [[ Instruqt-Var key="REPLICATED_SDK_VERSION" hostname="shell" ]]
 ```
 
 You should put the dependency into the array with the other

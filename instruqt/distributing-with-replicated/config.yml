@@ -11,4 +11,4 @@ virtualmachines:
   allow_external_ingress:
   - http
   - https
-  - high-ports 
+  - high-ports

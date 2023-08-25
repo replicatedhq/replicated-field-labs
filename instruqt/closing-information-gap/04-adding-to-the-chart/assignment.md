@@ -1,6 +1,6 @@
 ---
 slug: adding-to-the-chart
-id: tvkvu4hgnpuv
+id: vvxrunt3e7zu
 type: challenge
 title: Adding the Support Bundle to the Harbor Helm Chart
 teaser: Learn how to incorporate your support bundle into your chart
