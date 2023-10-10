@@ -198,7 +198,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 }
 
 func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
-	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Status.App.Slug, track.Spec.Channel)
+	channels, err := e.Client.ListChannels(track.Status.App.ID, track.Spec.Channel)
 	if err != nil {
 		return nil, errors.Wrapf(err, "list channel %q for app %q", track.Spec.Channel, track.Status.App.Slug)
 	}
@@ -206,7 +206,7 @@ func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
 	var matchedChannels []types.Channel
 	for _, channel := range channels {
 		if channel.Name == track.Spec.Channel {
-			matchedChannels = append(matchedChannels, channel)
+			matchedChannels = append(matchedChannels, *channel)
 		}
 	}
 
@@ -227,7 +227,7 @@ func (e *EnvironmentManager) getChannel(track Track) (*types.Channel, error) {
 }
 
 func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, error) {
-	customers, err := e.Client.ListCustomers(track.Status.App.ID)
+	customers, err := e.Client.ListCustomers(track.Status.App.ID, false)
 	if err != nil {
 		return nil, errors.Wrapf(err, "list customer for app %q", track.Status.App.Slug)
 	}
@@ -238,7 +238,8 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 		}
 	}
 
-	customer, err := e.Client.CreateCustomer(track.Spec.Customer, track.Status.App.ID, track.Status.Channel.ID, OneWeek)
+  var createOpts = kotsclient.CreateCustomerOpts{ Name: track.Spec.Customer, AppID: track.Status.App.ID, Email: track.Spec.Customer + "@replicated-labs.com", ChannelID: track.Status.Channel.ID, ExpiresAt: OneWeek }
+	customer, err := e.Client.CreateCustomer(createOpts) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "create customer for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
 	}
