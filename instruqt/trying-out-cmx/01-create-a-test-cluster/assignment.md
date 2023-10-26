@@ -13,7 +13,7 @@ tabs:
   url: https://vendor.replicated.com/compatibility-matrix/clusters
   new_window: true
 difficulty: basic
-timelimit: 180
+timelimit: 300
 ---
 
 
