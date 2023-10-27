@@ -49,7 +49,7 @@ sandbox.
 
 ```yaml
 - name: shell
-  image: gcr.io/kots-field-labs/shell:instruqt-feature-tmux-template
+  image: gcr.io/kots-field-labs/shell:latest
   shell: tmux new-session -A -s shell su - replicant
 ```
 
