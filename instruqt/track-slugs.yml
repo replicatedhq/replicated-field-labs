@@ -1,14 +1,38 @@
 ---
 tracks:
-  - { slug: airgap-embedded, id: 0zxhhnehsgua }
-  - { slug: app-preflights, id: yv7w1owyqbeh }
-  - { slug: custom-fields, id: 9ixa2iyrggut }
-  - { slug: hello-world, id: otit0x2yl9ry }
-  - { slug: helm-hello-world, id: nbxtqf3fllg8 }
-  - { slug: proxy, id: 8txqwacwfxcu }
-  - { slug: redactors, id: gmiwrds3jmuy }
-  - { slug: replicated-cli, id: pur3nyzcbryg }
-  - { slug: short-demo, id: iecexaqfyu6j }
-  - { slug: support-bundle-analyzers, id: ustszdcffvmg }
-  - { slug: support-bundle, id: d2oeswgg5ra2 }
-  - { slug: support-cli, id: uab72ueg5ox2 }
+  - slug: support-bundle
+    id: d2oeswgg5ra2
+  - slug: proxy
+    id: 8txqwacwfxcu
+  - slug: short-demo
+    id: iecexaqfyu6j
+  - slug: airgap-embedded
+    id: 0zxhhnehsgua
+  - slug: technical-peer-review
+    id: nrjmvv9bmgky
+  - slug: shared-env-template
+    id: xnjer5tunrrn
+  - slug: shell-and-cluster-template
+    id: r0qomiqpceeg
+  - slug: distributing-with-replicated
+    id: evmpzv6ycpgs
+  - slug: hello-world
+    id: otit0x2yl9ry
+  - slug: closing-information-gap
+    id: hfb41xqkyx0q
+  - slug: support-bundle-analyzers
+    id: ustszdcffvmg
+  - slug: redactors
+    id: gmiwrds3jmuy
+  - slug: avoiding-installation-pitfalls
+    id: amjfqroa5bfk
+  - slug: app-preflights
+    id: yv7w1owyqbeh
+  - slug: custom-fields
+    id: 9ixa2iyrggut
+  - slug: airgap-template
+    id: 8p7434ifnsyd
+  - slug: replicated-cli
+    id: pur3nyzcbryg
+  - slug: support-cli
+    id: uab72ueg5ox2
