@@ -129,12 +129,12 @@ Repackaging Your Chart
 ======================
 
 To distribute your support bundle, you should bump the version number in
-`harbor/Chart.yaml` (from `19.3.0` to `16.9.0`) adn then repackage it. You can edit
+`harbor/Chart.yaml` (from `19.3.0` to `19.4.0`) adn then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell.
 
 ```
-yq -i '.version = "16.9.0"' harbor/Chart.yaml
+yq -i '.version = "19.4.0"' harbor/Chart.yaml
 ```
 
 and run the `helm package` command to package the updated version

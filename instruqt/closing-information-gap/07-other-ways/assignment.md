@@ -75,7 +75,7 @@ release directory. The following commands will take care of that for you.
 ```
 yq -i '.version = "16.9.1"' harbor/Chart.yaml
 helm package harbor --destination ./release
-rm ./release/harbor-16.9.0.tgz
+rm ./release/harbor-19.4.0.tgz
 ```
 
 Now you need to release your update and promote it. Remember that for a real
