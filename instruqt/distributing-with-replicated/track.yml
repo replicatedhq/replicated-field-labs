@@ -1,5 +1,5 @@
 slug: distributing-with-replicated
-id: 
+id: evmpzv6ycpgs
 title: Distributing Your Application with Replicated
 description: |-
   Learn how to quickly take advantage of the Replicated Platform for
@@ -14,16 +14,15 @@ description: |-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/appslug.png
 level: beginner
 tags:
-- builders-plan
-- sdk
-- helm
 - prod
+- builders-plan
+- helm
+- sdk
 owner: replicated
 developers:
 - chuck@replicated.com
-maintenance: false
 lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "11868235989270449838"
+checksum: "4697812039007069627"

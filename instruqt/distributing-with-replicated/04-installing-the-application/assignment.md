@@ -1,6 +1,6 @@
 ---
 slug: installing-the-application
-id: le06dzuzl81y
+id: cqhjo8z5iier
 type: challenge
 title: Installing the Application
 teaser: Let's install the application as your customer
