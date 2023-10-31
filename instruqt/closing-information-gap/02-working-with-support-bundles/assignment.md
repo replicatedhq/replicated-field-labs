@@ -1,6 +1,6 @@
 ---
 slug: working-with-support-bundles
-id: yoaffx6a7m6t
+id: toucvosxrmfv
 type: challenge
 title: Working with Support Bundles
 teaser: |-
@@ -58,7 +58,7 @@ spec:
 ```
 
 You can view the file in the Manifest Editor tab or from the command line.
-Let's try colelcting a support bunglde with it..
+Let's try collecting a support bunglde with it.
 
 ```
 kubectl support-bundle ./simplest-support-bundle.yaml
