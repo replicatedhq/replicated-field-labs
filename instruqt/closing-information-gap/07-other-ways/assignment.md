@@ -67,13 +67,13 @@ Don't forget to the save the file.
 
 ![Adding a URI to the Support Bundle spec](../assets/adding-a-uri-to-the-spec.png)
 
-You should also bump the version number for the release to `16.9.1` in the
+You should also bump the version number for the release to `19.4.1` in the
 `Chart.yaml` file, repackage your chart, and delete the old tarball from your
 release directory. The following commands will take care of that for you.
 
 
 ```
-yq -i '.version = "16.9.1"' harbor/Chart.yaml
+yq -i '.version = "19.4.1"' harbor/Chart.yaml
 helm package harbor --destination ./release
 rm ./release/harbor-19.4.0.tgz
 ```
@@ -84,11 +84,11 @@ release sequence will be `5` unless you've played around with additional
 releases. If you have, use the current sequence.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 16.9.1  \
+replicated release create --promote Unstable --yaml-dir ./release --version 19.4.1  \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 5 Beta --version 16.9.1 \
+replicated release promote 4 Beta --version 19.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 5 Stable --version 16.9.1 \
+replicated release promote 4 Stable --version 19.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
 ```
 
