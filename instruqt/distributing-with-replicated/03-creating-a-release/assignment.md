@@ -85,7 +85,7 @@ To create a release, run the following command. We're using the
 `Unstable` channel since we're releasing our most recent change.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 19.2.0  \
+replicated release create --promote Unstable --chart ./release/harbor-19.2.0.tgz --version 19.2.0  \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
