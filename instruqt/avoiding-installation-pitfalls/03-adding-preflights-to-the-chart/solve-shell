@@ -86,6 +86,6 @@ stringData:
                   message: Your cluster has sufficient memory available to run Harbor
 HARBOR_PREFLIGHTS
 
-yq -i '.version = "16.8.0"' /home/replicant/harbor/Chart.yaml
+yq -i '.version = "19.3.0"' /home/replicant/harbor/Chart.yaml
 helm package /home/replicant/harbor --destination /home/replicant/release
 chown -R replicant /home/replicant/harbor /home/replicant/release

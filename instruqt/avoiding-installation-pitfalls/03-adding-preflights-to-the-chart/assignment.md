@@ -228,12 +228,12 @@ helm template harbor | kubectl preflight -
 ```
 
 If you're satisfied with the tests, bump the version of your Helm chart in the file
-`harbor/Chart.yaml` from `16.7.0` to `16.8.0`, then repackage it. You can edit
+`harbor/Chart.yaml` from `19.2.0` to `19.3.0`, then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell:
 
 ```
-yq -i '.version = "16.8.0"' harbor/Chart.yaml
+yq -i '.version = "19.3.0"' harbor/Chart.yaml
 ```
 
 Then run the `helm package` command to package the updated version:

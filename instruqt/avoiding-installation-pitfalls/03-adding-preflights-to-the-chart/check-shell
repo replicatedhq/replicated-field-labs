@@ -44,7 +44,7 @@ if [[ "${fails}" -ne "1" ]] ; then
 fi
 
 # look for the preflight template file
-if [[ ! -f /home/replicant/release/harbor-16.8.0.tgz ]] ; then
+if [[ ! -f /home/replicant/release/harbor-19.3.0.tgz ]] ; then
   fail-message $'Please make sure you\'ve bumped the version of your Helm chart and re-packaged it'
   let "result = result + 1"
 fi
