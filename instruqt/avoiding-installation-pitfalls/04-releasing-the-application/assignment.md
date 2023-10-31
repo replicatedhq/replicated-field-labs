@@ -88,7 +88,7 @@ use the `Unstable` channel for this lab, since the latter
 approach is best for teams working with feature branches.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 19.3.0  \
+replicated release create --promote Unstable --chart ./release/harbor-19.3.0.tgz --version 19.3.0  \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 
