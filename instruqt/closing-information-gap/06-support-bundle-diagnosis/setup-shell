@@ -31,4 +31,4 @@ registry_password=$(curl --header 'Accept: application/json' --header "Authoriza
   yq .customer.installationId) 
 
 agent variable set CUSTOMER_EMAIL ${customer_email}
-agent variable set REGISTRY_PASSWORD ${registry_pasword}
+agent variable set REGISTRY_PASSWORD ${registry_password}
