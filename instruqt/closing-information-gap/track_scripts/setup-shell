@@ -33,9 +33,10 @@ export REPLICATED_APP=${app_slug}
 
 ## release the application with the Replicated SDK
 cd /home/replicant
-mkdir release
-helm pull --version 16.6.8 oci://registry-1.docker.io/bitnamicharts/harbor --untar
-yq -i '.version = "16.7.0"' harbor/Chart.yaml
+mkdir /home/replicant/release
+
+helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/harbor --untar
+yq -i '.version = "19.2.0"' harbor/Chart.yaml
 replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" harbor/Chart.yaml
 
@@ -48,7 +49,7 @@ helm package harbor --destination release
 ## release and promote the app with the SDK added
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -56,12 +57,12 @@ replicated release create --promote Unstable --yaml-dir /home/replicant/release 
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 16.7.0 \
+replicated release promote ${release_sequence} Beta --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 16.7.0 \
+replicated release promote ${release_sequence} Stable --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -70,7 +71,7 @@ replicated channel create --name LTS --description "Releases with long-term supp
   --app ${app_slug} --token ${api_token}
 
 # remove the helm chart we used to create the release
-rm /home/replicant/release/harbor-16.7.0.tgz
+rm /home/replicant/release/harbor-19.2.0.tgz
 
 ## release the application with the Replicated SDK
 # add preflight checks to the Helm chart
@@ -158,14 +159,14 @@ stringData:
 HARBOR_PREFLIGHTS
 
 # bump the version
-yq -i '.version = "16.8.0"' /home/replicant/harbor/Chart.yaml
+yq -i '.version = "19.3.0"' /home/replicant/harbor/Chart.yaml
 helm package /home/replicant/harbor --destination /home/replicant/release
 chown -R replicant /home/replicant/harbor /home/replicant/release
 
 ## release and promote the preflight checks added
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.8.0 \
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 19.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
 
@@ -173,17 +174,17 @@ replicated release create --promote Unstable --yaml-dir /home/replicant/release 
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 16.8.0 \
+replicated release promote ${release_sequence} Beta --version 19.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 16.8.0 \
+replicated release promote ${release_sequence} Stable --version 19.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
 
 # remove the helm chart we used to create the release
-rm /home/replicant/release/harbor-16.8.0.tgz
+rm /home/replicant/release/harbor-19.3.0.tgz
 
 ## create the customer from the preflights lab
 
@@ -216,7 +217,7 @@ helm registry login registry.replicated.com \
 # install the application, trying again if it fails since there might be timing issues
 set +e
 retries=0
-while ! helm install harbor --version 16.8.0 \
+while ! helm install harbor --version 19.3.0 \
   oci://registry.replicated.com/${app_slug}/harbor \
   --set service.type=NodePort --set service.nodePort.https=30443 \
   --set externalURL=https://cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \

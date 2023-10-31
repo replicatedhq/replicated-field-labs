@@ -1,6 +1,6 @@
 ---
 slug: releasing-an-update
-id: tnyktndlfuw7
+id: phzx2xp3gdbp
 type: challenge
 title: Releasing an Update with the Support Bundle
 teaser: Releasing a new version with the support bundle included

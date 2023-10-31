@@ -1,6 +1,6 @@
 ---
 slug: other-ways
-id: dfec8ytv6wmo
+id: zphzf0yxstck
 type: challenge
 title: Other Ways to Offer a Support Bundle
 teaser: Explore other ways to distibute your support bundle and keep it up to date

@@ -1,6 +1,6 @@
 ---
 slug: adding-to-the-chart
-id: vvxrunt3e7zu
+id: eyurng2zyce6
 type: challenge
 title: Adding the Support Bundle to the Harbor Helm Chart
 teaser: Learn how to incorporate your support bundle into your chart
@@ -129,7 +129,7 @@ Repackaging Your Chart
 ======================
 
 To distribute your support bundle, you should bump the version number in
-`harbor/Chart.yaml` (from `16.8.0` to `16.9.0`) adn then repackage it. You can edit
+`harbor/Chart.yaml` (from `19.3.0` to `16.9.0`) adn then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell.
 
