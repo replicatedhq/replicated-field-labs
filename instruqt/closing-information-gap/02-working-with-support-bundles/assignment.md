@@ -16,7 +16,7 @@ tabs:
 - title: Manifest Editor
   type: code
   hostname: shell
-  path: /home/replicant
+  path: /home
 difficulty: basic
 timelimit: 420
 ---
