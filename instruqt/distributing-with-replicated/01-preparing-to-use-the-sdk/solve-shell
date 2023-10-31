@@ -17,4 +17,4 @@ fi
 
 tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
 tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
-tmux send-keys -t shell 'helm pull --version 16.6.8 oci://registry-1.docker.io/bitnamicharts/harbor --untar' ENTER
+tmux send-keys -t shell 'helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/harbor --untar' ENTER

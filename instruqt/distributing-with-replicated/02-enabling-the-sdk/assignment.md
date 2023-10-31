@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: zulqmrtftnst
+id: pzlc29lz2h9y
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
@@ -63,7 +63,7 @@ a fairly large change. It's not a breaking change, though, so
 let's just bump the minor version number.
 
 ```
-version: 16.7.0
+version: 19.2.0
 ```
 
 ![Bumping the Chart Version](../assets/bumping-the-version.png)
@@ -101,5 +101,5 @@ ls release
 which shows
 
 ```
-harbor-16.7.0.tgz
+harbor-19.2.0.tgz
 ```

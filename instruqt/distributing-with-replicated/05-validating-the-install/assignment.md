@@ -1,6 +1,6 @@
 ---
 slug: validating-the-install
-id: wsuxuhp33vfz
+id: vtvk2dkrwklo
 type: challenge
 title: Observing the Customer Instance
 teaser: Observing your customer install

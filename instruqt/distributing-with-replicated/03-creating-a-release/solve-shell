@@ -21,7 +21,7 @@ replicated channel create --name LTS --description "Releases with long-term supp
   --app ${app_slug} --token ${api_token}
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 16.7.0 \
+replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -29,11 +29,11 @@ replicated release create --promote Unstable --yaml-dir /home/replicant/release 
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 16.7.0 \
+replicated release promote ${release_sequence} Beta --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 16.7.0 \
+replicated release promote ${release_sequence} Stable --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}

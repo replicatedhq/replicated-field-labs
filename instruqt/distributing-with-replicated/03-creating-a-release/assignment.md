@@ -1,6 +1,6 @@
 ---
 slug: creating-a-release
-id: xfimjuqgm1r5
+id: qwjuyn8lmauy
 type: challenge
 title: Releasing an Application
 teaser: Creating a release on the Replicated Platform
@@ -85,11 +85,11 @@ To create a release, run the following command. We're using the
 `Unstable` channel since we're releasing our most recent change.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 16.7.0  \
+replicated release create --promote Unstable --yaml-dir ./release --version 19.2.0  \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
-This creates a release for version `16.7.0` of your Harbor Helm
+This creates a release for version `19.2.0` of your Harbor Helm
 chart, and promotes it to the `Unstable` channel.  The `create`
 command output a sequence number that you'll need for `promote`
 (it will be `1` if you haven't explored releasing a bit more).
@@ -127,14 +127,14 @@ promoting to `Beta`, and ultimately releasing on `Stable`.
 For the purposes of the lab, let's just promote the release straight through.
 
 ```
-replicated release promote 1 Beta --version 16.7.0 \
+replicated release promote 1 Beta --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
 and then
 
 ```
-replicated release promote 1 Stable --version 16.7.0 \
+replicated release promote 1 Stable --version 19.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 

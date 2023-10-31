@@ -1,6 +1,6 @@
 ---
 slug: preparing-to-use-the-sdk
-id: nlsiefddbiay
+id: mneddevjccio
 type: challenge
 title: Preparing to Use the SDK
 teaser: Getting ready to use the Replicated SDK
@@ -54,7 +54,7 @@ Helm chart. Let's pull down the chart so that we can get
 started.
 
 ```bash
-helm pull --version 16.6.8 oci://registry-1.docker.io/bitnamicharts/harbor --untar
+helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/harbor --untar
 ```
 
 Let's also set up our shell for interacting with the Replicated
