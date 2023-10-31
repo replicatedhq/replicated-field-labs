@@ -25,6 +25,7 @@ customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
 
 # get the registry password (which is the license id)
 app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+customer_id=$(replicated customer create --name "Geeglo" --email ${customer_email} --channel Stable --expires-in 720h --output json --app ${app_slug} --token ${api_token} | jq -r .id)
 registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
   yq .customer.installationId) 
 
