@@ -1,6 +1,6 @@
 ---
 slug: adding-preflights-to-the-chart
-id: h1alw68r1tr3
+id: lcpwe2dkxmr0
 type: challenge
 title: Adding Preflights to the Harbor Helm Chart
 teaser: Learn how to incorporate your preflight checks into your chart

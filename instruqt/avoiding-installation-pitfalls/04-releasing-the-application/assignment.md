@@ -1,6 +1,6 @@
 ---
 slug: releasing-the-application
-id: 0vyspwc60kxh
+id: 5jisluk3n6vr
 type: challenge
 title: Releasing the Application
 teaser: Releasing with preflights on the Replicated Platform
