@@ -42,7 +42,7 @@ their instance.
 
 ```
 helm upgrade harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
 ```
 
 Check to see if the support bundle secret has been created.
