@@ -9,7 +9,7 @@ SESSION=$(tmux save-buffer -)
 
 # check for disconnection
 result=0
-if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z "]+' <(echo ${SESSION}) ; then
+if ! grep -qE 'REPLICATED_API_TOKEN=[A-Za-z0-9 "]+' <(echo ${SESSION}) ; then
   fail-message 'Please set the variable `$REPLICATED_API_TOKEN` so you will be able to use the `replicated` command in future steps'
   let "result = result + 1" 
 fi
