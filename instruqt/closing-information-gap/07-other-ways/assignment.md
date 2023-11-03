@@ -84,7 +84,7 @@ release sequence will be `5` unless you've played around with additional
 releases. If you have, use the current sequence.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 19.4.1  \
+replicated release create --promote Unstable --chart ./release/harbor-19.4.1.tgz --version 19.4.1  \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
 replicated release promote 4 Beta --version 19.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
@@ -100,6 +100,8 @@ new support bundle containing a reference to your independently released
 bundle.
 
 ```
+helm upgrade harbor \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
 kubectl support-bundle --load-cluster-specs
 ```
 
