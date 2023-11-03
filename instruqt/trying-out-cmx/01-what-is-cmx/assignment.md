@@ -1,12 +1,16 @@
 ---
-slug: create-a-test-cluster
+slug: what-is-cmx
 id: znzkrjto96nr
 type: challenge
-title: Create a Test Cluster
-teaser: A short description of the challenge.
+title: What is the Compability Matrix
+teaser: Learn what the Replicated Compatibility Matrix has to offer
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: |
+    The Replicated Compatbility Matrix gives you fast access to Kubernetes
+    clusters from multiple cloud providers and distributions. Let's learn a bit
+    more about the types of clusters you can create and how you can customize
+    them.
 tabs:
 - title: Vendor Portal
   type: website
@@ -35,4 +39,4 @@ the following credentials
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
-
+Once you log in, you'll see the 
