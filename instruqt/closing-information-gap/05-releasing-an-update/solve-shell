@@ -29,7 +29,7 @@ api_token=$(get_api_token)
 app_slug=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --yaml-dir /home/replicant/release --version 19.4.0 \
+replicated release create --promote Unstable --chart /home/replicant/release/harbor-19.4.0.tgz --version 19.4.0  \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting" \
   --app ${app_slug} --token ${api_token}
 
