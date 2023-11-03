@@ -72,7 +72,7 @@ default release channels that is generally used internally for releases that
 may or not be ready for customers.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 19.4.0  \
+replicated release create --promote Unstable --chart ./release/harbor-19.4.0.tgz --version 19.4.0  \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
