@@ -1,6 +1,6 @@
 ---
 slug: other-ways
-id: dfec8ytv6wmo
+id: sr80rrntbsgo
 type: challenge
 title: Other Ways to Offer a Support Bundle
 teaser: Explore other ways to distibute your support bundle and keep it up to date
@@ -67,15 +67,15 @@ Don't forget to the save the file.
 
 ![Adding a URI to the Support Bundle spec](../assets/adding-a-uri-to-the-spec.png)
 
-You should also bump the version number for the release to `16.9.1` in the
+You should also bump the version number for the release to `19.4.1` in the
 `Chart.yaml` file, repackage your chart, and delete the old tarball from your
 release directory. The following commands will take care of that for you.
 
 
 ```
-yq -i '.version = "16.9.1"' harbor/Chart.yaml
+yq -i '.version = "19.4.1"' harbor/Chart.yaml
 helm package harbor --destination ./release
-rm ./release/harbor-16.9.0.tgz
+rm ./release/harbor-19.4.0.tgz
 ```
 
 Now you need to release your update and promote it. Remember that for a real
@@ -84,11 +84,11 @@ release sequence will be `5` unless you've played around with additional
 releases. If you have, use the current sequence.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 16.9.1  \
+replicated release create --promote Unstable --chart ./release/harbor-19.4.1.tgz --version 19.4.1  \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 5 Beta --version 16.9.1 \
+replicated release promote 4 Beta --version 19.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 5 Stable --version 16.9.1 \
+replicated release promote 4 Stable --version 19.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
 ```
 
@@ -100,6 +100,8 @@ new support bundle containing a reference to your independently released
 bundle.
 
 ```
+helm upgrade harbor \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
 kubectl support-bundle --load-cluster-specs
 ```
 

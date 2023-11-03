@@ -1,6 +1,6 @@
 ---
 slug: support-bundle-diagnosis
-id: y5uwhsz4tiwj
+id: wddwnaxnvkue
 type: challenge
 title: Using the Support Bundle to Diagnose the Issue
 teaser: Discover the cause of Geeglo's outage using a support bundle
@@ -42,7 +42,7 @@ their instance.
 
 ```
 helm upgrade harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
 ```
 
 Check to see if the support bundle secret has been created.

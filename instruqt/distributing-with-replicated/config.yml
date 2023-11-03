@@ -1,7 +1,7 @@
 version: "3"
 containers:
 - name: shell
-  image: gcr.io/kots-field-labs/shell:instruqt-feature-tmux-template
+  image: gcr.io/kots-field-labs/shell:main
   shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
 - name: cluster

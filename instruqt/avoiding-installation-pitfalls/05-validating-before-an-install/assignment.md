@@ -1,6 +1,6 @@
 ---
 slug: validating-before-an-install
-id: agnr2vn44qs0
+id: gyzywxla7qt8
 type: challenge
 title: Validating Before an Install
 teaser: How your customer uses preflights to validate their environment
@@ -44,7 +44,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each of the default channels shows the current version `16.8.0`,
+each of the default channels shows the current version `19.3.0`,
 while the channel LTS, which we haven't released to, reflects
 that.
 

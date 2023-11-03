@@ -3,7 +3,7 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-cat <<HARBOR_SUPPORT_BUNDLE > /home/replicant/harbor/templates/support-bundle.yaml
+cat <<HARBOR_SUPPORT_BUNDLE > /home/replicant/harbor/templates/troubelshoot/support-bundle.yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -221,6 +221,6 @@ stringData:
                     The Trivy image scanner is running on this cluster and ready for use.
 HARBOR_SUPPORT_BUNDLE
 
-yq -i '.version = "16.9.0"' /home/replicant/harbor/Chart.yaml
+yq -i '.version = "19.4.0"' /home/replicant/harbor/Chart.yaml
 helm package /home/replicant/harbor --destination /home/replicant/release
 chown -R replicant /home/replicant/harbor /home/replicant/release

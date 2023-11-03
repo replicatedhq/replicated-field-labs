@@ -1,6 +1,6 @@
 ---
 slug: working-with-preflight-checks
-id: hbegc1xc0kld
+id: vas7h6ypnrmy
 type: challenge
 title: Working with Preflight Checks
 teaser: |-
@@ -16,7 +16,7 @@ tabs:
 - title: Manifest Editor
   type: code
   hostname: shell
-  path: /home/replicant
+  path: /home
 difficulty: basic
 timelimit: 300
 ---

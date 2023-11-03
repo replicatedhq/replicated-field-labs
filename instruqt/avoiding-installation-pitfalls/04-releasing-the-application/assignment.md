@@ -1,6 +1,6 @@
 ---
 slug: releasing-the-application
-id: ivm88bvvie5l
+id: 5jisluk3n6vr
 type: challenge
 title: Releasing the Application
 teaser: Releasing with preflights on the Replicated Platform
@@ -88,11 +88,11 @@ use the `Unstable` channel for this lab, since the latter
 approach is best for teams working with feature branches.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 16.8.0  \
+replicated release create --promote Unstable --chart ./release/harbor-19.3.0.tgz --version 19.3.0  \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 
-This creates a release for version `16.8.0` of the Harbor Helm
+This creates a release for version `19.3.0` of the Harbor Helm
 chart, and promotes it to the `Unstable` channel. The `create`
 command output a sequence number that you'll need for `promote` (it
 will be `2` if you haven't explored releasing a bit more).
@@ -112,14 +112,14 @@ of those channels---your teams review and approval processes,
 steps in a continuous delivery pipeline, or both. Run the following command to promote our release to the `Beta` channel:
 
 ```
-replicated release promote 2 Beta --version 16.8.0 \
+replicated release promote 2 Beta --version 19.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 
 Then promote to the `Stable` channel:
 
 ```
-replicated release promote 2 Stable --version 16.8.0 \
+replicated release promote 2 Stable --version 19.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing"
 ```
 

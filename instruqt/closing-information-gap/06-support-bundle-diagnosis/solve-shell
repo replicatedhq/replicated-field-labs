@@ -30,5 +30,5 @@ helm registry login registry.replicated.com \
 
 # upgrade the application
 app_slug=$(agent variable get REPLICATED_APP)
-helm upgrade harbor --version 16.9.0 \
+helm upgrade harbor --version 19.4.0 \
   oci://registry.replicated.com/${app_slug}/harbor \

@@ -17,22 +17,22 @@ fi
 
 # check for release to Unstable
 unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
-if [[ ! "${unstable_version}" == "16.7.0"  ]] ; then
-  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`16.7.0\`'
+if [[ ! "${unstable_version}" == "19.2.0"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`19.2.0\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Beta
 beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
-if [[ ! "${beta_version}" == "16.7.0"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`16.7.0\`'
+if [[ ! "${beta_version}" == "19.2.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`19.2.0\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Stable
 stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
-if [[ ! "${stable_version}" == "16.7.0"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`16.7.0\`'
+if [[ ! "${stable_version}" == "19.2.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`19.2.0\`'
   let "result = result + 1"
 fi
 

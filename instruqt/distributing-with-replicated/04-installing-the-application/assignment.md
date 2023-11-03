@@ -1,6 +1,6 @@
 ---
 slug: installing-the-application
-id: le06dzuzl81y
+id: 0jr3scssmdfw
 type: challenge
 title: Installing the Application
 teaser: Let's install the application as your customer
@@ -42,7 +42,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each channel shows the current version `16.7.0` while the channel LTS, which we haven't released to, reflects
+each channel shows the current version `19.2.0` while the channel LTS, which we haven't released to, reflects
 that.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)

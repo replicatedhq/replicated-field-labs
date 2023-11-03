@@ -14,7 +14,7 @@ app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${a
 customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
 
 # create the new customer and keep track of the ID
-customer_id=$(replicated customer create --name "Geeglo" --email ${customer_email} --channel Stable --expires-in 720h --output json --app ${app_slug} --token ${api_token} | jq -r .id)
+customer_id=$(replicated customer create --name "Geeglo" --email ${customer_email} --channel Stable --expires-in 720h --kots-install=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
 
 # make sure the customer has a trial license
 updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \

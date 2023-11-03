@@ -1,5 +1,5 @@
 slug: closing-information-gap
-id: 
+id: hfb41xqkyx0q
 title: Closing the Support Information Gap
 teaser: |-
   Use the Replicated Platform to close the information gap between your
@@ -19,16 +19,16 @@ description: |-
      issue multiple times
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/audit_log.png
 tags:
-- builders-plan
-- helm
-- troubleshoot
 - prod
+- builders-plan
+- troubleshoot
+- helm
 owner: replicated
 developers:
 - chuck@replicated.com
-maintenance: false
 lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "8657597645467563973"
+  enableLoadingMessages: true
+checksum: "16018974617273983350"
