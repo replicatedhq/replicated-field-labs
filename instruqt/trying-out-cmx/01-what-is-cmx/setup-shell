@@ -17,3 +17,4 @@ source /etc/profile.d/header.sh
 
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
+agent variable set REPLICATED_API_TOKEN $(get_api_token)

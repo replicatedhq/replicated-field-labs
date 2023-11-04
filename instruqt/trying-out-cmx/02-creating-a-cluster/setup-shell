@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
+fi
+
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell clear ENTER
+
+exit 0
