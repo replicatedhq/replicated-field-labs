@@ -242,7 +242,7 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 		}
 	}
 
-  var createOpts = kotsclient.CreateCustomerOpts{ Name: track.Spec.Customer, AppID: track.Status.App.ID, Email: track.Spec.Customer + "@replicated-labs.com", ChannelID: track.Status.Channel.ID, ExpiresAt: OneWeek }
+  var createOpts = kotsclient.CreateCustomerOpts{ Name: track.Spec.Customer, AppID: track.Status.App.ID, Email: track.Spec.Customer + "@replicatedlabs.com", ChannelID: track.Status.Channel.ID, ExpiresAt: OneWeek }
 	customer, err := e.Client.CreateCustomer(createOpts) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "create customer for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
