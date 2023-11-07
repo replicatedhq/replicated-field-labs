@@ -23,7 +23,7 @@ difficulty: basic
 timelimit: 300
 ---
 
-👋 Introduction
+👋 Introduction Test
 ===============
 
 This exercise is designed to give you a sandbox to ensure you have a basic understanding how to deploy a kubernetes application packaged as a Helm Chart using Replicated.
