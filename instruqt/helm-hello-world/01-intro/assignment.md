@@ -1,12 +1,13 @@
 ---
 slug: intro
-id: in0n7s5wbmjm
+id: z273ux2hwcu2
 type: challenge
 title: Intro
 teaser: Introduction to Deploying a Helm Based Kubernetes Application
 notes:
 - type: text
   contents: |-
+    text
     This track uses a single node Kubernetes cluster on a sandbox virtual machine.
     Please wait while we boot the VM for you and start Kubernetes.
     ## Objectives
@@ -23,7 +24,7 @@ difficulty: basic
 timelimit: 300
 ---
 
-👋 Introduction Test
+👋 Introduction
 ===============
 
 This exercise is designed to give you a sandbox to ensure you have a basic understanding how to deploy a kubernetes application packaged as a Helm Chart using Replicated.
