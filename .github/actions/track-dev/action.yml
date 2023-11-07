@@ -12,12 +12,12 @@ runs:
     run: |
       cd ${{ inputs.path }}
 
-      # Check whether this is already a dev version track
-      ISDEV=$(yq '.slug | match(".*-dev$")' track.yml)
-      if [[ -n $ISDEV ]]; then
-        echo -e "It looks like the track slug already has the -dev suffix"
-        exit 1
-      fi
+      # # Check whether this is already a dev version track
+      # ISDEV=$(yq '.slug | match(".*-dev$")' track.yml)
+      # if [[ -n $ISDEV ]]; then
+      #   echo -e "It looks like the track slug already has the -dev suffix"
+      #   exit 1
+      # fi
       
       # Strip out the track ids and rename the dev track
       echo "Converting track to dev version..."
