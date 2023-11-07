@@ -1,6 +1,6 @@
 ---
 slug: getting
-id: 7ytw5imobgpq
+id: sjxucmy5z9cj
 type: challenge
 title: Getting Started
 teaser: Let's make sure you have access to vendor portal

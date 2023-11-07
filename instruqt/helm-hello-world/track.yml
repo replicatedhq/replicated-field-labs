@@ -1,6 +1,6 @@
-slug: helm-hello-world
-id: nbxtqf3fllg8
-title: Deploying a Helm Based Application with Replicated
+slug: helm-hello-world-dev
+id: ilxjtrbxqgct
+title: DEV - Deploying a Helm Based Application with Replicated
 teaser: Learn how to deploy an application that was packaged as a Helm Chart but distributed
   and installed via Replicated.
 description: |-
@@ -11,14 +11,17 @@ description: |-
     - Deploy the wordpress application on Kubernetes using Replicated
     - Set the intial Blog during the installation
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/app.png
-tags: []
+tags:
+- dev
 owner: replicated
 developers:
+- dexteryan@replicated.com
 - fernando@replicated.com
 - chuck@replicated.com
-- dexteryan@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 25
   position: right
-checksum: "5568837057281173094"
+  enableLoadingMessages: true
+checksum: "10284461295308474275"
