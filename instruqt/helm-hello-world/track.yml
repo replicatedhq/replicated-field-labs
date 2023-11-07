@@ -1,6 +1,6 @@
-slug: helm-hello-world-dev
-id: ilxjtrbxqgct
-title: DEV - Deploying a Helm Based Application with Replicated
+slug: helm-hello-world-dev-dev
+id: gyfnupasmdwa
+title: DEV - DEV - Deploying a Helm Based Application with Replicated
 teaser: Learn how to deploy an application that was packaged as a Helm Chart but distributed
   and installed via Replicated.
 description: |-
@@ -15,13 +15,13 @@ tags:
 - dev
 owner: replicated
 developers:
-- dexteryan@replicated.com
 - fernando@replicated.com
 - chuck@replicated.com
+- dexteryan@replicated.com
 maintenance: true
 lab_config:
   overlay: false
   width: 25
   position: right
   enableLoadingMessages: true
-checksum: "10284461295308474275"
+checksum: "15286215218600811055"
