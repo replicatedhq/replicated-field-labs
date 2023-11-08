@@ -11,7 +11,7 @@ spec:
         - name: wordpressBlogName
           title: Wordpress Blog Name
           type: text
-          when: '{{repl eq Sequence 1 }}'
+          when: '{{repl eq Sequence 0 }}'
         - name: note
           type: label
           title: "This can only be set on intial install. This field will not be available after that."
