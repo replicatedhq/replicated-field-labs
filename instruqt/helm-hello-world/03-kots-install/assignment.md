@@ -37,4 +37,4 @@ Once finished you will see the following output:
 <p align="center"><img src="../assets/helm-vm-output.png" width=600></img></p>
 
 
-Feel free to press `Ctrl+C` and press **Check** to continue to the next challenge.
+Feel free to press `Ctrl+C` and press **Next** to continue to the next challenge.
