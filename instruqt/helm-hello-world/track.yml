@@ -16,6 +16,7 @@ owner: replicated
 developers:
 - fernando@replicated.com
 - chuck@replicated.com
+- dexteryan@replicated.com
 lab_config:
   overlay: false
   width: 25

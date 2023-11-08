@@ -1,4 +1,8 @@
 version: "3"
+containers:
+- name: shell
+  image: gcr.io/kots-field-labs/helm-hello-world:sha-f8b2d76@sha256:e34932b5ef13c704dbc3588850518c6783913c2b1053487cac6338a4d746df4d
+  shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
 - name: kubernetes-vm
   image: instruqt/k3s-v1-25-0
