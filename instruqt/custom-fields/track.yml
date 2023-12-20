@@ -9,7 +9,8 @@ description: |-
   In this track, you will learn how to define Custom License Fields and how to use
   them to manage features.
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/licensing.png
-tags: []
+tags:
+- deprecated
 owner: replicated
 developers:
 - fernando@replicated.com

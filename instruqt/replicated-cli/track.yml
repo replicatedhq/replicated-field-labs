@@ -11,7 +11,8 @@ description: |-
     - Begin and installation using `kubectl` and the KOTS plugin
     - Put it together to iterate on your work
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/commands.png
-tags: []
+tags: 
+- deprecated
 owner: replicated
 developers:
 - chuck@replicated.com

@@ -8,7 +8,8 @@ description: Install kurl and kots application using proxy server config.<BR> Wh
   server can be used to install both the kubernetes kurl cluster and then the kots
   application.
 icon: https://cdn.instruqt.com/img/logo/instruqt_isotype_indigo.svg
-tags: []
+tags: 
+- deprecated
 owner: replicated
 developers:
 - graham@replicated.com
