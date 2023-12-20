@@ -9,12 +9,13 @@ description: |-
     - Install Replicated's application installer
     - Deploy a webserver (NGINX) on Kubernetes using Replicated
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/app_open.png
-tags: 
-- deprecated
+tags:
+  - deprecated
+  - premium-plans
 owner: replicated
 developers:
-- joshd@replicated.com
-- chuck@replicated.com
+  - joshd@replicated.com
+  - chuck@replicated.com
 lab_config:
   overlay: false
   width: 25

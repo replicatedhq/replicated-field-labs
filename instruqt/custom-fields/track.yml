@@ -10,11 +10,12 @@ description: |-
   them to manage features.
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/licensing.png
 tags:
-- deprecated
+  - deprecated
+  - premium-plans
 owner: replicated
 developers:
-- fernando@replicated.com
-- chuck@replicated.com
+  - fernando@replicated.com
+  - chuck@replicated.com
 lab_config:
   overlay: false
   width: 25
