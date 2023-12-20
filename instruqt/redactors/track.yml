@@ -11,7 +11,8 @@ description: |-
     - How to add a custom redactor
     - Testing the custom redactor
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/redactor.png
-tags: []
+tags: 
+- deprecated
 owner: replicated
 developers:
 - fernando@replicated.com

@@ -11,10 +11,12 @@ description: |-
     - Begin and installation using `kubectl` and the KOTS plugin
     - Put it together to iterate on your work
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/commands.png
-tags: []
+tags:
+  - deprecated
+  - premium-plans
 owner: replicated
 developers:
-- chuck@replicated.com
+  - chuck@replicated.com
 lab_config:
   overlay: false
   width: 25

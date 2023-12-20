@@ -1,20 +1,20 @@
 slug: airgap-embedded
 id: 0zxhhnehsgua
 title: Managing Airgapped Applications with Replicated
-teaser: Using Replicated to install, upgrade, and support your application into an
-  air-gapped environment
+teaser: Using Replicated to install, upgrade, and support your application into an air-gapped environment
 description: |-
   In this exercise you will learn the Replicated workflow for installing and
   supporting your application when it's installed into an air-gapped network.
 icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/airgap_builder.png
 level: intermediate
 tags:
-- airgap
-- vendor
-- embedded
+  - airgap
+  - vendor
+  - embedded
+  - premium-plans
 owner: replicated
 developers:
-- chuck@replicated.com
+  - chuck@replicated.com
 lab_config:
   overlay: false
   width: 25
