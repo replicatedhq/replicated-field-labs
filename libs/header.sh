@@ -64,6 +64,7 @@ get_slackernews() {
   rm -rf slackernews/troubleshoot slackernews/templates/preflights.yaml slackernews/templates/support-bundle.yaml
 
   # set the values file ot use the right proxy image URI
-  rewritten_image=${$(yq .images.slackernews.repository slackernews/values.yaml)/proxy\/slackernews/proxy\/${app_slug}}
+  web_image=$(yq .images.slackernews.repository slackernews/values.yaml)
+  rewritten_image=${web_image//proxy\/slackernews/proxy\/${app_slug}}
   yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
 }
