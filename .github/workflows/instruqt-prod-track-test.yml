@@ -21,11 +21,15 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  schedule:
+  - cron: '0 8,13,18 * * *' # run at 8 a.m. and 1 p.m., UIC and EST
   push:
     branches:
       - main
     paths:
       - 'instruqt/**'
+  cron:
+
   workflow_dispatch:
 
 jobs:
