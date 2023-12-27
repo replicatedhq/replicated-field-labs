@@ -5,26 +5,26 @@ set -euxo pipefail
 
 result=0
 # check for an updated version number
-if [[ "$(yq .version mastodon/Chart.yaml)" == "19.2.0"  ]] ; then
-  fail-message 'Please be sure to update the version of the Mastodon Helm chart to reflect your changes'
+if [[ "$(yq .version slackernews/Chart.yaml)" == "0.2.0"  ]] ; then
+  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your changes'
   let "result = result + 1"
 fi
 
 # check for the Replicated SDK dependency
 if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
-  fail-message 'Please be sure to include the Replicated SDK dependency in the Harbor Helm chart'
+  fail-message 'Please be sure to include the Replicated SDK dependency in the Slackernews Helm chart'
   let "result = result + 1"
 fi
 
 # check for dependency updates 
 if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
-  fail-message 'Please be sure to update the Harbor Helm chart''s dependencies to include the Replicated SDK'
+  fail-message 'Please be sure to update the Slackernews Helm chart''s dependencies to include the Replicated SDK'
   let "result = result + 1"
 fi
 
 # check for the repackaged Helm chart
-if [[ ! -f /home/replicant/release/harbor-19.2.0.tgz ]] ; then
-  fail-message 'Please be sure to update and repackage the Harbor Helm chart' 
+if [[ ! -f /home/replicant/release/slackernews-0.2.0.tgz ]] ; then
+  fail-message 'Please be sure to update and repackage the Slackernews Helm chart' 
   let "result = result + 1"
 fi
 
