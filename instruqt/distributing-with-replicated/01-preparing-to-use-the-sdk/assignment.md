@@ -1,6 +1,6 @@
 ---
 slug: preparing-to-use-the-sdk
-id: mneddevjccio
+id: nkd5q9l6gnll
 type: challenge
 title: Preparing to Use the SDK
 teaser: Getting ready to use the Replicated SDK
