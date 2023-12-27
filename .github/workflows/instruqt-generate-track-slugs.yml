@@ -16,6 +16,9 @@ concurrency:
 
 on: 
   workflow_dispatch:
+  pull_request:
+    types:
+    - opened
 
 jobs:
   CreateTrackSlugs:
@@ -25,8 +28,23 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Create track-slugs.yml
-        run: chmod +x ./.github/scripts/generate-slugs.sh; ./.github/scripts/generate-slugs.sh
+      - name: Find track descriptors
+        id: find-track-descriptors
+        run: |
+          files=$(find instruqt -name 'track.yml' -print0 | xargs -0 echo)
+          echo "files=$files" >> $GITHUB_OUTPUT
+
+      - name: Get the track slugs and IDs
+        id: get-track-slugs
+        uses: mikefarah/yq@master
+        with:
+          cmd: |
+            yq eval-all 'select(.id != null and .slug != null) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }' ${{ steps.find-track-descriptors.outputs.files }}
+
+      - name: Update track slugs metadata
+        id: update-slugs
+        run: |
+          echo '${{ steps.get-track-slugs.outputs.result }}' > instruqt/track-slugs.yml
 
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v4
