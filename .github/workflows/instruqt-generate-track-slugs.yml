@@ -36,7 +36,7 @@ jobs:
 
       - name: Get the track slugs and IDs
         id: get-track-slugs
-        uses: mikefarah/yq@4
+        uses: mikefarah/yq@master
         with:
           cmd: |
             eval-all 'select(.id != null and .slug != null) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }' ${{ steps.find-track-descriptors.outputs.files }}
