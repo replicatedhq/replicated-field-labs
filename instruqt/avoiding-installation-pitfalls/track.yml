@@ -1,6 +1,6 @@
-slug: avoiding-installation-pitfalls
-id: amjfqroa5bfk
-title: Avoiding Installation Pitfalls
+slug: avoiding-installation-pitfalls-dev
+id: yjxpxhujcxvy
+title: DEV - Avoiding Installation Pitfalls
 teaser: |-
   Use Preflight checks to avoid common installation pitfalls
   for your application
@@ -19,16 +19,18 @@ description: |-
      installing
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/checklist.png
 tags:
-- prod
 - builders-plan
 - troubleshoot
 - helm
+- dev
 owner: replicated
 developers:
 - chuck@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 33
   position: right
-  enableLoadingMessages: true
-checksum: "15041863163879828350"
+  feedback_recap_enabled: true
+  loadingMessages: true
+checksum: "620192242513080"
