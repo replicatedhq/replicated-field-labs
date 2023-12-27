@@ -4,7 +4,7 @@
 # This workflow will generate the track-slugs.yml file
 #
 ##############################################################################
-name: generate-track-slugs-metadat
+name: instruqt-generate
 
 env:
   INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
@@ -38,7 +38,8 @@ jobs:
         id: get-track-slugs
         uses: mikefarah/yq@4
         with:
-          cmd: eval-all 'select(.id != null and .slug != null) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }' ${{ steps.find-track-descriptors.outputs.files }}
+          cmd: |
+            eval-all 'select(.id != null and .slug != null) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }' ${{ steps.find-track-descriptors.outputs.files }}
 
       - name: Update track slugs metadata
         id: update-slugs
