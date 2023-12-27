@@ -1,6 +1,6 @@
 ---
 slug: adding-to-the-chart
-id: 5gjk0ex2xofz
+id: oabxrqklmmop
 type: challenge
 title: Adding the Support Bundle to the Slackernews Helm Chart
 teaser: Learn how to incorporate your support bundle into your chart

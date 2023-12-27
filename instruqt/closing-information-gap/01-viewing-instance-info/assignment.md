@@ -1,6 +1,6 @@
 ---
 slug: viewing-instance-info
-id: jukpqxmfyyww
+id: x1ai6fxjrnr2
 type: challenge
 title: Getting a Picture of a Customer Instance
 teaser: Using the Replicated Platform to understand details of a customer instance
