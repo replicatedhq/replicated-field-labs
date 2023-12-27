@@ -21,7 +21,7 @@ replicated channel create --name LTS --description "Releases with long-term supp
   --app ${app_slug} --token ${api_token}
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --chart ./release/slackernews-0.2.0/tgz --version 0.2.0  \
+replicated release create --promote Unstable --chart ./release/slackernews-0.2.0.tgz --version 0.2.0  \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 

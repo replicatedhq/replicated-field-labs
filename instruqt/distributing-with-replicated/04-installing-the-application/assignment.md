@@ -101,7 +101,7 @@ onto the next step in the lab.
 ```
 helm install --namespace slackernews --create-namespace  \
     slackernews \
-    oci://registry.replicated.com/[[Instruqt-Var key="REPLICATED_APP" hostname="shell"]/slackernews \
+    oci://registry.replicated.com/[[Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
     --set slackernews.domain=[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]] \
     --set service.type=NodePort
 ```

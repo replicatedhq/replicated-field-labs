@@ -19,6 +19,7 @@ fi
 tmux send-keys -t shell $'yq -i \'.version = "0.2.0"\' slackernews/Chart.yaml' ENTER
 
 # add the SDK dependency
+tmux send-keys -t shell "yq -i '.dependencies = []' slackernews/Chart.yaml" ENTER
 tmux send-keys -t shell "yq -i '.dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"$(agent variable get REPLICATED_SDK_VERSION)\"}' slackernews/Chart.yaml" ENTER
 
 # update dependencies
