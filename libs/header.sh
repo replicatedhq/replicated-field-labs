@@ -69,4 +69,10 @@ get_slackernews() {
   rewritten_image=${rewritten_image//proxy\/slackernews/proxy\/${app_slug}}
 
   yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
+
+  # add some optional components to make the application a bit more representative
+  yq -i '.nginx.enabled = true' slackernews/values.yaml
+  yq -i '.postgres.deploy_postgres = true' slackernews/values.yaml
+  yq -i '.postgres.enabled = true' slackernews/values.yaml
+  yq -i '.postgres.password = "thisisasecret"' slackernews/values.yaml
 }
