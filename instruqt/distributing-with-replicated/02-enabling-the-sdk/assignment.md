@@ -69,11 +69,10 @@ version: 0.2.0
 
 ![Bumping the Chart Version](../assets/bumping-the-version.png)
 
-After making the changes, make sure you save them using the save
-icon in the editor tab. It's easy to miss, so check the image
-below if you can't find it.
+After you make each change, the editor will automatically save
+them. Be sure they are saved before you continue.
 
-![Saving Your Changes](../assets/saving-your-changes.png)
+![Assuring Your Changes are Saved](../assets/saving-your-changes.png)
 
 After saving, drop back in to the "Shell" tab and update your
 dependencies.
