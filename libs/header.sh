@@ -65,6 +65,8 @@ get_slackernews() {
 
   # set the values file ot use the right proxy image URI
   web_image=$(yq .images.slackernews.repository slackernews/values.yaml)
-  rewritten_image=${web_image//proxy\/slackernews/proxy\/${app_slug}}
+  rewritten_image=${web_image//images.slackernews.io/proxy.replicated.com}
+  rewritten_image=${rewritten_image//proxy\/slackernews/proxy\/${app_slug}}
+
   yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
 }
