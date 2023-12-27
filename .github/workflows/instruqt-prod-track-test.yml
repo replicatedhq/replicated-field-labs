@@ -28,8 +28,6 @@ on:
       - main
     paths:
       - 'instruqt/**'
-  cron:
-
   workflow_dispatch:
 
 jobs:
