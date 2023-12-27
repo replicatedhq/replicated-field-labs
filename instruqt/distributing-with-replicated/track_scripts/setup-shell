@@ -31,6 +31,7 @@ source /etc/profile.d/header.sh
 yq -i '.clusters[0].cluster.server = "https://cluster:6443"' ${HOME_DIR}/.kube/config
 chown -R replicant ${HOME_DIR}/.kube
 
+# grab the slackernews sources so the learner can make use of them
 cd ${HOME_DIR}
 get_slackernews
 chown -R replicant ${HOME_DIR}/slackernews
