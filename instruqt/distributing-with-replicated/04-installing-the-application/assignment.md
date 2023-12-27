@@ -22,7 +22,7 @@ timelimit: 600
 Now that we have a release in the Replicated Platform, you can
 distribute its Helm chart to your customers using entitlements
 that we manage for you. In this step, we're going to install the
-Harbor Helm chart the same way a customer would install your
+Slackernews Helm chart the same way a customer would install your
 application.
 
 Logging Into the Vendor Portal
@@ -42,7 +42,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each channel shows the current version `19.2.0` while the channel LTS, which we haven't released to, reflects
+each channel shows the current version `0.2.0` while the channel LTS, which we haven't released to, reflects
 that.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
@@ -94,16 +94,16 @@ helm registry login registry.replicated.com \
 ```
 
 From there, they do a simple Helm install. In our case, we're going to
-tack some additional values that Harbor needs to come up correctly.
+tack some additional values that Slackernews needs to come up correctly.
 This helps us make sure the installation is complete before we move
 onto the next step in the lab.
 
 ```
-helm install harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+helm install slackernews \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
   --set service.type=NodePort --set nodePort.https=443 \
   --set externalURL=https://[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
 ```
 
 It's normal for this command to take a little bit of time to
-complete as various components of the Harbor registry come up.
+complete as various components of the Slackernews registry come up.
