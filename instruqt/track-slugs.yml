@@ -1,7 +1,8 @@
----
 tracks:
-  - slug: support-bundle
-    id: d2oeswgg5ra2
+  - slug: trying-out-cmx
+    id: 1gpba3eivmb4
+  - slug: validating-compatibility
+    id: riga8tcknxdy
   - slug: proxy
     id: 8txqwacwfxcu
   - slug: short-demo
@@ -20,19 +21,15 @@ tracks:
     id: otit0x2yl9ry
   - slug: closing-information-gap
     id: hfb41xqkyx0q
-  - slug: support-bundle-analyzers
-    id: ustszdcffvmg
   - slug: redactors
     id: gmiwrds3jmuy
   - slug: avoiding-installation-pitfalls
     id: amjfqroa5bfk
-  - slug: app-preflights
-    id: yv7w1owyqbeh
+  - slug: sample
+    id: tvc3c4ohghbi
   - slug: custom-fields
     id: 9ixa2iyrggut
   - slug: airgap-template
     id: 8p7434ifnsyd
   - slug: replicated-cli
     id: pur3nyzcbryg
-  - slug: support-cli
-    id: uab72ueg5ox2
