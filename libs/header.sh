@@ -44,9 +44,26 @@ get_api_token () {
 }
 
 get_slackernews() {
+  # get the access token to use for fetching the app slug
+  access_token=$(get_api_token)
+  # get the app slug, since there's only one app created by the automation, just grab the first in the list
+  app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+  # grab the sources for the Helm chart using a community license
   helm registry login chart.slackernews.io --username marc@replicated.com --password 2ViYIi8SDFubA8XwQRhJtcrwn4C
   helm pull --untar oci://chart.slackernews.io/slackernews/slackernews
+
+  # remove the Replicated SDK dependency, if we add more dependencies to
+  # Slackernews this will need to be revised
   yq -i 'del(.dependencies)' slackernews/Chart.yaml
+
+  # start version numbers over to simplify the lab text
   yq -i '.version = "0.1.0"' slackernews/Chart.yaml
+
+  # get rid of troubleshoot files since leaners will create their own
   rm -rf slackernews/troubleshoot slackernews/templates/preflights.yaml slackernews/templates/support-bundle.yaml
+
+  # set the values file ot use the right proxy image URI
+  rewritten_image=${$(yq .images.slackernews.repository slackernews/values.yaml)/proxy\/slackernews/proxy\/${app_slug}}
+  yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
 }
