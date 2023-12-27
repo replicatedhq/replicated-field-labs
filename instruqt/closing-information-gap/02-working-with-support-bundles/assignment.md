@@ -101,39 +101,39 @@ about your application state.
 
 Log collection is the first thing most teams add to their support bundle. Let's
 add some logging collectors so that our support bundle will collect logs
-from the Harbor application.
+from the Slackernews application.
 
 ```
 - logs:
     selector:
-      - app=harbor
+      - app=slackernews
 ```
 
 This definition specifies that the logs from any workload where the label `app`
-has the value `harbor`. The Harbor Helm chart we're using for this lab applies
+has the value `slackernews`. The Slackernews Helm chart we're using for this lab applies
 that label to all of the resources it creates for the application.
 
 The first analyzers teams add are generally those that identify if different
-workloads are running (i.e. in a `Ready` state). Harbor has many services,
+workloads are running (i.e. in a `Ready` state). Slackernews has many services,
 let's just take one for this first step.
 
 ```
 - deploymentStatus:
-    name: harbor-core
+    name: slackernews-frontend
     outcomes:
       - fail:
           when: "absent"
           message: |
-            The Harbor core component has not been deployed to this cluster. Please be sure to install the Harbor registry
+            The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews registry
             application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Harbor core component is not currently running on this cluster. Please review the logs in this support
+            The Slackernews core component is not currently running on this cluster. Please review the logs in this support
             bundle to locate any errors.
       - pass:
           message: |
-            Ther Harbor core component is running on this cluster and ready for use.
+            Ther Slackernews core component is running on this cluster and ready for use.
 ```
 
 Taken together, your support bundle definition will look like this:
@@ -142,53 +142,51 @@ Taken together, your support bundle definition will look like this:
 apiVersion: troubleshoot.sh/v1beta2
 kind: SupportBundle
 metadata:
-  name: harbor-support-bundle
+  name: slackernews-support-bundle
 spec:
   collectors:
     - logs:
-        name: /app/harbor/logs
+        name: /app/slackernews/logs
         selector:
-          - app.kubernetes.io/name=harbor
-        selector:
-          - app=harbor
+          - app=slackernews
   analyzers:
     - deploymentStatus:
-        name: harbor-core
+        name: slackernews-frontend
         namespace: default
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Harbor core component has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+                The Slackernews core component has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Harbor core component is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Slackernews core component is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
           - pass:
               message: |
-                Ther Harbor core component is running on this cluster and ready for use.
+                Ther Slackernews core component is running on this cluster and ready for use.
 ```
 
 Getting Started
 ===============
 
 Let's create a support bundle using this definition. Click on the "Manifest
-Editor" tab and create a new file named `harbor-support-bundle.yaml` in the
+Editor" tab and create a new file named `slackernews-support-bundle.yaml` in the
 `/home/replicant` directory.
 
-![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
+![Creating the Support Bundle File](../assets/creating-slackernews-support-bundle.png)
 
 Paste the YAML above into the new file and save it.
 
-![Saving the Support Bundle File](../assets/saving-harbor-support-bundle.png)
+![Saving the Support Bundle File](../assets/saving-slackernews-support-bundle.png)
 
 Now collect a support bundle using this definition.
 
 ```
-kubectl support-bundle ./harbor-support-bundle.yaml
+kubectl support-bundle ./slackernews-support-bundle.yaml
 ```
 
 You'll see that that your bundle has been collected and get a screen showing
 the result for the analyzer you added.
 
-![Harbor Core is Running](../assets/passing-harbor-core-status.png)
+![Slackernews Core is Running](../assets/passing-slackernews-core-status.png)

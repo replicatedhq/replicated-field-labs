@@ -4,39 +4,39 @@
 set -euxo pipefail
 
 # create the preflight file
-cat <<HARBOR_BUNDLE > /home/replicant/harbor-support-bundle.yaml
+cat <<HARBOR_BUNDLE > /home/replicant/slackernews-support-bundle.yaml
 apiVersion: troubleshoot.sh/v1beta2
 kind: SupportBundle
 metadata:
-  name: harbor-support-bundle
+  name: slackernews-support-bundle
 spec:
   collectors:
     - logs:
-        name: /app/harbor/logs
+        name: /app/slackernews/logs
         selector:
-            - app.kubernetes.io/name=harbor
+            - app=slackernews
   analyzers:
     - deploymentStatus:
-        name: harbor-core
+        name: slackernews-core
         namespace: default
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Harbor core workload has not been deployed to this cluster. Please be sure to install the Harbor registry application using its Helm chart.
+                The Slackernews core workload has not been deployed to this cluster. Please be sure to install the Slackernews registry application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Harbor core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Slackernews core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
           - pass:
               message: |
-                Ther Harbor core workload is running on this cluster and ready for use.
+                Ther Slackernews core workload is running on this cluster and ready for use.
 HARBOR_BUNDLE
 
 
 # collect the two support bundles from the challenge
 kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
-kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/harbor-support-bundle.yaml
+kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/slackernews-support-bundle.yaml
 
 # make sure support bundle files are in the users home directory
 mv support-bundle-*.tar.gz /home/replicant

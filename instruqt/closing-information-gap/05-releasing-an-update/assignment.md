@@ -47,7 +47,7 @@ export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
 Creating an Upgraded Release
 ============================
 
-There will be three releases already available for the Harbor application. This
+There will be three releases already available for the Slackernews application. This
 shows the eovlution of the application over time.
 
 ```
@@ -72,11 +72,11 @@ default release channels that is generally used internally for releases that
 may or not be ready for customers.
 
 ```
-replicated release create --promote Unstable --chart ./release/harbor-19.4.0.tgz --version 19.4.0  \
+replicated release create --promote Unstable --chart ./release/slackernews-0.4.0.tgz --version 0.4.0  \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
-This creates a release for version `19.4.0` of the Harbor Helm chart, and
+This creates a release for version `0.4.0` of the Slackernews Helm chart, and
 promotes it to the `Unstable` channel. The `create` command output sequence
 number that you'll need for `promote` (it will be `3` if you haven't explored
 releasing a bit more).
@@ -122,14 +122,14 @@ to determine whether a release should be promoted to each of those
 channels---hopefully automated as part of your continuous delivery pipelines.
 
 ```
-replicated release promote 3 Beta --version 19.4.0 \
+replicated release promote 3 Beta --version 0.4.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 
 and then
 
 ```
-replicated release promote 3 Stable --version 19.4.0 \
+replicated release promote 3 Stable --version 0.4.0 \
   --release-notes "Adds a support bundle spec to facilitate troubleshooting"
 ```
 

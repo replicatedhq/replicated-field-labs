@@ -25,5 +25,5 @@ agent variable set REPLICATED_API_TOKEN ${access_token}
 agent variable set REPLICATED_APP ${app_slug}
 
 # create an outage for Geeglo
-kubectl rollout pause deployment -l app.kubernetes.io/component=jobservice --kubeconfig /home/replicant/.kube/config
-kubectl delete replicaset -l app.kubernetes.io/component=jobservice --kubeconfig /home/replicant/.kube/config
+kubectl rollout pause deployment -l app=slackernews-frontend --kubeconfig /home/replicant/.kube/config
+kubectl delete replicaset -l app=slackernews-frontend --kubeconfig /home/replicant/.kube/config
