@@ -7,7 +7,7 @@
 # to the same organization.
 #
 ##############################################################################
-name: instruqt-production
+name: Test Production Tracks
 
 env:
   # Set these values to match your environment. Your token should be 
@@ -22,7 +22,7 @@ concurrency:
 
 on:
   schedule:
-  - cron: '0 8,13,18 * * *' # run at 8 a.m. and 1 p.m., UIC and EST
+    - cron: '0 8,13,18 * * *' # run at 8 a.m. and 1 p.m., UIC and EST
   push:
     branches:
       - main
