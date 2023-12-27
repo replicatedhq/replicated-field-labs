@@ -94,7 +94,7 @@ Kubernetes.
 apiVersion: troubleshoot.sh/v1beta2
 kind: Preflight
 metadata:
-  name: harbor-preflight-checks
+  name: slackernews-preflight-checks
 spec:
   analyzers:
     - clusterVersion:
@@ -102,10 +102,10 @@ spec:
           - fail:
               when: "< 1.19.x"
               message: |-
-                Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
+                Your Kubernets cluster is running a version of Kubernetes that is not supported by the Slackernews container
                 registry and your installation will not succeed. Please upgrade your cluster or install to a different
                 cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-              uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+              uri: https://github.com/bitnami/charts/blob/main/bitnami/slackernews/README.md
           - warn:
               when: "< 1.24.0"
               message: |-
@@ -114,7 +114,7 @@ spec:
                 this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
               uri: https://kubernetes.io
           - pass:
-              message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+              message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
 ```
 
 This analyzer is the first of a handful of analyzers we will add in this lab.
@@ -125,18 +125,18 @@ Getting Started
 Let's start by creating a new file for our preflight checks
 using the Kubernetes cluster version example above. Click on
 the "Manifest Editor" tab and create a new file named
-`harbor-preflights.yaml`.
+`slackernews-preflights.yaml`.
 
-![Creating the Preflights File](../assets/creating-harbor-preflights.png)
+![Creating the Preflights File](../assets/creating-slackernews-preflights.png)
 
 Paste the YAML above into the new file and save it.
 
-![Saving the Preflight File](../assets/saving-harbor-preflights.png)
+![Saving the Preflight File](../assets/saving-slackernews-preflights.png)
 
 Now let's run our preflight checks.
 
 ```
-kubectl preflight ./harbor-preflights.yaml
+kubectl preflight ./slackernews-preflights.yaml
 ```
 
 You'll see that your check has been run and it should report
