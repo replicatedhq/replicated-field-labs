@@ -27,7 +27,7 @@ started up. Your customer can do these things, but they may need your guidance
 to do them correctly. Coordinating that information sharing can be
 challenging.
 
-In this lab, we're going to use the Harbor registry as a substitute for your
+In this lab, we're going to use the Slackernews registry as a substitute for your
 application and assume we have two customers "Omozan" and "Geeglo" that are
 running the application. Geeglo has submitted a support ticket to your team and
 you have been assigned to help them resolve it.

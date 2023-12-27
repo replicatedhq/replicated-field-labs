@@ -7,7 +7,7 @@ result=0
 
 # check whether the configmap collectors have been added, assume 
 # that the right number of them means the work is done
-cm_collector_count=$(yq '[ .spec.collectors[] | select( has ("configMap") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+cm_collector_count=$(yq '[ .spec.collectors[] | select( has ("configMap") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${cm_collector_count}" -ne "2" ]] ; then
   fail-message 'Please add the configMap collectors to the support bundle definition'
   let "result = result + 1"
@@ -15,7 +15,7 @@ fi
 
 # check whether the secret collectors have been added, assume 
 # that the right number of them means the work is done
-secret_collector_count=$(yq '[ .spec.collectors[] | select( has ("secret") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+secret_collector_count=$(yq '[ .spec.collectors[] | select( has ("secret") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${secret_collector_count}" -ne "4" ]] ; then
   fail-message 'Please add the secret collectors to the support bundle definition'
   let "result = result + 1"
@@ -23,7 +23,7 @@ fi
 
 # check whether the cluster version analyzer has been added, assume 
 # that the right number of them means the work is done
-version_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("clusterVersion") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+version_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("clusterVersion") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${version_analyzer_count}" -ne "1" ]] ; then
   fail-message 'Please add the cluster version analyzers to the support bundle definition'
   let "result = result + 1"
@@ -31,7 +31,7 @@ fi
 
 # check whether the resources analyzers have been added, assume 
 # that the right number of them means the work is done
-resources_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("nodeResources") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+resources_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("nodeResources") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${resources_analyzer_count}" -ne "2" ]] ; then
   fail-message 'Please add the node resources analyzers to the support bundle definition'
   let "result = result + 1"
@@ -39,7 +39,7 @@ fi
 
 # check whether the deployment analyzers have been added, assume 
 # that the right number of them means the work is done
-deployment_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("deploymentStatus") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+deployment_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("deploymentStatus") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${deployment_analyzer_count}" -ne "4" ]] ; then
   fail-message 'Please add the deployment status analyzers to the support bundle definition'
   let "result = result + 1"
@@ -47,7 +47,7 @@ fi
 
 # check whether the deployment analyzers have been added, assume 
 # that the right number of them means the work is done
-statefulset_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("statefulsetStatus") ) ] | length' /home/replicant/harbor-support-bundle.yaml) 
+statefulset_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("statefulsetStatus") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${statefulset_analyzer_count}" -ne "3" ]] ; then
   fail-message 'Please add the statefulset status analyzers to the support bundle definition'
   let "result = result + 1"

@@ -9,7 +9,7 @@ source /etc/profile.d/header.sh
 result=0
 
 # check whether the URI has been added to the spec
-uri_added=$(helm template /home/replicant/harbor | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "support-bundle" ) | .stringData.support-bundle-spec | from_yaml | select ( .metadata.name == "harbor-support-bundle" ) | .spec | has("uri")')
+uri_added=$(helm template /home/replicant/slackernews | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "support-bundle" ) | .stringData.support-bundle-spec | from_yaml | select ( .metadata.name == "slackernews-support-bundle" ) | .spec | has("uri")')
 if [[ "${uri_added}" != "true" ]] ; then
   fail-message 'Please check your support bundle definition to make sure you added the uri for the updated bundle'
   let "result = result + 1"
@@ -17,28 +17,28 @@ fi
 # check for release to Unstable
 api_token=$(get_api_token)
 unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
-if [[ ! "${unstable_version}" == "19.4.1"  ]] ; then
-  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`19.4.1\`'
+if [[ ! "${unstable_version}" == "0.4.1"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`0.4.1\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Beta
 beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
-if [[ ! "${beta_version}" == "19.4.1"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`19.4.1\`'
+if [[ ! "${beta_version}" == "0.4.1"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`0.4.1\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Stable
 stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
-if [[ ! "${stable_version}" == "19.4.1"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`19.4.1\`'
+if [[ ! "${stable_version}" == "0.4.1"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`0.4.1\`'
   let "result = result + 1"
 fi
 
 # check that the upgraade chart is installed
 installed_chart=$(helm list -o yaml --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
-if [[ ! "${installed_chart}" == "harbor-19.4.1"  ]] ; then
+if [[ ! "${installed_chart}" == "slackernews-0.4.1"  ]] ; then
   fail-message $'Please be sure to upgrade the customer\'s instance to the verison including your updated support bundle'
   let "result = result + 1"
 fi
