@@ -19,7 +19,7 @@ To take advantage of the Replicated Platform to distribute
 an application, we need to let the platform know about the
 application, its releases, and the customers who are entitled
 to access it. The lab environment has created the
-Harbor application for us, and created a customer, "Omozan",
+Slackernews application for us, and created a customer, "Omozan",
 that has access to it. All we need to do is create a
 release and we'll be ready to go.
 
@@ -85,11 +85,11 @@ To create a release, run the following command. We're using the
 `Unstable` channel since we're releasing our most recent change.
 
 ```
-replicated release create --promote Unstable --chart ./release/harbor-19.2.0.tgz --version 19.2.0  \
+replicated release create --promote Unstable --chart ./release/slackernews-0.2.0.tgz --version 0.2.0  \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
-This creates a release for version `19.2.0` of your Harbor Helm
+This creates a release for version `0.2.0` of your Slackernews Helm
 chart, and promotes it to the `Unstable` channel.  The `create`
 command output a sequence number that you'll need for `promote`
 (it will be `1` if you haven't explored releasing a bit more).
@@ -127,14 +127,14 @@ promoting to `Beta`, and ultimately releasing on `Stable`.
 For the purposes of the lab, let's just promote the release straight through.
 
 ```
-replicated release promote 1 Beta --version 19.2.0 \
+replicated release promote 1 Beta --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
 and then
 
 ```
-replicated release promote 1 Stable --version 19.2.0 \
+replicated release promote 1 Stable --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
 ```
 
