@@ -1,4 +1,4 @@
-name: setup-build
+name: Build Track Setup
 
 on:
   push:

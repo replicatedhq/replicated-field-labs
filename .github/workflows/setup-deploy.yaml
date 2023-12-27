@@ -1,4 +1,4 @@
-name: setup-deploy
+name: Deploy Track Setup
 
 on:
   push:
