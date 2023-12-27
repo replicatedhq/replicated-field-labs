@@ -99,10 +99,11 @@ This helps us make sure the installation is complete before we move
 onto the next step in the lab.
 
 ```
-helm install slackernews \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
-  --set service.type=NodePort --set nodePort.https=443 \
-  --set externalURL=https://[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
+helm install --namespace slackernews --create-namespace  \
+    slackernews \
+    oci://registry.replicated.com/[[Instruqt-Var key="REPLICATED_APP" hostname="shell"]/slackernews \
+    --set slackernews.domain=[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]] \
+    --set service.type=NodePort
 ```
 
 It's normal for this command to take a little bit of time to
