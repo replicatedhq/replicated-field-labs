@@ -189,4 +189,4 @@ kubectl support-bundle ./slackernews-support-bundle.yaml
 You'll see that that your bundle has been collected and get a screen showing
 the result for the analyzer you added.
 
-![Slackernews Core is Running](../assets/passing-slackernews-core-status.png)
+![Slackernews Core is Running](../assets/passing-harbor-core-status.png)
