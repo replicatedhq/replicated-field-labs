@@ -131,7 +131,7 @@ the "Manifest Editor" tab and create a new file named
 
 Paste the YAML above into the new file and save it.
 
-![Saving the Preflight File](../assets/saving-slackernews-preflights.png)
+![Saving the Preflight File](../assets/saving-harbor-preflights.png)
 
 Now let's run our preflight checks.
 

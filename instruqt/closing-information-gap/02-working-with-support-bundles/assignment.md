@@ -178,7 +178,7 @@ Editor" tab and create a new file named `slackernews-support-bundle.yaml` in the
 
 Paste the YAML above into the new file and save it.
 
-![Saving the Support Bundle File](../assets/saving-slackernews-support-bundle.png)
+![Saving the Support Bundle File](../assets/saving-harbor-support-bundle.png)
 
 Now collect a support bundle using this definition.
 
