@@ -1,6 +1,6 @@
 ---
 slug: releasing-an-update
-id: ojdf6ltz8t6t
+id: bb2ckqmiideb
 type: challenge
 title: Releasing an Update with the Support Bundle
 teaser: Releasing a new version with the support bundle included
