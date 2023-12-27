@@ -174,7 +174,7 @@ Let's create a support bundle using this definition. Click on the "Manifest
 Editor" tab and create a new file named `slackernews-support-bundle.yaml` in the
 `/home/replicant` directory.
 
-![Creating the Support Bundle File](../assets/creating-slackernews-support-bundle.png)
+![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
 
 Paste the YAML above into the new file and save it.
 

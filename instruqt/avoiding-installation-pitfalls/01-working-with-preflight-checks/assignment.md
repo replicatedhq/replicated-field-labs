@@ -127,7 +127,7 @@ using the Kubernetes cluster version example above. Click on
 the "Manifest Editor" tab and create a new file named
 `slackernews-preflights.yaml`.
 
-![Creating the Preflights File](../assets/creating-slackernews-preflights.png)
+![Creating the Preflights File](../assets/creating-harbor-preflights.png)
 
 Paste the YAML above into the new file and save it.
 
