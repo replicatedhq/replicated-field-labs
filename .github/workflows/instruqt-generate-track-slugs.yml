@@ -44,7 +44,7 @@ jobs:
       - name: Update track slugs metadata
         id: update-slugs
         run: |
-          echo ${{ steps.get-track-slugs.outputs.result }} > instruqt/track-slugs.yml
+          echo '${{ steps.get-track-slugs.outputs.result }}' > instruqt/track-slugs.yml
 
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v4
