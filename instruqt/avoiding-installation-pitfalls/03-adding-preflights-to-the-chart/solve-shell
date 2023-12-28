@@ -2,9 +2,10 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
 
-mkdir /home/replicant/harbor/templates/troubleshoot
-cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/troubleshoot/preflights.yaml
+mkdir ${HOME_DIR}/slackernews/templates/troubleshoot
+cat <<HARBOR_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -19,7 +20,7 @@ stringData:
     apiVersion: troubleshoot.sh/v1beta2
     kind: Preflight
     metadata:
-      name: harbor-preflight-checks
+      name: slackernews-preflight-checks
     spec:
       analyzers:
         - clusterVersion:
@@ -82,6 +83,6 @@ stringData:
 
 HARBOR_PREFLIGHTS
 
-yq -i '.version = "19.3.0"' /home/replicant/harbor/Chart.yaml
-helm package /home/replicant/harbor --destination /home/replicant/release
-chown -R replicant /home/replicant/harbor /home/replicant/release
+yq -i '.version = "0.3.0"' /home/replicant/slackernews/Chart.yaml
+helm package /home/replicant/slackernews --destination /home/replicant/release
+chown -R replicant /home/replicant/slackernews /home/replicant/release
