@@ -61,11 +61,11 @@ of checks and will not execute. Let's try it out.
 kubectl preflight ./empty-preflights.yaml
 ```
 
-You'll get an error, since there needs to be at least one analyzer
+You'll get a warning/error, since there needs to be at least one analyzer
 defined in order to check the cluster.
 
 ```
-Error: no data has been collected
+Warning: No analyzers found
 ```
 
 Analyzers and Collectors
@@ -100,18 +100,23 @@ spec:
     - clusterVersion:
         outcomes:
           - fail:
-              when: "< 1.19.x"
+              when: "<= 1.26.x"
               message: |-
-                Your Kubernets cluster is running a version of Kubernetes that is not supported by the Slackernews container
-                registry and your installation will not succeed. Please upgrade your cluster or install to a different
-                cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-              uri: https://github.com/bitnami/charts/blob/main/bitnami/slackernews/README.md
+                Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+              uri: https://kubernetes.io
           - warn:
-              when: "< 1.24.0"
+              when: "< 1.27.0"
               message: |-
-                Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-                community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-                this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                your Slackernews implementation.
               uri: https://kubernetes.io
           - pass:
               message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
@@ -127,11 +132,11 @@ using the Kubernetes cluster version example above. Click on
 the "Manifest Editor" tab and create a new file named
 `slackernews-preflights.yaml`.
 
-![Creating the Preflights File](../assets/creating-harbor-preflights.png)
+![Creating the Preflights File](../assets/creating-slackernews-preflights.png)
 
-Paste the YAML above into the new file and save it.
+Paste the YAML above into the new file and the editor will automatically save it.
 
-![Saving the Preflight File](../assets/saving-harbor-preflights.png)
+![Saving the Preflight File](../assets/saving-slackernews-preflights.png)
 
 Now let's run our preflight checks.
 
