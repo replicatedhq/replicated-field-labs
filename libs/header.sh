@@ -83,4 +83,15 @@ get_slackernews() {
   yq -i '.postgres.deploy_postgres = true' slackernews/values.yaml
   yq -i '.postgres.enabled = true' slackernews/values.yaml
   yq -i '.postgres.password = "thisisasecret"' slackernews/values.yaml
+
+  # address awkward scenario where a TLS cert is required even if TLS isn't enabled
+  # TODO: Fix upstream to not require TLS certs uneless TLS is enabled
+  openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout server.key -out server.crt -subj "/CN=Slackernews" -addext "subjectAltName = DNS:$(get_slackernews_domain)" \
+    && yq -i ".service.tls.key = \"$(cat server.key)\"" slackernews/values.yaml \
+    && rm server.key \
+    && yq -i ".service.tls.cert = \"$(cat server.crt)\"" slackernews/values.yaml \
+    && rm server.crt
+ 
+  # since we have the certs anyway, let's enable TLS
+  yq -i '.service.tls.enabled = true' slackernews/values.yaml
 }
