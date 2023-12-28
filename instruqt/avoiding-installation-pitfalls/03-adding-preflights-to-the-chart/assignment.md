@@ -2,11 +2,11 @@
 slug: adding-preflights-to-the-chart
 id: vwxcejaonowy
 type: challenge
-title: Adding Preflights to the Harbor Helm Chart
+title: Adding Preflights to the Slackernews Helm Chart
 teaser: Learn how to incorporate your preflight checks into your chart
 notes:
 - type: text
-  contents: Time to add our preflight checks to the Harbor Helm chart
+  contents: Time to add our preflight checks to the Slackernews Helm chart
 tabs:
 - title: Shell
   type: terminal
@@ -20,7 +20,7 @@ timelimit: 600
 ---
 
 There are many more preflight checks we could define for the
-Harbor registry, but let's stop here and shift to how we can
+Slackernews registry, but let's stop here and shift to how we can
 deliver these checks as part of the application. To do this,
 we're going to incorporate them into our Helm chart and
 release a new version using the Replicated Platform.
@@ -62,8 +62,10 @@ kind: Secret
 type: Opaque
 metadata:
   name: empty-preflights
+  labels:
+    troubleshoot.sh/kind: preflight
 stringData:
-  preflights.yaml: |-
+  preflight.yaml: |-
     apiVersion: troubleshoot.sh/v1beta2
     kind: Preflight
     metadata:
@@ -89,28 +91,28 @@ Error: no results
 _Note: The preflight check can also be stored as a `ConfigMap`
 with the same annotation._
 
-Adding Preflight Checks into the Harbor Helm Chart
+Adding Preflight Checks into the Slackernews Helm Chart
 ==================================================
 
 Now that you know how to include your preflight checks into a
-Helm chart, let's add them to the Harbor Helm chart. To make
+Helm chart, let's add them to the Slackernews Helm chart. To make
 the secret fit in with Bitnami's naming, labeling, and annotation
 conventions, there's a little bit of boiler plate required. You'll
 likely need to do something similar to follow your team's
 conventions when working with your own chart.
 
-Similarly, we're going to follow the conventions for the Harbor chart where
+Similarly, we're going to follow the conventions for the Slackernews chart where
 different components are in their own directories and create a directory to
 store our preflight chart in. We're going to call the directory `troubleshoot`
 since preflight checks are one of two types troubleshooting resources provided
 by the Replicated Platform. Create the directory from the shell.
 
 ```
-mkdir harbor/templates/troubleshoot
+mkdir slackernews/templates/troubleshoot
 ```
 
 Open the manifest editor and create a new file named `preflights.yaml` in the
-directory `harbor/templates/troubleshoot`. This will be the template that
+directory `slackernews/templates/troubleshoot`. This will be the template that
 creates the preflight secret when the Helm chart is installed.
 
 ![Creating the Preflights Template](../assets/creating-the-preflights-template.png)
@@ -129,17 +131,11 @@ identifies the secret for the `preflight` command.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "common.names.fullname" . }}-preflight
+  name: {{ include "slackernews.name" . }}-preflight
   namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
-    {{- end }}
-    app.kubernetes.io/component: troubleshoot
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
+    app.kubernetes.io/component: preflight
     troubleshoot.sh/kind: preflight
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
 type: Opaque
 stringData:
   preflight.yaml: |
@@ -153,66 +149,69 @@ the indentation is correct.
     apiVersion: troubleshoot.sh/v1beta2
     kind: Preflight
     metadata:
-      name: harbor-preflight-checks
+      name: slackernews-preflight-checks
     spec:
       analyzers:
         - clusterVersion:
             outcomes:
               - fail:
-                  when: "< 1.19.x"
+                  when: "<= 1.26.x"
                   message: |-
-                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
-                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
-                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-                  uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+                    Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                    community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                    that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                    If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
               - warn:
-                  when: "< 1.24.0"
+                  when: "< 1.27.0"
                   message: |-
-                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                    Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                    less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                    your Slackernews implementation.
                   uri: https://kubernetes.io
               - pass:
-                  message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+                  message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
         - nodeResources:
-            checkName: Cluster CPU resources are sufficient to install and run Harbor
+            checkName: Cluster CPU resources are sufficient to install and run Slackernews
             outcomes:
               - fail:
                   when: "sum(cpuAllocatable) < 2"
                   message: |-
-                    Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                    Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
                     at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
                     workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - warn:
                   when: "sum(cpuAllocatable) < 4"
                   message: |-
-                    Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
                     than 4 CPU cores available to run workloads. For the best experience, consider
                     increasing cluster capacity or installing into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - pass:
-                  message: Your cluster has sufficient CPU resources available to run Harbor
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
         - nodeResources:
-            checkName: Cluster memory is sufficient to install and run Harbor
+            checkName: Cluster memory is sufficient to install and run Slackernews
             outcomes:
               - fail:
                   when: "sum(memoryAllocatable) < 4G"
                   message: |-
-                    Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                    Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
                     at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
                     workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - warn:
                   when: "sum(memoryAllocatable) < 8Gi"
                   message: |-
-                    Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
                     than 8 GB of memory available to run workloads. For the best experience, consider
                     increasing cluster capacity or installing into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - pass:
-                  message: Your cluster has sufficient memory available to run Harbor
+                  message: Your cluster has sufficient memory available to run Slackernews
 ```
+
+After you make your changes, the editor will auto-save.
 
 ![Saving the Preflights Template](../assets/saving-the-preflights-template.png)
 
@@ -224,21 +223,21 @@ piping the results to `kubectl preflight`. This is how your customers
 will run the checks from your released chart as well.
 
 ```
-helm template harbor | kubectl preflight -
+helm template slackernews | kubectl preflight -
 ```
 
 If you're satisfied with the tests, bump the version of your Helm chart in the file
-`harbor/Chart.yaml` from `19.2.0` to `19.3.0`, then repackage it. You can edit
+`slackernews/Chart.yaml` from `0.2.0` to `0.3.0`, then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell:
 
 ```
-yq -i '.version = "19.3.0"' harbor/Chart.yaml
+yq -i '.version = "0.3.0"' slackernews/Chart.yaml
 ```
 
 Then run the `helm package` command to package the updated version:
 
 ```
-helm package harbor --destination ./release
+helm package slackernews --destination ./release
 ```
 
