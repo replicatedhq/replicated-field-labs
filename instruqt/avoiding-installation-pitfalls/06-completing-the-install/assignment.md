@@ -15,7 +15,7 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Slackernews Registry
+- title: Slackernews
   type: service
   hostname: cluster
   port: 30443
@@ -83,28 +83,17 @@ helm install --namespace slackernews --create-namespace  \
     --set service.type=NodePort
 ```
 
-Note that the cluster we're using is fairly limited, so
-we're using `NodePort` to simplify access.
+Note that the cluster we're using is fairly limited, so we're using `NodePort`
+to simplify access.
 
 Verifying the Installation
 ==========================
 
-From the customer perspective, the installation is
-complete when they can log into the application and
-see that it was complete. Once their install is complete,
-the tab "Slackernews Registry" should show the login page
-for Slackernews.
+From the customer perspective, the installation is complete when they can log
+into the application and see that it was complete. Once their install is
+complete, the tab "Slackernews" should show the login page for Slackernews.
 
-![Slackernews Landing Page](../assets/harbor-login-page.png)
-
-You can even log in if you run the commands from the
-output of the `helm install` command to get the username
-and password.
-
-```
-echo Username: "admin"
-echo Password: $(kubectl get secret --namespace default slackernews-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d)
-```
+![Slackernews Landing Page](../assets/slackernews.png)
 
 🏁 Finish
 =========

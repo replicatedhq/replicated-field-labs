@@ -32,7 +32,7 @@ Logging Into the Vendor Portal
 
 To run the preflights as a customer, we need to have their
 login credentials to the Replicated registry. The lab set up
-process configured a customer for the Harbor application,
+process configured a customer for the Slackernews application,
 but in this step we're going to add a new customer. We'll
 do this in the Replicated Vendor Portal.
 
@@ -44,7 +44,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
 You'll land on the "Channels" page for your app, which will show
 the release channels we discussed in the previous step. Notice that
-each of the default channels shows the current version `19.3.0`,
+each of the default channels shows the current version `0.3.0`,
 while the channel LTS, which we haven't released to, reflects
 that.
 
@@ -75,7 +75,7 @@ Running Preflight Checks
 
 Your customer will prepare for their installation by running
 the preflights checks. Since the preflights are embedded in
-the Harbor Helm chart, they first need to log into the Replicated
+the Slackernews Helm chart, they first need to log into the Replicated
 registry with the `helm` command. This gives them access to
 your Helm chart via the Replicated Platform.
 
@@ -96,7 +96,7 @@ From there, they can use the `helm template` command to extract the
 preflight checks to run with `kubectl preflight`.
 
 ```
-helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
   | kubectl preflight -
 ```
 
