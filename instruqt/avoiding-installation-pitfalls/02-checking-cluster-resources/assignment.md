@@ -29,7 +29,7 @@ Cluster Resources
 The default `clusterResources` collector collects information
 about all of the nodes in the cluster. This allows us to
 write analyzers that check whether the cluster has sufficient
-resources to run our cluster: most often we write checks to
+resources to run our application: most often we write checks to
 determine whether CPU, memory, and storage meet the base
 requirements of the application.
 
@@ -148,8 +148,7 @@ kubectl preflight ./slackernews-preflights.yaml
 
 You'll see that all three preflights are run, and that the memory
 preflight has failed. This is an expected failure, since we have
-single node cluster that uses just that node's disk for storage. That
-disk is smaller than the storage requirements for Slackernews.
+single node cluster that has a small memory footprint.
 
 ![Failing Storage Preflight](../assets/memory-preflight-failure.png)
 
@@ -157,10 +156,5 @@ If you completed the [Distributing Your Application with Replicated](https://pla
 lab, you may be surprised at this failure. In that lab, we deployed
 Slackernews and it came up successfully. This is another value provided by
 your checks. They can detect latent failures, like the fact that
-Slackernews could rapidly exhaust the disk available in this cluster
+Slackernews could rapidly exhaust the memory available in this cluster
 even though it started successfully.
-
-In fact, installing the Slackernews Helm chart requests 28 GB of storage.
-The cluster in the previous lab with only 20 GB of disk available
-fulfilled all of those requests. That could create quite the challenge
-to diagnose in the future.
