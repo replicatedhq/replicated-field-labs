@@ -16,6 +16,6 @@ helm registry login registry.replicated.com \
 # install the application
 helm install --namespace slackernews --create-namespace slackernews \
   oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/slackernews \
-  --set slackernews.domain=$(agent variable get SLACKERNEWS_DOMAIN ) \
+  --set slackernews.domain=$(get_slackernews_domain) \
   --set service.type=NodePort \
   --kubeconfig /home/replicant/.kube/config
