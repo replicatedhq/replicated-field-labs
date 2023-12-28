@@ -15,7 +15,7 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Harbor Registry
+- title: Slackernews Registry
   type: service
   hostname: cluster
   port: 30443
@@ -25,7 +25,7 @@ timelimit: 600
 ---
 
 We're going to continue playing the role of the customer
-who had a failing preflight check for the Harbor registry.
+who had a failing preflight check for the Slackernews registry.
 Let's also assume that the customer decided to increase
 the capacity of the cluster and is ready to perform
 the installation.
@@ -39,7 +39,7 @@ necessary resources. We can do that by re-running the
 preflight checks against the now expanded cluster.
 
 ```
-helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
   | kubectl preflight -
 ```
 
@@ -71,15 +71,16 @@ the top right.
 
 ![Customer Installation Commands](../assets/install-instructions.png)
 
-We need to add some additional values that Harbor
+We need to add some additional values that Slackernews
 needs to come up correctly. This helps us make sure
 the installation will complete.
 
 ```
-helm install harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
-  --set service.type=NodePort --set service.nodePorts.https=30443 \
-  --set externalURL=[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
+helm install --namespace slackernews --create-namespace  \
+    slackernews \
+    oci://registry.replicated.com/[[Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
+    --set slackernews.domain=[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]] \
+    --set service.type=NodePort
 ```
 
 Note that the cluster we're using is fairly limited, so
@@ -91,10 +92,10 @@ Verifying the Installation
 From the customer perspective, the installation is
 complete when they can log into the application and
 see that it was complete. Once their install is complete,
-the tab "Harbor Registry" should show the login page
-for Harbor.
+the tab "Slackernews Registry" should show the login page
+for Slackernews.
 
-![Harbor Registry Login](../assets/harbor-login-page.png)
+![Slackernews Landing Page](../assets/harbor-login-page.png)
 
 You can even log in if you run the commands from the
 output of the `helm install` command to get the username
@@ -102,7 +103,7 @@ and password.
 
 ```
 echo Username: "admin"
-echo Password: $(kubectl get secret --namespace default harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d)
+echo Password: $(kubectl get secret --namespace default slackernews-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d)
 ```
 
 🏁 Finish
