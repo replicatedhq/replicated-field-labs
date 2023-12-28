@@ -43,6 +43,10 @@ get_api_token () {
   echo ${access_token}
 }
 
+get_slackernews_domain() {
+  echo cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com
+}
+
 get_slackernews() {
   # get the access token to use for fetching the app slug
   access_token=$(get_api_token)
@@ -53,6 +57,10 @@ get_slackernews() {
   helm registry login chart.slackernews.io --username marc@replicated.com --password 2ViYIi8SDFubA8XwQRhJtcrwn4C
   helm pull --untar oci://chart.slackernews.io/slackernews/slackernews
 
+  # specify the nodeport for NGINX so we get a consistent and addressable endpoint
+  # TODO: Update upstream to take this as a value
+  sed '17 a\    nodePort: 30443' slackernews/nginx-service.yaml
+ 
   # remove the Replicated SDK dependency, if we add more dependencies to
   # Slackernews this will need to be revised
   yq -i 'del(.dependencies)' slackernews/Chart.yaml
