@@ -5,8 +5,8 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 
 mkdir ${HOME_DIR}/slackernews/templates/troubleshoot
-cat <<HARBOR_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
-apiVersion: v1
+cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
+HARBORapiVersion: v1
 kind: Secret
 metadata:
   name: {{ include "slackernews.name" . }}-preflight
@@ -81,7 +81,7 @@ stringData:
               - pass:
                   message: Your cluster has sufficient memory available to run Slackernews
 
-HARBOR_PREFLIGHTS
+SLACKERNEWS_PREFLIGHTS
 
 yq -i '.version = "0.3.0"' /home/replicant/slackernews/Chart.yaml
 helm package /home/replicant/slackernews --destination /home/replicant/release
