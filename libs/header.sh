@@ -59,7 +59,7 @@ get_slackernews() {
 
   # specify the nodeport for NGINX so we get a consistent and addressable endpoint
   # TODO: Update upstream to take this as a value
-  sed '17 a\    nodePort: 30443' slackernews/templates/nginx-service.yaml
+  sed -i '17 a\    nodePort: 30443' slackernews/templates/nginx-service.yaml
  
   # remove the Replicated SDK dependency, if we add more dependencies to
   # Slackernews this will need to be revised
