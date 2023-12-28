@@ -31,10 +31,10 @@ export REPLICATED_APP=${app_slug}
 
 cd /home/replicant
 mkdir /home/replicant/release
-
-helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/slackernews --untar
+get_slackernews
 yq -i '.version = "0.2.0"' slackernews/Chart.yaml
 replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+yq -i ".dependencies += []" slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
 
 # update dependencies
