@@ -23,12 +23,42 @@ timelimit: 600
 ---
 
 You have a pretty useful support bundle right now. You can collect all the logs
-from the Slackernews registry and you're able to verify if its core service is
+from the Slackernews g and you're able to verify if its core service is
 running. This can be very useful information to help your team resolve support
 cases more quickly with minimal back-and-forth with your customer.
 
 Let's expand the support bundle to collect more information and provide
 additional insight into the running application.
+
+Expanding Log Collection
+========================
+
+
+The Slackernews application uses different labels to identify different
+components that it installs. We want to make sure we get the logs from all the
+components, including the Replicated SDK. To do this, we need to add additional
+log collectors.
+
+```
+    - logs:
+        name: /app/slackernews/logs
+        selectors:
+          - app=slackernews-nginx
+    - logs:
+        name: /app/slackernews/logs
+        selectors:
+          - app=postgres
+    - logs:
+        name: /app/slackernews/logs
+        selectors:
+          - app.kubernetes.io/name=replicated
+```
+
+Use the editor at the "Manifest Editor" tab to add these collectors to you
+support bundle definition after the `logs` collector from the previous step.
+
+![Adding Log Collectors](../assets/adding-log-collectors.png)
+
 
 Collecting Application Configuration
 ====================================
@@ -45,35 +75,31 @@ contain more sensitive details than logs or other data you might collect. This
 is especially true of values stored in secrets.
 
 We're going to define collectors for some ConfigMaps and Secrets that are
-critical to operating the Slackernews registry. ConfigMaps are collected with the
+critical to operating the Slackernews g. ConfigMaps are collected with the
 `configMap` collector and Secrets with the `secret` collector. Both of these
 give you different ways to control what to look for and what's collected. You
 can choose to collect only specific resources or to collect them based on a
 selector. You also have fine-grained control over which keys to look for and
 whether to include the value at that key. Only include the value when
 absolutely necessary and when it is likely to be known to you already.
-
 ## Collecting ConfigMaps
 
-For our `configMap` collectors, we're going to collect all of the ConfigMaps
-installed by the application without their values. We'll also collect the value
-of the endpoint that is configured for Slackernews to confirm it is set to where the
-customer is trying to access it.
+For our `configMap` collectors, we're going to collect the ConfigMap installed
+by the application. We're going to include the value of the `default.conf` key
+since it contains the NGINX configuration which shows what endpoint the server
+is listening on. This will help us assure the application is listening where
+the user expects to find it.
 
 ```
     - configMap:
-        namespace: default
-        selector:
-        - app.kubernetes.io/name=slackernews
-    - configMap:
-        name: slackernews-core
-        namespace: default
-        key: EXT_ENDPOINT
+        name: slackernews-nginx
+        namespace: slackernews
+        key: default.conf
         includeValue: true
 ```
 
-Use the editor at the "Manifest Editor" tab to add these collectors to you
-support bundle definition after the `logs` collector from the previous step.
+Use the editor to add this collector to you support bundle definition after the
+`logs` collector from the previous step.
 
 ![Adding ConfigMap Collectors](../assets/adding-configmap-collectors.png)
 
@@ -85,24 +111,43 @@ are present, and in some case their values. We start with a few secrets that
 its safe to know the value of, like TLS certificates which are essentially
 public.
 
+After that, we assure that required values are present for all of the other
+secrets that are needed to run the application.
+
 ```
     - secret:
-        name: slackernews-core
-        namespace: default
+        name: slackernews-nginx
+        namespace: slackernews
         key: tls.crt
         includeValue: true
     - secret:
-        name: slackernews-ingress
-        key: ca.crt
+        name: slackernews-nginx
+        key: tls.key
         includeVale: true
     - secret:
-        name: slackernews-ingress
-        key: tls.crt
-        includeVale: true
+        name: slackernews-postgres
+        namespace: slackernews
+        key: password
     - secret:
-        namespace: default
-        selector:
-        - app.kubernetes.io/name=slackernews
+        name: slackernews-postgres
+        namespace: slackernews
+        key: uri
+    - secret:
+        name: slackernews-slack
+        namespace: slackernews
+        key: clientId
+    - secret:
+        name: slackernews-slack
+        namespace: slackernews
+        key: clientSecret
+    - secret:
+        name: slackernews-slack
+        namespace: slackernews
+        key: botToken
+    - secret:
+        name: slackernews-slack
+        namespace: slackernews
+        key: userToken
 ```
 
 Use the editor to add these after the `configMap` collectors in your support
@@ -120,58 +165,29 @@ Stateful Sets. There is a `statefulSetStatus` analyzer that works the same way
 for those resources.
 
 To get a quick glimpse as to whether all the workloads that make up the Slackernews
-registry application are healthy, let's add `deploymentStatus` and
+g application are healthy, let's add `deploymentStatus` and
 `statefulSetStatus` analyzers as required.
 
-Since Slackernews is made up of a lot of services, we're going to add the deployment
-and stateful set analyzers separately.
+Since Slackernews is made up of an application and a couple of supporing
+serivces, we're going to add the deployment and stateful set analyzers
+separately.
 
 ```
     - deploymentStatus:
-        name: slackernews-jobservice
-        namespace: default
+        name: slackernews-nginx
+        namespace: slackernews
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Slackernews job service has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Slackernews job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
           - pass:
               message: |
-                Ther Slackernews job service is running on this cluster and ready for use.
-    - deploymentStatus:
-        name: slackernews-portal
-        namespace: default
-        outcomes:
-          - fail:
-              when: "absent"
-              message: |
-                The Slackernews portal workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-          - fail:
-              when: "< 1"
-              message: |
-                The Slackernews portal workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-          - pass:
-              message: |
-                Ther Slackernews portal workload is running on this cluster and ready for use.
-    - deploymentStatus:
-        name: slackernews-registry
-        namespace: default
-        outcomes:
-          - fail:
-              when: "absent"
-              message: |
-                The Slackernews registry workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-          - fail:
-              when: "< 1"
-              message: |
-                The Slackernews registry workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-          - pass:
-              message: |
-                Ther Slackernews registry workload is running on this cluster and ready for use.
+                Ther Slackernews web server is running on this cluster and ready for use.
 ```
 
 Use the editor in the "Manifest Editor" tab to add those to
@@ -180,18 +196,17 @@ previous step.
 
 ![Adding Deployment Status Analyzers](../assets/adding-deployment-analyzers.png)
 
-We'll do the same for the various stateful sets that are part of the
-application. Add these after the deployments.
+We'll do the same for the stateful set that provides the database for Slackernews.
 
 ```
     - statefulsetStatus:
-        name: slackernews-postgresql
-        namespace: default
+        name: postgres
+        namespace: slackernews
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
@@ -199,36 +214,6 @@ application. Add these after the deployments.
           - pass:
               message: |
                 Ther Slackernews database is running on this cluster and ready for use.
-    - statefulsetStatus:
-        name: slackernews-redis-master
-        namespace: default
-        outcomes:
-          - fail:
-              when: "absent"
-              message: |
-                The Slackernews cache has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-          - fail:
-              when: "< 1"
-              message: |
-                The Slackernews cache is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-          - pass:
-              message: |
-                Ther Slackernews cache is running on this cluster and ready for use.
-    - statefulsetStatus:
-        name: slackernews-trivy
-        namespace: default
-        outcomes:
-          - fail:
-              when: "absent"
-              message: |
-                The Trivy iamge scanner has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-          - fail:
-              when: "< 1"
-              message: |
-                The Trivy image scanner is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-          - pass:
-              message: |
-                The Trivy image scanner is running on this cluster and ready for use.
 ```
 
 ![Adding StatefulSet Status Analyzers](../assets/adding-statefulset-analyzers.png)
@@ -243,27 +228,32 @@ cluster that could cause trouble for the instance. If you didn't complete the
 Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
 lab you may not have seen these before. They test to make sure the Kubernetes
 version, CPU, and memory of the cluster will support running the Slackernews
-registry.
+g.
 
 ```
     - clusterVersion:
         outcomes:
           - fail:
-              when: "< 1.19.x"
+              when: "<= 1.26.x"
               message: |-
-                Your Kubernets cluster is running a version of Kubernetes that is not supported by the Slackernews container
-                registry and your installation will not succeed. Please upgrade your cluster or install to a different
-                cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-              uri: https://github.com/bitnami/charts/blob/main/bitnami/slackernews/README.md
+                Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+              uri: https://kubernetes.io
           - warn:
-              when: "< 1.24.0"
+              when: "< 1.27.0"
               message: |-
-                Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-                community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-                this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                your Slackernews implementation.
               uri: https://kubernetes.io
           - pass:
-              message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+              message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
     - nodeResources:
         checkName: Cluster CPU resources are sufficient to install and run Slackernews
         outcomes:
@@ -273,14 +263,12 @@ registry.
                 Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
                 at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
                 workloads. Please increase cluster capacity or install into a different cluster.
-              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - warn:
               when: "sum(cpuAllocatable) < 4"
               message: |-
                 Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
                 than 4 CPU cores available to run workloads. For the best experience, consider
                 increasing cluster capacity or installing into a different cluster.
-              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - pass:
               message: Your cluster has sufficient CPU resources available to run Slackernews
     - nodeResources:
@@ -292,14 +280,12 @@ registry.
                 Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
                 at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
                 workloads. Please increase cluster capacity or install into a different cluster.
-              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - warn:
               when: "sum(memoryAllocatable) < 8Gi"
               message: |-
                 Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
                 than 8 GB of memory available to run workloads. For the best experience, consider
                 increasing cluster capacity or installing into a different cluster.
-              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - pass:
               message: Your cluster has sufficient memory available to run Slackernews
 ```

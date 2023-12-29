@@ -64,22 +64,16 @@ Let's try collecting a support bunglde with it.
 kubectl support-bundle ./simplest-support-bundle.yaml
 ```
 
-It will take a few seconds to generate a support bundle in a file named
-`support-bundle-$TIMESTAMP.tar.gz` that contains some simple information
-about the cluster. You can get a flavor for what's in the bundle by running
+Since we haven't given it anything to collect or to analyzer, it will error out
+with a messsage similar to the one below.
 
 ```
-tar -tzf support-bundle-*.tar.gz | less
+Error: failed to run collect and analyze process: failed to generate support bundle
 ```
 
-You'll see the files that were collected cataloging all of the resources in the
-cluster and some information about the cluster itself. If you completed the
-[Avoiding Installation
-Pitfalls](https://play.instruqt.com/embed/replicated/tracks/avoiding-installation-pitfalls?token=em_gJjtIzzTTtdd5RFG)
-lab you might be surprised this doesn't return an error since the comparable
-preflight check failed. This is because the bundle is valid if it only collects
-information, while a preflight check is not. By default both preflight checks
-and support bundles will collect a minimum set of information.
+If you try this in your own environment, you may get a default support bundle created.
+Earlier versions of the `support-bundle` plugin would generate a support bundle
+with default collectors in this scenario.
 
 Analyzers and Collectors
 ========================
@@ -92,12 +86,12 @@ lab these concepts will be familiar to you as the two types of objects that
 make up preflight checks. Support bundles are also made up of _collectors_ that
 collect data and _analyzers_ that analyze it.
 
-There two default collectors included in every support bundle. The
-`clusterInfo` collector collects information about the running cluster, and the
-`clusterResources` collector collects information about many of the resources
-running in the cluster. These give you some baseline support information, but
-you will generally want to add more collectors to gather logs and other details
-about your application state.
+There two default collectors included in every support bundle unless you
+explicitly exclude or limit them. The `clusterInfo` collector collects
+information about the running cluster, and the `clusterResources` collector
+collects information about many of the resources running in the cluster. These
+give you some baseline support information, but you will generally want to add
+more collectors to gather logs and other details about your application state.
 
 Log collection is the first thing most teams add to their support bundle. Let's
 add some logging collectors so that our support bundle will collect logs
@@ -106,16 +100,17 @@ from the Slackernews application.
 ```
 - logs:
     selector:
-      - app=slackernews
+      - app=slackernews-frontend
 ```
 
 This definition specifies that the logs from any workload where the label `app`
-has the value `slackernews`. The Slackernews Helm chart we're using for this lab applies
-that label to all of the resources it creates for the application.
+has the value `slackernews-frontend`. The Slackernews Helm chart we're using
+for this lab applies that label to pods created for the application iteself.
 
 The first analyzers teams add are generally those that identify if different
-workloads are running (i.e. in a `Ready` state). Slackernews has many services,
-let's just take one for this first step.
+workloads are running (i.e. in a `Ready` state). Slackernews has a couple of
+supporting services in additon to the app. Let's just take the app for this
+first step.
 
 ```
 - deploymentStatus:
@@ -124,16 +119,16 @@ let's just take one for this first step.
       - fail:
           when: "absent"
           message: |
-            The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews registry
+            The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
             application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Slackernews core component is not currently running on this cluster. Please review the logs in this support
+            The Slackernews application is not currently running on this cluster. Please review the logs in this support
             bundle to locate any errors.
       - pass:
           message: |
-            Ther Slackernews core component is running on this cluster and ready for use.
+            Ther Slackernews application is running on this cluster and ready for use.
 ```
 
 Taken together, your support bundle definition will look like this:
@@ -152,19 +147,21 @@ spec:
   analyzers:
     - deploymentStatus:
         name: slackernews-frontend
-        namespace: default
+        namespace: slackernews
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Slackernews core component has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
+                application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Slackernews core component is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Slackernews application is not currently running on this cluster. Please review the logs in this support
+                bundle to locate any errors.
           - pass:
               message: |
-                Ther Slackernews core component is running on this cluster and ready for use.
+                Ther Slackernews application is running on this cluster and ready for use.
 ```
 
 Getting Started
@@ -174,11 +171,11 @@ Let's create a support bundle using this definition. Click on the "Manifest
 Editor" tab and create a new file named `slackernews-support-bundle.yaml` in the
 `/home/replicant` directory.
 
-![Creating the Support Bundle File](../assets/creating-harbor-support-bundle.png)
+![Creating the Support Bundle File](../assets/creating-slackernews-support-bundle.png)
 
-Paste the YAML above into the new file and save it.
+Paste the YAML above into the new file. The editor will automatically save it.
 
-![Saving the Support Bundle File](../assets/saving-harbor-support-bundle.png)
+![Saving the Support Bundle File](../assets/saving-slackernews-support-bundle.png)
 
 Now collect a support bundle using this definition.
 
@@ -189,4 +186,7 @@ kubectl support-bundle ./slackernews-support-bundle.yaml
 You'll see that that your bundle has been collected and get a screen showing
 the result for the analyzer you added.
 
-![Slackernews Core is Running](../assets/passing-harbor-core-status.png)
+![Slackernews isn't Running](../assets/failing-slackernews-frontend-status.png)
+
+Notice that the support bundle has told use something that's wrong with the
+installation.

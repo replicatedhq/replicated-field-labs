@@ -7,8 +7,16 @@ result=0
 
 # check whether the configmap collectors have been added, assume 
 # that the right number of them means the work is done
+cm_collector_count=$(yq '[ .spec.collectors[] | select( has ("logs") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
+if [[ "${cm_collector_count}" -ne "4" ]] ; then
+  fail-message 'Please add the log collectors to the support bundle definition'
+  let "result = result + 1"
+fi
+
+# check whether the configmap collectors have been added, assume 
+# that the right number of them means the work is done
 cm_collector_count=$(yq '[ .spec.collectors[] | select( has ("configMap") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
-if [[ "${cm_collector_count}" -ne "2" ]] ; then
+if [[ "${cm_collector_count}" -ne "1" ]] ; then
   fail-message 'Please add the configMap collectors to the support bundle definition'
   let "result = result + 1"
 fi
@@ -16,7 +24,7 @@ fi
 # check whether the secret collectors have been added, assume 
 # that the right number of them means the work is done
 secret_collector_count=$(yq '[ .spec.collectors[] | select( has ("secret") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
-if [[ "${secret_collector_count}" -ne "4" ]] ; then
+if [[ "${secret_collector_count}" -ne "8" ]] ; then
   fail-message 'Please add the secret collectors to the support bundle definition'
   let "result = result + 1"
 fi
@@ -40,7 +48,7 @@ fi
 # check whether the deployment analyzers have been added, assume 
 # that the right number of them means the work is done
 deployment_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("deploymentStatus") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
-if [[ "${deployment_analyzer_count}" -ne "4" ]] ; then
+if [[ "${deployment_analyzer_count}" -ne "2" ]] ; then
   fail-message 'Please add the deployment status analyzers to the support bundle definition'
   let "result = result + 1"
 fi
@@ -48,7 +56,7 @@ fi
 # check whether the deployment analyzers have been added, assume 
 # that the right number of them means the work is done
 statefulset_analyzer_count=$(yq '[ .spec.analyzers[] | select( has ("statefulsetStatus") ) ] | length' /home/replicant/slackernews-support-bundle.yaml) 
-if [[ "${statefulset_analyzer_count}" -ne "3" ]] ; then
+if [[ "${statefulset_analyzer_count}" -ne "1" ]] ; then
   fail-message 'Please add the statefulset status analyzers to the support bundle definition'
   let "result = result + 1"
 fi
