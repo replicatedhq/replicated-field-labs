@@ -3,223 +3,184 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-cat <<HARBOR_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubelshoot/support-bundle.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "common.names.fullname" . }}-support-bundle
-  namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
-    {{- end }}
-    app.kubernetes.io/component: support-bundle
-    troubleshoot.sh/kind: support-bundle
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
-type: Opaque
-stringData:
-  support-bundle-spec: |
-    apiVersion: troubleshoot.sh/v1beta2
-    kind: SupportBundle
-    metadata:
-      name: slackernews-support-bundle
-    spec:
-      collectors:
-        - logs:
-            name: /app/slackernews/logs
-            selector:
-                - app.kubernetes.io/name=slackernews
-        - configMap:
-            namespace: default
-            selector:
-            - app.kubernetes.io/name=slackernews
-        - configMap:
-            name: slackernews-core
-            namespace: default
-            key: EXT_ENDPOINT
-            includeValue: true
-        - secret:
-            name: slackernewse-core
-            namespace: default
-            key: tls.crt
-            includeValue: true
-        - secret:
-            name: slackernews-ingress
-            key: ca.crt
-            includeVale: true
-        - secret:
-            name: slackernews-ingress
-            key: tls.crt
-            includeVale: true
-        - secret:
-            namespace: default
-            selector:
-            - app.kubernetes.io/name=slackernews
+cat <<SLACKERNEWS_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubelshoot/support-bundle.yaml
+apiVersion: v1                                                                                                                                                              
+kind: Secret                                                                                                                                                                
+metadata:                                                                                                                                                                   
+  name: {{ include "slackernews.name" . }}-support-bundle                                                                                                                        
+  namespace: {{ .Release.Namespace | quote }}                                                                                                                               
+  labels: {{- include "slackernews.labels" . | nindent 4 }}                                                                                                                 
+    app.kubernetes.io/component: troubleshoot                                                                                                                               
+    troubleshoot.sh/kind: support-bundle                                                                                                                                    
+type: Opaque                                                                                                                                                                
+stringData:                                                                                                                                                                 
+  support-bundle-spec: |                                                                                                                                                    
+    apiVersion: troubleshoot.sh/v1beta2                                                                                                                                     
+    kind: SupportBundle                                                                                                                                                     
+    metadata:                                                                                                                                                               
+      name: slackernews-support-bundle                                                                                                                                        
+    spec:                                                                                                                                                                   
+      collectors:                                                                                                                                                             
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selector:                                                                                                                                                       
+              - app=slackernews                                                                                                                                               
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app=slackernews-nginx                                                                                                                                         
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app=postgres                                                                                                                                                  
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app.kubernetes.io/name=replicated                                                                                                                             
+          - configMap:                                                                                                                                                        
+              name: slackernews-nginx                                                                                                                                         
+              namespace: slackernews                                                                                                                                          
+              key: default.conf                                                                                                                                               
+              includeValue: true                                                                                                                                              
+          - secret:                                                                                                                                                           
+              name: slackernews-nginx                                                                                                                                         
+              namespace: slackernews                                                                                                                                          
+              key: tls.crt                                                                                                                                                    
+              includeValue: true
+          - secret:
+              name: slackernews-nginx
+              key: tls.key
+              includeVale: true
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: password
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: uri
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientId
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientSecret
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: botToken
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: userToken
       analyzers:
-        - deploymentStatus:
-            name: slackernews-core
-            namespace: default
-            outcomes:
+          - clusterVersion:
+              outcomes:
               - fail:
-                  when: "absent"
-                  message: |
-                    The Slackernews core workload has not been deployed to this cluster. Please be sure to install the Slackernews registry application using its Helm chart.
-              - fail:
-                  when: "< 1"
-                  message: |
-                    The Slackernews core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-              - pass:
-                  message: |
-                    Ther Slackernews core workload is running on this cluster and ready for use.
-        - clusterVersion:
-            outcomes:
-              - fail:
-                  when: "< 1.19.x"
+                  when: "<= 1.26.x"
                   message: |-
-                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Slackernews container
-                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
-                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-                  uri: https://github.com/bitnami/charts/blob/main/bitnami/slackernews/README.md
+                      Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                      community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                      that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                      cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                      If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                      this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
               - warn:
-                  when: "< 1.24.0"
+                  when: "< 1.27.0"
                   message: |-
-                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                      Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                      less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                      your Slackernews implementation.
                   uri: https://kubernetes.io
               - pass:
-                  message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
-        - nodeResources:
-            checkName: Cluster CPU resources are sufficient to install and run Slackernews
-            outcomes:
+                  message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
+          - nodeResources:
+              checkName: Cluster CPU resources are sufficient to install and run Slackernews
+              outcomes:
               - fail:
                   when: "sum(cpuAllocatable) < 2"
                   message: |-
-                    Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
-                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
-                    workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
+                      Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
+                      at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
               - warn:
                   when: "sum(cpuAllocatable) < 4"
                   message: |-
-                    Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
-                    than 4 CPU cores available to run workloads. For the best experience, consider
-                    increasing cluster capacity or installing into a different cluster.
-                  uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
+                      Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
+                      than 4 CPU cores available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
               - pass:
                   message: Your cluster has sufficient CPU resources available to run Slackernews
-        - nodeResources:
-            checkName: Cluster memory is sufficient to install and run Slackernews
-            outcomes:
+          - nodeResources:
+              checkName: Cluster memory is sufficient to install and run Slackernews
+              outcomes:
               - fail:
                   when: "sum(memoryAllocatable) < 4G"
                   message: |-
-                    Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
-                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
-                    workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
+                      Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
+                      at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
               - warn:
                   when: "sum(memoryAllocatable) < 8Gi"
                   message: |-
-                    Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
-                    than 8 GB of memory available to run workloads. For the best experience, consider
-                    increasing cluster capacity or installing into a different cluster.
-                  uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
+                      Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
+                      than 8 GB of memory available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
               - pass:
                   message: Your cluster has sufficient memory available to run Slackernews
-        - deploymentStatus:
-            name: slackernews-jobservice
-            namespace: default
-            outcomes:
+          - deploymentStatus:
+              name: slackernews-frontend
+              namespace: slackernews
+              outcomes: 
               - fail:
                   when: "absent"
                   message: |
-                    The Slackernews job service has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                      The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
+                      application using its Helm chart.
               - fail:
                   when: "< 1"
                   message: |
-                    The Slackernews job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                      The Slackernews application is not currently running on this cluster. Please review the logs in this support
+                      bundle to locate any errors.
               - pass:
                   message: |
-                    Ther Slackernews job service is running on this cluster and ready for use.
-        - deploymentStatus:
-            name: slackernews-portal
-            namespace: default
-            outcomes:
+                      Ther Slackernews application is running on this cluster and ready for use.
+          - deploymentStatus:
+              name: slackernews-nginx
+              namespace: slackernews
+              outcomes:
               - fail:
                   when: "absent"
                   message: |
-                    The Slackernews portal workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                      The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
               - fail:
                   when: "< 1"
                   message: |
-                    The Slackernews portal workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                      The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
               - pass:
                   message: |
-                    Ther Slackernews portal workload is running on this cluster and ready for use.
-        - deploymentStatus:
-            name: slackernews-registry
-            namespace: default
-            outcomes:
+                      Ther Slackernews web server is running on this cluster and ready for use.
+          - statefulsetStatus:
+              name: postgres
+              namespace: slackernews
+              outcomes:
               - fail:
                   when: "absent"
                   message: |
-                    The Slackernews registry workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+                      The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
               - fail:
                   when: "< 1"
                   message: |
-                    The Slackernews registry workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                      The Slackernews database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
               - pass:
                   message: |
-                    Ther Slackernews registry workload is running on this cluster and ready for use.
-        - statefulsetStatus:
-            name: slackernews-postgresql
-            namespace: default
-            outcomes:
-              - fail:
-                  when: "absent"
-                  message: |
-                    The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-              - fail:
-                  when: "< 1"
-                  message: |
-                    The Slackernews database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-              - pass:
-                  message: |
-                    Ther Slackernews database is running on this cluster and ready for use.
-        - statefulsetStatus:
-            name: slackernews-redis-master
-            namespace: default
-            outcomes:
-              - fail:
-                  when: "absent"
-                  message: |
-                    The Slackernews cache has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-              - fail:
-                  when: "< 1"
-                  message: |
-                    The Slackernews cache is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-              - pass:
-                  message: |
-                    Ther Slackernews cache is running on this cluster and ready for use.
-        - statefulsetStatus:
-            name: slackernews-trivy
-            namespace: default
-            outcomes:
-              - fail:
-                  when: "absent"
-                  message: |
-                    The Trivy iamge scanner has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-              - fail:
-                  when: "< 1"
-                  message: |
-                    The Trivy image scanner is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-              - pass:
-                  message: |
-                    The Trivy image scanner is running on this cluster and ready for use.
-HARBOR_SUPPORT_BUNDLE
+                      Ther Slackernews database is running on this cluster and ready for use.
+SLACKERNEWS_SUPPORT_BUNDLE
 
 yq -i '.version = "0.4.0"' /home/replicant/slackernews/Chart.yaml
 helm package /home/replicant/slackernews --destination /home/replicant/release

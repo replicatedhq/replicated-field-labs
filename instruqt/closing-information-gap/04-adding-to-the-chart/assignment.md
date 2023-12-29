@@ -101,17 +101,11 @@ definition.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "common.names.fullname" . }}-support-bundle
+  name: {{ include "slackernews.name" . }}-support-bundle
   namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
     app.kubernetes.io/component: troubleshoot
     troubleshoot.sh/kind: support-bundle
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
 type: Opaque
 stringData:
   support-bundle-spec: |

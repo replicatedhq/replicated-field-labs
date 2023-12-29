@@ -41,53 +41,53 @@ Once they've logged in, they can run the `helm upgrade` command to upgrade
 their instance.
 
 ```
-helm upgrade harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
+helm upgrade slackernews --namespace slackernews \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews
 ```
 
 Check to see if the support bundle secret has been created.
 
 ```
-kubectl get secret
+kubectl get secret --namespace slackernews
 ```
 
-You should see the secret `harbor-support-bundle` in the list of secrets. This
+You should see the secret `slackernews-support-bundle` in the list of secrets. This
 mean the support bundle is now available in the cluster.
 
 ```
 NAME                           TYPE                 DATA   AGE
-harbor-postgresql              Opaque               1      18m
-replicated                     Opaque               12     18m
-harbor-core-envvars            Opaque               7      18m
-harbor-core                    Opaque               4      18m
-harbor-jobservice-config       Opaque               1      18m
-harbor-jobservice-envvars      Opaque               1      18m
-harbor-jobservice              Opaque               1      18m
-harbor-nginx                   Opaque               3      18m
-harbor-notary-server-envvars   Opaque               2      18m
-harbor-notary-server           Opaque               5      18m
-harbor-registry                Opaque               3      18m
-harbor-support-bundle          Opaque               1      45s
-harbor-trivy-envvars           Opaque               4      18m
-harbor-preflight               Opaque               1      45s
-sh.helm.release.v1.harbor.v1   helm.sh/release.v1   1      18m
-sh.helm.release.v1.harbor.v2   helm.sh/release.v1   1      46s
+slackernews-postgres                Opaque                           2      27m
+slackernews-slack                   Opaque                           4      27m
+slackernews-nginx                   kubernetes.io/tls                2      27m
+replicated-supportbundle            Opaque                           1      27m
+replicated-pull-secret              kubernetes.io/dockerconfigjson   1      27m
+replicated                          Opaque                           1      27m
+slackernews-preflight               Opaque                           1      27m
+slackernews-support-bundle          Opaque                           1      61s
+sh.helm.release.v1.slackernews.v1   helm.sh/release.v1               1      27m
+sh.helm.release.v1.slackernews.v2   helm.sh/release.v1               1      61s
 ```
 
-Collecting a Support Bundle Using an In-Cluster Spec
-====================================================
+There is also a `replicated-support-bundle` secret for the Replicated SDK. We
+included specific items related to the Replicated SDK in our support bundle
+definition, but we didn't have to since Replicated has offered it's own. All
+available support bundles definitions are composed into one when we collect a
+support bundle based on definitons available in the cluster.
+
+Collecting a Support Bundle Using In-Cluster Specifications
+===========================================================
 
 Let's continue on as Geeglo and collect a support bundle using the in-cluster
 specification you've provided to them. For this lab, we're going to assume they
 already have the support bundle plugin installed. Instead of specifying a
 support bundle file, they use the flag `load-cluster-specs` to load the support
-bundle from the secret your chart created. We'll also specify the filename for
-the bundle. You may want to ask your customers to specify a filename including
-their company name to make it easier to keep track of the bundles you are
-working with.
+bundle specifications from the `slackernews` namespace. We'll also specify the
+filename for the bundle. You may want to ask your customers to specify a
+filename including their company name to make it easier to keep track of the
+bundles you are working with.
 
 ```
-kubectl support-bundle --load-cluster-specs --output geeglo-support-bundle.tar.gz
+kubectl support-bundle --namespace slackernews --load-cluster-specs --output geeglo-support-bundle.tar.gz
 ```
 
 This will show the analyzer results screen you saw when running the support bundle in your environment.
@@ -126,7 +126,7 @@ reference both the bundle and it's definition in order to see the analyzer
 results.
 
 ```
-kubectl support-bundle analyze --bundle geeglo-support-bundle.tar.gz ./harbor-support-bundle.yaml | less
+kubectl support-bundle analyze --bundle geeglo-support-bundle.tar.gz ./slackernews-support-bundle.yaml | less
 ```
 
 This command will output a YAML file showing results of all of the analyzers.
@@ -139,9 +139,10 @@ same failure that you saw when you were pretending to be Geeglo.
   isfail: true
   iswarn: false
   strict: false
-  title: harbor-jobservice Status
+  title: slackernews-frontend Status
   message: |
-    The Harbor job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+    The Slackernews application is not currently running on this cluster. Please review the logs in this support
+    bundle to locate any errors.
   uri: ""
   iconkey: kubernetes_deployment_status
   iconuri: https://troubleshoot.sh/images/analyzer-icons/deployment-status.svg?w=17&h=17
@@ -174,12 +175,12 @@ local-kubeconfig-2237268620
 replicated@shell:~$
 ```
 
-Since you know the issue is with the job service deployment, you can start your
+Since you know the issue is with the frontend deployment, you can start your
 troubleshooting there. Let's `describe` it to see if we can discover why it
 might not be running.
 
 ```
-kubectl describe deployment harbor-jobservice | less
+kubectl describe deployment -n slackernews slackernews-frontend | less
 ```
 
 You'll can confirm that is wasn't running when the bundle was collected by
@@ -200,7 +201,7 @@ Conditions:
   Progressing   Unknown  DeploymentPaused
 ```
 
-It seems that someone at Geeglo paused the rollout of the Harbor job service
+It seems that someone at Geeglo paused the rollout of the Slackernews frontend
 deployment. It's possible they also killed the running replica, or that it
 failed in some other way and could not be replaced because of this condition.
 You've likely found the cause of Geeglo's outage, and can work with them to

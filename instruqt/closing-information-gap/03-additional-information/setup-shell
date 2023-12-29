@@ -39,4 +39,4 @@ SIMPLEST_SUPPORT_BUNDLE_SECRET
 chown replicant /home/replicant/simplest-support-bundle-secret.yaml
 
 # create an outage for Geeglo
-kubectl rollout resume deployment -l app.kubernetes.io/component=jobservice --kubeconfig /home/replicant/.kube/config
+kubectl rollout resume deployment --namespace slackernews slackernews-frontend --kubeconfig /home/replicant/.kube/config

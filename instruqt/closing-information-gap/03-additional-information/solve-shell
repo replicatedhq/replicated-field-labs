@@ -3,64 +3,96 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
+export LOG_COLLECTORS=$(cat <<LOG_COLLECTORS
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app=slackernews-nginx
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app=postgres
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app.kubernetes.io/name=replicated
+LOG_COLLECTORS
+)
+yq -i ".spec.collectors += env(LOG_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
+
 export CONFIGMAP_COLLECTORS=$(cat <<CONFIGMAP_COLLECTORS
 - configMap:
-    namespace: default
-    selector:
-    - app.kubernetes.io/name=slackernews
-- configMap:
-    name: slackernews-core
-    namespace: default
-    key: EXT_ENDPOINT
+    name: slackernews-nginx
+    namespace: slackernews
+    key: default.conf
     includeValue: true
 CONFIGMAP_COLLECTORS
 )
-yq -i ".spec.analyzers += env(CONFIGMAP_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
+yq -i ".spec.collectors += env(CONFIGMAP_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
 
 export SECRET_COLLECTORS=$(cat <<SECRET_COLLECTORS
 - secret:
-    name: slackernews-core
-    namespace: default
+    name: slackernews-nginx
+    namespace: slackernews
     key: tls.crt
     includeValue: true
 - secret:
-    name: slackernews-ingress
-    key: ca.crt
+    name: slackernews-nginx
+    key: tls.key
     includeVale: true
 - secret:
-    name: slackernews-ingress
-    key: tls.crt
-    includeVale: true
+    name: slackernews-postgres
+    namespace: slackernews
+    key: password
 - secret:
-    namespace: default
-    selector:
-    - app.kubernetes.io/name=slackernews
+    name: slackernews-postgres
+    namespace: slackernews
+    key: uri
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: clientId
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: clientSecret
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: botToken
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: userToken
 SECRET_COLLECTORS
 )
-yq -i ".spec.analyzers += env(SECRET_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
-
-chown replicant /home/replicant/slackernews-support-bundle.yaml
+yq -i ".spec.collectors += env(SECRET_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
 
 ## add analyzers that are also part of our preflight checks
 export CLUSTER_VERSION_ANALYZER=$(cat <<CLUSTER_VERSION_ANALYZER
 clusterVersion:
   outcomes:
     - fail:
-        when: "< 1.19.x"
+        when: "<= 1.26.x"
         message: |-
-          Your Kubernets cluster is running a version of Kubernetes that is not supported by the Slackernews container
-          registry and your installation will not succeed. Please upgrade your cluster or install to a different
-          cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-        uri: https://github.com/bitnami/charts/blob/main/bitnami/slackernews/README.md
+          Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+          community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+          that you installation will likely not succeed. Please upgrade your cluster or install to a different
+          cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+          If you are receiving extended support from your Kubernetes provider you may be able to ignore
+          this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+        uri: https://kubernetes.io
     - warn:
-        when: "< 1.24.0"
+        when: "< 1.27.0"
         message: |-
-          Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-          community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-          this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+          Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+          less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+          your Slackernews implementation.
         uri: https://kubernetes.io
     - pass:
-        message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+        message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
 CLUSTER_VERSION_ANALYZER
 )
 
@@ -75,14 +107,12 @@ nodeResources:
           Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
           at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
           workloads. Please increase cluster capacity or install into a different cluster.
-        uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
     - warn:
         when: "sum(cpuAllocatable) < 4"
         message: |-
           Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
           than 4 CPU cores available to run workloads. For the best experience, consider
           increasing cluster capacity or installing into a different cluster.
-        uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
     - pass:
         message: Your cluster has sufficient CPU resources available to run Slackernews
 CPU_ANALYZER
@@ -98,14 +128,12 @@ nodeResources:
           Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
           at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
           workloads. Please increase cluster capacity or install into a different cluster.
-        uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
     - warn:
         when: "sum(memoryAllocatable) < 8Gi"
         message: |-
           Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
           than 8 GB of memory available to run workloads. For the best experience, consider
           increasing cluster capacity or installing into a different cluster.
-        uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
     - pass:
         message: Your cluster has sufficient memory available to run Slackernews
 MEMORY_ANALYZER
@@ -115,50 +143,20 @@ yq -i ".spec.analyzers = [ env(CLUSTER_VERSION_ANALYZER), env(CPU_ANALYZER), env
 ## add deployment analyzers
 export DEPLOYMENT_ANALYZERS=$(cat <<DEPLOYMENT_ANALYZERS
 - deploymentStatus:
-    name: slackernews-jobservice
-    namespace: default
+    name: slackernews-nginx
+    namespace: slackernews
     outcomes:
       - fail:
           when: "absent"
           message: |
-            The Slackernews job service has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+            The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Slackernews job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+            The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
       - pass:
           message: |
-            Ther Slackernews job service is running on this cluster and ready for use.
-- deploymentStatus:
-    name: slackernews-portal
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Slackernews portal workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Slackernews portal workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Slackernews portal workload is running on this cluster and ready for use.
-- deploymentStatus:
-    name: slackernews-registry
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Slackernews registry workload has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Slackernews registry workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Slackernews registry workload is running on this cluster and ready for use.
+            Ther Slackernews web server is running on this cluster and ready for use.
 DEPLOYMENT_ANALYZERS
 )
 yq -i ".spec.analyzers += env(DEPLOYMENT_ANALYZERS)" /home/replicant/slackernews-support-bundle.yaml
@@ -166,13 +164,13 @@ yq -i ".spec.analyzers += env(DEPLOYMENT_ANALYZERS)" /home/replicant/slackernews
 ## add stateful set analyzers
 export STATEFUL_SET_ANALYZERS=$(cat <<STATEFUL_SET_ANALYZERS
 - statefulsetStatus:
-    name: slackernews-database
-    namespace: default
+    name: postgres
+    namespace: slackernews
     outcomes:
       - fail:
           when: "absent"
           message: |
-            The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
+            The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
@@ -180,36 +178,8 @@ export STATEFUL_SET_ANALYZERS=$(cat <<STATEFUL_SET_ANALYZERS
       - pass:
           message: |
             Ther Slackernews database is running on this cluster and ready for use.
-- statefulsetStatus:
-    name: slackernews-redis
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Slackernews cache has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Slackernews cache is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Slackernews cache is running on this cluster and ready for use.
-- statefulsetStatus:
-    name: slackernews-trivy
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Trivy iamge scanner has not been deployed to this cluster. Please sure to install the Slackernews registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Trivy image scanner is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            The Trivy image scanner is running on this cluster and ready for use.
 STATEFUL_SET_ANALYZERS
 )
 yq -i ".spec.analyzers += env(STATEFUL_SET_ANALYZERS)" /home/replicant/slackernews-support-bundle.yaml
+
+chown replicant /home/replicant/slackernews-support-bundle.yaml

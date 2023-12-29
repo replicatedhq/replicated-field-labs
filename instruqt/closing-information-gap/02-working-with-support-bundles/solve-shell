@@ -14,29 +14,31 @@ spec:
     - logs:
         name: /app/slackernews/logs
         selector:
-            - app=slackernews
+          - app=slackernews
   analyzers:
     - deploymentStatus:
-        name: slackernews-core
-        namespace: default
+        name: slackernews-frontend
+        namespace: slackernews
         outcomes:
           - fail:
               when: "absent"
               message: |
-                The Slackernews core workload has not been deployed to this cluster. Please be sure to install the Slackernews registry application using its Helm chart.
+                The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
+                application using its Helm chart.
           - fail:
               when: "< 1"
               message: |
-                The Slackernews core workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+                The Slackernews application is not currently running on this cluster. Please review the logs in this support
+                bundle to locate any errors.
           - pass:
               message: |
-                Ther Slackernews core workload is running on this cluster and ready for use.
+                Ther Slackernews application is running on this cluster and ready for use.
 HARBOR_BUNDLE
 
 
 # collect the two support bundles from the challenge
-kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
-kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/slackernews-support-bundle.yaml
+kubectl support-bundle --namespace slackernews --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
+kubectl support-bundle --namespace slackernews --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/slackernews-support-bundle.yaml
 
 # make sure support bundle files are in the users home directory
 mv support-bundle-*.tar.gz /home/replicant
