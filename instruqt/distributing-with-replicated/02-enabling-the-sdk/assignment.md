@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: pzlc29lz2h9y
+id: uqhupnwrlny3
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
@@ -39,7 +39,7 @@ Adding the Dependency
 ======================
 
 Go to the the "Manifest Editor" tab and edit the file `Chart.yaml` in
-the source directory `harbor`. You're going to make two changes to
+the source directory `slackernews`. You're going to make two changes to
 this file.
 
 First, you're going to add a dependency on the Replicated SDK Helm
@@ -51,9 +51,10 @@ chart.
   version: [[ Instruqt-Var key="REPLICATED_SDK_VERSION" hostname="shell" ]]
 ```
 
-You should put the dependency into the array with the other
-chart dependencies as show in the image. Use the version shown
-above, since it may be newer than the one in the screenshot.
+You should put the dependency into the array with any other chart dependencies.
+In this case, we don't have any dependencies so we need to add the key
+`dependencies` to the YAML file. Use the version shown above, since it may be
+newer than the one in the screenshot.
 
 ![Adding the Dependency](../assets/adding-the-dependency.png)
 
@@ -63,22 +64,21 @@ a fairly large change. It's not a breaking change, though, so
 let's just bump the minor version number.
 
 ```
-version: 19.2.0
+version: 0.2.0
 ```
 
 ![Bumping the Chart Version](../assets/bumping-the-version.png)
 
-After making the changes, make sure you save them using the save
-icon in the editor tab. It's easy to miss, so check the image
-below if you can't find it.
+After you make each change, the editor will automatically save
+them. Be sure they are saved before you continue.
 
-![Saving Your Changes](../assets/saving-your-changes.png)
+![Assuring Your Changes are Saved](../assets/saving-your-changes.png)
 
 After saving, drop back in to the "Shell" tab and update your
 dependencies.
 
 ```shell
-helm dependency update harbor
+helm dependency update slackernews
 ```
 
 Repackaging Your Chart
@@ -88,7 +88,7 @@ After updating dependencies, you should repackage your Helm
 chart into a new tarball including the changes.
 
 ```
-helm package harbor --destination ./release
+helm package slackernews --destination ./release
 ```
 
 You should now have a tarball in directory `release` in your
@@ -101,5 +101,5 @@ ls release
 which shows
 
 ```
-harbor-19.2.0.tgz
+slackernews-0.2.0.tgz
 ```

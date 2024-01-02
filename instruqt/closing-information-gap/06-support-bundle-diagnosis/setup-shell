@@ -16,8 +16,8 @@ do
 done
 
 ## re-create the outage for Geeglo
-kubectl rollout pause deployment -l app.kubernetes.io/component=jobservice --kubeconfig ${HOME_DIR}/.kube/config
-kubectl delete replicaset -l app.kubernetes.io/component=jobservice --kubeconfig ${HOME_DIR}/.kube/config
+kubectl rollout pause deployment --namespace slackernews slackernews-frontend --kubeconfig ${HOME_DIR}/.kube/config
+kubectl delete replicaset --namespace slackernews -l app=slackernews-frontend --kubeconfig ${HOME_DIR}/.kube/config
 
 ## prepare for upgrade
 api_token=$(get_api_token)

@@ -7,13 +7,13 @@ result=0
 
 # check whether the preflight has been created, we can assume that if it
 # has the right number of outcomes they've probably done the work
-if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("CPU") ) | has("nodeResources") ' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
-  fail-message 'Please add the CPU resources preflight check to the Harbor preflights manifest'
+if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("CPU") ) | has("nodeResources") ' /home/replicant/slackernews-preflights.yaml) == "true" ]] ; then
+  fail-message 'Please add the CPU resources preflight check to the Slackernews preflights manifest'
   let "result = result + 1"
 fi
 
-if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("memory") ) | has("nodeResources") ' /home/replicant/harbor-preflights.yaml) == "true" ]] ; then
-  fail-message 'Please add the memory preflight check to the Harbor preflights manifest'
+if [[ ! $(yq '.spec.analyzers[] | select( .nodeResources.checkName | test("memory") ) | has("nodeResources") ' /home/replicant/slackernews-preflights.yaml) == "true" ]] ; then
+  fail-message 'Please add the memory preflight check to the Slackernews preflights manifest'
   let "result = result + 1"
 fi
 
