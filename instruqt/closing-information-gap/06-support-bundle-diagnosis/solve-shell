@@ -3,6 +3,7 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
 
 
 ### Assure the tmux session exists
@@ -30,5 +31,11 @@ helm registry login registry.replicated.com \
 
 # upgrade the application
 app_slug=$(agent variable get REPLICATED_APP)
-helm upgrade slackernews --version 0.4.0 \
-  oci://registry.replicated.com/${app_slug}/slackernews \
+helm upgrade slackernews --namespace slackernews --version 0.4.0 \
+  --kubeconfig ${HOME_DIR}/.kube/config \
+  oci://registry.replicated.com/${app_slug}/slackernews
+
+# collect a support bundle with the in-cluster specs
+kubectl support-bundle --namespace slackernews \
+  --kubeconfig ${HOME_DIR}/.kube/config \
+  --load-cluster-specs --output ${HOME_DIR}/geeglo-support-bundle.tar.gz

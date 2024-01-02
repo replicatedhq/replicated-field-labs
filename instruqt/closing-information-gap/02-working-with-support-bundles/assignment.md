@@ -64,7 +64,7 @@ Let's try collecting a support bunglde with it.
 kubectl support-bundle ./simplest-support-bundle.yaml
 ```
 
-Since we haven't given it anything to collect or to analyzer, it will error out
+Since we haven't given it anything to collect or to analyze, it will error out
 with a messsage similar to the one below.
 
 ```
