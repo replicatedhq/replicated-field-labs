@@ -18,7 +18,6 @@ spec:
   analyzers:
     - deploymentStatus:
         name: slackernews-frontend
-        namespace: slackernews
         outcomes:
           - fail:
               when: "absent"
@@ -36,8 +35,12 @@ spec:
 HARBOR_BUNDLE
 
 
-# collect the two support bundles from the challenge
-kubectl support-bundle --namespace slackernews --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
+# NOTE - we used to collect a support bundle for the simplest support bundle
+# definition, but the behvaior change so that explicitly settign collectors
+# to [] leads to an error instead of a bundle with the default collectors
+# having been collected
+# kubectl support-bundle --namespace slackernews --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/simplest-support-bundle.yaml
+# collect the slackernews support bundles from the challenge
 kubectl support-bundle --namespace slackernews --interactive=false --kubeconfig /home/replicant/.kube/config /home/replicant/slackernews-support-bundle.yaml
 
 # make sure support bundle files are in the users home directory

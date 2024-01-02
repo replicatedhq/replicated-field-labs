@@ -3,7 +3,7 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
-cat <<SLACKERNEWS_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubelshoot/support-bundle.yaml
+cat <<SLACKERNEWS_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubleshoot/support-bundle.yaml
 apiVersion: v1                                                                                                                                                              
 kind: Secret                                                                                                                                                                
 metadata:                                                                                                                                                                   

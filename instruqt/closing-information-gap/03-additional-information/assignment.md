@@ -22,8 +22,8 @@ difficulty: basic
 timelimit: 600
 ---
 
-You have a pretty useful support bundle right now. You can collect all the logs
-from the Slackernews g and you're able to verify if its core service is
+You have a useful support bundle right now. You can collect the logs
+from the Slackernews app and you're able to verify if its core service is
 running. This can be very useful information to help your team resolve support
 cases more quickly with minimal back-and-forth with your customer.
 
