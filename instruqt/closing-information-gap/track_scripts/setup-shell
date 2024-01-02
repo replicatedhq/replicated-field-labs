@@ -2,7 +2,7 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
-HOME_DIR=${HOME_DIR}
+HOME_DIR=/home/replicant
 
 # simple SSH client setup so we can SSH to/from the shell
 
@@ -16,7 +16,7 @@ EOF
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/chore/crdant/switch-to-slackernews/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/chore/crdant/switch-to-slackernews/libs/header.sh
 source /etc/profile.d/header.sh
 
 # change the cluster URI
@@ -39,6 +39,7 @@ mkdir ${HOME_DIR}/release
 get_slackernews
 yq -i '.version = "0.2.0"' slackernews/Chart.yaml
 replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+yq -i ".dependencies = []" slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
 
 # update dependencies
@@ -213,7 +214,8 @@ helm registry login registry.replicated.com \
 # install the application, trying again if it fails since there might be timing issues
 set +e
 retries=0
-while ! helm install slackernews --version 0.3.0 \
+while ! helm install --namespace slackernews --create-namespace \
+  slackernews --version 0.3.0 \
   oci://registry.replicated.com/${app_slug}/slackernews \
   --set service.type=NodePort \
   --set slackernews.domain=cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
