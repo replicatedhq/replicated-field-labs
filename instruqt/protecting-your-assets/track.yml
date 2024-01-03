@@ -1,0 +1,24 @@
+slug: protecting-your-assets
+title: Protecting Your Assets
+teaser: Template track for a shell connecting to a K3s cluster
+description: |-
+  This track is a template track to build any lab that requires
+  a shell that connects to an existing cluster. To use it, run:
+
+  ```
+  instruqt track create --title [NEW TRACK TITLE] \
+    --from shell-and-cluster-template
+  ```
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+level: beginner
+tags:
+- template
+owner: replicated
+developers:
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+  feedback_recap_enabled: true
+  loadingMessages: true
