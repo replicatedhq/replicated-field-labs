@@ -17,10 +17,10 @@ description: |-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/licensing.png
 level: beginner
 tags:
-- template
 - builders-plan
 - helm
 - dev
+- template
 owner: replicated
 developers:
 - chuck@replicated.com
