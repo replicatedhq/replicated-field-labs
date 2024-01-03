@@ -1,5 +1,5 @@
-slug: protecting-your-assets
-title: Protecting Your Assets
+slug: protecting-your-assets-dev
+title: DEV - Protecting Your Assets
 teaser: Template track for a shell connecting to a K3s cluster
 description: |-
   This track is a template track to build any lab that requires
@@ -13,9 +13,13 @@ icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 level: beginner
 tags:
 - template
+- builders-plan
+- helm
+- dev
 owner: replicated
 developers:
 - chuck@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 25
