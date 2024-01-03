@@ -18,9 +18,13 @@ icon: https://storage.googleapis.com/shared-lab-assets/icons/red/licensing.png
 level: beginner
 tags:
 - template
+- builders-plan
+- helm
+- dev
 owner: replicated
 developers:
 - chuck@replicated.com
+maintenance: true
 lab_config:
   overlay: false
   width: 25
