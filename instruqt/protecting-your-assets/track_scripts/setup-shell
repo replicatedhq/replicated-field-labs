@@ -454,7 +454,8 @@ helm registry login registry.replicated.com \
   --username ${customer_email} \
   --password ${registry_password}
 # assure that the `replicant` user is also logged in
-cp -R ${HOME}/.docker ${HOME_DIR}/docker
+mkdir -p ${HOME_DIR}/.config
+cp -R ${HOME}/.config/helm ${HOME_DIR}/.config/helm
 
 # install the application, trying again if it fails since there might be timing issues
 set +e
@@ -470,4 +471,4 @@ while ! helm install --namespace slackernews --create-namespace \
 done
 
 # make sure permissions are good
-chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release ${HOME_DIR}/.docker
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release ${HOME_DIR}/.config/helm

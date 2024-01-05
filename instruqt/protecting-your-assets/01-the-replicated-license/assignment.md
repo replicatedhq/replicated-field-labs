@@ -8,7 +8,11 @@ notes:
 - type: text
   contents: Understanding the Replicated license
 tabs:
-- title: Shell
+- title: License File
+  type: code
+  hostname: shell
+  path: /home/replicant
+- title: Terminal for Debugging
   type: terminal
   hostname: shell
   workdir: /home/replicant
@@ -24,8 +28,7 @@ customers and entitles them to install your software. These customer licenses
 provide several default entitlements such as the type of licesnse and whether
 (and when) it expries. Replicated provides the license file to you as a
 downloadable asset and embeds it into your Helm chart when you include the
-Replicated SDK. A digital signature lets you confirm it hasn't been tampered
-with.
+Replicated SDK. A digital signature confirms it hasn't been tampered with.
 
 How License Work
 ================
@@ -90,4 +93,18 @@ you work through your implementation.
 License Files
 =============
 
-License files are YAML files....
+The customer license is defined in a format that's easy both to read and to
+parse.  A basic license is in the file `Geeglo.yaml` that you can open in the
+edit showing in the "License File" tab. You'll notice that it's a YAML
+formatted file with the same structure as a Kubernetes object. The object is
+interpreted by the Replicated Platform components rather than the Kubernetes
+cluster to avoid needing any special permissions.
+
+![Opening the Geeglo License File](../assets/opening-the-license-file.png)
+
+In most installation scenarios, neither you nor your customer will need to
+interact directly with their license file. Instead, the platform embeds it into
+install artifacts like the your Helm chart and the Replicated Embedded Cluster
+binary. The exception is installing into an existing cluster using the
+Replicated Admin Console. The console will prompt for the customer to uploaed
+there license as one of the first steps to the install.
