@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+result=0
+
+# check for release to Unstable
+api_token=$(get_api_token)
+
+# get the app id in order to work with the customer
+app_id=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+
+# get the customer id in order to assure they exist
+new_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customers" | jq -r '.customers[] | select( .name == "NitFlex" )')
+if [[ -z "${new_customer}" ]] ; then
+  fail-message $'Please remember to create the customer Nitflex'
+  let "result = result + 1"
+fi
+
+exit ${result}
