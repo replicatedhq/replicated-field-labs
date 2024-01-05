@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+# get the customer id, since it's the password for the Helm installation
+# and users like to copy/paste
+api_token=$(get_api_token)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+# provide an email address for the new customer
+customer_email="${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
+
+# create the new customer and keep track of the ID
+customer_id=$(replicated customer create --name "Geeglo" --email ${customer_email} --channel Stable --expires-in 720h --kots-install=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
+
+# make sure the customer has a paid license
+updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  jq -c --arg appId "${app_id}" '.customer | {"app_id": $appId, "name": .name, "email": .email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
+
