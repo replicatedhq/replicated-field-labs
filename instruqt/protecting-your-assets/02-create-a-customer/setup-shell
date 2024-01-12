@@ -14,7 +14,5 @@ new_customer_email=${INSTRUQT_PARTICIPANT_ID}@nitflex.tv
 # help the user out by telling them the expiration date for a 30-day trial
 license_expiry=$(date -d "+1 year" "+%B %d, %Y")
 
-agent variable set APP_ID ${app_id}
-agent variable set CUSTOMER_ID ${omozan_customer_id}
 agent variable set LICENSE_EXPIRY "${license_expiry}"
 agent variable set CUSTOMER_EMAIL "${new_customer_email}"
