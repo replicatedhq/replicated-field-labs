@@ -12,10 +12,6 @@ tabs:
   type: code
   hostname: shell
   path: /home/replicant
-- title: Terminal for Debugging
-  type: terminal
-  hostname: shell
-  workdir: /home/replicant
 difficulty: basic
 timelimit: 400
 ---
