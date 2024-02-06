@@ -23,7 +23,8 @@ description: |-
   pane content and running a grep against it, see the sample
   check script in the first challenge for an example.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+tags:
+- template
 owner: replicated
 developers:
 - chuck@replicated.com
