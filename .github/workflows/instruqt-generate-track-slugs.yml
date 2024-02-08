@@ -39,7 +39,7 @@ jobs:
         uses: mikefarah/yq@master
         with:
           cmd: |
-            yq eval-all 'select(.id != null and .slug != null) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }' ${{ steps.find-track-descriptors.outputs.files }}
+            yq eval-all 'select(.id != null and .slug != null and ( contains({ "tags": "deprecated"}) | not ) and (  contains({ "tags": "template" } ) | not) and ( contains( { "tags": "internal" } ) | not ) ) | . as $item ireduce ([]; . + [{"slug": $item.slug, "id": $item.id}]) | {"tracks": . }'
 
       - name: Update track slugs metadata
         id: update-slugs

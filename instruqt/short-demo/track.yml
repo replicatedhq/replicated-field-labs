@@ -15,7 +15,8 @@ description: |-
   It contains a container with the replicated CLI pre-installed.
   It contains an editor with the manifests pre-loaded as an IDE example
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+tags: 
+- internal
 owner: replicated
 developers:
 - joshd@replicated.com

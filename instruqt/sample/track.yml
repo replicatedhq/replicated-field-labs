@@ -7,7 +7,8 @@ description: |-
 
   You can use any GitHub flavoured markdown.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+tags:
+- deprecated
 owner: replicated
 developers:
 - joshd@replicated.com
