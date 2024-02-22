@@ -1,16 +1,23 @@
 slug: custom-fields
 id: 9ixa2iyrggut
 title: Managing Features with Custom License Fields
-teaser: Learn how to use Custom License Fields to manage which features to enable
+teaser: |-
+  Learn how to use Custom License Fields to manage which features to enable
   to your customers
-description: -|
+description: |-
   In this track we take a deeper look at using Licenses with Replicated.
-  In this track, you will learn how to define Custom License Fields and how to use them to manage features.
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+  In this track, you will learn how to define Custom License Fields and how to use
+  them to manage features.
+icon: https://storage.googleapis.com/shared-lab-assets/icons/blue/licensing.png
+tags:
+  - deprecated
+  - premium-plans
 owner: replicated
 developers:
-- fernando@replicated.com
-private: false
-published: false
-checksum: "15461483467786460242"
+  - fernando@replicated.com
+  - chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+checksum: "16074264238685599528"

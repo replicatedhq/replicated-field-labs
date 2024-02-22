@@ -50,7 +50,8 @@ RUN apt-get update && apt-get install -y \
   ca-certificates \
   curl \
   git \
-  jq
+  jq \
+  tmux
 
 # add kubectl 
 COPY --from=kubectl /usr/bin/kubectl /usr/local/bin

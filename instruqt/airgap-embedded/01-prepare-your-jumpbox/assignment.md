@@ -48,20 +48,12 @@ timelimit: 300
 
 ## Connecting to the Replicated Vendor Portal
 
-Log into the Replicated Vendor Portal in the "Vendor Portal" tab using the username
-and password printed to your screen in the "Shell" tab.
+Log into the Replicated Vendor Portal in the "Vendor Portal" tab using the following credentials
 
-```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
-```
-
-Once you have the credentials, you can login into the Vendor tab and you should land on the Channels tab.
+Username: `[[ Instruqt-Var key="USERNAME" hostname="jumpbox" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="jumpbox" ]]`
 
 ![Vendor Portal Login](../assets/vendor-portal-login.png)
-
-After logging in, you're going to identify your application and create an API token to use with the
-Replicated command-line, then set up some environment variables in your shell to store them.
 
 ### Configure environment
 
@@ -79,22 +71,28 @@ When you go back to the "Shell" tab you'll set the variable `REPLICATED_APP` to 
 the `replicated` command which application you are working on without you having to passing it as
 an argument to every command.
 
-Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings)
-page:
+The other thing you need to work with your application is an API token. You
+would usually create `read/write` User API token from the [Account
+Settings](https://vendor.replicated.com/account-settings) page. For this lab,
+we've created one for you. You set the variable `REPLICATED_API_TOKEN` to the
+value of the token.
 
-![Creating an API token](../assets/create-api-token.png)
-
-Note: Ensure the token has "Write" access or you'll be unable to create new releases.
-
-Once you have the values, go back to the "Shell" tab and set them in your environment.
+Set the environment variables in your shell.
 
 ```
-export REPLICATED_APP=...
-export REPLICATED_API_TOKEN=...
+export REPLICATED_APP=[[ Instruqt-Var key="REPLICATED_APP" hostname="jumpbox"]]
+export REPLICATED_API_TOKEN=[[Instruqt-Var key="REPLICATED_API_TOKEN" hostname="jumpbox"]]
 ```
 
-You can ensure this is working with
+You can ensure you are authenticated and using the right application by running
 
 ```
 replicated release ls
+```
+
+If you see a list of releases everything is configured correctly.
+
+```
+SEQUENCE    CREATED                 EDITED                  ACTIVE_CHANNELS
+1           2023-06-23T00:45:18Z    0001-01-01T00:00:00Z    Unstable
 ```

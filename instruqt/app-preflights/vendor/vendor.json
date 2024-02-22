@@ -1,7 +1,0 @@
-{
-    "name": "Application Preflight Checks",
-    "slug": "app-preflights",
-    "customer": "Hola Preflight Customer",
-    "yaml_dir": "./manifests",
-    "k8s_installer_yaml_path": ""
-}

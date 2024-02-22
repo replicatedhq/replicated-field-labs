@@ -1,7 +1,0 @@
-{
-    "name": "Support Bundle",
-    "slug": "support-bundle",
-    "customer": "Support Bundle Customer",
-    "yaml_dir": "./manifests",
-    "k8s_installer_yaml_path": ""
-}

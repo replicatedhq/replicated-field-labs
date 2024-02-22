@@ -1,0 +1,27 @@
+slug: trying-out-cmx
+id: 1gpba3eivmb4
+title: Trying Out the Replicated Compability Matrix
+teaser: |-
+  Learn how the Replicated Platform helps you prevent cluster compatibility
+  issue before you release to your customers
+description: |2-
+
+  What if you could automatically test your new releases on truly
+  customer-representative environments—same cloud provider, same Kubernetes
+  distribution and version, and even the same entitlements and configuration?
+  With the [Compatibility Matrix](https://www.replicated.com/test-compatibility-in-customer-representative-environments),
+  you can.
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/connect.png
+tags:
+- prod
+- builders-plan
+- compatibility-matrix
+- helm
+owner: replicated
+developers:
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+checksum: "16262887100161909657"

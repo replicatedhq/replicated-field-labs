@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
+fi
+
+# get he API token for this script to use
+api_token=$(get_api_token)
+
+# login to the registry
+customer_email=$(agent variable get CUSTOMER_EMAIL)
+registry_password=$(agent variable get REGISTRY_PASSWORD)
+
+helm registry login registry.replicated.com \
+  --username ${customer_email} \
+  --password ${registry_password}
+
+# upgrade the application
+app_slug=$(agent variable get REPLICATED_APP)
+helm upgrade harbor --version 19.4.0 \
+  oci://registry.replicated.com/${app_slug}/harbor \

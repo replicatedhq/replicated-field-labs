@@ -59,7 +59,7 @@ runcmd:
     curl -L https://krew.sh/preflight | bash
     curl -L https://krew.sh/support-bundle | bash
     echo 'export KREW_ROOT=/usr/local/libexec/krew' >> /home/replicant/.profile
-    echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> /home/replicant/.profile
+    echo 'export PATH="${KREW_ROOT}/bin:$PATH"' >> /home/replicant/.profile
   )" 
 - |
   bash -c "(

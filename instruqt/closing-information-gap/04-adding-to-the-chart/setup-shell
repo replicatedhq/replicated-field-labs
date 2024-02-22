@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+HOME_DIR=/home/replicant
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
+
+# there's only one app created by the automation, so just grab the first in the list
+access_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+cat <<SIMPLEST_SUPPORT_BUNDLE_SECRET > /home/replicant/simplest-support-bundle-secret.yaml
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: simplest-support-bundle
+  labels:
+    troubleshoot.sh/kind: support-bundle
+stringData:
+  support-bundle-spec: |-
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: SupportBundle
+    metadata:
+      name: simplest-support-bundle
+    spec:
+      collectors: []
+      analyzers: []
+SIMPLEST_SUPPORT_BUNDLE_SECRET
+
+chown replicant /home/replicant/simplest-support-bundle-secret.yaml

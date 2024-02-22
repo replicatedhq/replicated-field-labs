@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+result=0
+
+# look for the preflight template file
+if [[ ! -f /home/replicant/harbor/templates/troubleshoot/support-bundle.yaml ]] ; then
+  fail-message 'Please create the support bundle spec template file in the Harbor Helm chart template directory'
+  let "result = result + 1"
+fi
+
+if [[ "$(helm template /home/replicant/harbor | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "support-bundle" ) | .stringData | has("support-bundle-spec")' | head -1)" == "true" ]] ; then
+  set +e pipefail
+  analyzer_results="$(helm template /home/replicant/harbor | kubectl support-bundle --interactive=false --kubeconfig /home/replicant/.kube/config -)"
+  set -e pipefail
+else
+  fail-message 'Please add your support bundle definition to the support bundle template file'
+  let "result = result + 1"
+fi

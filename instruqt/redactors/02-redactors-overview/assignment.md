@@ -8,16 +8,14 @@ notes:
 - type: text
   contents: First, let's learn a little bit about redactors.
 tabs:
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
   new_window: true
 - title: Application Installer
-  type: website
-  url: http://kubernetes-vm.${_SANDBOX_ID}.instruqt.io:8800
+  type: service
+  hostname: kubernetes-vm
+  port: 8800
   new_window: true
 difficulty: basic
 timelimit: 600
@@ -33,7 +31,10 @@ In this lab, the Application Installer is already deployed. So you can download 
 
 ### 1. Download the license
 
-On the **Vendor** tab, login to the Vendor Portal using the credentials shown on the **Shell** tab.
+On the **Vendor** tab, login to the Vendor Portal using the credentials below.
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
 
 Once logged in, navigate to **Customers** and find the customer already created for you.
 
@@ -43,14 +44,11 @@ Click on the icon highlighted above to download the license.
 
 ### 2. Install the application
 
-The password for the application installer is your `PARTICIPANT_ID`, which can be obtained running the following in the **Shell** tab:
+In this lab, the Admin Console is already deployed and will be working exclusively in the Admin Console. The password for the Admin Console is the following:
 
 ```
-echo $INSTRUQT_PARTICIPANT_ID
+[[ Instruqt-Var key="KOTS_PASSWORD" hostname="kubernetes-vm" ]]
 ```
-
-In this lab, the Admin Console is already deployed and will be working exclusively in the Admin Console. The password for the Admin Console is your `PARTICIPANT_ID`, which we obtained above.
-
 
 Make sure to save this password as you may need to log back in if your session expires.
 
@@ -68,11 +66,11 @@ In order to look at redactors, we need to generate a support bundle. Click on th
 
 <p align="center"><img src="../assets/red-ac-troubleshoot.png" width=600></img></p>
 
-When it's done, head over to the **Redactor Report** tab.
+When it's done, head over to the **Redactor Report** tab. You may see different redactors were applied than the set in this image.
 
 <p align="center"><img src="../assets/red-ac-default-redactors.png" width=600></img></p>
 
-You'll notice the following redaction rules are applied automatically
+The following redaction rules were applied. You'll see some of them matched text in the logs and those items were redacted.
 
 * Redact connection strings with username and password
 * Redact database connection strings in mutiline JSON
@@ -81,7 +79,7 @@ You'll notice the following redaction rules are applied automatically
 * Redact usernames in multiline JSON
 * Redact values for environment variables with names beginning with 'user'
 
-Clicking on **Show details** will show you where redactions were perfomed
+Clicking on **Show details** will show you where redactions were perfomed for a particular redactor. You may see different results than the screenshot.
 
 <p align="center"><img src="../assets/red-ac-redacted-files.png" width=600></img></p>
 

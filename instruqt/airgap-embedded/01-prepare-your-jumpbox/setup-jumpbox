@@ -2,6 +2,7 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+source /etc/profile.d/header.sh
 
 HOME_DIR=/home/replicant
 
@@ -12,6 +13,12 @@ do
   sleep 1
 done
 
-# Display PARTICIPANT_ID info for Vendor Portal
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
-echo "show_credentials" >> ${HOME_DIR}/.bashrc
+# get a token and the app slug
+access_token=$(get_api_token)
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+
+# Display PARTICIPANT_ID info for Vendor Por
+agent variable set USERNAME $(get_username)
+agent variable set PASSWORD $(get_password)
+agent variable set REPLICATED_API_TOKEN ${access_token}
+agent variable set REPLICATED_APP ${app_slug}

@@ -4,7 +4,7 @@
 # This workflow will promote a DEV track back to its PROD version
 #
 ##############################################################################
-name: instruqt-promote-dev
+name: Promote Development Track to Production
 
 env:
   INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}

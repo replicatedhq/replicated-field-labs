@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
+
+result=0
+
+# check for installation of the updated chart
+installed_chart=$(helm list -o yaml --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
+if [[ ! "${installed_chart}" == "harbor-19.4.0"  ]] ; then
+  fail-message $'Please be sure to upgrade the customer\'s instance to the verison including your support bundle'
+  let "result = result + 1"
+fi
+
+if [[ ! -f ${HOME_DIR}/geeglo-support-bundle.tar.gz ]] ; then
+  fail-message 'You forgot to generate the support bundle using the in-cluster spec'
+  let "result = result + 1"
+fi
+
+exit ${result}

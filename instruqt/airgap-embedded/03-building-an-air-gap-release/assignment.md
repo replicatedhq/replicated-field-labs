@@ -24,6 +24,12 @@ our current application release. You can see your download status in
 the "Jumpbox" tab. We'll mostly be working in the "Vendor Portal" for
 this lab.
 
+You should still be logged it, but just in case, here's your username
+and password again.
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="jumpbox" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="jumpbox" ]]`
+
 Since air-gapped bundles can be quite large, not all release channels
 build them automatically. Two of the default channels, `Stable` and
 `Beta` are configured to do it. Other channels can be set to auto
@@ -46,7 +52,7 @@ create airgap builds for newly promoted release in this channel"
 
 ![Enabling Automatic Airgap Builds](../assets/channel-enable-airgap.png)
 
-After enabling the automatic build, you should make sure you current 
+After enabling the automatic build, you should make sure your current
 release has an airgap bundle built by clicking "Release history" for
 the channel and then "Build" next to the release.
 
@@ -56,11 +62,12 @@ the channel and then "Build" next to the release.
 Enabling Airgap for a customer
 ==============================
 
-Customers are automatically enabled for air gap deployment. This
-gives you flexibility in terms of product packaging and deployment.
-Let's enable air-gap downloads for the example customer we're using
-for the lab. Go to "Customers" in the Vendor portal and select the
-"Replicant" customer to enable the airgap.
+Customers are automatically enabled for air gap deployment. This gives you
+flexibility in terms of product packaging and deployment. Let's enable air-gap
+downloads for the example customer we're using for the lab. Go to "Customers"
+in the Vendor portal and select the "Replicant" customer to enable the airgap.
+Then select "Customer Details" so you can edit their license options to allow
+installation from an airgap bundle.
 
 ![Enabling Airgap Downloads for a Customer](../assets/airgap-customer-enable.png)
 
@@ -94,3 +101,4 @@ We're only going to download the license file and the application
 bundle right now. We started downloading the kURL bundle in the previous
 step, so we don't need to do that again.
 
+Click the "Download license" button, then the "Download airgap bundle" button.

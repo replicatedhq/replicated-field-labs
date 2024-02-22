@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+export CPU_PREFLIGHT=$(cat <<CPU_PREFLIGHT
+nodeResources:
+  checkName: Cluster CPU resources are sufficient to install and run Harbor
+  outcomes:
+    - fail:
+        when: "sum(cpuAllocatable) < 2"
+        message: |-
+          Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+          at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+          workloads. Please increase cluster capacity or install into a different cluster.
+        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+    - warn:
+        when: "sum(cpuAllocatable) < 4"
+        message: |-
+          Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+          than 4 CPU cores available to run workloads. For the best experience, consider
+          increasing cluster capacity or installing into a different cluster.
+        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+    - pass:
+        message: Your cluster has sufficient CPU resources available to run Harbor
+CPU_PREFLIGHT
+)
+yq -i ".spec.analyzers += env(CPU_PREFLIGHT)" /home/replicant/harbor-preflights.yaml
+
+export MEMORY_PREFLIGHT=$(cat <<MEMORY_PREFLIGHT | yq
+nodeResources:
+  checkName: Cluster memory is sufficient to install and run Harbor
+  outcomes:
+    - fail:
+        when: "sum(memoryAllocatable) < 4G"
+        message: |-
+          Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+          at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+          workloads. Please increase cluster capacity or install into a different cluster.
+        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+    - warn:
+        when: "sum(memoryAllocatable) < 8Gi"
+        message: |-
+          Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+          than 8 GB of memory available to run workloads. For the best experience, consider
+          increasing cluster capacity or installing into a different cluster.
+        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+    - pass:
+        message: Your cluster has sufficient memory available to run Harbor
+MEMORY_PREFLIGHT
+)
+yq -i ".spec.analyzers += env(MEMORY_PREFLIGHT)" /home/replicant/harbor-preflights.yaml
+
+chown replicant /home/replicant/harbor-preflights.yaml

@@ -10,9 +10,6 @@ notes:
     In this next challenge we are going to get our hands dirty with some YAML!
     We are going to update the application manifests to support turning on/off the Super Duper Feature.
 tabs:
-- title: Shell
-  type: terminal
-  hostname: kubernetes-vm
 - title: Dev
   type: terminal
   hostname: shell
@@ -24,7 +21,7 @@ tabs:
 - title: Vendor
   type: website
   url: https://vendor.replicated.com
-  new_window: true  
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -38,23 +35,16 @@ Before we update the application, let's set up our dev environment. In this lab,
 * **Dev:** This is a Linux environment preloaded with some handy tools, like the `replicated` command line. This will be our dev environment.
 * **Code Editor:** This is a code editor provided by Instruqt. We will use this to edit the manifests.
 
-Let's start by setting our environment variables in our dev environment. The two environment variables are `REPLICATED_APP` and `REPLICATED_API_TOKEN` which tell the `replicated` command line where to push changes. This is covered in the Replicated CLI track in more detail.
+Let's start by setting our environment variables in our dev environment. The two environment variables are `REPLICATED_APP` and `REPLICATED_API_TOKEN` which tell the `replicated` command line where to push changes. These are covered in the Replicated CLI lab in more detail.
 
-Both values for these are in the Vendor Portal. Click on the **Vendor** tab to go to the Vendor Portal, and if you are prompted to log in, use the credentials in the **Shell** tab.
+Set the environment variables into your terminal in the **Dev** tab.
 
-Once you are logged in to the Vendor Portal, head over to the **Dev** tab to set the Environment Variables.
+```
+export REPLICATED_API_TOKEN=[[Instruqt-Var key="REPLICATED_API_TOKEN" hostname="kubernetes-vm"]]
+export REPLICATED_APP=[[Instruqt-Var key="REPLICATED_APP" hostname="kubernetes-vm"]]
+```
 
-Set the `REPLICATED_APP` to be the **application slug** found in the setting in the vendor portal. 
-
-<p align="center"><img src="../assets/cf-app-slug.png" width=450></img></p>
-
-Set the `REPLICATED_API_TOKEN` to your user token, which you can create under your Account Settings.
-
-<p align="center"><img src="../assets/cf-acc-set.png" width=450></img></p>
-
-Navigate all the way down until you see **User API Tokens** and create one with read & write access.
-
-Once you have set your environment variables, you can run `replicated release ls` to see if you get any results. If you are not sure how to set the Environment Variables, see screenshot below:
+Once you have set your environment variables, you can run `replicated release ls` to see if you get any results.
 
 <p align="center"><img src="../assets/cf-set-vars.png" width=600></img></p>
 
@@ -73,9 +63,7 @@ Let's create a directory structure before we start dowloading files. Create a di
 
 ```
 mkdir custom-fields-app
-
 cd custom-fields-app
-
 mkdir manifests
 
 ```
@@ -88,7 +76,7 @@ replicated release download 1 -d ./manifests
 A succesful download will yield results similar to this:
 
 ```shell
-  • Fetching Release 1 ✓  
+  • Fetching Release 1 ✓
   • Writing files to ./manifests
     • k8s-app.yaml
     • kots-app.yaml
@@ -103,7 +91,7 @@ Now we are ready to update the application.
 
 ## Making Updates to the Application
 
-We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled. 
+We are going to add a second `ConfigMap` that will be used when the Super Duper Feature is enabled.
 
 Head over to the **Code Editor** tab, which contains a directory tree that should look similar to this
 
@@ -117,11 +105,11 @@ Use the **New File** icon (highlighted in red below) to create a new file in the
 
 <p align="center"><img src="../assets/cf-new-file-icon.png" width=350></img></p>
 
-Enter `nginx-feature-on.yaml` as the file name in the dialog
+Enter `nginx-feature-on.yaml` as the file name in the dialog.
 
 <p align="center"><img src="../assets/cf-new-file.png" width=350></img></p>
 
-Copy and paste the content below:
+You may need to click on the file after you create it to make sure it's opened. Copy and paste the content below:
 
 ```yaml
 apiVersion: v1
@@ -173,7 +161,7 @@ Below is what a diff would look like after the change:
 
 The above basically states that if the Custom License Field is set to true, the value of the `name` key is `nginx-feature-on`, otherwise the value will be `nginx-feature-off`
 
-To save changes, click on the save icon on the file tab in the editor. 
+To save changes, click on the save icon on the file tab in the editor.
 
 Now we are ready to create a new release. Head back to the **Dev** tab and run the following command (make sure you are on the `custom-fields-app` directory):
 

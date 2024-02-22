@@ -1,0 +1,34 @@
+slug: closing-information-gap
+id: hfb41xqkyx0q
+title: Closing the Support Information Gap
+teaser: |-
+  Use the Replicated Platform to close the information gap between your
+  customers and your support team
+description: |-
+  Learn how to use the Replicated Platform and the [Troubleshoot](https://troubleshoot.sh)
+  open source project to close the information gap between your customers and
+  your supprot team.
+
+   **This lab demonstrates how to:**
+
+   * Review telemetry provided by customer instances to gain insight into their
+     instance of your application
+   * Define a support bundle that gives your team the information they need about
+     a customer's running instance to resolve issue faster
+   * Iterate on your support bundle definition to avoid having to solve the same
+     issue multiple times
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/audit_log.png
+tags:
+- prod
+- builders-plan
+- troubleshoot
+- helm
+owner: replicated
+developers:
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+  enableLoadingMessages: true
+checksum: "16018974617273983350"

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Create the nginx deployment
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx-extra
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      initContainers:
+      - image: busybox
+        name: coffee
+        command:
+        - sh
+        - -c
+        - sleep 10
+      containers:
+      - image: busybox
+        name: milk
+        command:
+        - sh
+        - -c
+        - sleep 1800
+EOF
+
+# Create the check-nginx.sh script
+cat <<EOF > check-nginx.sh
+#!/bin/bash
+
+echo "Checking nginx"
+for i in {1..10}
+do
+curl -s -o /dev/null -w "Response: %{http_code} %{errormsg}" localhost:30001
+echo ""
+sleep 2
+done
+EOF
+chmod +x check-nginx.sh

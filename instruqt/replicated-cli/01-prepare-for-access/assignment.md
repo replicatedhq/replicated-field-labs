@@ -45,13 +45,12 @@ This exercise is designed to give you a sandbox to ensure you have a basic under
 
 ### 1. Vendor Portal login
 
-To access the Vendor Portal, you will need your participant id. If you go to the Shell tab, it will show you the username and password to be used for the Vendor tab. It will be of the following format:
-```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
-```
+To access the Vendor Portal, you can use the following credentials that were created as part of lab setup.
 
-Once you have the credentials, you can login into the Vendor tab and you should land on the Channels. Channels allow you to manage who has access to which releases of your application.
+Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
+
+Once you have the credentials, you can log into the Vendor tab and you should land on the Release Channels page. Channels allow you to manage who has access to which releases of your application.
 
 
 ### 2. Configure environment
@@ -66,32 +65,20 @@ Now, you'll need to set up environment variables to interact with vendor.replica
 
 <p align="center"><img src="../assets/cli-setup-quickstart-settings.png" width=600 alt="Finding your application slug"></img></p>
 
-Next, create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings) page:
+Next, you will need to create a `read/write` User API token from your [Account Settings](https://vendor.replicated.com/account-settings) page:
 > Note: Ensure the token has "Write" access or you'll be unable create new releases.
 
 <p align="center"><img src="../assets/create-api-token.png" width="1368" alt="Create and API token"></img></p>
 
-Once you have the values,
-set them in your environment.
+Once you have the values, set them in your environment (the API token you created will not match the one below, but either will work).
 
 ```
-export REPLICATED_APP=...
-export REPLICATED_API_TOKEN=...
+export REPLICATED_API_TOKEN=[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]
+export REPLICATED_APP=[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]
 ```
 
 You can ensure this is working with
 
 ```
 replicated release ls
-```
-
-### 2. Saving your lab setup
-
-The lab environment you are working in is a little bit different
-than your own workstation. Because of the lab structure, we need
-to take an extra step to support the next challenges. You would
-not need to do this in a real-world environment. If you run the below command, it will persist the environment variables between challenges.
-
-```bash
-save_lab_setup
 ```

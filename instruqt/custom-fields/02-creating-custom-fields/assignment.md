@@ -20,12 +20,11 @@ timelimit: 600
 ---
 ### Vendor Portal login
 
-In this lab, we'll use your partipant ID for your credentials in the Vendor Portal. The credentials are included in the **Shell** tab and are displayed in the following format:
+To access the Vendor Portal, you will need your username and password. The lab
+setup has configured your account the following credentials:
 
-```
-username: [PARTICIPANT_ID]@replicated-labs.com
-password: [PASSWORD]
-```
+Username: `[[ Instruqt-Var key="USERNAME" hostname="kubernetes-vm" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="kubernetes-vm" ]]`
 
 To access the Vendor Portal, click on the **Vendor** tab and login to the Vendor Portal. Once you log in, you should land on the Channels, which allow you to manage who has access to which releases of your application.
 

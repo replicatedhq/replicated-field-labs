@@ -1,0 +1,34 @@
+slug: avoiding-installation-pitfalls
+id: amjfqroa5bfk
+title: Avoiding Installation Pitfalls
+teaser: |-
+  Use Preflight checks to avoid common installation pitfalls
+  for your application
+description: |-
+  Learn how to use preflight checks provided by the Replicated Platform and the
+  [Troubleshoot](https://troubleshoot.sh) open source project to avoid common
+  installation issues and assure you customer is installing into a supported
+  environmnet.
+
+   **This lab demonstrates how to:**
+
+   * Validate that your customer is installing in a supported Kubernetes cluster
+   * Assure your custommer's cluster has sufficient allocatable resources to run
+     your application
+   * Teach your customer to validate their cluster meets your requirements before
+     installing
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/checklist.png
+tags:
+- prod
+- builders-plan
+- troubleshoot
+- helm
+owner: replicated
+developers:
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+  enableLoadingMessages: true
+checksum: "15041863163879828350"
