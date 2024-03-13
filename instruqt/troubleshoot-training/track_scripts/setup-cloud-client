@@ -1,0 +1,179 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+# install krew
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+
+export PATH=$PATH:$HOME/.krew/bin
+echo "export PATH=$PATH:$HOME/.krew/bin" | tee -a /root/.bashrc
+
+kubectl krew install preflight
+kubectl krew install support-bundle
+
+# install gum
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list
+apt-get update && apt-get install -y gum
+
+# install sbctl
+curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
+  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
+  && cp /tmp/sbctl /usr/local/bin/sbctl \
+  && rm sbctl_linux_amd64.tar.gz
+
+### authenticate to gcloud
+mkdir -p /root/.config/gcloud
+echo "$INSTRUQT_GCP_PROJECT_KURL_SERVICE_ACCOUNT_KEY" | base64 -d > /root/.config/gcloud/credentials.json
+
+# Activate the service account
+gcloud auth activate-service-account --key-file /root/.config/gcloud/credentials.json
+
+# Set our project
+gcloud config set project "$INSTRUQT_GCP_PROJECT_KURL_PROJECT_ID"
+
+# set up kots cli
+curl https://kots.io/install | REPL_INSTALL_PATH=/usr/local/bin bash
+
+SSH_DIR="${HOME}/.ssh"
+mkdir -p "${SSH_DIR}"
+ssh-keygen -t ed25519 -o -a 100 -f "${SSH_DIR}/id_ed25519" -q -N ""
+chmod 0600 "${SSH_DIR}/id_ed25519" && chown -R root:root "${SSH_DIR}" && chmod 0700 "${SSH_DIR}"
+
+# set up the cluster vms
+for i in {1..3}; do
+  NODE_IP=$(gcloud compute instances create "kurl-node-$i" \
+    --zone europe-west1-b \
+    --machine-type n1-standard-8 \
+    --image-project ubuntu-os-cloud \
+    --image-family ubuntu-2204-lts \
+    --boot-disk-size 100GB \
+    --boot-disk-type pd-ssd \
+    --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+
+  # add a hard disk for Rook
+  gcloud compute disks create rook-disk-"$i" \
+    --size=200GB \
+    --zone=europe-west1-b
+
+  gcloud compute instances attach-disk "kurl-node-$i" \
+    --disk rook-disk-"$i" \
+    --zone=europe-west1-b
+
+  echo "${NODE_IP}   kurl-node-$i   # kurl node $i" >> /etc/hosts
+  agent variable set "KURL_NODE_${i}_IP" "${NODE_IP}"
+
+  # add the key to the SSH metadata
+  gcloud compute instances add-metadata "kurl-node-$i" --zone europe-west1-b \
+    --metadata ssh-keys="root:$(cat "${SSH_DIR}"/id_ed25519.pub)"
+
+
+done
+
+# set up firewall to allow ingress to kurl nodes
+gcloud compute firewall-rules create kurl --source-ranges 0.0.0.0/0 --action allow --rules tcp:80,tcp:8800,tcp:443,tcp:10250,udp:10250,udp:30000-65535,tcp:30000-65535,tcp:6443
+
+agent variable set SANDBOX_ID "$_SANDBOX_ID"
+agent variable set ADMIN_CONSOLE_PORT 8800
+agent variable set CLUSTER_URL "https://loadbalancer.$_SANDBOX_ID.instruqt.io"
+
+echo 'if [ -f /opt/repl_env.sh ]; then . /opt/repl_env.sh; fi' >> ~/.bashrc
+
+
+tee ~/.ssh/config << EOF
+Host *
+  StrictHostKeyChecking=no
+  UserKnownHostsFile=/dev/null
+EOF
+
+debug-message "install k0sctl"
+
+curl -L https://github.com/k0sproject/k0sctl/releases/download/v0.17.4/k0sctl-linux-x64 -o /usr/bin/k0sctl
+chmod +x /usr/bin/k0sctl
+
+debug-message "install cluster"
+
+tee k0sctl.yaml << EOF
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: k0s-cluster
+spec:
+  hosts:
+  - openSSH:
+      address: kurl-node-1
+    role: controller+worker
+    installFlags:
+      - --no-taints=true
+  - openSSH:
+      address: kurl-node-2
+    role: controller+worker
+    installFlags:
+      - --no-taints=true
+  - openSSH:
+      address: kurl-node-3
+    role: controller+worker
+    installFlags:
+      - --no-taints=true
+  k0s:
+    versionChannel: stable
+    dynamicConfig: false
+    version: v1.29.2+k0s.0
+    config: 
+      apiVersion: k0s.k0sproject.io/v1beta1
+      kind: ClusterConfig
+      metadata:
+        name: k0s-cluster
+      spec:
+        extensions:
+          helm:
+            repositories:
+            - name: openebs-internal
+              url: https://openebs.github.io/charts
+            charts:
+            - name: openebs
+              chartname: openebs-internal/openebs
+              version: "3.9.0"
+              namespace: openebs
+              order: 1
+              values: |
+                localprovisioner:
+                  hostpathClass:
+                    enabled: true
+                    isDefaultClass: true
+EOF
+
+k0sctl apply k0sctl.yaml
+
+debug-message "fetching kubeconfig"
+
+mkdir /root/.kube
+
+k0sctl kubeconfig | tee /root/.kube/config
+
+curl https://spooky.academy/license.yaml -O
+
+debug-message "installing kots and app"
+
+kubectl kots install onlineboutique --namespace default --license-file license.yaml --shared-password password --no-port-forward || true
+
+mkdir /opt/backups
+
+exit 0

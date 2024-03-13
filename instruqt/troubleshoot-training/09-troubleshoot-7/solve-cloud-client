@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+kubectl apply -f /opt/backups/t7.yaml
