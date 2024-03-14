@@ -116,7 +116,7 @@ frontend kots-admin
 backend kots-admin
     mode tcp
     option tcp-check
-    server kurl-node-1 $KURL_NODE_1_IP:8800 check
+    server kurl-node-1 $KURL_NODE_1_IP:30000 check
 
 EOF
 
