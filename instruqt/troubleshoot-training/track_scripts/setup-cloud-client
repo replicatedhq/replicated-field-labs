@@ -142,6 +142,9 @@ spec:
       metadata:
         name: k0s-cluster
       spec:
+        api:
+          extraArgs:
+            service-node-port-range: 80-32767
         network:
           provider: calico
         extensions:
@@ -149,7 +152,21 @@ spec:
             repositories:
             - name: openebs-internal
               url: https://openebs.github.io/charts
+            - name: bitnami
+              url: https://charts.bitnami.com/bitnami 
             charts:
+            - name: contour
+              version: "16.0.2"
+              chartname: bitnami/contour
+              namespace: projectcontour
+              order: 2
+              values: |
+                envoy:
+                  service:
+                    type: NodePort
+                  nodePorts:
+                    http: 80
+                    https: 443
             - name: openebs
               chartname: openebs-internal/openebs
               version: "3.9.0"
