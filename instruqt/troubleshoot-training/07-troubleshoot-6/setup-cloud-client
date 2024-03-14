@@ -1,0 +1,6 @@
+#!/bin/bash
+# expire some certs
+
+# date "$(date +%m%d%H%M%Y.%S -d '1 year ago')"
+
+exit 0
