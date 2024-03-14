@@ -1,6 +1,6 @@
 ---
 slug: install-app
-id: abuxqtapj4gr
+id: zb35aybsrv1q
 type: challenge
 title: Cluster setup
 teaser: Get started with kots

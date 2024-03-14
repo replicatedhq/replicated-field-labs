@@ -1,4 +1,0 @@
-#!/bin/bash
-set -exuo pipefail
-
-kubectl apply -f /opt/backups/t3.json

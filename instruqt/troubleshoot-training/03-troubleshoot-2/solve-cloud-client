@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# apply backed up resource from before we broke it
-kubectl apply -f /opt/backups/t2.json
-
