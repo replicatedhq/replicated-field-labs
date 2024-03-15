@@ -2,7 +2,11 @@
 
 exit 0
 
-if [[ kubectl --kubeconfig /opt/kubeconfig -n default get deployment frontend ]]; then
+replicas=$(kubectl --kubeconfig /opt/kubeconfig -n default get deployment frontend -o jsonpath='{.spec.replicas}')
+
+debug-message $replicas
+
+if [[ "$replicas" = "0" ]]; then
   fail-message "It looks like our application is still down, see the hints for how to proceed."
   exit 1
 fi
