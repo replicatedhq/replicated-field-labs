@@ -18,7 +18,7 @@ cd /root/
 
 pwd
 
-/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml"
+/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
 
 ls
 
