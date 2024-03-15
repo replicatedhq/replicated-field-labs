@@ -1,40 +1,24 @@
 #!/bin/bash
 
-if [ ! -d /root/.kube ]; then
-  # generate and fetch kubeconfig for cluster
-  mkdir /root/.kube
-  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-  scp kurl-node-1:root.conf /root/.kube/config
-fi
-
 # break stuff
 debug-message "Reticulating Splines..."
-debug-message "scale a random deployment to 0"
 
-app_slug=$(agent variable get APP_SLUG)
-
-if [[ -z "${app_slug}" ]]; then
-  fail-message "APP_SLUG could not be parsed from env"
-  exit 1
-fi
-
-set +u
-until [[ -n $deployment  ]] ; do
-  read -r namespace deployment < <(kubectl get deployments -A --no-headers -l kots.io/app-slug="${app_slug}"  | awk '{print $1,$2}' | shuf -n1)
-done
-set -u
+k0sctl kubeconfig > /opt/kubeconfig
+export KUBECONFIG=/opt/kubeconfig
 
 # backup resource before we edit it for later
-kubectl get deployment -n "${namespace}" "${deployment}" -o json \
+kubectl get deployment -n default frontent -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
 | tee /opt/backups/t1.json
 
-# export these as vars so we can see if they've been fixed later
-agent variable set T1_DEP_NAME "${deployment}"
-agent variable set T1_DEP_NS "${namespace}"
-
-kubectl scale deployment -n "${namespace}" "${deployment}" --replicas=0
+kubectl scale deployment -n default frontend --replicas=0
 
 sleep 60
 
-debug-message "Mischief Managed! scaled ${deployment} in ${namespace} to 0"
+debug-message "generating support bundle"
+
+kubectl support_bundle "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml" --interactive=false
+
+rm /opt/kubeconfig
+
+debug-message "Mischief Managed! scaled deployment default/frontend to 0"

@@ -185,7 +185,9 @@ debug-message "fetching kubeconfig"
 
 mkdir /root/.kube
 
-k0sctl kubeconfig | tee /root/.kube/config
+k0sctl kubeconfig | tee /opt/kubeconfig
+
+export KUBECONFIG=/opt/kubeconfig
 
 curl https://spooky.academy/license.yaml -O
 
@@ -216,5 +218,6 @@ EOF
 kubectl apply -f service.yaml
 
 mkdir /opt/backups
+rm /opt/kubeconfig
 
 exit 0

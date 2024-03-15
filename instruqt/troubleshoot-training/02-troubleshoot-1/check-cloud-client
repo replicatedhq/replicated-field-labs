@@ -6,8 +6,8 @@
 # script. If the exit code is not 0, the script fails.
 #
 
-deployment=$(agent variable get T1_DEP_NAME)
-namespace=$(agent variable get T1_DEP_NS)
+deployment=frontend
+namespace=default
 
 debug-message $deployment
 debug-message $namespace

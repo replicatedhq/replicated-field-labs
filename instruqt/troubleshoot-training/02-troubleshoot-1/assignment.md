@@ -11,25 +11,6 @@ tabs:
 - title: Workstation
   type: terminal
   hostname: cloud-client
-- title: Vendor Portal
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
-- title: Cluster Node 1
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
-- title: Cluster Node 2
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
-- title: Cluster Node 3
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-- title: Workstation
-  type: terminal
-  hostname: cloud-client
 difficulty: basic
 timelimit: 3600
 ---
@@ -38,14 +19,16 @@ timelimit: 3600
 🚀 Let's start
 ================
 
-Let's imagine that the embedded cluster and app we just installed was for a customer, who are now experiencing an issue with their install.
+Let's imagine that our environment belongs to a customer, who are now experiencing an issue with their install.
 
 They've raised a rather vague issue to your support team suggesting that the application "doesn't work" after one of their admins was playing with the setup.
 
-You should now have `kubectl` access to your cluster in the Workstation tab
+Use the `sbctl` tool to inspect a support bundle they've shared with you, and try to determine what's amiss.
 
 💡 Hints
 =================
+
+- use `sbctl shell -s /path/to/bundle.tar.gz` to get kubectl access to the bundle
 
 - How are applications deployed in kubernetes?
 
@@ -64,7 +47,7 @@ Identify the problematic deployment from `kubectl get deployments -n <namespace>
 ✔️ Solution
 =================
 
-A random deployment has been selected and scaled to 0
+A deployment has been scaled to 0
 
 Remediation
 =================
