@@ -193,7 +193,7 @@ curl https://spooky.academy/license.yaml -O
 
 debug-message "installing kots and app"
 
-kubectl kots --kubeconfig /opt/KUBECONFIG install onlineboutique --namespace default --license-file license.yaml --shared-password password --no-port-forward || true
+kubectl kots --kubeconfig /opt/kubeconfig install onlineboutique --namespace default --license-file license.yaml --shared-password password --no-port-forward --wait-duration 10m
 
 tee service.yaml << EOF
 apiVersion: v1
@@ -220,5 +220,3 @@ kubectl --kubeconfig /opt/kubeconfig apply -f service.yaml
 popd 
 
 mkdir /opt/backups
-
-exit 0

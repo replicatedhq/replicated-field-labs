@@ -16,8 +16,10 @@ debug-message "generating support bundle"
 
 cd /root/
 
-kubectl support_bundle --kubeconfig /opt/kubeconfig "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml" --interactive=false
+pwd
 
-rm /opt/kubeconfig
+/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml"
+
+ls
 
 debug-message "Mischief Managed! scaled deployment default/frontend to 0"
