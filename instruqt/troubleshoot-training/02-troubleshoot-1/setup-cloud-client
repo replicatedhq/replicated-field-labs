@@ -3,21 +3,20 @@
 # break stuff
 debug-message "Reticulating Splines..."
 
-k0sctl kubeconfig > /opt/kubeconfig
-export KUBECONFIG=/opt/kubeconfig
-
 # backup resource before we edit it for later
-kubectl get deployment -n default frontent -o json \
+kubectl --kubeconfig /opt/kubeconfig get deployment -n default frontend -o json \
 | jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
 | tee /opt/backups/t1.json
 
-kubectl scale deployment -n default frontend --replicas=0
+kubectl --kubeconfig /opt/kubeconfig scale deployment -n default frontend --replicas=0
 
 sleep 60
 
 debug-message "generating support bundle"
 
-kubectl support_bundle "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml" --interactive=false
+cd /root/
+
+kubectl support_bundle --kubeconfig /opt/kubeconfig "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/host/default.yaml" --interactive=false
 
 rm /opt/kubeconfig
 

@@ -110,6 +110,8 @@ chmod +x /usr/bin/k0sctl
 
 debug-message "install cluster"
 
+pushd /opt/
+
 tee k0sctl.yaml << EOF
 apiVersion: k0sctl.k0sproject.io/v1beta1
 kind: Cluster
@@ -187,13 +189,11 @@ mkdir /root/.kube
 
 k0sctl kubeconfig | tee /opt/kubeconfig
 
-export KUBECONFIG=/opt/kubeconfig
-
 curl https://spooky.academy/license.yaml -O
 
 debug-message "installing kots and app"
 
-kubectl kots install onlineboutique --namespace default --license-file license.yaml --shared-password password --no-port-forward || true
+kubectl kots --kubeconfig /opt/KUBECONFIG install onlineboutique --namespace default --license-file license.yaml --shared-password password --no-port-forward || true
 
 tee service.yaml << EOF
 apiVersion: v1
@@ -215,9 +215,10 @@ spec:
   type: NodePort
 EOF
 
-kubectl apply -f service.yaml
+kubectl --kubeconfig /opt/kubeconfig apply -f service.yaml
+
+popd 
 
 mkdir /opt/backups
-rm /opt/kubeconfig
 
 exit 0

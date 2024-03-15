@@ -7,7 +7,7 @@ teaser: Practical Application of Support Bundles and Analyzers
 notes:
 - type: text
   contents: In this track, we'll work together to apply some practical methods for
-    troubleshooting problems on Kubernetes clusters using a kots app.
+    troubleshooting some kubernetes problems using replicated tooling.
 tabs:
 - title: Workstation
   type: terminal

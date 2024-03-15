@@ -6,7 +6,7 @@ title: Correcting the broken application
 teaser: Where are my pods?
 notes:
 - type: text
-  contents: Time to fix the problem...
+  contents: The website is down
 tabs:
 - title: Workstation
   type: terminal

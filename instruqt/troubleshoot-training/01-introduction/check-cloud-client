@@ -1,3 +1,8 @@
 #!/bin/sh
 
 exit 0
+
+if [[ kubectl --kubeconfig /opt/kubeconfig -n default get deployment frontend ]]; then
+  fail-message "It looks like our application is still down, see the hints for how to proceed."
+  exit 1
+fi
