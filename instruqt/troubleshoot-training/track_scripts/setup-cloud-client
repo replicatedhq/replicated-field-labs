@@ -23,6 +23,7 @@ done
 
 export PATH=$PATH:$HOME/.krew/bin
 echo "export PATH=$PATH:$HOME/.krew/bin" | tee -a /root/.bashrc
+echo "export SHELL=bash" | tee -a /root/.bashrc
 
 kubectl krew install preflight
 kubectl krew install support-bundle

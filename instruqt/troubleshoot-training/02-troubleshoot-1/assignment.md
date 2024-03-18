@@ -27,6 +27,12 @@ They've raised a rather vague issue to your support team suggesting that the app
 
 Use the `sbctl` tool to inspect a support bundle they've shared with you, and try to determine what's amiss.
 
+When you've identified the problem, type out the commmand you would use to resolve the problem in `/root/solution.txt`
+
+The answer should be one line, on the first line of the file.
+
+(The file does not exist, you will have to create it with your preferred text editor.)
+
 💡 Hints
 =================
 
@@ -46,15 +52,13 @@ Troubleshooting Procedure
 
 Identify the problematic deployment from `kubectl get deployments -n <namespace>`.  Notice any pods that have 0 replicas.
 
-✔️ Solution
-=================
+✔️  Solution
+==================
 
 A deployment has been scaled to 0
 
-Remediation
+🛠️ Remediation
 =================
-
-Patch or edit the affected deployment to increase the memory request and raise replicas to desired ammount.
 
 ```bash
 kubectl scale deployment <deployment-name> --replicas=1
