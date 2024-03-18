@@ -1,0 +1,22 @@
+version: "3"
+containers:
+- name: cloud-client
+  image: gcr.io/instruqt/cloud-client
+  shell: /bin/bash
+  ports:
+  - 80
+virtualmachines:
+- name: loadbalancer
+  image: ubuntu-os-cloud/ubuntu-2204-lts
+  shell: /bin/bash -l
+  machine_type: n1-standard-2
+  allow_external_ingress:
+  - http
+  - https
+  - high-ports
+gcp_projects:
+- name: kurl
+  services:
+  - compute.googleapis.com
+  - container.googleapis.com
+  roles: []

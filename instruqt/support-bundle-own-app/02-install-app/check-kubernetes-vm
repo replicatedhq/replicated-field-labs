@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails.
+#
+
+if [[ -z "${APP_SLUG}" ]]; then
+  fail-message "APP_SLUG is not set; please export APP_SLUG to configure the learning environment."
+  exit 1
+fi
+
+if [[ -z "${CHANNEL}" ]]; then
+  fail-message "CHANNEL is not set; please export CHANNEL to configure the learning environment."
+  exit 1
+fi
+
+if ! curl localhost:8800; then
+  fail-message "The Admin Console is not available on port 8800. Please expose the Application Installer admin console on port 8800 via assignment step 3."
+  exit 1
+fi
+
+if [[ $(kubectl get deployments -A --no-headers -l kots.io/app-slug="${APP_SLUG}"  | awk '{print $2}' | xargs shuf -n1 -e) = "No resources found." ]]; then
+  fail-message "No deployments found for app-slug ${APP_SLUG}. Please ensure that you've uploaded your license so installation can begin."
+  exit 1
+fi
+
+agent variable set APP_SLUG "${APP_SLUG}"
+agent variable set CHANNEL "${CHANNEL}"

