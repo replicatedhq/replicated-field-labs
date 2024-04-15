@@ -10,6 +10,10 @@ do
   sleep 1
 done
 
+
+DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq
+pip install humanfriendly
+
 # install krew
 (
   set -x; cd "$(mktemp -d)" &&
@@ -27,12 +31,6 @@ echo "export SHELL=bash" | tee -a /root/.bashrc
 
 kubectl krew install preflight
 kubectl krew install support-bundle
-
-# install gum
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list
-apt-get update && apt-get install -y gum
 
 # install sbctl
 curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \

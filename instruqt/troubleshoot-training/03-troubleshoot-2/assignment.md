@@ -11,23 +11,7 @@ tabs:
 - title: Workstation
   type: terminal
   hostname: cloud-client
-- title: Vendor Portal
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
-- title: Cluster Node 1
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
-- title: Cluster Node 2
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
-- title: Cluster Node 3
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
-difficulty: basic
+difficulty: intermediate
 timelimit: 3600
 ---
 ## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
@@ -38,6 +22,7 @@ The customer opens another issue about pods, but this time pods seem to be crash
 
 Let's investigate our app and see if we can identify the issue.
 
+To pass this challenge, save the broken resource to solution.yaml, edit it to be correct, then click "next"
 
 💡 Hints
 =================
@@ -89,16 +74,13 @@ Events:
 Another way to get even more information about a pod is to use the `-o yaml` option with `kubectl get pods`.  This will output the entire pod definition in YAML format.  This is useful for debugging issues with the pod definition itself.  Here you will see some info that isn't present in `describe pods`, such as Annotations, Tolerations, restart policy, ports, and volumes.
 
 
-✔️ Solution
+✔️  Solution
 =================
 A random deployment has been selected and the memory limit reduced to 512Ki, which will cause the pods to crash.
 
-Remediation
+🛠️ Remediation
 =================
-Patch or edit the affected deployment to increase the memory request and limit to a reasonable amount.
 
-- How can you edit or patch a resource in-place?
-
-- How can you edit or patch a resource from a file?
+edit a saved copy of the affected deployment to increase the memory limit to a reasonable amount.
 
 - How can we make sure that this doesn't happen again?
