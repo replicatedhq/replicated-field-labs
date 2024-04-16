@@ -11,34 +11,17 @@ tabs:
 - title: Workstation
   type: terminal
   hostname: cloud-client
-- title: Vendor Portal
-  type: website
-  url: https://vendor.replicated.com
-  new_window: true
-- title: Cluster Node 1
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-1
-- title: Cluster Node 2
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-2
-- title: Cluster Node 3
-  type: terminal
-  hostname: cloud-client
-  cmd: ssh -oStrictHostKeyChecking=no kurl-node-3
 difficulty: advanced
 timelimit: 3600
 ---
-## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
-
-🚀 Let's start
-=================
+# [Our webapp](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io)
 
 You get another report from a customer saying that the application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
 
 - What cluster component handles communication between Pods?
 - What cluster component handles load balancing for Pods and exposes Pods to connections from outside the cluster?
+
+To pass this challenge, save the broken resource to solution.yaml, edit it to be correct, then click "next"
 
 💡 Hints
 =================
@@ -50,6 +33,10 @@ You get another report from a customer saying that the application isn't working
 
 - How does traffic get to workloads inside kubernetes
 - How does Kubernetes handle DNS resolution and load balancing for Pods?
+
+to save a resource yaml, first start the sbctl shell `sbctl shell -s ./support-bundle...`
+
+then `kubectl get <resource> -o yaml > solution.yaml`
 
 💡 More Hints
 =================

@@ -1,5 +1,4 @@
 #!/bin/bash
 
-# apply backed up resource from before we broke it
-kubectl apply -f /opt/backups/t2.json
-
+kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "200M"}]'
+kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "200M"}]'

@@ -14,13 +14,13 @@ tabs:
 difficulty: intermediate
 timelimit: 3600
 ---
-## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
+# [Our webapp](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io)
 
-🚀 Let's start
-================
-The customer opens another issue about pods, but this time pods seem to be crashing.
+The customer opens another issue, but this time pods seem to be crashing.
 
-Let's investigate our app and see if we can identify the issue.
+The website (our webapp) appears to have some kind of error page, it might be useful.
+
+Let's investigate our app and see if we can identify the issue. Use `sbctl` to interact with the support bundle.
 
 To pass this challenge, save the broken resource to solution.yaml, edit it to be correct, then click "next"
 
@@ -37,6 +37,10 @@ To pass this challenge, save the broken resource to solution.yaml, edit it to be
 - When would you look at `describe` output vs. gathering pod logs?
 
 - Review the [Kubernetes documentation on debugging Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
+
+to save a resource yaml, first start the sbctl shell `sbctl shell -s ./support-bundle...`
+
+then `kubectl get <resource> -o yaml > solution.yaml`
 
 💡 More Hints
 =================
@@ -76,11 +80,12 @@ Another way to get even more information about a pod is to use the `-o yaml` opt
 
 ✔️  Solution
 =================
-A random deployment has been selected and the memory limit reduced to 512Ki, which will cause the pods to crash.
+A random deployment has been selected and the memory limit reduced to 5M, which will cause the pods to crash.
 
 🛠️ Remediation
 =================
 
 edit a saved copy of the affected deployment to increase the memory limit to a reasonable amount.
 
+To think about:
 - How can we make sure that this doesn't happen again?

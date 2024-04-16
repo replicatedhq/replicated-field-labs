@@ -1,4 +1,4 @@
 #!/bin/bash
 set -exuo pipefail
 
-kubectl apply -f /opt/backups/t3.json
+kubectl patch service -n default cartservice --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"7070"'}]'

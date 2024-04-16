@@ -1,15 +1,5 @@
 #!/bin/bash
 
-deployment=$(agent variable get T2_DEP_NAME)
-namespace=$(agent variable get T2_DEP_NS)
-
-unavailableReplicas=$(kubectl get deployment -n "${namespace}" "${deployment}" -o jsonpath='{.status.unavailableReplicas}')
-
-if [[ ! "$unavailableReplicas" = "" ]]; then
-    fail-message "It looks like our application is still broken, please check the hints for more information"
-    exit 1
-fi
-
 if [[ ! -f /root/solution.yaml ]]; then
   fail-message "solution.yaml not found in /root/, please create the file and try again"
   exit 1
@@ -26,6 +16,17 @@ limits=$(yq '.spec.template.spec.containers[0].resources.limits.memory' solution
 
 if [[ "$limits" = "5M" ]]; then
   fail-message "it looks like your solution is incorrect"
+  echo "limits = 5M"
+  exit 1
 fi
 
-exit 1
+rawSize=$(humanfriendly --parse-size "$limits")
+
+if [[ ! "$rawSize" -gt "5000000" ]];then 
+  fail-message "it looks like your solution is incorrect"
+  echo "limits < 5M"
+  exit 1
+fi
+
+kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "200M"}]'
+kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "200M"}]'

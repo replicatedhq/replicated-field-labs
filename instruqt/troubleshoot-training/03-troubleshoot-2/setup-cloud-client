@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -euxo
-rm -rf /root/support-bundle-*
+rm -rf /root/support-bundle-* || true
 rm /root/solution.txt || true
 
 # break stuff

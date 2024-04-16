@@ -219,3 +219,7 @@ kubectl --kubeconfig /opt/kubeconfig apply -f service.yaml
 popd 
 
 mkdir /opt/backups
+
+for node in kurl-node-{1,2,3}; do
+  ssh $node ln -s /usr/local/bin/k0s /usr/local/bin/kubectl
+done
