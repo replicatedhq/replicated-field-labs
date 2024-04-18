@@ -92,7 +92,7 @@ func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]strin
 		V1: PolicyDefinitionV1{
 			Name: "Policy Name",
 			Resources: PolicyResourcesV1{
-				Allowed: []string{fmt.Sprintf("kots/app/%s/**", app.ID), "kots/license/**", "user/token/**"},
+				Allowed: []string{fmt.Sprintf("kots/app/%s/**", app.ID), "kots/license/**", "user/token/**", "kots/externalregistry/list"},
 				Denied:  []string{},
 			},
 		},
