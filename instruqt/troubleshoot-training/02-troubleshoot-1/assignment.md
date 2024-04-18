@@ -2,8 +2,8 @@
 slug: troubleshoot-1
 id: araxpgiqal1r
 type: challenge
-title: Correcting the broken application
-teaser: Where are my pods?
+title: Where are my pods?
+teaser: "\U0001F914"
 notes:
 - type: text
   contents: The website is down

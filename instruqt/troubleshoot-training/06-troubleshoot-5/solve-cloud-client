@@ -1,10 +1,16 @@
 #!/bin/bash
 set -exuo pipefail
 
-app_slug=$(agent variable get APP_SLUG)
+export KUBECONFIG=/opt/kubeconfig
 
 # restore our previously backed-up copy of the coredns configmap
 kubectl apply -f /opt/backups/t5.yaml
 
+kubectl delete pods -n kube-system -l k8s-app=kube-dns
+
 # restart all app pods
-kubectl delete pods -l kots.io/app-slug="${app_slug}"
+kubectl get pods --no-headers | awk '{print $1}' | xargs kubectl delete pod
+
+rm -rf /root/support-bundle*
+
+sleep 10

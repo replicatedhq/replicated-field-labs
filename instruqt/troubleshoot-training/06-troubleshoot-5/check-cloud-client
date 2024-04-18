@@ -1,18 +1,14 @@
 #!/bin/bash
 set -exuo pipefail
 
-
-set +u
-until [[ -n $deployment  ]] ; do
-  read -r namespace deployment < <(kubectl get deployments -A --no-headers -l app=kotsadm  | awk '{print $1,$2}' | shuf -n1)
-done
-set -u
-
-# try to use curl to resolve the kubernetes api, grab stderr to check later
-kubectl -n "${namespace}" exec -it -c kotsadm "${deployment}" -- curl kubernetes.default.svc.cluster.local 2> /opt/test.txt
-
-# check saved stderr from curl
-if [[ $(grep "exit code 6" /opt/test.txt) ]]; then
-    fail-message "It looks like dns is still broken, check the hints for help"
-    exit 1
+if [[ -f /tmp/challenge_ok ]]; then
+  # restore our previously backed-up copy of the coredns configmap
+  kubectl apply -f /opt/backups/t5.yaml
+  kubectl delete pods -n kube-system -l k8s-app=kube-dns
+  # restart all app pods
+  kubectl get pods --no-headers | awk '{print $1}' | xargs kubectl delete pod
+  exit 0
 fi
+
+fail-message "you don't appear to have picked the correct answer"
+exit 1

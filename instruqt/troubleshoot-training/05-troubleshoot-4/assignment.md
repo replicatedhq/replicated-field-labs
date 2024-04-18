@@ -2,8 +2,8 @@
 slug: troubleshoot-4
 id: vccuaq9got6x
 type: challenge
-title: it's all made of stars
-teaser: The final frontier...
+title: Everything is broke...
+teaser: "\U0001F527"
 notes:
 - type: text
   contents: Time to fix the problem...
@@ -14,39 +14,50 @@ tabs:
 difficulty: intermediate
 timelimit: 3600
 ---
-## [App Installer Admin Console](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io:8800)
-
 You get a new report from a customer saying that many pods are failing; some may display Errors, while others may be Evicted or Pending, or even in an Unknown state.
 
-How do you begin to debug this problem?
+They have provided a cluster-down support bundle since they can't get one from the kots admin panel.
+
+This is a type of support-bundle that collects data from the node itself rather than from inside the cluster.
+
+Extract the support bundle with
+
+```run
+tar -xvf support-bundle.tar.gz
+```
+
+Explore it to determine the issue.
+
+Once you think you have your answer, run:
+
+```
+quiz
+```
 
 💡 Hints
 =================
 
-- Remember from our first challenge how to examine the state of a Pod in the cluster.
-
-- What patterns can be observed from the state of the Pods that are failing?
-  - Are they all in the same namespace?
-  - Are they all using the same container image?
-  - Are they all scheduled to the same Node?
+Host support bundles have some key files:
+- `analysis.json` contains the analysis results of the support bundle
+- `host-collectors/` contains the raw output from the collectors
+- `host-collectors/run-host/crictl-logs*` contain logs from important containers
 
 💡 More Hints
 =================
 
-- Get more information from `get pods` by using the `-o wide` option.
+You can pull warnings from the analysis.json with a simple jq filter:
 
-- Remember that Nodes are also a resource managed by Kubernetes - how do you view the state of a Node?
+```run
+cd /root/support-bundle-2024-04-17T09_50_09
+jq '.[] | select(.insight.severity == "warn")' analysis.json
+```
 
-- Nodes have Events and States/Conditions just like other resources.
-
-- Make sure to examine the underlying Linux filesystem
-  - `lsblk`
-  - `df -h`
+`host-collectors/run-host/df.txt` shows the output of running `df` on the host
 
 ✔️ Solution
 =================
 
-One of the disks in the cluster is full, which causes problems in the operating system as well as with Kubernetes.  Pod eviction thresholds have been exceeded, causing pods to be evicted and image garbage collection to remove images from the node.
+The node's disk is full, which causes problems in the operating system as well as with Kubernetes.  Pod eviction thresholds have been exceeded, causing pods to be evicted and image garbage collection to remove images from the node.
 
 Remediation
 =================

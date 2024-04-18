@@ -1,4 +1,11 @@
 #!/bin/bash
 
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "200M"}]'
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "200M"}]'
+export KUBECONFIG=/opt/kubeconfig
+
+kubectl patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "200M"}]'
+kubectl patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "200M"}]'
+ 
+kubectl delete pod -l app=frontend
+
+sleep 10
+

@@ -11,7 +11,7 @@ do
 done
 
 
-DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq
+DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq golang
 pip install humanfriendly
 
 # install krew
@@ -223,3 +223,4 @@ mkdir /opt/backups
 for node in kurl-node-{1,2,3}; do
   ssh $node ln -s /usr/local/bin/k0s /usr/local/bin/kubectl
 done
+

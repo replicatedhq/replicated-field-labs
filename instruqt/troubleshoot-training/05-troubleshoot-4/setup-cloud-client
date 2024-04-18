@@ -1,15 +1,42 @@
 #!/bin/bash
 set -exuo pipefail
 
-app_slug=$(agent variable get APP_SLUG)
+rm -rf /root/support-bundle*
+rm -rf /root/solution*
 
-# fill up the disks on the nodes
-for i in {1..3}; do
-  #get remaining space
-  sizek=$(ssh -oStrictHostKeyChecking=no kurl-node-${i} "df -k / --output=avail | tail -n 1")k
-  #make a big file
-  ssh -oStrictHostKeyChecking=no kurl-node-${i} "mkdir -p /var/lib/chaos && cd /var/lib/chaos && fallocate -l $sizek bigfile" || true
-done
+curl -O https://spooky.academy/support-bundle.tar.gz
 
-# restart all app pods
-kubectl delete pods -l kots.io/app-slug="${app_slug}" --wait=false
+cd /opt/
+tee quiz.go << EOF
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println("Which of the following do you think is the cause of the problem:")
+	fmt.Println("A) Local host does not resolve")
+	fmt.Println("B) The container runtime is broken")
+	fmt.Println("C) The disk on the node is full")
+	fmt.Println("D) Quantum time calculations backfired in the flux capacitor")
+
+	fmt.Printf("%s: ", "Type a letter")
+	var answer string
+	_, err := fmt.Scanln(&answer)
+	if err != nil {
+		fmt.Println("oops, something seems to have gone wrong, try re-running me")
+		fmt.Println(err)
+	}
+	if answer == "c" || answer == "C" {
+		fmt.Println("congratulations!")
+		os.Create("/tmp/challenge_ok")
+	} else {
+		fmt.Println("oops! that doesn't appear to be the correct answer!")
+	}
+}
+EOF
+go build ./quiz.go
+mv quiz /usr/bin/
+rm quiz.go

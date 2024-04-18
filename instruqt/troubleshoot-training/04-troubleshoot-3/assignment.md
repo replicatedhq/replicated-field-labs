@@ -2,8 +2,8 @@
 slug: troubleshoot-3
 id: ppjhbjbxavp6
 type: challenge
-title: Correcting the broken application
-teaser: A Pod is not responding...
+title: Can you hear me major tom?
+teaser: "\U0001F680"
 notes:
 - type: text
   contents: Time to fix the problem...

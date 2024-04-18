@@ -1,16 +1,13 @@
 #!/bin/bash
-set -exuo pipefail
+#
+#
+
+rm -rf /root/support-bundle*
+rm -rf /root/solution*
 
 debug-message "Matriculating unmatriculated vectors..."
 
-app_slug=$(agent variable get APP_SLUG)
-
-# generate and fetch kubeconfig for cluster if we don't already have one
-if [ ! -d /root/.kube ]; then
-  mkdir /root/.kube
-  ssh kurl-node-1 "curl https://kurl.sh/latest/tasks.sh | SUDO_USER=root bash -s generate-admin-user"
-  scp kurl-node-1:root.conf /root/.kube/config
-fi
+export KUBECONFIG=/opt/kubeconfig
 
 # take a backup of the coredns configmap
 kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t5.yaml
@@ -19,5 +16,50 @@ kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t5.yaml
 sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t5.yaml \
 | kubectl apply -f -
 
+#restart coredns
+kubectl delete pods -n kube-system -l k8s-app=kube-dns
+
 # restart all app pods
-kubectl delete pods -l kots.io/app-slug="${app_slug}"
+kubectl get pods --no-headers | awk '{print $1}' | xargs kubectl delete pod
+
+sleep 60
+
+/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
+
+cd /opt/
+tee quiz.go << EOF
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println("Which of the following do you think is the cause of the problem:")
+	fmt.Println("A) localhost does not resolve")
+	fmt.Println("B) There is no internet connection")
+	fmt.Println("C) The disk on the node is full")
+	fmt.Println("D) Coredns is misconfigured")
+  fmt.Println("E) Bogon particles in the mainframes spline array")
+
+	fmt.Printf("%s: ", "Type a letter")
+	var answer string
+	_, err := fmt.Scanln(&answer)
+	if err != nil {
+		fmt.Println("oops, something seems to have gone wrong, try re-running me")
+		fmt.Println(err)
+	}
+	if answer == "d" || answer == "D" {
+		fmt.Println("congratulations!")
+		os.Create("/tmp/challenge_ok")
+	} else {
+		fmt.Println("oops! that doesn't appear to be the correct answer!")
+	}
+}
+EOF
+go build ./quiz.go
+rm /usr/bin/quiz
+mv quiz /usr/bin/
+rm quiz.go
+rm /tmp/challenge_ok

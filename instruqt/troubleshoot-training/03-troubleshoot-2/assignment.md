@@ -2,8 +2,8 @@
 slug: troubleshoot-2
 id: gzv8orjeqdcg
 type: challenge
-title: Correcting the broken application
-teaser: A Pod is crashing...
+title: CrashLoopBackOff
+teaser: "\U0001F648"
 notes:
 - type: text
   contents: Time to fix another problem...

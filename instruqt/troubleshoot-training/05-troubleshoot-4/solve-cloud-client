@@ -1,5 +1,3 @@
 #!/bin/bash
 
-for i in kurl-node-{1..3}; do
-   ssh $i rm -rf /var/lib/chaos
-done
+rm -rf /root/support-bundle*
