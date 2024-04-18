@@ -75,12 +75,12 @@ get_slackernews() {
   web_image=$(yq .images.nginx.repository slackernews/values.yaml)
   rewritten_web_image=${web_image//images.slackernews.io/proxy.replicated.com}
   rewritten_web_image=${rewritten_web_image//proxy\/slackernews/proxy\/${app_slug}}
-  yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
+  yq -i ".images.slackernews.repository = \"${rewritten_web_image}\"" slackernews/values.yaml
 
   nginx_image=$(yq .images.nginx.repository slackernews/values.yaml)
   rewritten_nginx_image=${nginx_image//images.slackernews.io/proxy.replicated.com}
   rewritten_nginx_image=${rewritten_nginx_image//proxy\/slackernews/proxy\/${app_slug}}
-  yq -i ".images.slackernews.repository = \"${rewritten_image}\"" slackernews/values.yaml
+  yq -i ".images.slackernews.repository = \"${rewritten_nginx_image}\"" slackernews/values.yaml
 
   # add some optional components to make the application a bit more representative
   yq -i '.nginx.enabled = true' slackernews/values.yaml
