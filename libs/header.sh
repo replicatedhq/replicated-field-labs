@@ -98,4 +98,9 @@ get_slackernews() {
  
   # since we have the certs anyway, let's enable TLS
   yq -i '.service.tls.enabled = true' slackernews/values.yaml
+
+  # let's also deelte the values injected by Replicated so users can release
+  # the chart without any sort of double injection
+  yq -i 'del(.replicated)' slackernews/values.yaml
+  yq -i 'del(.global.replicated)' slackernews/values.yaml
 }
