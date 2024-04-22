@@ -17,5 +17,5 @@ nginx_image=$(yq .images.nginx.repository ${HOME_DIR}/slackernews/values.yaml)
 rewritten_nginx_image=${nginx_image//proxy.replicated.com\/proxy\/slackernews\/}
 yq -i ".images.nginx.repository = \"${rewritten_nginx_image}\"" ${HOME_DIR}/slackernews/values.yaml
 
-rm ${HOME_DIR}/slackernews/template/imagepullsecret.yaml
+rm ${HOME_DIR}/slackernews/templates/imagepullsecret.yaml
 exit 0
