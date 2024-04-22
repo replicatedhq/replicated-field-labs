@@ -9,12 +9,10 @@
 set -euxo pipefail
 HOME_DIR=/home/replicant
 
+
 # there's only one app created by the automation, so just grab the first in the list
-api_token=$(get_api_token)
-app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
-app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
-export REPLICATED_API_TOKEN=${api_token}
-export REPLICATED_APP=${app_slug}
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
 
 # remove the proxy from the Slackernews chart so the learner can set it
 proxied_web_image="proxy.replicated.com/proxy/${app_slug}/ghcr.io/slackernews/slackernews-web:1.0.17"
@@ -56,4 +54,4 @@ replicated release promote ${release_sequence} Stable --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
-exit 0
+exit
