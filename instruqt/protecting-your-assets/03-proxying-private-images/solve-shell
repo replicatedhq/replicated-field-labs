@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform solve the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+# there's only one app created by the automation, so just grab the first in the list
+api_token=$(get_api_token)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+export REPLICATED_API_TOKEN=${api_token}
+export REPLICATED_APP=${app_slug}
+
+# remove the proxy from the Slackernews chart so the learner can set it
+proxied_web_image="proxy.replicated.com/proxy/${app_slug}/ghcr.io/slackernews/slackernews-web:1.0.17"
+yq -i ".images.slackernews.repository = \"${proxied}\"" ${HOME_DIR}/slackernews/values.yaml
+
+proxied_nginx_image="proxy.replicated.com/proxy/${app_slug}/ghcr.io/slackernews/slackernews-nginx:1.0.17"
+yq -i ".images.nginx.repository = \"${proxied_nginx_image}\"" ${HOME_DIR}/slackernews/values.yaml
+
+cat <<SECRET > ${HOME_DIR}/slackernews/template/imagepullsecret.yaml
+{{ if hasKey ((.Values.global).replicated) "dockerconfigjson" }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: replicated-pull-secret
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: {{ .Values.global.replicated.dockerconfigjson }}
+{{ end }}
+SECRET
+
+# bump the version
+yq -i '.version = "0.5.0"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
+
+replicated release create --promote Unstable --chart ./release/slackernews-0.5.0.tgz --version 0.5.0  \
+  --release-notes "Uses the Replicated proxy registry to pull images"
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 0.2.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 0.2.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+exit 0
