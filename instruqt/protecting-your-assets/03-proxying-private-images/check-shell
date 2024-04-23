@@ -9,19 +9,19 @@ result=0
 
 # check that the proxy has been added to the Helm chart
 slackernews_image=$(yq '.images.slackernews.repository' ${HOME_DIR}/slackernews/values.yaml)
-if [[ ! "${slackernews_image}" == "proxy.replicated.com/proxy/slackernews*" ]] ; then
+if [[ ! "${slackernews_image}" == "proxy.replicated.com/proxy/slackernews"* ]] ; then
   fail-message 'Please add the proxy to the Slackernews Helm chart'
   let "result = result + 1"
 fi
 
 # look for the pull secret template file
-if [[ ! -f /home/replicant/harbor/templates/imagepullsecret.yaml ]] ; then
+if [[ ! -f ${HOME_DIR}/slackernews/templates/imagepullsecret.yaml ]] ; then
   fail-message 'Please create the image pull secret template file in the Slackernews Helm chart template directory'
   let "result = result + 1"
 fi
 
 # check for an updated version number
-if [[ "$(yq .version slackernews/Chart.yaml)" == "0.5.0"  ]] ; then
+if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.5.0"  ]] ; then
   fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your updates'
   let "result = result + 1"
 fi
@@ -29,22 +29,22 @@ fi
 # check for release to Unstable
 api_token=$(get_api_token)
 unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
-if [[ ! "${unstable_version}" == "19.4.0"  ]] ; then
-  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`19.4.0\`'
+if [[ ! "${unstable_version}" == "0.5.0"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`0.5.0\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Beta
 beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
-if [[ ! "${beta_version}" == "19.4.0"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`19.4.0\`'
+if [[ ! "${beta_version}" == "0.5.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`0.5.0\`'
   let "result = result + 1"
 fi
 
 # check for promotion to Stable
 stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
-if [[ ! "${stable_version}" == "19.4.0"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`19.4.0\`'
+if [[ ! "${stable_version}" == "0.5.0"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`0.5.0\`'
   let "result = result + 1"
 fi
 
