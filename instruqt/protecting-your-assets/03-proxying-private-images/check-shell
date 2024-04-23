@@ -8,7 +8,7 @@ HOME_DIR=/home/replicant
 result=0
 
 # check that the proxy has been added to the Helm chart
-slackernews_image=$(yq r ${HOME_DIR}/slackernews/values.yaml '.images.slackernews.repository')
+slackernews_image=$(yq '.images.slackernews.repository' ${HOME_DIR}/slackernews/values.yaml)
 if [[ ! "${slackernews_image}" == "proxy.replicated.com/proxy/slackernews*" ]] ; then
   fail-message 'Please add the proxy to the Slackernews Helm chart'
   let "result = result + 1"
