@@ -1,5 +1,5 @@
 ---
-slug: custom-license-fields
+slug: license-entitlements
 id: bigb2ijlexjx
 type: challenge
 title: Managing Entitlements with Custom License Fields
