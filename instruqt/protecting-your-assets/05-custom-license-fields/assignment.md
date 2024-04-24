@@ -16,7 +16,7 @@ difficulty: basic
 timelimit: 600
 ---
 
-Each customer license has a set of fields that supports common licesning
+Each customer license has a set of fields that supports common licensing
 requirements. You can also define custom license fields that fit the needs of
 your product. Let's add some fields to the Slackernews license to support
 different commercial terms.
