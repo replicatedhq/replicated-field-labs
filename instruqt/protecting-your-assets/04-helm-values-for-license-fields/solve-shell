@@ -19,13 +19,13 @@ api_token=${REPLICATED_API_TOKEN}
 cat <<TEMPLATE > ${HOME_DIR}/slackernews/templates/_helpers.tpl
 
 {{- define "slackernews.licenseCheck" -}}
-{{- $currentDate := now | date "2006-01-02" }}
+{{- \$currentDate := now | date "2006-01-02" }}
 {{- with .Values.global -}}
 {{- with .replicated -}}
 {{-   range .licenseFields -}}
 {{-     if eq .name "expires_at" -}}
-{{-        $expiryDate := toDate "2006-01-02" .value | date "2006-01-02" -}}
-{{-        if lt $expiryDate $currentDate -}}
+{{-        \$expiryDate := toDate "2006-01-02" .value | date "2006-01-02" -}}
+{{-        if lt \$expiryDate \$currentDate -}}
 {{-          fail "Your license is expired, please contact Slackernews to extend it" -}}
 {{-        end }}
 {{-     end  }}
