@@ -39,3 +39,10 @@ prevent tampering.
 
 License Field Values
 --------------------
+
+
+
+```
+helm registry login [[ Instruqt-Var key="REGISTRY_HOST" hostname="shell" ]]  --username [[ Instruqt-Var key="REGISTRY_USERNAME" hostname="shell" ]]  --password [[ Instruqt-Var key="REGISTRY_PASSWORD" hostname="shell" ]]
+helm show values oci://[[ Instruqt-Var key="REGISTRY_HOST" hostname="shell"]]/[[ Instruqt-Var key="REPLICATED_APP" host="shell" ]]/slackernews
+```
