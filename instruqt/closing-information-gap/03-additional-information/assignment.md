@@ -169,7 +169,7 @@ g application are healthy, let's add `deploymentStatus` and
 `statefulSetStatus` analyzers as required.
 
 Since Slackernews is made up of an application and a couple of supporing
-serivces, we're going to add the deployment and stateful set analyzers
+services, we're going to add the deployment and stateful set analyzers
 separately.
 
 ```
