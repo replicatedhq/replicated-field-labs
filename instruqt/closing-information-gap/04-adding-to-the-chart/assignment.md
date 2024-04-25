@@ -111,7 +111,7 @@ stringData:
   support-bundle-spec: |
 ```
 
-Remmeber that the support bundle must be at a key named `support-bundle-spec`
+Remember that the support bundle must be at a key named `support-bundle-spec`
 to be found when generating a support bundle. Open the file
 `slackernews-support-bundle.yaml` and copy/paste its content into the secret
 template. Make sure the indentation is correct. Note that you can select the
