@@ -1,15 +1,21 @@
-slug: protecting-your-assets
-title: Protecting Your Assets
-teaser: Template track for a shell connecting to a K3s cluster
+<<<<<<< HEAD
+slug: protecting-your-assets-dev
+id: 03z3ygfnof3l
+title: DEV - Protecting Your Assets
+teaser: |-
+  Assure your customers have the right access to your application artifacts and
+  features using the Replicated license
 description: |-
-  This track is a template track to build any lab that requires
-  a shell that connects to an existing cluster. To use it, run:
+  Use Replicated Platform to protect the assets your ship to your customers.
 
-  ```
-  instruqt track create --title [NEW TRACK TITLE] \
-    --from shell-and-cluster-template
-  ```
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+  **Learn how to:**
+
+  * Manage customer licensing
+  * Control access to your container images and other downloadable assets with
+    the Replicated proxy registry.
+  * Customize the license for your buiness
+  * Access license fields in Helm templates and application code
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/licensing.png
 level: beginner
 tags:
 - template
@@ -22,3 +28,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
+checksum: "18253129341146115635"
