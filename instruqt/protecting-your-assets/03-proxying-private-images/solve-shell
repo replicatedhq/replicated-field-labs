@@ -47,10 +47,10 @@ release_sequence=$(curl --header "Accept: application/json" --header "Authorizat
 
 # promote to the `Beta` channel
 replicated release promote ${release_sequence} Beta --version 0.5.0 \
-  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
+  --release-notes "Uses the Replicated proxy registry to pull images"
  
 # promote to the `Stable` channel
 replicated release promote ${release_sequence} Stable --version 0.5.0 \
-  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK"
+  --release-notes "Uses the Replicated proxy registry to pull images"
 
 exit
