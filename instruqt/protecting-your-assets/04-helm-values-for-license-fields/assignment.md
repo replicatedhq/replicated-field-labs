@@ -27,3 +27,15 @@ license into your Helm chart in two ways:
 
 We're going to take advantage of the second option to update the Slackernews
 chart to only install when the license has not expired.
+
+### A Word of Caution
+
+The approach we're demonstrating here is easily defeated by overriding a Helm
+value on the command-line or in a values file. It's meant to remind an honest
+customer their license is expired rather than prevent them from tampering with
+the license to install anyway. The additional protections provided by the proxy
+registry and the Replicated SDK should also be used to assure compliance and
+prevent tampering.
+
+License Field Values
+--------------------
