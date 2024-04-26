@@ -91,7 +91,7 @@ License Files
 
 The customer license is defined in a format that's easy both to read and to
 parse.  A basic license is in the file `Geeglo.yaml` that you can open in the
-edit showing in the "License File" tab. You'll notice that it's a YAML
+editor showing in the "License File" tab. You'll notice that it's a YAML
 formatted file with the same structure as a Kubernetes object. The object is
 interpreted by the Replicated Platform components rather than the Kubernetes
 cluster to avoid needing any special permissions.
