@@ -53,4 +53,7 @@ replicated release promote ${release_sequence} Beta --version 0.5.0 \
 replicated release promote ${release_sequence} Stable --version 0.5.0 \
   --release-notes "Uses the Replicated proxy registry to pull images"
 
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+
 exit
