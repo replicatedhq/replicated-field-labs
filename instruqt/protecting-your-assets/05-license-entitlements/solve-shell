@@ -15,7 +15,7 @@ app_slug=${REPLICATED_APP}
 api_token=${REPLICATED_API_TOKEN}
 
 # we know there's only one app, so just grab the first one
-app_id=$(replicated app ls --output json | jq -r '.[0].id')
+app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
 
 field_def=$(jq -n '{
   "name": "member_count_max",
@@ -26,6 +26,6 @@ field_def=$(jq -n '{
   "required": true
 }')
 
-replicated api post /v3/app/${app_id}/license-fields --data "${field_def}"
+replicated api post /v3/app/${app_id}/license-field --body "${field_def}"
 
 exit 0
