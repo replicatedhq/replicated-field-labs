@@ -15,6 +15,7 @@ EOF
 # assure an RSA key for Dropbear
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
+# TODO: this needs to get switch back to main when #322 is merged
 # use our shared libary in setup scripts
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/chore/crdant/switch-to-slackernews/libs/header.sh
 source /etc/profile.d/header.sh
@@ -456,19 +457,6 @@ helm registry login registry.replicated.com \
 # assure that the `replicant` user is also logged in
 mkdir -p ${HOME_DIR}/.config
 cp -R ${HOME}/.config/helm ${HOME_DIR}/.config/helm
-
-# install the application, trying again if it fails since there might be timing issues
-set +e
-retries=0
-while ! helm install --namespace slackernews --create-namespace \
-  slackernews --version 0.4.1 \
-  oci://registry.replicated.com/${app_slug}/slackernews \
-  --set service.type=NodePort \
-  --set slackernews.domain=cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
-  --kubeconfig ${HOME_DIR}/.kube/config && [[ $retries -lt 10 ]]; do
-  sleep 2
-  let "retries = retries + 1"
-done
 
 # make sure permissions are good
 chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release ${HOME_DIR}/.config/helm
