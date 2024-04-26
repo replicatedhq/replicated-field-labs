@@ -26,8 +26,8 @@ set +u
 registry_custom=$(replicated api get /v3/app/${app_id}/custom-hostnames | jq -r 'if .Body.registry == null then "" else (.Body.registry[] | select( .is_default == true ) | .hostname) end')
 set -u
 
-# get the needed customer info for the Geeglo customer
-customer=$(replicated api get /v3/app/${app_id}/customers | jq -c '.customers[] | select(.name == "Geeglo") | { "login": .email, "password": .installationId, "registryOverride": .channels[0].customHostnameOverrides.registry.hostname }')
+# get the needed customer info for the Nitflex customer
+customer=$(replicated api get /v3/app/${app_id}/customers | jq -c '.customers[] | select(.name == "Nitflex") | { "login": .email, "password": .installationId, "registryOverride": .channels[0].customHostnameOverrides.registry.hostname }')
 set +u
 registry_override=$(echo "${customer}" | jq -r '.registryOverride')
 set -u

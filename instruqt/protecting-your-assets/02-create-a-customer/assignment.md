@@ -32,7 +32,8 @@ open a new browser window and access the portal. Log in with these credentials:
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
 
-You'll land on the "Channels" page showing the default release channels.
+You'll land on the "Channels" page showing the default release channels and an
+added channel for releases with long-term support.
 
 ![Vendor Portal Release Channels](../assets/vendor-portal-landing.png)
 
@@ -41,8 +42,8 @@ see your two existing customers "Omozan" and "Geeglo".
 
 ![Your Existing Customers](../assets/customer-landing-page.png)
 
-We're going to assume you've just landed a new customer named "Nitflex" and
-create them. The platform also includes an
+We're going to assume you're working with a new prospect named "Nitflex" and
+create them in the portal. The platform also includes an
 [API](https://replicated-vendor-api.readme.io/v3/reference/createapp) you can
 use to automate customer creation as part of your existing onboarding workflow.
 For the purpose of the lab, click the "+ Create Customer" button to create
@@ -51,17 +52,20 @@ For the purpose of the lab, click the "+ Create Customer" button to create
 ![Creating a Customer](../assets/create-customer-button.png)
 
 Enter the name "NitFlex" and assign them to the `Stable` channel. They've
-subscribed to your software for a year, so let's make sure we capture the
-expiration date. We also need an email for them to login and install your Helm
-chart. Note that we never use that email, it's your customer, not ours.
+trying your software for a year, so let's make sure we capture the expiration
+date. We also need an email for them to login and install your Helm chart. Note
+that we never use that email, it's your customer, not ours.
 
 Expiration Date: `[[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]`<br/>
 Customer Email: `[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`
 
 ![Customer Details](../assets/new-customer-details.png)
 
-You should also specify that they are a paid customer, so select the "Paid"
-option for the customer type and save your changes.
+You should also specify that they are a trial customer, so select the "Trial"
+option for the customer type and save your changes. We're using a new prospect
+trialing our software to set up later parts of the lab. The process will be
+the same for a new paid customer with a longer expiration date and a "Paid"
+license type.
 
 Using the License
 =================

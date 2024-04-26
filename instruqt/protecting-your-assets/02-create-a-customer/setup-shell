@@ -12,7 +12,7 @@ app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api
 # email for the customer the user will create
 new_customer_email=${INSTRUQT_PARTICIPANT_ID}@nitflex.tv
 # help the user out by telling them the expiration date for a 30-day trial
-license_expiry=$(date -d "+1 year" "+%B %d, %Y")
+license_expiry=$(date -d "+2 months" "+%B %d, %Y")
 
 agent variable set LICENSE_EXPIRY "${license_expiry}"
 agent variable set CUSTOMER_EMAIL "${new_customer_email}"

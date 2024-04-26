@@ -18,43 +18,40 @@ api_token=${REPLICATED_API_TOKEN}
 # add license check that we can re-use in multiple templates if needed
 cat <<TEMPLATE > ${HOME_DIR}/slackernews/templates/_helpers.tpl
 
-{{- define "slackernews.licenseCheck" -}}
-{{- \$currentDate := now | date "2006-01-02" }}
-{{- with .Values.global -}}
-{{- with .replicated -}}
-{{-   range .licenseFields -}}
-{{-     if eq .name "expires_at" -}}
-{{-        \$expiryDate := toDate "2006-01-02" .value | date "2006-01-02" -}}
-{{-        if lt \$expiryDate \$currentDate -}}
-{{-          fail "Your license is expired, please contact Slackernews to extend it" -}}
-{{-        end }}
-{{-     end  }}
-{{-   end }}
-{{- end }}
-{{- end }}
+{{- define "slackernews.persistence.enabled" -}}
+{{- \$licenseType := "prod" -}}
+{{- \$postgresEnabled := .Values.postgres.enabled -}}
+{{- if hasKey .Values "global" -}}
+  {{- if hasKey .Values.global "replicated" -}}
+    {{- if hasKey .Values.global.replicated "licenseType" -}}
+      {{- \$licenseType = .Values.global.replicated.licenseType -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- and (ne \$licenseType "trial") \$postgresEnabled -}}
 {{- end }}
 TEMPLATE
 
 # add the license check to the beginning of the Slackernews deployment template
-sed -i '1s/^/{{ include "slackernews.licenseCheck" . | indent 2 }}\n/' ${HOME_DIR}/slackernews/templates/slackernews-deployment.yaml
+sed -i 's/{{ if eq \.Values\.postgres\.enabled true }}/{{- if eq (include "slackernews.persistence.enabled" .) "true" }}/g' your_file.yaml
 
 # bump the version
-yq -i '.version = "0.6.0"' ${HOME_DIR}/slackernews/Chart.yaml
+yq -i '.version = "0.5.1"' ${HOME_DIR}/slackernews/Chart.yaml
 helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
 chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
 
-replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.0.tgz --version 0.6.0  \
-  --release-notes "Prevents installation of Slackernews when the license is expired"
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.5.1.tgz --version 0.5.1  \
+  --release-notes "Prevents persistence with trial licenses"
 
 # get the sequence number for the release to promote
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 0.6.0 \
-  --release-notes "Prevents installation of Slackernews when the license is expired"
+replicated release promote ${release_sequence} Beta --version 0.5.1 \
+  --release-notes "Prevents persistence with trial licenses"
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 0.6.0 \
-  --release-notes "Prevents installation of Slackernews when the license is expired"
+replicated release promote ${release_sequence} Stable --version 0.5.1 \
+  --release-notes "Prevents persistence with trial licenses"
 
 exit 0
