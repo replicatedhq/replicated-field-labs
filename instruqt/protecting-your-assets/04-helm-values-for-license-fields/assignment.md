@@ -266,7 +266,7 @@ Slackernews pod. Notice that it's using SQLlite and not Postgres.
   value: sqlite:./slackernews.db
 ```
 
-In a real application, you'd probably not want to consume resources running a
+In a real application, you'd wouldn't want to consume resources running a
 database that isn't being used. There are three manifests for Postgres in the
 Slackernews chart you would want to update with the same check for whether
 persistence is enabled. Let's skip that for now and move on to our own

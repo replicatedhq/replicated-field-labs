@@ -16,7 +16,7 @@ app_slug=${REPLICATED_APP}
 api_token=${REPLICATED_API_TOKEN}
 
 # add license check that we can re-use in multiple templates if needed
-cat <<TEMPLATE > ${HOME_DIR}/slackernews/templates/_helpers.tpl
+cat <<TEMPLATE >> ${HOME_DIR}/slackernews/templates/_helper.tpl
 
 {{- define "slackernews.persistence.enabled" -}}
 {{- \$licenseType := "prod" -}}
@@ -33,7 +33,7 @@ cat <<TEMPLATE > ${HOME_DIR}/slackernews/templates/_helpers.tpl
 TEMPLATE
 
 # add the license check to the beginning of the Slackernews deployment template
-sed -i 's/{{ if eq \.Values\.postgres\.enabled true }}/{{- if eq (include "slackernews.persistence.enabled" .) "true" }}/g' your_file.yaml
+sed -i 's/{{ if eq \.Values\.postgres\.enabled true }}/{{- if eq (include "slackernews.persistence.enabled" .) "true" }}/g' ${HOME_DIR}/slackernews/templates/slackernews-deployment.yaml
 
 # bump the version
 yq -i '.version = "0.5.1"' ${HOME_DIR}/slackernews/Chart.yaml
@@ -53,5 +53,12 @@ replicated release promote ${release_sequence} Beta --version 0.5.1 \
 # promote to the `Stable` channel
 replicated release promote ${release_sequence} Stable --version 0.5.1 \
   --release-notes "Prevents persistence with trial licenses"
+
+helm install --namespace slackernews --create-namespace \
+  slackernews --version 0.5.1 \
+  oci://registry.replicated.com/${app_slug}/slackernews \
+  --set nginx.service.type=NodePort --set nginx.service.nodePort.port=30443 \
+  --set slackernews.domain=cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
+  --kubeconfig ${HOME_DIR}/.kube/config
 
 exit 0
