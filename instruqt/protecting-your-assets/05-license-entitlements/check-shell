@@ -15,9 +15,9 @@ app_slug=${REPLICATED_APP}
 api_token=${REPLICATED_API_TOKEN}
 
 # we know there's only one app, so just grab the first one
-app_id=$(replicated app ls --output json | jq -r '.[0].id')
+app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
 
-field_created=$(replicated api get /v3/app/2Ukd6bgLamUYOegqsNOPfjpfQVC/license-fields | jq '.[] | select ( .name == "member_count_max" )')
+field_created=$(replicated api get /v3/app/${app_id}/license-fields | jq '.[] | select ( .name == "member_count_max" )')
 
 if [[ "${field_created}" == "true" ]] ; then
   fail-message 'Please create the "Max Member Count license field"'
