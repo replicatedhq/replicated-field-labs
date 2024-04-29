@@ -100,11 +100,11 @@ from the Slackernews application.
 ```
 - logs:
     selector:
-      - app=slackernews-frontend
+      - app=slackernews
 ```
 
 This definition specifies that the logs from any workload where the label `app`
-has the value `slackernews-frontend`. The Slackernews Helm chart we're using
+has the value `slackernews`. The Slackernews Helm chart we're using
 for this lab applies that label to pods created for the application iteself.
 
 The first analyzers teams add are generally those that identify if different
@@ -114,7 +114,7 @@ first step.
 
 ```
 - deploymentStatus:
-    name: slackernews-frontend
+    name: slackernews
     outcomes:
       - fail:
           when: "absent"
@@ -146,7 +146,7 @@ spec:
           - app=slackernews
   analyzers:
     - deploymentStatus:
-        name: slackernews-frontend
+        name: slackernews
         namespace: slackernews
         outcomes:
           - fail:
@@ -186,7 +186,7 @@ kubectl support-bundle ./slackernews-support-bundle.yaml
 You'll see that that your bundle has been collected and get a screen showing
 the result for the analyzer you added.
 
-![Slackernews isn't Running](../assets/failing-slackernews-frontend-status.png)
+![Slackernews isn't Running](../assets/failing-slackernews-status.png)
 
 Notice that the support bundle has told use something that's wrong with the
 installation.

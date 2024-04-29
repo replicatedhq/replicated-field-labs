@@ -17,7 +17,7 @@ spec:
           - app=slackernews
   analyzers:
     - deploymentStatus:
-        name: slackernews-frontend
+        name: slackernews
         outcomes:
           - fail:
               when: "absent"

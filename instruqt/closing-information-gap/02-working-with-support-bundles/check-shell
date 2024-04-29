@@ -13,7 +13,7 @@ if [[ "${collector_added}" == "false" ]] ; then
   let "result = result + 1"
 fi
 
-analyzer_added=$(yq '.spec.analyzers[] | select( has("deploymentStatus") ) .deploymentStatus | select(.name == "slackernews-frontend") | .name == "slackernews-frontend"' /home/replicant/slackernews-support-bundle.yaml)
+analyzer_added=$(yq '.spec.analyzers[] | select( has("deploymentStatus") ) .deploymentStatus | select(.name == "slackernews") | .name == "slackernews"' /home/replicant/slackernews-support-bundle.yaml)
 if [[ "${analyzer_added}" == "false" ]] ; then
   fail-message 'Please check your support bundle definition to make sure you added the status check for Slackernews Core'
   let "result = result + 1"
