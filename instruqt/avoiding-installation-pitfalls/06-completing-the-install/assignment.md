@@ -25,7 +25,7 @@ timelimit: 600
 ---
 
 We're going to continue playing the role of the customer
-who had a failing preflight check for the Slackernews registry.
+who had a failing preflight check for Slackernews.
 Let's also assume that the customer decided to increase
 the capacity of the cluster and is ready to perform
 the installation.
