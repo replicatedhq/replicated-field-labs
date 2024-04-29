@@ -7,4 +7,6 @@ HOME_DIR=/home/replicant
 
 # use the default k3s kubeconfig and kill the sdk-client
 # pod used to run the challenge
-kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml delete pod -n slackernews sdk-client
+if kubectl get pod -n slackernews sdk-client; then
+  kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml delete pod -n slackernews sdk-client
+fi

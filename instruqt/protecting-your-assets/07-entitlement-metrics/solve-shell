@@ -17,12 +17,12 @@ message=$(jq -n -c --arg daily_active_users 78 --arg monthly_active_users 82 \
 cmd=(curl -X POST -H "Content-Type: application/json" -d "${message}" http://replicated:3000/api/v1/app/custom-metrics)
 
 set +e
-if kubectl get pod sdk-client; then
+if kubectl get pod -n slackernews sdk-client; then
   set -e
-  kubectl exec sdk-client -- ${cmd}
+  kubectl exec -n slackernews sdk-client -- ${cmd}
 else
   set -e
-  kubectl run sdk-client --image nicolaka/netshoot --restart=Never -- ${cmd} 
+  kubectl run -n slackernews sdk-client --image nicolaka/netshoot --restart=Never -- ${cmd} 
 fi
 
 exit 0
