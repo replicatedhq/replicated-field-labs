@@ -14,6 +14,10 @@ tabs:
   type: terminal
   hostname: shell
   workdir: /home/replicant
+- title: Vendor Portal
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -56,7 +60,7 @@ Let's send our two metrics, there will be no return message so let's send
 
 ```
 curl -X POST -H "Content-Type: application/json" \
-    -d '{"data": { "dailyUsers", 78, "monthlyUsers": 82 } }' \
+    -d '{"data": { "dailyUsers": 78, "monthlyUsers": 82 } }' \
   http://replicated:3000/api/v1/app/custom-metrics
 ```
 
@@ -122,7 +126,7 @@ replicated app ls
 Copy the first column and set it in the variable `app_id`.
 
 ```
-app_id=[[ Instruqt-Var key="APP_ID" hostname="shell" ]]
+export APP_ID=[[ Instruqt-Var key="APP_ID" hostname="shell" ]]
 ```
 
 Do the same thing for the customer.
@@ -134,15 +138,44 @@ replicated customer ls
 Set the variable `customer_id`
 
 ```
-customer_id=[[ Instruqt-Var key="CUSTOMER_ID" hostname="shell" ]]
+export CUSTOMER_ID=[[ Instruqt-Var key="CUSTOMER_ID" hostname="shell" ]]
 ```
 
 Now that we have everything we need, let's use the `replicated` command to see
 the events we sent.
 
 ```
-replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=dailyUsers,monthlyUsers |
+replicated api get /v3/app/${APP_ID}/events\?customerIDs=${CUSTOMER_ID}\&eventTypes=dailyUsers,monthlyUsers \
   | jq .
+```
+
+You'll see the full event info from your two metrics. If you get an error that
+the `replicated` command was not found, make sure you exited the shell from
+your pod.
+
+```
+[
+  {
+    "customerId": "2fmesxEDU1ZnLnyQ8lzgZoOGoPS",
+    "instanceId": "8a8046a2-cac8-4637-b7b5-88d18cb35460",
+    "appId": "2fmefiZM7NrzbP4pNoldpnbVpFq",
+    "reportedAt": "2024-04-29T17:21:31.508",
+    "fieldName": "dailyUsers",
+    "isCustom": true,
+    "newValue": "78",
+    "previousValue": ""
+  },
+  {
+    "customerId": "2fmesxEDU1ZnLnyQ8lzgZoOGoPS",
+    "instanceId": "8a8046a2-cac8-4637-b7b5-88d18cb35460",
+    "appId": "2fmefiZM7NrzbP4pNoldpnbVpFq",
+    "reportedAt": "2024-04-29T17:21:31.508",
+    "fieldName": "monthlyUsers",
+    "isCustom": true,
+    "newValue": "82",
+    "previousValue": ""
+  }
+]
 ```
 
 🏁 Finish
