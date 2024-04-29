@@ -134,7 +134,7 @@ stringData:
               - pass:
                   message: Your cluster has sufficient memory available to run Slackernews
           - deploymentStatus:
-              name: slackernews-frontend
+              name: slackernews
               namespace: slackernews
               outcomes: 
               - fail:

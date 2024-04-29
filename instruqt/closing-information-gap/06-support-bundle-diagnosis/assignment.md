@@ -139,7 +139,7 @@ same failure that you saw when you were pretending to be Geeglo.
   isfail: true
   iswarn: false
   strict: false
-  title: slackernews-frontend Status
+  title: slackernews Status
   message: |
     The Slackernews application is not currently running on this cluster. Please review the logs in this support
     bundle to locate any errors.
@@ -180,7 +180,7 @@ troubleshooting there. Let's `describe` it to see if we can discover why it
 might not be running.
 
 ```
-kubectl describe deployment -n slackernews slackernews-frontend | less
+kubectl describe deployment -n slackernews slackernews | less
 ```
 
 You'll can confirm that is wasn't running when the bundle was collected by
