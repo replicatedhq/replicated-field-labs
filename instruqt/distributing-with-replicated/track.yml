@@ -22,10 +22,11 @@ owner: replicated
 developers:
 - chuck@replicated.com
 maintenance: true
+timelimit: 3600
 lab_config:
   overlay: false
   width: 33
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "5181542922141160754"
+checksum: "551241591225549648"
