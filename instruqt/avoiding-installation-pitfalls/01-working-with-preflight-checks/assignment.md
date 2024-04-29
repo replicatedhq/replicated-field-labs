@@ -127,8 +127,8 @@ This analyzer is the first of a handful of analyzers we will add in this lab.
 Getting Started
 ===============
 
-Let's start by creating a new file for our preflight checks
-using the Kubernetes cluster version example above. Click on
+Let's start by creating a new file for a simple set of  preflight checks in our
+home directory. using the Kubernetes cluster version example above. Click on
 the "Manifest Editor" tab and create a new file named
 `slackernews-preflights.yaml`.
 
