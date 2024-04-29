@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform solve the challenge.
+#
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+# if the pod `sdk-client` is running, then exec into it and post to the 
+# custom metrics API endpoint, otherwise run the same post against a new
+# instance of netshoot called "sdk-client"
+export KUBECONFIG=/home/replicant/.kube/config
+message=$(jq -n -c --arg daily_active_users 78 --arg monthly_active_users 82 \
+  '{"data": { "dailyUsers": $daily_active_users, "monthlyUsers": $monthly_active_users } }')
+cmd=(curl -X POST -H "Content-Type: application/json" -d "${message}" http://replicated:3000/api/v1/app/custom-metrics)
+
+set +e
+if kubectl get pod sdk-client; then
+  set -e
+  kubectl exec sdk-client -- ${cmd}
+else
+  set -e
+  kubectl run sdk-client --image nicolaka/netshoot --restart=Never -- ${cmd} 
+fi
+
+exit 0
