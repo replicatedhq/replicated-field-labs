@@ -16,6 +16,7 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 
+<<<<<<< HEAD
 # update the chart version
 yq -i '.version = "0.2.0"' ${HOME_DIR}/slackernews/Chart.yaml
 
@@ -28,3 +29,17 @@ helm package --dependency-update ${HOME_DIR}/slackernews --destination ${HOME_DI
 
 # make sure perms are good
 chown -R replicant:replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
+=======
+# updat the chart version
+tmux send-keys -t shell $'yq -i \'.version = "0.2.0"\' slackernews/Chart.yaml' ENTER
+
+# add the SDK dependency
+tmux send-keys -t shell "yq -i '.dependencies = []' slackernews/Chart.yaml" ENTER
+tmux send-keys -t shell "yq -i '.dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"$(agent variable get REPLICATED_SDK_VERSION)\"}' slackernews/Chart.yaml" ENTER
+
+# update dependencies
+tmux send-keys -t shell 'helm dependency update slackernews'  ENTER
+
+# re-package the chart
+tmux send-keys -t shell 'helm package slackernews --destination release' ENTER
+>>>>>>> 988eca0a688ec5c0ec918c5a5c70b938eacadd9b
