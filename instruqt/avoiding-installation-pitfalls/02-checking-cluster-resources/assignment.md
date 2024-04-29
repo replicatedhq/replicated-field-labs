@@ -112,7 +112,8 @@ ignore the warning for now.
 
 ![CPU Preflight Warning](../assets/cpu-preflight-warning.png)
 
-To round out the resource checks, add a similar check for memory
+To round out the resource checks, add a similar check for memory. It should
+also show a warning which is fine for the lab environment.
 
 ```
     - nodeResources:
@@ -147,14 +148,17 @@ kubectl preflight ./slackernews-preflights.yaml
 ```
 
 You'll see that all three preflights are run, and that the memory
-preflight has failed. This is an expected failure, since we have
+preflight has warned you. This is an expected failure, since we have
 single node cluster that has a small memory footprint.
 
-![Failing Storage Preflight](../assets/memory-preflight-failure.png)
+![Memory Preflight Warning](../assets/memory-preflight-failure.png)
 
-If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
-lab, you may be surprised at this failure. In that lab, we deployed
-Slackernews and it came up successfully. This is another value provided by
-your checks. They can detect latent failures, like the fact that
-Slackernews could rapidly exhaust the memory available in this cluster
-even though it started successfully.
+If you completed the [Distributing Your Application with
+Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
+lab, you may be surprised at this failure. In that lab, we deployed Slackernews
+and it came up successfully.  
+
+Catching those types of surprises _before_ they become issues is a big reason
+to use preflight checks. By detecting latent failures, they help your customers
+make adjustments ahead of time. Slackernews could exhaust the memory 
+available in this cluster even though it started successfully.
