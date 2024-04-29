@@ -5,7 +5,7 @@ containers:
   shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
 - name: cluster
-  image: instruqt/k3s-v1-27-1
+  image: instruqt/k3s-v1-28-5
   shell: /bin/bash
   environment:
     K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
