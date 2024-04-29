@@ -54,6 +54,8 @@ replicated release promote ${release_sequence} Beta --version 0.5.1 \
 replicated release promote ${release_sequence} Stable --version 0.5.1 \
   --release-notes "Prevents persistence with trial licenses"
 
+helm registry login $(agent variable get REGISTRY_HOST)  --username $(agent variable get REGISTRY_USERNAME)  --password $(agent variable get REGISTRY_PASSWORD)
+
 helm install --namespace slackernews --create-namespace \
   slackernews --version 0.5.1 \
   oci://registry.replicated.com/${app_slug}/slackernews \
