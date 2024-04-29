@@ -1,6 +1,6 @@
 ---
 slug: validating-license-fields
-id: 7zuxim1ohfcx
+id: xhamc4jj1gl1
 type: challenge
 title: Validating License Fields with the Replicated SDK
 teaser: Calling Replicated SDK to assure customer entitlements

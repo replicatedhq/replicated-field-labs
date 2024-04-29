@@ -1,6 +1,6 @@
 ---
 slug: proxying-private-images
-id: wlrdo1mqkezo
+id: 9o7xbvuzu2jq
 type: challenge
 title: Proxying Private Images
 teaser: Protect your private container images with the Replicated proxy registry

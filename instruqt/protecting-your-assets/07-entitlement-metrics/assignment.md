@@ -1,6 +1,6 @@
 ---
 slug: entitlement-metrics
-id: xwteer3tnu7c
+id: tszai83rci3g
 type: challenge
 title: Using the SDK to Report Against Entitlements
 teaser: |

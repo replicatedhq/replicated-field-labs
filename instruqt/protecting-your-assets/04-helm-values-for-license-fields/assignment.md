@@ -1,6 +1,6 @@
 ---
 slug: helm-values-for-license-fields
-id: egqdclosyyl5
+id: awgihw1hp1us
 type: challenge
 title: Using the License in Your Helm Chart
 teaser: Working with the Replicated license values in your Helm chart templates

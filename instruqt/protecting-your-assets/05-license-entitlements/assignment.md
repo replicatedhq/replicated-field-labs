@@ -1,6 +1,6 @@
 ---
 slug: license-entitlements
-id: bigb2ijlexjx
+id: oghixdh5mwul
 type: challenge
 title: Managing Entitlements with Custom License Fields
 teaser: Customizing your customer's license for your application
