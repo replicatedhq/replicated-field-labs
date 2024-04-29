@@ -11,6 +11,7 @@ if [[ "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" != "0.2.0"  ]] ; then
   let "result = result + 1"
 fi
 
+# check for the Replicated SDK dependency
 if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name' ${HOME_DIR}/slackernews/Chart.yaml )" != "replicated" ]] ; then
   fail-message 'Please be sure to include the Replicated SDK dependency in the Slackernews Helm chart'
   let "result = result + 1"
