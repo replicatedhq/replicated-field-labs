@@ -19,8 +19,8 @@ difficulty: basic
 timelimit: 600
 ---
 
-There are many more preflight checks we could define for the
-Slackernews registry, but let's stop here and shift to how we can
+There are many more preflight checks we could define for
+Slackernews, but let's stop here and shift to how we can
 deliver these checks as part of the application. To do this,
 we're going to incorporate them into our Helm chart and
 release a new version using the Replicated Platform.
@@ -28,12 +28,11 @@ release a new version using the Replicated Platform.
 Making Preflights Available with Your Application
 =================================================
 
-We defined our preflight checks in a manifest that looks a
-lot like a Kubernetes resource. It's useful to think of it as
-one, since it's an important part of successfully distributing
-and supporting an application. But it's different in one
-important way: it's a resource we expect to run _outside_ of
-the destination cluster.
+We defined our preflight checks in a manifest that looks a lot like a
+Kubernetes resource. It's useful to think of it as one, since it's an important
+part of successfully distributing and supporting an application. But it's
+different in one important way: it's not processed by the Kubernetes API but
+instead by the open source [Troubleshoot tooling](https://troubleshoot.sh).
 
 To accommodate this distinction, but still make it available
 as part of our Helm chart, we are going to store it in a
