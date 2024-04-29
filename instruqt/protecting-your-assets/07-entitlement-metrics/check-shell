@@ -22,10 +22,10 @@ customer_id=$(replicated api get /v3/app/${app_id}/customers | jq -r '.customers
 
 # daily user value
 daily_users=$(replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=dailyUsers | jq '.[0].newValue')
-montlhy_users=$(replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=monthlyUsers | jq '.[0].newValue')
+monthly_users=$(replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=monthlyUsers | jq '.[0].newValue')
 
 # if both custom metrics columns weren't sent, let the student know
-if [[ $daily_users == "null" || $monthy_users == "null" ]]; then
+if [[ $daily_users == "null" || $monthly_users == "null" ]]; then
   fail-message 'Please send the custom metrics for Daily Active Users and Monthly Active Users'
   exit 1
 fi
