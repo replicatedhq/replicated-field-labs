@@ -156,9 +156,9 @@ single node cluster that has a small memory footprint.
 If you completed the [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
 lab, you may be surprised at this failure. In that lab, we deployed Slackernews
-and it came up successfully.  
+and it came up successfully.
 
 Catching those types of surprises _before_ they become issues is a big reason
 to use preflight checks. By detecting latent failures, they help your customers
-make adjustments ahead of time. Slackernews could exhaust the memory 
+make adjustments ahead of time. Slackernews could exhaust the memory
 available in this cluster even though it started successfully.

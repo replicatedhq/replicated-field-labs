@@ -53,32 +53,37 @@ checks confirm this change.
 Installing the Application
 ==========================
 
-Now that the preflight checks have passed, it is safe to
-install the application. You can find the installation
-command for the customer "Geeglo" in the Replicated
-Vendor Portal. Since we've already run the first two
-steps of logging into the registry and running our
-preflight checks, we have only the installation
-with the Helm command to complete.
+Now that the preflight checks have passed, it is safe to install the
+application. You can find the installation command for the customer "Geeglo" in
+the Replicated Vendor Portal. Since we've already run the first two steps of
+logging into the registry and running our preflight checks, we have only the
+installation with the Helm command to complete.
 
-You can use the Vendor Portal tab to look up the
-install instruction, just like you did in the
-previous step before running the preflights.
-Click "Customers" in the left navigation, then
-click on "Geeglo". You access the instructions
-using the "Helm Install Instructions" button on
-the top right.
+You can use the Vendor Portal tab to look up the install instruction, just like
+you did in the previous step before running the preflights. Click "Customers"
+in the left navigation, then click on "Geeglo". You access the instructions
+using the "Helm Install Instructions" button on the top right.
 
 ![Customer Installation Commands](../assets/install-instructions.png)
 
-We need to add some additional values that Slackernews
-needs to come up correctly. This helps us make sure
-the installation will complete.
+Make sure you're logged into the Registry as the customer you created using the
+first command.
+
+```
+helm registry login [[ Instruqt-Var key="REGISTRY_HOST" hostname="shell" ]] \
+    --username [[ Instruqt-Var key="REGISTRY_USERNAME" hostname="shell" ]] \
+    --password [[ Instruqt-Var key="REGISTRY_PASSWORD" hostname="shell" ]]
+```
+
+The last command is the install command, but we can't use it directly. We need
+to add some additional values that Slackernews needs to come up correctly. This
+helps us make sure the installation will complete.
 
 ```
 helm install --namespace slackernews --create-namespace  \
     slackernews \
-    oci://registry.replicated.com/[[Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
+    oci://[[Instruqt-Var key="REGISTRY_HOST" hostname="shell" ]]/[[Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
+    --set nginx.service.type=NodePort --set nginx.service.nodePort.port=30443 \
     --set slackernews.domain=[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]] \
     --set service.type=NodePort
 ```
@@ -98,10 +103,9 @@ complete, the tab "Slackernews" should show the login page for Slackernews.
 🏁 Finish
 =========
 
-You've now successfully seen how you can provide preflight
-checks to your customer to help them avoid potential pitfalls
-installing your application. You've also seen how those
-preflights can help your customer understand what they need
-to do to prepare for an install, and how they can complete
-a successful install once the preflight checks pass.
+You've now successfully seen how you can provide preflight checks to your
+customer to help them avoid potential pitfalls installing your application.
+You've also seen how those preflights can help your customer understand what
+they need to do to prepare for an install, and how they can complete a
+successful install once the preflight checks pass.
 

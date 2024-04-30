@@ -26,11 +26,11 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-maintenance: true
+timelimit: 3600
 lab_config:
   overlay: false
   width: 33
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "1270779088559413242"
+checksum: "3286430125722429230"

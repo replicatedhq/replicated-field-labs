@@ -6,7 +6,7 @@ HOME_DIR=/home/replicant
 
 mkdir ${HOME_DIR}/slackernews/templates/troubleshoot
 cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
-HARBORapiVersion: v1
+apiVersion: v1
 kind: Secret
 metadata:
   name: {{ include "slackernews.name" . }}-preflight
@@ -80,9 +80,8 @@ stringData:
                     increasing cluster capacity or installing into a different cluster.
               - pass:
                   message: Your cluster has sufficient memory available to run Slackernews
-
 SLACKERNEWS_PREFLIGHTS
 
-yq -i '.version = "0.3.0"' /home/replicant/slackernews/Chart.yaml
-helm package /home/replicant/slackernews --destination /home/replicant/release
-chown -R replicant /home/replicant/slackernews /home/replicant/release
+yq -i '.version = "0.3.0"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release

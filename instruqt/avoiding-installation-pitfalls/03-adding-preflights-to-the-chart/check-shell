@@ -2,21 +2,22 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
 
 result=0
 
 # look for the preflight template file
-if [[ ! -f /home/replicant/slackernews/templates/troubleshoot/preflights.yaml ]] ; then
+if [[ ! -f ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml ]] ; then
   fail-message 'Please create the preflights template file in the Slackernews Helm chart template directory'
   let "reasult = result + 1"
 fi
 
-helm template /home/replicant/slackernews > /home/replicant/template.yaml
-chown replicant /home/replicant/template.yaml
+helm template ${HOME_DIR}/slackernews > ${HOME_DIR}/template.yaml
+chown replicant ${HOME_DIR}/template.yaml
 
-if [[ "$(helm template /home/replicant/slackernews | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "preflight" ) | .stringData | has("preflight.yaml")')" == "true" ]] ; then
+if [[ "$(helm template ${HOME_DIR}/slackernews | yq 'select( .kind == "Secret" ) | select( .metadata.labels."troubleshoot.sh/kind" == "preflight" ) | .stringData | has("preflight.yaml")')" == "true" ]] ; then
   set +e pipefail
-  check_results="$(helm template /home/replicant/slackernews | kubectl preflight --interactive=false --format yaml --kubeconfig /home/replicant/.kube/config -)"
+  check_results="$(helm template ${HOME_DIR}/slackernews | kubectl preflight --interactive=false --format yaml --kubeconfig ${HOME_DIR}/.kube/config -)"
   set -e pipefail
 else
   fail-message 'Please add your preflight checks to the preflights template file'
@@ -44,7 +45,7 @@ if [[ "${fails}" -ne "1" ]] ; then
 fi
 
 # look for the preflight template file
-if [[ ! -f /home/replicant/release/slackernews-0.3.0.tgz ]] ; then
+if [[ ! -f ${HOME_DIR}/release/slackernews-0.3.0.tgz ]] ; then
   fail-message $'Please make sure you\'ve bumped the version of your Helm chart and re-packaged it'
   let "result = result + 1"
 fi
