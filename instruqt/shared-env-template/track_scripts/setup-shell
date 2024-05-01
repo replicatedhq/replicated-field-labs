@@ -5,7 +5,7 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 
 # use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/chore/crdant/refines-template/libs/header.sh
 source /etc/profile.d/header.sh
 
 # simple SSH client setup so we can SSH to/from the shell
