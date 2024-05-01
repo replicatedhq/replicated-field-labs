@@ -55,7 +55,7 @@ Including the URI in the Bundle You Distribute
 ==============================================
 
 Let's finish of our work with the Slackernews support bundle by adding a `uri` to
-the spec. Edit the file `slackernews/troubleshoot/support-bundle.yaml` in the
+the spec. Edit the file `slackernews/templates/troubleshoot/support-bundle.yaml` in the
 Manifest Editor and add the URI from the command at the top of the `spec`,
 before the collectors.
 
