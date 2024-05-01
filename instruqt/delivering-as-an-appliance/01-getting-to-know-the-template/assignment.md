@@ -11,6 +11,9 @@ tabs:
 - title: Shell
   type: terminal
   hostname: shell
+- title: Cluster
+  type: terminal
+  hostname: cluster
 difficulty: basic
 timelimit: 300
 ---
