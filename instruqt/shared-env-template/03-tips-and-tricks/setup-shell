@@ -3,7 +3,7 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 HOME_DIR=/home/replicant
-source /etc/profile.d/header.sh
+source /etc/profile/header.sh
 
 ### Assure the tmux session exists
 #
@@ -16,9 +16,4 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 
-# Wait for Instruqt bootstrap to be complete
-while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
-do
-  echo "Waiting for Instruqt to finish booting the VM"
-  sleep 1
-done
+exit 0

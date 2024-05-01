@@ -2,6 +2,8 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
+source /etc/profile/header.sh
 
 # save the entire session to check user inputs and outputs
 tmux capture-pane -t shell -S -
