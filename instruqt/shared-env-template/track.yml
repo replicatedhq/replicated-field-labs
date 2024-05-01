@@ -25,6 +25,7 @@ description: |-
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
 - template
+- builders
 owner: replicated
 developers:
 - chuck@replicated.com
