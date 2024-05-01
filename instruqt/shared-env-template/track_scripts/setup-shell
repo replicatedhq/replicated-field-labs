@@ -2,9 +2,12 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
+
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
 
 # simple SSH client setup so we can SSH to/from the shell
-
 cat <<EOF >> "$HOME/.ssh/config"
 Host *
     StrictHostKeyChecking no
@@ -15,5 +18,5 @@ EOF
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
-chown -R replicant /home/replicant/.kube
+yq -i '.clusters[0].cluster.server = "https://cluster:6443"' ${HOME_DIR}/.kube/config
+chown -R replicant ${HOME_DIR}/.kube
