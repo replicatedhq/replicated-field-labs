@@ -28,10 +28,7 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-- vladimir@replicated.com
-- beck@replicated.com
-- jackee@replicated.com
 private: false
 published: false
-maintenance: false
+maintenance: true
 checksum: "339424959900277795"
