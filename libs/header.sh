@@ -46,5 +46,5 @@ get_api_token () {
 get_app_slug () {
   application=${1:-"Slackernews"}
   access_token=$(get_api_token)
-  app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application ${application} '.apps[] | select( .name == $application ) | .slug')
+  app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application ${application} '.apps[] | select( .name | startswith( $application )) | .slug')
 }
