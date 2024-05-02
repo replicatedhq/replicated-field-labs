@@ -67,7 +67,7 @@ If you've completed another lab like [Avoiding Installation
 Pitfalls](https://play.instruqt.com/replicated/tracks/avoiding-installation-pitfalls)
 or [Closing the Support Information
 Gap](https://play.instruqt.com/replicated/tracks/closing-infromation-gap) then
-met them before. If you haven't, then here's a quick introduction.
+you may already be familiar with them. If you haven't, then here's a quick introduction.
 
 The [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
