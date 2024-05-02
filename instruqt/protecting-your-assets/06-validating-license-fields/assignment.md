@@ -60,7 +60,7 @@ kubectl run -n slackernews sdk-client -it --image nicolaka/netshoot
 Let's get the license fields for the Slackernews application.
 
 ```
-curl http://replicated:3000/api/v1/license/fields | jq .
+curl -s http://replicated:3000/api/v1/license/fields | jq .
 ```
 
 This result will show the expiration date and the field you added in the
