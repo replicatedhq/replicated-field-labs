@@ -108,7 +108,7 @@ license. In Helm, they're available as a dictionary
 dictionary. You can add your own fields to represent your unique entitlements.
 We'll do that in the next part of the lab.
 
-Every application will have at least one field in this array for the license
+Every application will have at least one field in this dictionary for the license
 expiration date. If the license does not expire, the value will be blank.
 
 ```
