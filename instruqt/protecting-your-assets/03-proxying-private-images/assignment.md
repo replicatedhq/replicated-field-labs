@@ -113,7 +113,7 @@ plan on doing that as well.
 
 The image pull secret provides registry credentials to pull images. An obvious
 question to ask is how we know which credentials to use for the proxy registry.
-Replicated takes care of this for is as part of the same process it uses to
+Replicated takes care of this for us as part of the same process it uses to
 inject the license file into your Helm chart. This process provides a global
 value `replicated.dockerconfigjson` that contains the credentials.
 
