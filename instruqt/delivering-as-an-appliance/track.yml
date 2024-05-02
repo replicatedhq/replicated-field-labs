@@ -2,9 +2,9 @@ slug: delivering-as-an-appliance
 id: pbzwbwd3m2aw
 title: Delivering Your Application as a Kubernetes Appliance
 teaser: |-
-  A template track for sharing the shell environment across
-  challenges
-description: |-
+  Using the Replicated Embedded Cluster to deliver your application with no
+  customer Kubernetes cluster required
+detcription: |-
   This track is a template track to build any lab that requires
   maintaining the shell and it's environment between challenges.
 
@@ -25,6 +25,9 @@ description: |-
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
 - template
+- premium-plans
+- embedded-cluster
+- admin-console
 owner: replicated
 developers:
 - chuck@replicated.com
@@ -37,4 +40,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "12441153025772435915"
+checksum: "13724327532944126827"
