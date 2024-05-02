@@ -52,7 +52,7 @@ For the purpose of the lab, click the "+ Create Customer" button to create
 ![Creating a Customer](../assets/create-customer-button.png)
 
 Enter the name "NitFlex" and assign them to the `Stable` channel. They've
-trying your software for a year, so let's make sure we capture the expiration
+trying your software for two months, so let's make sure we capture the expiration
 date. We also need an email for them to login and install your Helm chart. Note
 that we never use that email, it's your customer, not ours.
 
