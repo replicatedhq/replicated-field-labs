@@ -16,9 +16,4 @@ if ! tmux has-session -t shell ; then
   tmux new-session -d -s shell su - replicant
 fi
 
-# Wait for Instruqt bootstrap to be complete
-while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
-do
-  echo "Waiting for Instruqt to finish booting the VM"
-  sleep 1
-done
+exit 0

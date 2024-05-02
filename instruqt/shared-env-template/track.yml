@@ -28,10 +28,11 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-- vladimir@replicated.com
-- beck@replicated.com
-- jackee@replicated.com
-private: false
-published: false
-maintenance: false
-checksum: "339424959900277795"
+maintenance: true
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+  feedback_recap_enabled: true
+  loadingMessages: true
+checksum: "5150027763894795965"
