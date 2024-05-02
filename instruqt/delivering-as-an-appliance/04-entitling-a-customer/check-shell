@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+HOME_DIR=/home/replicant
+source /etc/profile.d/header.sh
+
+# save the entire session to check user inputs and outputs
+tmux capture-pane -t shell -S -
+SESSION=$(tmux save-buffer -)
+
+# check that the variable has been set
+if ! grep -qE 'echo' <(echo ${SESSION}) ; then
+  fail-message 'Please make sure you can still access `$THIS`'
+  exit 1
+fi
+
