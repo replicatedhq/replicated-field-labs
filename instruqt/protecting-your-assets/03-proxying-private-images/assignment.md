@@ -111,7 +111,7 @@ do this:
 Another good practice is to specify image pull secrets as Helm values, so we'll
 plan on doing that as well.
 
-The image pull secret provides registry credentials to pull image. An obvious
+The image pull secret provides registry credentials to pull images. An obvious
 question to ask is how we know which credentials to use for the proxy registry.
 Replicated takes care of this for is as part of the same process it uses to
 inject the license file into your Helm chart. This process provides a global
