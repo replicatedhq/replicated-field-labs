@@ -93,7 +93,7 @@ previous step of the lab.
 To get a single field, add the field name to the URI.
 
 ```
-curl http://replicated:3000/api/v1/license/fields/member_count_max | jq .
+curl -s http://replicated:3000/api/v1/license/fields/member_count_max | jq .
 ```
 
 This will give you the value for the "Member Count" entitlement you added to
