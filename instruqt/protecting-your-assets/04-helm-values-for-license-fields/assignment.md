@@ -103,7 +103,7 @@ License Fields
 ==============
 
 The license has several fields that represent specific entitlements of this
-license. In Helm, they're available as an array
+license. In Helm, they're available as a dictionary
 `global.replicated.licenseFields`. Each is fields is represented as a YAML
 dictionary. You can add your own fields to represent your unique entitlements.
 We'll do that in the next part of the lab.
