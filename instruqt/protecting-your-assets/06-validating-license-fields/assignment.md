@@ -115,7 +115,7 @@ When you call the SDK from your code you can access the value in the `value`
 field. Here in the shell we just change our `jq` expression a little bit.
 
 ```
-curl http://replicated:3000/api/v1/license/fields/member_count_max | jq .value
+curl -s http://replicated:3000/api/v1/license/fields/member_count_max | jq .value
 ```
 
 Disconnect from the client pod for now. We'll use it again when we validate the
