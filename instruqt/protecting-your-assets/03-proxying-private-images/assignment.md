@@ -76,7 +76,7 @@ for your instance of Slackernews. Let's do that now.
 
 ### Updating Image References
 
-Select the "Slackernews Chart" tab to edit the chart source files. Select the
+Select the "Slackernews Chart" tab in Instruqt to edit the chart source files. Select the
 file `values.yaml` and search for the image values.
 
 ![Image Value Settings in Helm Chart](../assets/image-values.png)
