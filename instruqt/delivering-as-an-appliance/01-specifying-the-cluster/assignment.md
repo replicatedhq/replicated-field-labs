@@ -1,5 +1,5 @@
 ---
-slug: speciying-the-cluster
+slug: specifying-the-cluster
 id: bvpn5mxammoz
 type: challenge
 title: Configuring the Embedded Cluster

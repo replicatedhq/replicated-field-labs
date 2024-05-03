@@ -1,6 +1,6 @@
 ---
-slug: using-the-template
-id: ntcxaanufkcb
+slug: entitling-a-customer
+id: mgbxkjqyjxoz
 type: challenge
 title: Using the Template
 teaser: Some guidance on using the template

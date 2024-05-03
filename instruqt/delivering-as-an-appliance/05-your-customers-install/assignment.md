@@ -1,6 +1,6 @@
 ---
-slug: using-the-template
-id: ntcxaanufkcb
+slug: your-customers-install
+id: ln0wiikehigz
 type: challenge
 title: Using the Template
 teaser: Some guidance on using the template

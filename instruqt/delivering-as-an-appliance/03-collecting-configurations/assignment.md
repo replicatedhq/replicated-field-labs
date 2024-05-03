@@ -1,6 +1,6 @@
 ---
-slug: tips-and-tricks
-id: nk3jmszcvy6l
+slug: collecting-configurations
+id: aykml3s7uuzs
 type: challenge
 title: Tips and Tricks
 teaser: Some tips and recomended defaults
