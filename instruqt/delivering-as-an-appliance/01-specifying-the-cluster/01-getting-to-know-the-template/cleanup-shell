@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+HOME_DIR=/home/replicant
+source /etc/profile.d/header.sh
+
+# clear the tmux pane and scrollback to look like a fresh shell
+tmux clear-history -t shell 
+tmux send-keys -t shell clear ENTER
+
+exit 0
