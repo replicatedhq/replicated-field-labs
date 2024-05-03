@@ -197,6 +197,6 @@ Click on "Customers" then "Geeglo" to bring up Geeglo. Bring up "Manage
 Customer" to edit their license details, including your new field. The custom
 fields are at the bottom, so you may need to scroll.
 
-![Updating Geeglo's license entitlements](../assets/updating-entitlements.png
+![Updating Geeglo's license entitlements](../assets/updating-entitlements.png)
 
 
