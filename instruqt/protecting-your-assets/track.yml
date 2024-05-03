@@ -25,11 +25,11 @@ owner: replicated
 developers:
 - chuck@replicated.com
 idle_timeout: 300
-timelimit: 3700 
+timelimit: 3700
 lab_config:
   overlay: false
   width: 25
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "17860689275480983519"
+checksum: "16802236269891073198"
