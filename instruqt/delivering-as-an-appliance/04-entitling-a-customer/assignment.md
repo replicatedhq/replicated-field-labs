@@ -1,6 +1,6 @@
 ---
 slug: entitling-a-customer
-id: mgbxkjqyjxoz
+id: n8juiythxhxt
 type: challenge
 title: Enable a Customer to Use the Appliance
 teaser: |
