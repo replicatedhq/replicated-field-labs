@@ -13,7 +13,7 @@ tabs:
   hostname: shell
   workdir: /home/replicant
 difficulty: basic
-timelimit: 600
+timelimit: 900
 ---
 
 The Replicated SDK provides an in-cluster API for the Replicated platform. One
