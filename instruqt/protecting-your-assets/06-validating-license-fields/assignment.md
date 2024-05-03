@@ -121,6 +121,10 @@ curl -s http://replicated:3000/api/v1/license/fields/member_count_max | jq .valu
 Disconnect from the client pod for now. We'll use it again when we validate the
 signed value.
 
+```
+exit
+```
+
 Verifying License Signatures
 ============================
 
