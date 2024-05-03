@@ -17,6 +17,8 @@ api_token=${REPLICATED_API_TOKEN}
 # we know there's only one app, so just grab the first one
 app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
 
-replicated api get /v3/app/${app_id} | jq '.app.publicKeyPem' > signing-key.pub
+replicated api get /v3/app/${app_id} | jq '.app.publicKeyPem' > ${HOME_DIR}/signing-key.pub
+
+chown replicant:replicant ${HOME_DIR}/signing-key.pub
 
 exit 0
