@@ -27,8 +27,8 @@ description: |2-
     * Expand the installed cluster
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
 tags:
-- embedded-cluster
 - premium-plans
+- embedded-cluster
 - install
 owner: replicated
 developers:
@@ -42,4 +42,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "5710628610459581128"
+checksum: "2812472972966974569"
