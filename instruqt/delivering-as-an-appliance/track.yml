@@ -27,7 +27,9 @@ description: |2-
     * Expand the installed cluster
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
 tags:
+- embedded-cluster
 - premium-plans
+- install
 owner: replicated
 developers:
 - chuck@replicated.com
