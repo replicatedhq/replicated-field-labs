@@ -23,4 +23,4 @@ You can release you application as a Kubernetes applicance by
 specifying a few extra configuration files as part of your Replicated
 release. The first of these files is the configuration for the
 Embedded Cluster itself. This configuration can be very simple. All
-it's required to provide is the version of the cluster to use.
+it requires is the version of the cluster to use.
