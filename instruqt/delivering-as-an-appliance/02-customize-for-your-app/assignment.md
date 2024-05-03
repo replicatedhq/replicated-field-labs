@@ -17,5 +17,5 @@ timelimit: 300
 
 The Kubernetes appliance installation is one of the first things
 your customer will experience about your application. Replicated
-provides a few options to customer the appliance installer. Let's 
-customize it for the Slackernews application.
+provides a few options to customize the appliance installer. Let's
+use these to tailor it for the Slackernews application.
