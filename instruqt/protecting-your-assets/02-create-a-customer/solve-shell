@@ -18,5 +18,5 @@ customer_id=$(replicated customer create --name "Nitflex" --email ${customer_ema
 
 # make sure the customer has a paid license
 updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
-  jq -c --arg appId "${app_id}" '.customer | {"app_id": $appId, "name": .name, "email": .email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
+  jq -c --arg appId "${app_id}" '.customer | {"app_id": $appId, "name": .name, "email": .email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "trial", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
 
