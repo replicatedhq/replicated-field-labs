@@ -1,10 +1,3 @@
 #!/bin/bash
-set -exuo pipefail
-
-export KUBECONFIG=/opt/kubeconfig
-
-kubectl patch service -n default cartservice --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"7070"'}]'
-
-kubectl delete pod -l app=frontend
-
-sleep 10
+rm -rf /root/support-bundle*
+rm -rf /root/solution*

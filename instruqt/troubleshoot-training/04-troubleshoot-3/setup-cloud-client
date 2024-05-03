@@ -1,20 +1,6 @@
 #!/bin/bash
-set -x
 
-debug-message "Matriculating unmatriculated vectors..."
+rm /root/solution* || true
+rm /root/support-bundle* || true
 
-rm /root/solution.* || true
-rm /root/support-bundle-* || true
-
-export KUBECONFIG=/opt/kubeconfig
-
-# patch a service to use a random port
-
-kubectl patch service -n default cartservice --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"30000"'}]'
-
-# restart all app pods
-kubectl delete pods -l "app=frontend"
-
-sleep 30
-
-/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
+curl https://spooky.academy/support_bundles/troubleshoot_3_support_bundle.tar.gz -o support-bundle.tar.gz

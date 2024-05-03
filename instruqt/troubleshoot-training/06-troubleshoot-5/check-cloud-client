@@ -2,11 +2,6 @@
 set -exuo pipefail
 
 if [[ -f /tmp/challenge_ok ]]; then
-  # restore our previously backed-up copy of the coredns configmap
-  kubectl apply -f /opt/backups/t5.yaml
-  kubectl delete pods -n kube-system -l k8s-app=kube-dns
-  # restart all app pods
-  kubectl get pods --no-headers | awk '{print $1}' | xargs kubectl delete pod
   exit 0
 fi
 

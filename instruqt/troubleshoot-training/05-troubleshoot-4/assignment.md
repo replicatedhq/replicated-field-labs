@@ -59,15 +59,4 @@ jq '.[] | select(.insight.severity == "warn")' analysis.json
 
 The node's disk is full, which causes problems in the operating system as well as with Kubernetes.  Pod eviction thresholds have been exceeded, causing pods to be evicted and image garbage collection to remove images from the node.
 
-Remediation
-=================
-
-Find the offending file and remove it, and the cluster should recover.  Command line tools like `find` and `du` can be helpful here.
-
-Wait a few minutes for the Kubelet to recognize that disk space is available, and then clean up any Errored or Evicted pods:
-
-```
-kubectl delete pods --field-selector status.phase=Failed -A
-```
-
-We also have a Troubleshoot spec that looks for particularly large files at https://github.com/replicatedhq/troubleshoot-specs/blob/main/host/resource-contention.yaml#L36
+We have a Troubleshoot spec that looks for particularly large files at https://github.com/replicatedhq/troubleshoot-specs/blob/main/host/resource-contention.yaml#L36

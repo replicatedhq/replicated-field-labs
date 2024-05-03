@@ -10,7 +10,7 @@ answers:
 - Work with the customer to write redactor specs for their environment
 - Give up
 solution:
-- 3
+- 2
 difficulty: basic
 timelimit: 600
 ---

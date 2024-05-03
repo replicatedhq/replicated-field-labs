@@ -10,7 +10,7 @@ answers:
 - KOTS support bundle
 - Log files
 solution:
-- 2
+- 1
 difficulty: basic
 timelimit: 600
 ---

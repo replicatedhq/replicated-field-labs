@@ -14,11 +14,7 @@ tabs:
 difficulty: intermediate
 timelimit: 3600
 ---
-# [Our webapp](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io)
-
 The customer opens another issue, but this time pods seem to be crashing.
-
-The website (our webapp) appears to have some kind of error page, it might be useful.
 
 Let's investigate our app and see if we can identify the issue. Use `sbctl` to interact with the support bundle.
 

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export KUBECONFIG=/opt/kubeconfig
-
 if [[ ! -f /root/solution.yaml ]]; then
   fail-message "solution.yaml not found in /root/, please create the file and try again"
   exit 1
@@ -20,8 +18,3 @@ if [[ "$targetPort" != "7070" ]]; then
   fail-message "it looks like your solution is incorrect"
   exit 1
 fi
-
-kubectl patch service -n default cartservice --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": '"7070"'}]'
-
-# restart all app pods
-kubectl delete pods -l "app=frontend"

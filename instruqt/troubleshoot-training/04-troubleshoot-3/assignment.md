@@ -14,8 +14,6 @@ tabs:
 difficulty: advanced
 timelimit: 3600
 ---
-# [Our webapp](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io)
-
 You get another report from a customer saying that the application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
 
 - What cluster component handles communication between Pods?

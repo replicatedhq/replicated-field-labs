@@ -5,26 +5,7 @@
 rm -rf /root/support-bundle*
 rm -rf /root/solution*
 
-debug-message "Matriculating unmatriculated vectors..."
-
-export KUBECONFIG=/opt/kubeconfig
-
-# take a backup of the coredns configmap
-kubectl get configmap -n kube-system coredns -o yaml > /opt/backups/t5.yaml
-
-# change the cluster dns zone name
-sed 's/cluster\.local/cluster.nonlocal/g' /opt/backups/t5.yaml \
-| kubectl apply -f -
-
-#restart coredns
-kubectl delete pods -n kube-system -l k8s-app=kube-dns
-
-# restart all app pods
-kubectl get pods --no-headers | awk '{print $1}' | xargs kubectl delete pod
-
-sleep 60
-
-/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
+curl https://spooky.academy/support_bundles/troubleshoot_5_support_bundle.tar.gz -o support-bundle.tar.gz
 
 cd /opt/
 tee quiz.go << EOF

@@ -4,16 +4,6 @@
 #
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails.
-#
-
-#replicas=$(kubectl --kubeconfig /opt/kubeconfig -n default get deployment frontend -o jsonpath='{.spec.replicas}')
-
-#debug-message $replicas
-
-#if [[ "$replicas" = "0" ]]; then
-#  fail-message "It looks like our application is still down, see the hints for how to proceed."
-#  exit 1
-#fi
 
 if [[ ! -f "/root/solution.txt" ]]; then 
   fail-message "solution.txt not found, please create it and write your answer within"
@@ -26,7 +16,6 @@ echo "solution: $solution"
 echo "wanted  : kubectl scale deployment frontend --replicas 1"
 
 if [[ "$solution" = "kubectl scale deployment frontend --replicas 1" ]]; then
-  kubectl --kubeconfig=/opt/kubeconfig scale deployment frontend --replicas=1
   exit 0
 fi
 

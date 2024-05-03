@@ -1,25 +1,3 @@
 #!/bin/bash
 
-# break stuff
-debug-message "Reticulating Splines..."
-
-# backup resource before we edit it for later
-kubectl --kubeconfig /opt/kubeconfig get deployment -n default frontend -o json \
-| jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
-| tee /opt/backups/t1.json
-
-kubectl --kubeconfig /opt/kubeconfig scale deployment -n default frontend --replicas=0
-
-sleep 60
-
-debug-message "generating support bundle"
-
-cd /root/
-
-pwd
-
-/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
-
-ls
-
-debug-message "Mischief Managed! scaled deployment default/frontend to 0"
+curl https://spooky.academy/support_bundles/troubleshoot_1_support_bundle.tar.gz -o support-bundle.tar.gz

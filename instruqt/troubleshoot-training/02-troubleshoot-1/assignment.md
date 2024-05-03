@@ -14,13 +14,9 @@ tabs:
 difficulty: basic
 timelimit: 3600
 ---
-# [Our webapp](http://loadbalancer.[[ Instruqt-Var key="SANDBOX_ID" hostname="cloud-client" ]].instruqt.io)
-
 Let's imagine that our environment belongs to a customer, who are now experiencing an issue with their install.
 
 They've raised a rather vague issue to your support team suggesting that the application "doesn't work" after one of their admins was playing with the setup.
-
-click the "Our webapp" link above to see what the customer is experiencing
 
 Use the `sbctl` tool to inspect a support bundle they've shared with you, and try to determine what's amiss.
 

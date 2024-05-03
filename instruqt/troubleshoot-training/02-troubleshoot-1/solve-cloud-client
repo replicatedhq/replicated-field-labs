@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kubectl --kubeconfig=/opt/kubeconfig scale deployment frontend --replicas=1
-
+rm -rf /root/support-bundle*
+rm -rf /root/solution*

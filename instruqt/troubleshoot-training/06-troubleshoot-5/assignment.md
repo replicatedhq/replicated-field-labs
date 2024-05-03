@@ -61,8 +61,3 @@ quiz
 =================
 
 The `coredns` deployment has been reconfigured to only answer for a DNS zone of `cluster.nonlocal`.  This is causing DNS resolution failures for Pods that are expecting to resolve names in the `cluster.local` zone.
-
-Remediation
-=================
-
-Edit the `coredns` ConfigMap and change the `cluster.nonlocal` zone back to `cluster.local`.

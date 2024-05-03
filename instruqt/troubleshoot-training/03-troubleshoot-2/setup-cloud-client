@@ -1,30 +1,7 @@
 #!/bin/bash
 
 set -euxo
-rm -rf /root/support-bundle-* || true
+rm -rf /root/support-bundle* || true
 rm /root/solution.txt || true
 
-# break stuff
-debug-message "Reticulating Splines..."
-
-# backup resource before we edit it for later
-kubectl --kubeconfig /opt/kubeconfig get deployment -n default cartservice -o json \
-| jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
-| tee /opt/backups/t2.json
-
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "5M"}]'
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "5M"}]'
-
-sleep 5
-
-# get rid of the other replicasets that could be keeping the app up
-kubectl --kubeconfig /opt/kubeconfig get replicasets --no-headers --sort-by='{.metadata.creationTimestamp}' \
-| awk '{print $1}' \
-| grep -E "^cartservice.+" \
-| head -n -1 \
-| xargs kubectl --kubeconfig /opt/kubeconfig delete replicasets
-
-debug-message "sleeping for 60 seconds to allow the app to crash"
-sleep 60
-
-/root/.krew/bin/kubectl-support_bundle --kubeconfig /opt/kubeconfig --interactive=false "https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"
+curl https://spooky.academy/support_bundles/troubleshoot_2_support_bundle.tar.gz -o support-bundle.tar.gz

@@ -27,6 +27,3 @@ if [[ ! "$rawSize" -gt "5000000" ]];then
   echo "limits < 5M"
   exit 1
 fi
-
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "200M"}]'
-kubectl --kubeconfig /opt/kubeconfig patch deployment -n default cartservice --type='json' -p='[{"op": 'replace', "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "200M"}]'
