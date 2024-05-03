@@ -25,7 +25,7 @@ owner: replicated
 developers:
 - chuck@replicated.com
 idle_timeout: 300
-timelimit: 1200
+timelimit: 3700 
 lab_config:
   overlay: false
   width: 25
