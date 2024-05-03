@@ -129,9 +129,10 @@ secret.
         - name: replicated-pull-secret
 ```
 
-This lines are only included if the global values is set, in other
-words if the chart was distributed with Replicated. They reference a pull secret
-named `replicated-pull-secret`. Let's create that secret.
+This lines are only included if the global values provided by the Replicated
+Platform are set. In other words the chart was pulled from the Replicated
+registry. They reference a pull secret named `replicated-pull-secret`. Let's
+create that secret.
 
 
 Create a new file named `imagepullsecret.yaml` in the directory
