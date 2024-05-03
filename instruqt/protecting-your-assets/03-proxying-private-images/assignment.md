@@ -201,6 +201,12 @@ replicated release create --promote Unstable --chart ./release/slackernews-0.5.0
   --release-notes "Uses the Replicated proxy registry to pull images"
 ```
 
+You may notice a message saying that this release is "helm only". The reason
+for that is that the Replicated Platform supports multiple installation
+methdods and some of them require additional files. Don't worry, the same
+release can be used to support all of those approaches once the files are in
+place.
+
 This will not only create the release but push it to the `Unstable` release
 channel on the platform. It will also output a sequence number, which should be
 `5` (if it's not, use the number in the output for the upcoming commands).
