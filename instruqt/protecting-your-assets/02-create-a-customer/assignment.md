@@ -62,8 +62,7 @@ Customer Email: `[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`
 ![Customer Details](../assets/new-customer-details.png)
 
 You should also specify that they are a trial customer, so select the "Trial"
-option for the customer type and save your changes. We're using a new prospect
-trialing our software to set up later parts of the lab. The process will be
+option for the customer type and save your changes. The process will be
 the same for a new paid customer with a longer expiration date and a "Paid"
 license type.
 
