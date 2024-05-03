@@ -1,19 +1,18 @@
 ---
 slug: getting-to-know-the-template
-id: bvpn5mxammoz
 type: challenge
 title: Getting to Know the Template
 teaser: Some tips and tricks for using this template
 notes:
-- type: text
-  contents: Let's learn about this template
+  - type: text
+    contents: Let's learn about this template
 tabs:
-- title: Shell
-  type: terminal
-  hostname: shell
-- title: Cluster
-  type: terminal
-  hostname: cluster
+  - title: Shell
+    type: terminal
+    hostname: shell
+  - title: Cluster
+    type: terminal
+    hostname: cluster
 difficulty: basic
 timelimit: 300
 ---

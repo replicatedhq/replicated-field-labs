@@ -1,6 +1,6 @@
 ---
 slug: expanding-the-cluster
-id: nrhuwrqrnjvn
+id: eiyviocvnrbs
 type: challenge
 title: Expanding the Embedded Cluster Instance
 teaser: |

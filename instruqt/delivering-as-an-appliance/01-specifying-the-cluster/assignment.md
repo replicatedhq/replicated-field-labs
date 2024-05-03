@@ -1,6 +1,6 @@
 ---
 slug: specifying-the-cluster
-id: bvpn5mxammoz
+id: rsxl9h79cen1
 type: challenge
 title: Configuring the Embedded Cluster
 teaser: Enable and configure the embedded cluster

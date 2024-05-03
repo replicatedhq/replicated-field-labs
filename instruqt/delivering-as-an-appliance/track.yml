@@ -1,11 +1,10 @@
-slug: delivering-as-an-appliance
-id: pbzwbwd3m2aw
-title: Delivering Your Application as a Kubernetes Appliance
+slug: delivering-as-an-appliance-dev
+id: mjcgvsqqbxud
+title: DEV - Delivering Your Application as a Kubernetes Appliance
 teaser: |-
   Package your application as a Kubernetes appliance to simplify
   installation and operation.
-description: |2-
-
+description: |-
   The Replicated Embeded Cluster lets you distribute your application
   without a dependency on the customer's Kubernetes environment.
   Customers install the application like any other Linux services
@@ -28,6 +27,7 @@ description: |2-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
 tags:
 - premium-plans
+- dev
 - embedded-cluster
 - install
 owner: replicated
@@ -42,4 +42,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "2812472972966974569"
+checksum: "15749947422028595666"

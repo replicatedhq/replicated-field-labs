@@ -1,6 +1,6 @@
 ---
 slug: customize-for-your-app
-id: nk3jmszcvy6l
+id: pit6xmw6mftl
 type: challenge
 title: Customizing the Appliance for Your Application
 teaser: Make the Kubernetes appliance experience your own

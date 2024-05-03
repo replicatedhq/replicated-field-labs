@@ -1,16 +1,15 @@
 ---
 slug: using-the-template
-id: ntcxaanufkcb
 type: challenge
 title: Using the Template
 teaser: Some guidance on using the template
 notes:
-- type: text
-  contents: How and Why to Use This Template
+  - type: text
+    contents: How and Why to Use This Template
 tabs:
-- title: Shell
-  type: terminal
-  hostname: shell
+  - title: Shell
+    type: terminal
+    hostname: shell
 difficulty: basic
 timelimit: 300
 ---
