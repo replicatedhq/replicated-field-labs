@@ -2,27 +2,30 @@ slug: delivering-as-an-appliance
 id: pbzwbwd3m2aw
 title: Delivering Your Application as a Kubernetes Appliance
 teaser: |-
-  A template track for sharing the shell environment across
-  challenges
-description: |-
-  This track is a template track to build any lab that requires
-  maintaining the shell and it's environment between challenges.
+  Package your application as a Kubernetes appliance to simplify
+  installation and operation.
+description: |2-
 
-  To use it, run:
+  The Replicated Embeded Cluster lets you distribute your application
+  without a dependency on the customer's Kubernetes environment.
+  Customers install the application like any other Linux services
+  then follow a guided process to complete the application. The
+  cluster and application are tightly coupled and share an
+  adminstration console to simplify Day Two operations.
 
-  ```
-  instruqt track create --title [NEW TRACK TITLE] \
-    --from shared-env-template
-  ```
+  This lab explores the Replicated Embedded Cluster and the
+  appliance-like experience it provides for you customers. You'll
+  learn how to:
 
-  The track provides both a shell and a single-node cluster, and
-  the learner runs their commands as the user `replicant`.
-
-  Another advantage of this template is that you can check what
-  the learner has typed into their shell by capturing the `tmux`
-  pane content and running a grep against it, see the sample
-  check script in the first challenge for an example.
-icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+    * Configure the details of the Kubernetes cluster
+    * Customize the install and Admin Console experience for you
+      application
+    * Simplify configuration with a form to collect essential
+      values
+    * Specify which customer can use the Embedded Cluster
+    * Install the appliance to understand your customer's experience
+    * Expand the installed cluster
+icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
 tags:
 - premium-plans
 owner: replicated
@@ -37,4 +40,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "9086843298939670498"
+checksum: "5710628610459581128"
