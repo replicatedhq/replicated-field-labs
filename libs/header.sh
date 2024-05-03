@@ -111,3 +111,10 @@ get_slackernews() {
   yq -i 'del(.replicated)' slackernews/values.yaml
   yq -i 'del(.global.replicated)' slackernews/values.yaml
 }
+
+get_app_id () {
+  application=${1:-"Slackernews"}
+  access_token=$(get_api_token)
+  app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application ${application} '.apps[] | select( .name | startswith( $application )) | .id')
+  echo ${app_id}
+}

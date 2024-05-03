@@ -27,6 +27,7 @@ chown -R replicant ${HOME_DIR}/.kube
 # there's only one app created by the automation, so just grab the first in the list
 access_token=$(get_api_token)
 app_slug=$(get_app_slug)
+app_id=$(get_app_id)
 
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
@@ -438,7 +439,16 @@ replicated release promote ${release_sequence} Stable --version 0.4.1 \
 rm ${HOME_DIR}/release/slackernews-0.4.1.tgz
 
 # add the Netflix trial customer
+# provide an email address for the new customer
+customer_email="${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
 
+# create the new customer and keep track of the ID
+customer_id=$(replicated customer create --name "Nitflex" --email ${customer_email} --channel Stable --expires-in 1460h --type trial --kots-install=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
+
+# make sure the customer has a trial license
+updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  jq -c --arg appId "${app_id}" '.customer | {"app_id": $appId, "name": .name, "email": .email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "trial", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
+  #
 # configure the chart for trial vs. production licenses and 
 # release it to all three channels
 
