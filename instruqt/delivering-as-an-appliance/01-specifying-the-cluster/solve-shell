@@ -5,5 +5,4 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
-# set the variable into the shell
-tmux send-keys -t shell export SPACE 'THIS="the way"' ENTER
+exit 0
