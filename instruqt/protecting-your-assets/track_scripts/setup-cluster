@@ -4,7 +4,7 @@
 set -euxo pipefail
 
 # TODO: this needs to get switch back to main when #322 is merged
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/chore/crdant/switch-to-slackernews/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
 source /etc/profile.d/header.sh
 
 # simple SSH client setup so we can SSH to/from the shell
