@@ -1,6 +1,6 @@
-slug: avoiding-installation-pitfalls-dev
+slug: avoiding-installation-pitfalls
 id: yjxpxhujcxvy
-title: DEV - Avoiding Installation Pitfalls
+title: Avoiding Installation Pitfalls
 teaser: |-
   Use Preflight checks to avoid common installation pitfalls
   for your application

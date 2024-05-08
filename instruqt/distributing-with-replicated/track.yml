@@ -1,6 +1,6 @@
-slug: distributing-with-replicated-dev
+slug: distributing-with-replicated
 id: dqxwnogzxxfv
-title: DEV - Distributing Your Application with Replicated
+title: Distributing Your Application with Replicated
 description: |-
   Learn how to quickly take advantage of the Replicated Platform for
   your application. We'll take an existing Helm chart, add a dependency
@@ -28,4 +28,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "14491965674312593548"
+checksum: "2622909899588700505"
