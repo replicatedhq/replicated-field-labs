@@ -1,6 +1,6 @@
 ---
 slug: the-replicated-license
-id: 4udtdfaiyfyr
+id: frbo6izjilr1
 type: challenge
 title: The Replicated License
 teaser: Understanding the role of the Replicated license

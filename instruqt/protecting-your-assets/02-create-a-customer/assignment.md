@@ -1,6 +1,6 @@
 ---
 slug: create-a-customer
-id: hiizbfvpotha
+id: f0ayvnopkkyv
 type: challenge
 title: Creating a Customer License
 teaser: Time to add a customer and configure their license
