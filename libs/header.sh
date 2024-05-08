@@ -43,6 +43,13 @@ get_api_token () {
   echo ${access_token}
 }
 
+get_app_slug () {
+  application=${1:-"Slackernews"}
+  access_token=$(get_api_token)
+  app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application ${application} '.apps[] | select( .name | startswith( $application )) | .slug')
+  echo ${app_slug}
+}
+
 get_slackernews_domain() {
   echo cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com
 }
