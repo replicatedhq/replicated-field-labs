@@ -1,5 +1,5 @@
 slug: distributing-with-replicated
-id: dqxwnogzxxfv
+id: evmpzv6ycpgs
 title: Distributing Your Application with Replicated
 description: |-
   Learn how to quickly take advantage of the Replicated Platform for
@@ -16,7 +16,6 @@ level: beginner
 tags:
 - builders-plan
 - helm
-- dev
 - sdk
 owner: replicated
 developers:
@@ -28,4 +27,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "2622909899588700505"
+checksum: "7911887612029781210"

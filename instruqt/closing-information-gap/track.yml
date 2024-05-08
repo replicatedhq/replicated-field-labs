@@ -1,5 +1,5 @@
 slug: closing-information-gap
-id: 04xwdzyvx0ya
+id: hfb41xqkyx0q
 title: Closing the Support Information Gap
 teaser: |-
   Use the Replicated Platform to close the information gap between your
@@ -22,7 +22,6 @@ tags:
 - builders-plan
 - troubleshoot
 - helm
-- dev
 owner: replicated
 developers:
 - chuck@replicated.com
@@ -33,4 +32,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "12500015225100159592"
+checksum: "1869930288353195066"
