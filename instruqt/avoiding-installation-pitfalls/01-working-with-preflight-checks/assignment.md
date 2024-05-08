@@ -119,7 +119,7 @@ spec:
                 your Slackernews implementation.
               uri: https://kubernetes.io
           - pass:
-              message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+              message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
 ```
 
 This analyzer is the first of a handful of analyzers we will add in this lab.

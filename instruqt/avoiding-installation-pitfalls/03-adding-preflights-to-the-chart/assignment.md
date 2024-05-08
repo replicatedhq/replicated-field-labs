@@ -173,7 +173,7 @@ the indentation is correct.
                     your Slackernews implementation.
                   uri: https://kubernetes.io
               - pass:
-                  message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+                  message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
         - nodeResources:
             checkName: Cluster CPU resources are sufficient to install and run Slackernews
             outcomes:

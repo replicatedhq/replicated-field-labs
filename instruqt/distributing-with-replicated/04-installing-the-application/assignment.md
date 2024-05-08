@@ -107,4 +107,4 @@ helm install --namespace slackernews --create-namespace  \
 ```
 
 It's normal for this command to take a little bit of time to
-complete as various components of the Slackernews registry come up.
+complete as various components of Slackernews come up.
