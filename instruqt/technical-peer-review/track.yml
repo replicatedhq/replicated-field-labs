@@ -4,8 +4,17 @@ title: Technical Peer Review
 teaser: Solve some k8s problems
 description: Solve some k8s problems with the help from Replicated engineers.
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
-tags: []
+tags:
+- internal
+- deprecated
 owner: replicated
 developers:
 - joshd@replicated.com
-checksum: "15144180777240178116"
+- chuck@replicated.com
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+  feedback_recap_enabled: true
+  loadingMessages: true
+checksum: "10865669806182244848"

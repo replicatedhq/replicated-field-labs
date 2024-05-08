@@ -15,12 +15,18 @@ description: |-
   It contains a container with the replicated CLI pre-installed.
   It contains an editor with the manifests pre-loaded as an IDE example
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: 
+tags:
 - internal
+- deprecated
 owner: replicated
 developers:
 - joshd@replicated.com
-private: false
-published: false
+- chuck@replicated.com
 show_timer: true
-checksum: "11293693655654846089"
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+  feedback_recap_enabled: true
+  loadingMessages: true
+checksum: "12432665162894732013"

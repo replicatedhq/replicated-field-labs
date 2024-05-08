@@ -22,7 +22,7 @@ virtualmachines:
   - https
   - high-ports
 - name: kurl
-  image: kots-field-labs/ubuntu-2204-lts-200gb 
+  image: kots-field-labs/ubuntu-2204-lts-200gb
   shell: /bin/bash
   machine_type: n1-standard-8
   allow_external_ingress:
