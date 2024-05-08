@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if kubectl get pods -A -l app=kotsadm --no-headers -o custom-columns=":status.phase" | grep -q "Running"; then
-    echo "Yeah running"
-else
-    kubectl get pods -A -l app=kotsadm
-    fail-message "I expected kotsadm to be running"  
-fi
-

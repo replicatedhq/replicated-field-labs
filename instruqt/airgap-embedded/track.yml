@@ -12,6 +12,7 @@ tags:
   - vendor
   - embedded
   - premium-plans
+  - deprecated
 owner: replicated
 developers:
   - chuck@replicated.com

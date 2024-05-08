@@ -1,22 +1,11 @@
 tracks:
-  - slug: replicated-cli
-    id: pur3nyzcbryg
-  - slug: hello-world
-    id: otit0x2yl9ry
-  - slug: closing-information-gap
-    id: hfb41xqkyx0q
-  - slug: custom-fields
-    id: 9ixa2iyrggut
-  - slug: redactors
-    id: gmiwrds3jmuy
   - slug: distributing-with-replicated
     id: evmpzv6ycpgs
-  - slug: airgap-embedded
-    id: 0zxhhnehsgua
-  - slug: trying-out-cmx
-    id: 1gpba3eivmb4
   - slug: avoiding-installation-pitfalls
     id: amjfqroa5bfk
+  - slug: closing-information-gap
+    id: hfb41xqkyx0q
+  - slug: protecting-your-assets
+    id: zvnn71s6vwuk
   - slug: delivering-as-an-appliance
     id: pbzwbwd3m2aw
-
