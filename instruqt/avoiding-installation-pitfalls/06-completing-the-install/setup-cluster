@@ -2,6 +2,8 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
  
-agent variable set EXTERNAL_URL https://cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com/
+agent variable set SLACKERNEWS_DOMAIN get_slackernews_domain
 

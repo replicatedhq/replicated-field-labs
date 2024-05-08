@@ -14,8 +14,8 @@ helm registry login registry.replicated.com \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
 # install the application
-helm install harbor \
-  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/harbor \
-  --set service.type=NodePort --set nodePort.https=443 \
-  --set externalURL=https://$(agent variable get EXTERNAL_URL) \
+helm install --namespace slackernews --create-namespace slackernews \
+  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/slackernews \
+  --set slackernews.domain=$(get_slackernews_domain) \
+  --set service.type=NodePort \
   --kubeconfig /home/replicant/.kube/config

@@ -1,6 +1,6 @@
-slug: distributing-with-replicated
-id: evmpzv6ycpgs
-title: Distributing Your Application with Replicated
+slug: distributing-with-replicated-dev
+id: dqxwnogzxxfv
+title: DEV - Distributing Your Application with Replicated
 description: |-
   Learn how to quickly take advantage of the Replicated Platform for
   your application. We'll take an existing Helm chart, add a dependency
@@ -14,16 +14,18 @@ description: |-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/appslug.png
 level: beginner
 tags:
-- prod
 - builders-plan
 - helm
+- dev
 - sdk
 owner: replicated
 developers:
 - chuck@replicated.com
+timelimit: 600
 lab_config:
   overlay: false
   width: 33
   position: right
-  enableLoadingMessages: true
-checksum: "10082946159492732371"
+  feedback_recap_enabled: true
+  loadingMessages: true
+checksum: "14491965674312593548"

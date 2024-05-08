@@ -1,6 +1,6 @@
 ---
 slug: preparing-to-use-the-sdk
-id: mneddevjccio
+id: 2fnokww9qrc2
 type: challenge
 title: Preparing to Use the SDK
 teaser: Getting ready to use the Replicated SDK
@@ -34,9 +34,8 @@ To make use of the Replicated SDK, you'll need a couple of
 things. They've been set up for you in this lab environment.
 
 1. A Helm chart for your application. We're going to use the
-   Open Source Bitnami Helm chart for the Harbor container registry
-   for this lab, but it could be the Helm chart for your product
-   or any other Helm chart you wanted to distribute this way.
+   chart for [Slackernews](https://slackernews.io), an application
+   Replicated created to showcase our platform.
 2. Access to the Replicated Vendor Portal. You've been given
    access for the duration of this lab with the username
    `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]` and
@@ -49,13 +48,9 @@ things. They've been set up for you in this lab environment.
 🔤 Getting Started
 ==================
 
-To use the SDK, we need to add a dependency to the Harbor
-Helm chart. Let's pull down the chart so that we can get
-started.
-
-```bash
-helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/harbor --untar
-```
+To use the SDK, we need to add a dependency to the Slackernews
+Helm chart. The chart sources are in the directory `slackernews` in
+your home directory.
 
 Let's also set up our shell for interacting with the Replicated
 platform.
@@ -64,7 +59,7 @@ platform.
 export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
 ```
 
-And lastly make sure we are working with the Harbor app that was
+And lastly make sure we are working with the Slackernews app that was
 created by the lab setup.
 
 ```

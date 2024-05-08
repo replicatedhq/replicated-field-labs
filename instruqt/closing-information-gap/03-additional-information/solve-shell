@@ -3,213 +3,183 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
+export LOG_COLLECTORS=$(cat <<LOG_COLLECTORS
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app=slackernews-nginx
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app=postgres
+- logs:
+    name: /app/slackernews/logs
+    selectors:
+      - app.kubernetes.io/name=replicated
+LOG_COLLECTORS
+)
+yq -i ".spec.collectors += env(LOG_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
+
 export CONFIGMAP_COLLECTORS=$(cat <<CONFIGMAP_COLLECTORS
 - configMap:
-    namespace: default
-    selector:
-    - app.kubernetes.io/name=harbor
-- configMap:
-    name: harbor-core
-    namespace: default
-    key: EXT_ENDPOINT
+    name: slackernews-nginx
+    namespace: slackernews
+    key: default.conf
     includeValue: true
 CONFIGMAP_COLLECTORS
 )
-yq -i ".spec.analyzers += env(CONFIGMAP_COLLECTORS)" /home/replicant/harbor-support-bundle.yaml
+yq -i ".spec.collectors += env(CONFIGMAP_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
 
 export SECRET_COLLECTORS=$(cat <<SECRET_COLLECTORS
 - secret:
-    name: harbor-core
-    namespace: default
+    name: slackernews-nginx
+    namespace: slackernews
     key: tls.crt
     includeValue: true
 - secret:
-    name: harbor-ingress
-    key: ca.crt
+    name: slackernews-nginx
+    key: tls.key
     includeVale: true
 - secret:
-    name: harbor-ingress
-    key: tls.crt
-    includeVale: true
+    name: slackernews-postgres
+    namespace: slackernews
+    key: password
 - secret:
-    namespace: default
-    selector:
-    - app.kubernetes.io/name=harbor
+    name: slackernews-postgres
+    namespace: slackernews
+    key: uri
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: clientId
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: clientSecret
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: botToken
+- secret:
+    name: slackernews-slack
+    namespace: slackernews
+    key: userToken
 SECRET_COLLECTORS
 )
-yq -i ".spec.analyzers += env(SECRET_COLLECTORS)" /home/replicant/harbor-support-bundle.yaml
-
-chown replicant /home/replicant/harbor-support-bundle.yaml
+yq -i ".spec.collectors += env(SECRET_COLLECTORS)" /home/replicant/slackernews-support-bundle.yaml
 
 ## add analyzers that are also part of our preflight checks
 export CLUSTER_VERSION_ANALYZER=$(cat <<CLUSTER_VERSION_ANALYZER
 clusterVersion:
   outcomes:
     - fail:
-        when: "< 1.19.x"
+        when: "<= 1.26.x"
         message: |-
-          Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
-          registry and your installation will not succeed. Please upgrade your cluster or install to a different
-          cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-        uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+          Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+          community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+          that you installation will likely not succeed. Please upgrade your cluster or install to a different
+          cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+          If you are receiving extended support from your Kubernetes provider you may be able to ignore
+          this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+        uri: https://kubernetes.io
     - warn:
-        when: "< 1.24.0"
+        when: "< 1.27.0"
         message: |-
-          Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-          community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-          this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+          Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+          less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+          your Slackernews implementation.
         uri: https://kubernetes.io
     - pass:
-        message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+        message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
 CLUSTER_VERSION_ANALYZER
 )
 
 ## add analyzers that are also part of our preflight checks
 export CPU_ANALYZER=$(cat <<CPU_ANALYZER
 nodeResources:
-  checkName: Cluster CPU resources are sufficient to install and run Harbor
+  checkName: Cluster CPU resources are sufficient to install and run Slackernews
   outcomes:
     - fail:
         when: "sum(cpuAllocatable) < 2"
         message: |-
-          Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+          Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
           at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
           workloads. Please increase cluster capacity or install into a different cluster.
-        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
     - warn:
         when: "sum(cpuAllocatable) < 4"
         message: |-
-          Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+          Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
           than 4 CPU cores available to run workloads. For the best experience, consider
           increasing cluster capacity or installing into a different cluster.
-        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
     - pass:
-        message: Your cluster has sufficient CPU resources available to run Harbor
+        message: Your cluster has sufficient CPU resources available to run Slackernews
 CPU_ANALYZER
 )
 
 export MEMORY_ANALYZER=$(cat <<MEMORY_ANALYZER
 nodeResources:
-  checkName: Cluster memory is sufficient to install and run Harbor
+  checkName: Cluster memory is sufficient to install and run Slackernews
   outcomes:
     - fail:
         when: "sum(memoryAllocatable) < 4G"
         message: |-
-          Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+          Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
           at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
           workloads. Please increase cluster capacity or install into a different cluster.
-        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
     - warn:
         when: "sum(memoryAllocatable) < 8Gi"
         message: |-
-          Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+          Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
           than 8 GB of memory available to run workloads. For the best experience, consider
           increasing cluster capacity or installing into a different cluster.
-        uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
     - pass:
-        message: Your cluster has sufficient memory available to run Harbor
+        message: Your cluster has sufficient memory available to run Slackernews
 MEMORY_ANALYZER
 )
-yq -i ".spec.analyzers = [ env(CLUSTER_VERSION_ANALYZER), env(CPU_ANALYZER), env(MEMORY_ANALYZER) ] + .spec.analyzers" /home/replicant/harbor-support-bundle.yaml
+yq -i ".spec.analyzers = [ env(CLUSTER_VERSION_ANALYZER), env(CPU_ANALYZER), env(MEMORY_ANALYZER) ] + .spec.analyzers" /home/replicant/slackernews-support-bundle.yaml
 
 ## add deployment analyzers
 export DEPLOYMENT_ANALYZERS=$(cat <<DEPLOYMENT_ANALYZERS
 - deploymentStatus:
-    name: harbor-jobservice
-    namespace: default
+    name: slackernews-nginx
+    namespace: slackernews
     outcomes:
       - fail:
           when: "absent"
           message: |
-            The Harbor job service has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+            The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Harbor job service is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+            The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
       - pass:
           message: |
-            Ther Harbor job service is running on this cluster and ready for use.
-- deploymentStatus:
-    name: harbor-portal
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Harbor portal workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Harbor portal workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Harbor portal workload is running on this cluster and ready for use.
-- deploymentStatus:
-    name: harbor-registry
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Harbor registry workload has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Harbor registry workload is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Harbor registry workload is running on this cluster and ready for use.
+            Ther Slackernews web server is running on this cluster and ready for use.
 DEPLOYMENT_ANALYZERS
 )
-yq -i ".spec.analyzers += env(DEPLOYMENT_ANALYZERS)" /home/replicant/harbor-support-bundle.yaml
+yq -i ".spec.analyzers += env(DEPLOYMENT_ANALYZERS)" /home/replicant/slackernews-support-bundle.yaml
 
 ## add stateful set analyzers
 export STATEFUL_SET_ANALYZERS=$(cat <<STATEFUL_SET_ANALYZERS
 - statefulsetStatus:
-    name: harbor-database
-    namespace: default
+    name: postgres
+    namespace: slackernews
     outcomes:
       - fail:
           when: "absent"
           message: |
-            The Harbor database has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
+            The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
       - fail:
           when: "< 1"
           message: |
-            The Harbor database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+            The Slackernews database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
       - pass:
           message: |
-            Ther Harbor database is running on this cluster and ready for use.
-- statefulsetStatus:
-    name: harbor-redis
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Harbor cache has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Harbor cache is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            Ther Harbor cache is running on this cluster and ready for use.
-- statefulsetStatus:
-    name: harbor-trivy
-    namespace: default
-    outcomes:
-      - fail:
-          when: "absent"
-          message: |
-            The Trivy iamge scanner has not been deployed to this cluster. Please sure to install the Harbor registry application using its Helm chart.
-      - fail:
-          when: "< 1"
-          message: |
-            The Trivy image scanner is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
-      - pass:
-          message: |
-            The Trivy image scanner is running on this cluster and ready for use.
+            Ther Slackernews database is running on this cluster and ready for use.
 STATEFUL_SET_ANALYZERS
 )
-yq -i ".spec.analyzers += env(STATEFUL_SET_ANALYZERS)" /home/replicant/harbor-support-bundle.yaml
+yq -i ".spec.analyzers += env(STATEFUL_SET_ANALYZERS)" /home/replicant/slackernews-support-bundle.yaml
+
+chown replicant /home/replicant/slackernews-support-bundle.yaml

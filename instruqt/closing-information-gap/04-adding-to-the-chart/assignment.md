@@ -1,12 +1,12 @@
 ---
 slug: adding-to-the-chart
-id: 5gjk0ex2xofz
+id: oabxrqklmmop
 type: challenge
-title: Adding the Support Bundle to the Harbor Helm Chart
+title: Adding the Support Bundle to the Slackernews Helm Chart
 teaser: Learn how to incorporate your support bundle into your chart
 notes:
 - type: text
-  contents: Time to add your support bundle definition to the Harbor Helm chart
+  contents: Time to add your support bundle definition to the Slackernews Helm chart
 tabs:
 - title: Shell
   type: terminal
@@ -19,7 +19,7 @@ difficulty: basic
 timelimit: 600
 ---
 
-You've put together a pretty robust support bundle definition for the Harbor
+You've put together a pretty robust support bundle definition for the Slackernews
 registry. Now it's time to distribute that definition to your customers so that
 they can collect a support bundle when you need it.
 
@@ -77,17 +77,17 @@ _Note: The support bundle definition can also be stored as a `ConfigMap` with
 the same annotation._
 
 
-Adding Your Definition to the Harbor Helm Chart
+Adding Your Definition to the Slackernews Helm Chart
 ===============================================
 
 Knowing that you should create a secret for your support bundle sets you up to
-include it into the Harbor Helm chart. There's some boilerplate required to
+include it into the Slackernews Helm chart. There's some boilerplate required to
 define that secret consistently with the naming, annotation, and labeling
 conventions used in the chart. Bitnami, who provided the chart we're working
 with, has a set of these. Your team likely has some as well.
 
 Open the manifest editor and create a new file named `support-bundle.yaml` in
-the directory `harbor/templates/troubleshoot`. This will be the template that creates the
+the directory `slackernews/templates/troubleshoot`. This will be the template that creates the
 support bundle specification secret when the Helm chart is installed.
 
 ![Creating the Support Bundle Template](../assets/creating-the-support-bundle-template.png)
@@ -101,25 +101,19 @@ definition.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "common.names.fullname" . }}-support-bundle
+  name: {{ include "slackernews.name" . }}-support-bundle
   namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
     app.kubernetes.io/component: troubleshoot
     troubleshoot.sh/kind: support-bundle
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
 type: Opaque
 stringData:
   support-bundle-spec: |
 ```
 
-Remmeber that the support bundle must be at a key named `support-bundle-spec`
+Remember that the support bundle must be at a key named `support-bundle-spec`
 to be found when generating a support bundle. Open the file
-`harbor-support-bundle.yaml` and copy/paste its content into the secret
+`slackernews-support-bundle.yaml` and copy/paste its content into the secret
 template. Make sure the indentation is correct. Note that you can select the
 content you just pasted in and tab twice in order to indent to the right place.
 
@@ -129,17 +123,17 @@ Repackaging Your Chart
 ======================
 
 To distribute your support bundle, you should bump the version number in
-`harbor/Chart.yaml` (from `19.3.0` to `19.4.0`) adn then repackage it. You can edit
+`slackernews/Chart.yaml` (from `0.3.0` to `0.4.0`) adn then repackage it. You can edit
 the version in the Manifest Editor or run the following command to do it from
 the shell.
 
 ```
-yq -i '.version = "19.4.0"' harbor/Chart.yaml
+yq -i '.version = "0.4.0"' slackernews/Chart.yaml
 ```
 
 and run the `helm package` command to package the updated version
 
 ```
-helm package harbor --destination ./release
+helm package slackernews --destination ./release
 ```
 

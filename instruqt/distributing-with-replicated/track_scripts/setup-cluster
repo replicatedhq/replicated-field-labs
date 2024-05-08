@@ -24,4 +24,8 @@ while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do
   sleep 1
 done
 
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+source /etc/profile.d/header.sh
+
 scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config

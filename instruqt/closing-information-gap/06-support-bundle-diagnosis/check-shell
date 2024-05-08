@@ -8,8 +8,8 @@ HOME_DIR=/home/replicant
 result=0
 
 # check for installation of the updated chart
-installed_chart=$(helm list -o yaml --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
-if [[ ! "${installed_chart}" == "harbor-19.4.0"  ]] ; then
+installed_chart=$(helm list -o yaml --namespace slackernews --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
+if [[ ! "${installed_chart}" == "slackernews-0.4.0"  ]] ; then
   fail-message $'Please be sure to upgrade the customer\'s instance to the verison including your support bundle'
   let "result = result + 1"
 fi

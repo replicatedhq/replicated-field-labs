@@ -2,29 +2,30 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+export HOME_DIR=/home/replicant
 
 result=0
 # check for an updated version number
-if [[ "$(yq .version mastodon/Chart.yaml)" == "19.2.0"  ]] ; then
-  fail-message 'Please be sure to update the version of the Mastodon Helm chart to reflect your changes'
+if [[ "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" != "0.2.0"  ]] ; then
+  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your changes'
   let "result = result + 1"
 fi
 
 # check for the Replicated SDK dependency
-if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
-  fail-message 'Please be sure to include the Replicated SDK dependency in the Harbor Helm chart'
+if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name' ${HOME_DIR}/slackernews/Chart.yaml )" != "replicated" ]] ; then
+  fail-message 'Please be sure to include the Replicated SDK dependency in the Slackernews Helm chart'
   let "result = result + 1"
 fi
 
 # check for dependency updates 
-if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name')" == "replicated" ]] ; then
-  fail-message 'Please be sure to update the Harbor Helm chart''s dependencies to include the Replicated SDK'
+if [[ ! -f "${HOME_DIR}/slackernews/charts/replicated-$(agent variable get REPLICATED_SDK_VERSION).tgz" ]] ; then
+  fail-message 'Please be sure to update the Slackernews Helm chart''s dependencies to include the Replicated SDK'
   let "result = result + 1"
 fi
 
 # check for the repackaged Helm chart
-if [[ ! -f /home/replicant/release/harbor-19.2.0.tgz ]] ; then
-  fail-message 'Please be sure to update and repackage the Harbor Helm chart' 
+if [[ ! -f ${HOME_DIR}/release/slackernews-0.2.0.tgz ]] ; then
+  fail-message 'Please be sure to update and repackage the Slackernews Helm chart' 
   let "result = result + 1"
 fi
 

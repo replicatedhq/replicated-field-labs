@@ -1,6 +1,6 @@
 ---
 slug: completing-the-install
-id: 3fqiqvosmf7i
+id: qo2vdg2dfuq4
 type: challenge
 title: Completing the Install
 teaser: Finishing the install once the cluster passes its preflights
@@ -15,7 +15,7 @@ tabs:
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Harbor Registry
+- title: Slackernews
   type: service
   hostname: cluster
   port: 30443
@@ -25,7 +25,7 @@ timelimit: 600
 ---
 
 We're going to continue playing the role of the customer
-who had a failing preflight check for the Harbor registry.
+who had a failing preflight check for Slackernews.
 Let's also assume that the customer decided to increase
 the capacity of the cluster and is ready to perform
 the installation.
@@ -39,7 +39,7 @@ necessary resources. We can do that by re-running the
 preflight checks against the now expanded cluster.
 
 ```
-helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
+helm template oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
   | kubectl preflight -
 ```
 
@@ -53,65 +53,59 @@ checks confirm this change.
 Installing the Application
 ==========================
 
-Now that the preflight checks have passed, it is safe to
-install the application. You can find the installation
-command for the customer "Geeglo" in the Replicated
-Vendor Portal. Since we've already run the first two
-steps of logging into the registry and running our
-preflight checks, we have only the installation
-with the Helm command to complete.
+Now that the preflight checks have passed, it is safe to install the
+application. You can find the installation command for the customer "Geeglo" in
+the Replicated Vendor Portal. Since we've already run the first two steps of
+logging into the registry and running our preflight checks, we have only the
+installation with the Helm command to complete.
 
-You can use the Vendor Portal tab to look up the
-install instruction, just like you did in the
-previous step before running the preflights.
-Click "Customers" in the left navigation, then
-click on "Geeglo". You access the instructions
-using the "Helm Install Instructions" button on
-the top right.
+You can use the Vendor Portal tab to look up the install instruction, just like
+you did in the previous step before running the preflights. Click "Customers"
+in the left navigation, then click on "Geeglo". You access the instructions
+using the "Helm Install Instructions" button on the top right.
 
 ![Customer Installation Commands](../assets/install-instructions.png)
 
-We need to add some additional values that Harbor
-needs to come up correctly. This helps us make sure
-the installation will complete.
+Make sure you're logged into the Registry as the customer you created using the
+first command.
 
 ```
-helm install harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor \
-  --set service.type=NodePort --set service.nodePorts.https=30443 \
-  --set externalURL=[[  Instruqt-Var key="EXTERNAL_URL" hostname="cluster" ]]
+helm registry login [[ Instruqt-Var key="REGISTRY_HOST" hostname="shell" ]] \
+    --username [[ Instruqt-Var key="REGISTRY_USERNAME" hostname="shell" ]] \
+    --password [[ Instruqt-Var key="REGISTRY_PASSWORD" hostname="shell" ]]
 ```
 
-Note that the cluster we're using is fairly limited, so
-we're using `NodePort` to simplify access.
+The last command is the install command, but we can't use it directly. We need
+to add some additional values that Slackernews needs to come up correctly. This
+helps us make sure the installation will complete.
+
+```
+helm install --namespace slackernews --create-namespace  \
+    slackernews \
+    oci://[[Instruqt-Var key="REGISTRY_HOST" hostname="shell" ]]/[[Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews \
+    --set nginx.service.type=NodePort --set nginx.service.nodePort.port=30443 \
+    --set slackernews.domain=[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]] \
+    --set service.type=NodePort
+```
+
+Note that the cluster we're using is fairly limited, so we're using `NodePort`
+to simplify access.
 
 Verifying the Installation
 ==========================
 
-From the customer perspective, the installation is
-complete when they can log into the application and
-see that it was complete. Once their install is complete,
-the tab "Harbor Registry" should show the login page
-for Harbor.
+From the customer perspective, the installation is complete when they can log
+into the application and see that it was complete. Once their install is
+complete, the tab "Slackernews" should show the login page for Slackernews.
 
-![Harbor Registry Login](../assets/harbor-login-page.png)
-
-You can even log in if you run the commands from the
-output of the `helm install` command to get the username
-and password.
-
-```
-echo Username: "admin"
-echo Password: $(kubectl get secret --namespace default harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d)
-```
+![Slackernews Landing Page](../assets/slackernews.png)
 
 🏁 Finish
 =========
 
-You've now successfully seen how you can provide preflight
-checks to your customer to help them avoid potential pitfalls
-installing your application. You've also seen how those
-preflights can help your customer understand what they need
-to do to prepare for an install, and how they can complete
-a successful install once the preflight checks pass.
+You've now successfully seen how you can provide preflight checks to your
+customer to help them avoid potential pitfalls installing your application.
+You've also seen how those preflights can help your customer understand what
+they need to do to prepare for an install, and how they can complete a
+successful install once the preflight checks pass.
 

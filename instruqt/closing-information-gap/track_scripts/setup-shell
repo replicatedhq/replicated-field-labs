@@ -2,6 +2,7 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
 
 # simple SSH client setup so we can SSH to/from the shell
 
@@ -15,12 +16,12 @@ EOF
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/feature-information-gap/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
 source /etc/profile.d/header.sh
 
 # change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
-chown -R replicant /home/replicant/.kube
+yq -i '.clusters[0].cluster.server = "https://cluster:6443"' ${HOME_DIR}/.kube/config
+chown -R replicant ${HOME_DIR}/.kube
 
 ## setup for Vendor Portal access
 
@@ -32,24 +33,25 @@ export REPLICATED_API_TOKEN=${api_token}
 export REPLICATED_APP=${app_slug}
 
 ## release the application with the Replicated SDK
-cd /home/replicant
-mkdir /home/replicant/release
+cd ${HOME_DIR}
+mkdir ${HOME_DIR}/release
 
-helm pull --version 19.1.0 oci://registry-1.docker.io/bitnamicharts/harbor --untar
-yq -i '.version = "19.2.0"' harbor/Chart.yaml
+get_slackernews
+yq -i '.version = "0.2.0"' slackernews/Chart.yaml
 replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
-yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" harbor/Chart.yaml
+yq -i ".dependencies = []" slackernews/Chart.yaml
+yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
 
 # update dependencies
-helm dependency update harbor
+helm dependency update slackernews
 
 # re-package the chart
-helm package harbor --destination release
+helm package slackernews --destination release
 
 ## release and promote the app with the SDK added
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --chart /home/replicant/release/harbor-19.2.0.tgz --version 19.2.0 \
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.2.0.tgz --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -57,12 +59,12 @@ replicated release create --promote Unstable --chart /home/replicant/release/har
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 19.2.0 \
+replicated release promote ${release_sequence} Beta --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 19.2.0 \
+replicated release promote ${release_sequence} Stable --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
@@ -71,102 +73,97 @@ replicated channel create --name LTS --description "Releases with long-term supp
   --app ${app_slug} --token ${api_token}
 
 # remove the helm chart we used to create the release
-rm /home/replicant/release/harbor-19.2.0.tgz
+rm ${HOME_DIR}/release/slackernews-0.2.0.tgz
 
 ## release the application with the Replicated SDK
 # add preflight checks to the Helm chart
-mkdir /home/replicant/harbor/templates/troubleshoot
-cat <<HARBOR_PREFLIGHTS > /home/replicant/harbor/templates/troubleshoot/preflights.yaml
+mkdir ${HOME_DIR}/slackernews/templates/troubleshoot
+cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "common.names.fullname" . }}-preflight
+  name: {{ include "slackernews.name" . }}-preflight
   namespace: {{ .Release.Namespace | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
     app.kubernetes.io/component: preflight
     troubleshoot.sh/kind: preflight
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
-  {{- end }}
 type: Opaque
 stringData:
   preflight.yaml: | 
     apiVersion: troubleshoot.sh/v1beta2
     kind: Preflight
     metadata:
-      name: harbor-preflight-checks
+      name: slackernews-preflight-checks
     spec:
       analyzers:
         - clusterVersion:
             outcomes:
               - fail:
-                  when: "< 1.19.x"
+                  when: "<= 1.26.x"
                   message: |-
-                    Your Kubernets cluster is running a version of Kubernetes that is not supported by the Harbor container
-                    registry and your installation will not succeed. Please upgrade your cluster or install to a different
-                    cluster running at least Kubernetes 1.19, ideally version 1.24.0 or later.
-                  uri: https://github.com/bitnami/charts/blob/main/bitnami/harbor/README.md
+                    Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                    community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                    that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                    If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
               - warn:
-                  when: "< 1.24.0"
+                  when: "< 1.27.0"
                   message: |-
-                    Your Kubernetes cluster is running a version of Kubernetes that is not longer supported by the Kubernetes
-                    community. If you are receiving extended support from your Kubernetes provider you may be able to ignore
-                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.24.0.
+                    Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                    less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                    your Slackernews implementation.
                   uri: https://kubernetes.io
               - pass:
-                  message: Your cluster is running a version of Kubernetes that is supported by the Harbor container registry.
+                  message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
         - nodeResources:
-            checkName: Cluster CPU resources are sufficient to install and run Harbor
+            checkName: Cluster CPU resources are sufficient to install and run Slackernews
             outcomes:
               - fail:
                   when: "sum(cpuAllocatable) < 2"
                   message: |-
-                    Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                    Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
                     at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
                     workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - warn:
                   when: "sum(cpuAllocatable) < 4"
                   message: |-
-                    Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
                     than 4 CPU cores available to run workloads. For the best experience, consider
                     increasing cluster capacity or installing into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - pass:
-                  message: Your cluster has sufficient CPU resources available to run Harbor
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
         - nodeResources:
-            checkName: Cluster memory is sufficient to install and run Harbor
+            checkName: Cluster memory is sufficient to install and run Slackernews
             outcomes:
               - fail:
                   when: "sum(memoryAllocatable) < 4G"
                   message: |-
-                    Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                    Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
                     at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
                     workloads. Please increase cluster capacity or install into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - warn:
                   when: "sum(memoryAllocatable) < 8Gi"
                   message: |-
-                    Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
                     than 8 GB of memory available to run workloads. For the best experience, consider
                     increasing cluster capacity or installing into a different cluster.
-                  uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
               - pass:
-                  message: Your cluster has sufficient memory available to run Harbor
-HARBOR_PREFLIGHTS
+                  message: Your cluster has sufficient memory available to run Slackernews
+SLACKERNEWS_PREFLIGHTS
 
 # bump the version
-yq -i '.version = "19.3.0"' /home/replicant/harbor/Chart.yaml
-helm package /home/replicant/harbor --destination /home/replicant/release
-chown -R replicant /home/replicant/harbor /home/replicant/release
+yq -i '.version = "0.3.0"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
 
 ## release and promote the preflight checks added
 
 # release to the `Unstable` channel
-replicated release create --promote Unstable --chart /home/replicant/release/harbor-19.3.0.tgz --version 19.3.0 \
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.3.0.tgz --version 0.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
 
@@ -174,17 +171,17 @@ replicated release create --promote Unstable --chart /home/replicant/release/har
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
 # promote to the `Beta` channel
-replicated release promote ${release_sequence} Beta --version 19.3.0 \
+replicated release promote ${release_sequence} Beta --version 0.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
  
 # promote to the `Stable` channel
-replicated release promote ${release_sequence} Stable --version 19.3.0 \
+replicated release promote ${release_sequence} Stable --version 0.3.0 \
   --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
   --app ${app_slug} --token ${api_token}
 
 # remove the helm chart we used to create the release
-rm /home/replicant/release/harbor-19.3.0.tgz
+rm ${HOME_DIR}/release/slackernews-0.3.0.tgz
 
 ## create the customer from the preflights lab
 
@@ -217,14 +214,15 @@ helm registry login registry.replicated.com \
 # install the application, trying again if it fails since there might be timing issues
 set +e
 retries=0
-while ! helm install harbor --version 19.3.0 \
-  oci://registry.replicated.com/${app_slug}/harbor \
-  --set service.type=NodePort --set service.nodePort.https=30443 \
-  --set externalURL=https://cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
-  --kubeconfig /home/replicant/.kube/config && [[ $retries -lt 10 ]]; do
+while ! helm install --namespace slackernews --create-namespace \
+  slackernews --version 0.3.0 \
+  oci://registry.replicated.com/${app_slug}/slackernews \
+  --set service.type=NodePort \
+  --set slackernews.domain=cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
+  --kubeconfig ${HOME_DIR}/.kube/config && [[ $retries -lt 10 ]]; do
   sleep 2
   let "retries = retries + 1"
 done
 
 # make sure permissions are good
-chown -R replicant /home/replicant/harbor /home/replicant/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release

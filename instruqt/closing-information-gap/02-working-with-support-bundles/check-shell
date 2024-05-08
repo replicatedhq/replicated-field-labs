@@ -6,16 +6,16 @@ set -euxo pipefail
 result=0
 
 # check whether the preflight has been created, we can assume that if has a
-# result for the harbor-core deployment status assume it was done correctly
-collector_added=$(yq '.spec.collectors[] | select( has("logs") ) .logs | select( has( "selector" ) ) | .selector | contains([ "app=harbor"] )' /home/replicant/harbor-support-bundle.yaml) 
+# result for the slackernews-core deployment status assume it was done correctly
+collector_added=$(yq '.spec.collectors[] | select( has("logs") ) .logs | select( has( "selector" ) ) | .selector | contains([ "app=slackernews"] )' /home/replicant/slackernews-support-bundle.yaml) 
 if [[ "${collector_added}" == "false" ]] ; then
-  fail-message 'Please check your support bundle definition to make sure you added the collect for Harbor logs'
+  fail-message 'Please check your support bundle definition to make sure you added the collect for Slackernews logs'
   let "result = result + 1"
 fi
 
-analyzer_added=$(yq '.spec.analyzers[] | select( has("deploymentStatus") ) .deploymentStatus | select(.name == "harbor-core") | .name == "harbor-core"' /home/replicant/harbor-support-bundle.yaml)
+analyzer_added=$(yq '.spec.analyzers[] | select( has("deploymentStatus") ) .deploymentStatus | select(.name == "slackernews") | .name == "slackernews"' /home/replicant/slackernews-support-bundle.yaml)
 if [[ "${analyzer_added}" == "false" ]] ; then
-  fail-message 'Please check your support bundle definition to make sure you added the status check for Harbor Core'
+  fail-message 'Please check your support bundle definition to make sure you added the status check for Slackernews Core'
   let "result = result + 1"
 fi
 

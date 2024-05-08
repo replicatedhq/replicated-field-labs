@@ -3,6 +3,10 @@
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
 
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+source /etc/profile.d/header.sh
+
 # simple SSH client setup so we can SSH to/from the shell
 
 cat <<EOF >> "$HOME/.ssh/config"

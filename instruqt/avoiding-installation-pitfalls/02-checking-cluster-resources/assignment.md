@@ -1,6 +1,6 @@
 ---
 slug: checking-cluster-resources
-id: fjch1mlffnx4
+id: tcwpxsj6yplu
 type: challenge
 title: Checking Cluster Resources
 teaser: Use preflight checks to validate minimum cluster requirements
@@ -21,7 +21,7 @@ timelimit: 300
 
 Now that we know we're installing to a supported version of
 Kubernetes, let's see if that cluster has the resources to
-support running Harbor.
+support running Slackernews.
 
 Cluster Resources
 =================
@@ -29,7 +29,7 @@ Cluster Resources
 The default `clusterResources` collector collects information
 about all of the nodes in the cluster. This allows us to
 write analyzers that check whether the cluster has sufficient
-resources to run our cluster: most often we write checks to
+resources to run our application: most often we write checks to
 determine whether CPU, memory, and storage meet the base
 requirements of the application.
 
@@ -48,7 +48,7 @@ The best way to define your preflight checks for cluster resources
 is to make sure they align with your documentation for the minimum
 and recommended values. The preflight check makes those prerequisites
 executable and lets your customer know whether their install will
-succeed. Let's look at [Harbor's documentation](https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/)
+succeed. Let's look at [Slackernews's documentation](https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/)
 for guidance on our preflights.
 
 <table>
@@ -75,35 +75,35 @@ for guidance on our preflights.
 
 Since we have both recommended and minimum values, we have thresholds
 for both warning and failure. Let's add the CPU check into our
-`harbor-preflights.yaml` manifest. Open up the "Manifest Editor" tab
+`slackernews-preflights.yaml` manifest. Open up the "Manifest Editor" tab
 and paste this new analyzer after the one checking the Kubernetes version.
 
 ```
     - nodeResources:
-        checkName: Cluster CPU resources are sufficient to install and run Harbor
+        checkName: Cluster CPU resources are sufficient to install and run Slackernews
         outcomes:
           - fail:
               when: "sum(cpuAllocatable) < 2"
               message: |-
-                Harbor requires a minimum of 2 CPU cores in order to run, and runs best with
+                Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
                 at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
                 workloads. Please increase cluster capacity or install into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - warn:
               when: "sum(cpuAllocatable) < 4"
               message: |-
-                Harbor runs best with a minimum of 4 CPU cores. Your current cluster has less
+                Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
                 than 4 CPU cores available to run workloads. For the best experience, consider
                 increasing cluster capacity or installing into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - pass:
-              message: Your cluster has sufficient CPU resources available to run Harbor
+              message: Your cluster has sufficient CPU resources available to run Slackernews
 ```
 
 After saving your changes run the preflight checks command to see the outcome.
 
 ```
-kubectl preflight ./harbor-preflights.yaml
+kubectl preflight ./slackernews-preflights.yaml
 ```
 
 You'll see that our cluster generates a warning since it has only two CPU
@@ -112,28 +112,29 @@ ignore the warning for now.
 
 ![CPU Preflight Warning](../assets/cpu-preflight-warning.png)
 
-To round out the resource checks, add a similar check for memory
+To round out the resource checks, add a similar check for memory. It should
+also show a warning which is fine for the lab environment.
 
 ```
     - nodeResources:
-        checkName: Cluster memory is sufficient to install and run Harbor
+        checkName: Cluster memory is sufficient to install and run Slackernews
         outcomes:
           - fail:
               when: "sum(memoryAllocatable) < 4G"
               message: |-
-                Harbor requires a minimum of 4 GB of memory in order to run, and runs best with
+                Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
                 at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
                 workloads. Please increase cluster capacity or install into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - warn:
               when: "sum(memoryAllocatable) < 8Gi"
               message: |-
-                Harbor runs best with a minimum of 8 GB of memory. Your current cluster has less
+                Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
                 than 8 GB of memory available to run workloads. For the best experience, consider
                 increasing cluster capacity or installing into a different cluster.
-              uri: https://goharbor.io/docs/2.8.0/install-config/installation-prereqs/
+              uri: https://goslackernews.io/docs/2.8.0/install-config/installation-prereqs/
           - pass:
-              message: Your cluster has sufficient memory available to run Harbor
+              message: Your cluster has sufficient memory available to run Slackernews
 ```
 
 Running the Revised Preflights
@@ -143,24 +144,21 @@ Now that we have a thorough set of preflights for cluster resources, let's run
 them:
 
 ```
-kubectl preflight ./harbor-preflights.yaml
+kubectl preflight ./slackernews-preflights.yaml
 ```
 
 You'll see that all three preflights are run, and that the memory
-preflight has failed. This is an expected failure, since we have
-single node cluster that uses just that node's disk for storage. That
-disk is smaller than the storage requirements for Harbor.
+preflight has warned you. This is an expected failure, since we have
+single node cluster that has a small memory footprint.
 
-![Failing Storage Preflight](../assets/memory-preflight-failure.png)
+![Memory Preflight Warning](../assets/memory-preflight-failure.png)
 
-If you completed the [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
-lab, you may be surprised at this failure. In that lab, we deployed
-Harbor and it came up successfully. This is another value provided by
-your checks. They can detect latent failures, like the fact that
-Harbor could rapidly exhaust the disk available in this cluster
-even though it started successfully.
+If you completed the [Distributing Your Application with
+Replicated](https://play.instruqt.com/replicated/tracks/distributing-your-application-with-replicated)
+lab, you may be surprised at this failure. In that lab, we deployed Slackernews
+and it came up successfully.
 
-In fact, installing the Harbor Helm chart requests 28 GB of storage.
-The cluster in the previous lab with only 20 GB of disk available
-fulfilled all of those requests. That could create quite the challenge
-to diagnose in the future.
+Catching those types of surprises _before_ they become issues is a big reason
+to use preflight checks. By detecting latent failures, they help your customers
+make adjustments ahead of time. Slackernews could exhaust the memory
+available in this cluster even though it started successfully.

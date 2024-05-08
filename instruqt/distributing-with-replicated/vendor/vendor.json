@@ -1,6 +1,6 @@
 {
-    "name": "Harbor",
-    "slug": "harbor",
+    "name": "Slackernews",
+    "slug": "slackernews",
     "customer": "Omozan",
     "yaml_dir": "",
     "k8s_installer_yaml_path": ""

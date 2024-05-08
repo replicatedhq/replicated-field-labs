@@ -1,6 +1,6 @@
 ---
 slug: other-ways
-id: sr80rrntbsgo
+id: ccdxc6g7q55t
 type: challenge
 title: Other Ways to Offer a Support Bundle
 teaser: Explore other ways to distibute your support bundle and keep it up to date
@@ -33,7 +33,7 @@ Google Cloud Storage bucket. To collect a support bundle using that spec, run
 the following command:
 
 ```
-kubectl support-bundle https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/harbor/support-bundle.yaml
+kubectl support-bundle --namespace slackernews https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/slackernews/slackernews-support-bundle.yaml
 ```
 
 You'll see the now familiar analyzer screen showing your customer's cluster.
@@ -54,28 +54,28 @@ the spec can be retrieved, it will replace the spec that references it.
 Including the URI in the Bundle You Distribute
 ==============================================
 
-Let's finish of our work with the Harbor support bundle by adding a `uri` to
-the spec. Edit the file `harbor/troubleshoot/support-bundle.yaml` in the
+Let's finish of our work with the Slackernews support bundle by adding a `uri` to
+the spec. Edit the file `slackernews/templates/troubleshoot/support-bundle.yaml` in the
 Manifest Editor and add the URI from the command at the top of the `spec`,
 before the collectors.
 
 ```
-  uri: https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/harbor/support-bundle.yaml
+  uri: https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/slackernews/support-bundle.yaml
 ```
 
 Don't forget to the save the file.
 
 ![Adding a URI to the Support Bundle spec](../assets/adding-a-uri-to-the-spec.png)
 
-You should also bump the version number for the release to `19.4.1` in the
+You should also bump the version number for the release to `0.4.1` in the
 `Chart.yaml` file, repackage your chart, and delete the old tarball from your
 release directory. The following commands will take care of that for you.
 
 
 ```
-yq -i '.version = "19.4.1"' harbor/Chart.yaml
-helm package harbor --destination ./release
-rm ./release/harbor-19.4.0.tgz
+yq -i '.version = "0.4.1"' slackernews/Chart.yaml
+helm package slackernews --destination ./release
+rm ./release/slackernews-0.4.0.tgz
 ```
 
 Now you need to release your update and promote it. Remember that for a real
@@ -84,11 +84,11 @@ release sequence will be `5` unless you've played around with additional
 releases. If you have, use the current sequence.
 
 ```
-replicated release create --promote Unstable --chart ./release/harbor-19.4.1.tgz --version 19.4.1  \
+replicated release create --promote Unstable --chart ./release/slackernews-0.4.1.tgz --version 0.4.1  \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 4 Beta --version 19.4.1 \
+replicated release promote 4 Beta --version 0.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
-replicated release promote 4 Stable --version 19.4.1 \
+replicated release promote 4 Stable --version 0.4.1 \
   --release-notes "Provides the ability to upgrade the support bundle independent of the application"
 ```
 
@@ -100,9 +100,9 @@ new support bundle containing a reference to your independently released
 bundle.
 
 ```
-helm upgrade harbor \
-  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/harbor
-kubectl support-bundle --load-cluster-specs
+helm upgrade --namespace slackernews slackernews \
+  oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews
+kubectl support-bundle --namespace slackernews --load-cluster-specs
 ```
 
 Note that you didn't add a new analyzer to the support bundle defintion in your
