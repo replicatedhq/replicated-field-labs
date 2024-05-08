@@ -1,6 +1,6 @@
 ---
 slug: checking-cluster-resources
-id: tcwpxsj6yplu
+id: jn3ywr8xtchw
 type: challenge
 title: Checking Cluster Resources
 teaser: Use preflight checks to validate minimum cluster requirements

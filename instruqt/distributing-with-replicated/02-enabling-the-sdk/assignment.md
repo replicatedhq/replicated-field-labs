@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: uqhupnwrlny3
+id: 9weportqrwy6
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application

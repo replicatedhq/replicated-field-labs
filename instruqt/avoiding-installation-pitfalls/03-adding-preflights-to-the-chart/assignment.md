@@ -1,6 +1,6 @@
 ---
 slug: adding-preflights-to-the-chart
-id: vwxcejaonowy
+id: dxquyvsyuojv
 type: challenge
 title: Adding Preflights to the Slackernews Helm Chart
 teaser: Learn how to incorporate your preflight checks into your chart

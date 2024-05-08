@@ -1,6 +1,6 @@
-slug: avoiding-installation-pitfalls-dev
-id: yjxpxhujcxvy
-title: DEV - Avoiding Installation Pitfalls
+slug: avoiding-installation-pitfalls
+id: amjfqroa5bfk
+title: Avoiding Installation Pitfalls
 teaser: |-
   Use Preflight checks to avoid common installation pitfalls
   for your application
@@ -22,7 +22,6 @@ tags:
 - builders-plan
 - troubleshoot
 - helm
-- dev
 owner: replicated
 developers:
 - chuck@replicated.com
@@ -33,4 +32,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "3286430125722429230"
+checksum: "17725433940201648777"

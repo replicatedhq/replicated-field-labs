@@ -1,6 +1,6 @@
 ---
 slug: additional-information
-id: 75d5lqco04iw
+id: lorzhundumdj
 type: challenge
 title: Collecting and Analyzing Additional Information
 teaser: |

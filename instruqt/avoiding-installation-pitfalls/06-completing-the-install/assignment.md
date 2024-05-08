@@ -1,6 +1,6 @@
 ---
 slug: completing-the-install
-id: qo2vdg2dfuq4
+id: zwojuzyxhzsq
 type: challenge
 title: Completing the Install
 teaser: Finishing the install once the cluster passes its preflights

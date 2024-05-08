@@ -1,6 +1,6 @@
 ---
 slug: creating-a-release
-id: eqwg3rmrwopo
+id: vxnhm8nlkifh
 type: challenge
 title: Releasing an Application
 teaser: Creating a release on the Replicated Platform

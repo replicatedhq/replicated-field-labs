@@ -7,7 +7,7 @@ app_slug=$(agent variable get REPLICATED_APP)
 helm registry login $(agent variable get REGISTRY_HOST) --username $(agent variable get REGISTRY_USERNAME)  --password $(agent variable get REGISTRY_PASSWORD)
 
 helm install --namespace slackernews --create-namespace \
-  slackernews --version 0.5.1 \
+  slackernews --version 0.3.0 \
   oci://$(agent variable get REGISTRY_HOST)/${app_slug}/slackernews \
   --set nginx.service.type=NodePort --set nginx.service.nodePort.port=30443 \
   --set slackernews.domain=cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com \
