@@ -37,7 +37,7 @@ platform knows the application the customer was created for, and you specify
 the release channel when you create the customer. You can change the channel at
 any time. We'll discuss release channels shortly.
 
-The other core attribute of the license is it's type. Each customer license has
+The other core attribute of the license is its type. Each customer license has
 one of the following types:
 
 * **Development:** The Development type can be used internally by the
