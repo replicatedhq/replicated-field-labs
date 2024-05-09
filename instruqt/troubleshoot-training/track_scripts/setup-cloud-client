@@ -10,7 +10,7 @@ do
   sleep 1
 done
 
-DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq golang
+DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq golang bash-completion
 pip install humanfriendly
 
 # install krew
@@ -30,6 +30,9 @@ echo "export SHELL=bash" | tee -a /root/.bashrc
 
 kubectl krew install preflight
 kubectl krew install support-bundle
+
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+chmod a+r /etc/bash_completion.d/kubectl
 
 # install sbctl
 curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
