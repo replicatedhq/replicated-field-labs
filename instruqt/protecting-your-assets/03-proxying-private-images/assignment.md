@@ -38,7 +38,8 @@ The first step in using the Replicated proxy registry is to provide access to
 your private registry for the Replicated Vendor Portal. This has already been
 done in the lab environment, so we're just going to review how it was set.
 
-Log into the Vendor Portal with the following credentials:
+You may still be logged into the Vendor Portal, but if you're not you can log
+in with the following credentials:
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
