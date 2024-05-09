@@ -50,7 +50,7 @@ images from the GitHub Container Registry.
 ![Managing Images on the Vendor Portal](../assets/managing-images.png)
 
 You use the "+ Add external registry" button to add a private registry. We won't
-be doing this in the lab environment since it's shared team.
+be doing this in the lab environment since it's a shared team.
 
 Adding the Proxy to Your Chart
 ==============================
