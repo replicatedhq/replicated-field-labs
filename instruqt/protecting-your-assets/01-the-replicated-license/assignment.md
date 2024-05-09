@@ -74,7 +74,7 @@ Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replic
 lab covers release channels in the most depth if you'd like more information.
 
 Release channels, at their most basic, map releases to customers. Each customer
-is assigned to a specific channel, and any relasee can be provided to as many
+is assigned to a specific channel, and any relase can be provided to as many
 channels as you want. There are three default channels: `Unstable`, `Beta`, and
 `Stable`. Think of `Stable` as your GA software and `Unstable` as releases that
 you're planning to test and/or distribute internally. `Beta` is, of course, for
