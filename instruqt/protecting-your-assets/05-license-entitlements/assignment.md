@@ -152,7 +152,7 @@ Adding Your Own Entitlements
 Slackernews is tightly integrated to a customer's Slack team. It becomes more
 valuable with more Slack activity, and focuses on the links the team is
 sharing. Those three things suggest a few different measures that Slackernews
-might use to define it's license entitlements.
+might use to define its license entitlements.
 
 * Members of the Slack team
 * Total volume of Slack messaging
