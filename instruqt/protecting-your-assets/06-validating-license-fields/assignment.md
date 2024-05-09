@@ -130,7 +130,7 @@ Verifying License Signatures
 
 You may not want to trust that value without verifying it. It's not likely your
 customer is trying to circumvent your license, but it's possible that value was
-changed whether out of curiosity or malice. That's why the license and it's
+changed whether out of curiosity or malice. That's why the license and its
 fields are signed.
 
 The "Settings" page for the application in the Vendor Portal shows your public
