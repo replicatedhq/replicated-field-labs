@@ -32,7 +32,7 @@ The Replicated SDK
 The SDK runs alongside your application and enables access to the Replicated
 Platform without having to make calls outside of the cluster. It in turn
 connects to the vendor portal periodically to check for update. Each update
-check includes telemetry information we use to help you better understand you
+check includes telemetry information we use to help you better understand your
 customer's installation. See [Closing the Support Information Gap](https://play.instruqt.com/replicated/tracks/closing-infromation-gap) for more information.
 
 The SDK is your mechanism for interacting with the platform from your
