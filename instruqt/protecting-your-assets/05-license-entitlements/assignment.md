@@ -160,7 +160,7 @@ might use to define it's license entitlements.
 
 Defining a good business model for Slackernews is beyond the scope of this
 lab. Let's assume that members of the Slack team is the choice that Slackernews
-and it's stakeholders have decided on.
+and its stakeholders have decided on.
 
 ### Adding the License Field
 
