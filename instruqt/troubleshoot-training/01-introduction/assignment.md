@@ -6,8 +6,7 @@ title: Introduction
 teaser: Practical Application of Support Bundles and Analyzers
 notes:
 - type: text
-  contents: In this track, we'll work together to apply some practical methods for
-    troubleshooting some kubernetes problems using replicated tooling.
+  contents: In this track, we'll work together to apply some practical methods for troubleshooting some Kubernetes problems using Replicated tooling.
 tabs:
 - title: Workstation
   type: terminal
@@ -22,16 +21,16 @@ timelimit: 600
 * **What you will do**:
   * Learn to troubleshoot application & cluster problems
 * **Who this is for**:
-  * This track is for anyone who will build KOTS applications **plus** anyone who will be user-facing:
+  * This track is for anyone who will build KOTS applications **plus** anyone user-facing who support these applications:
     * Full Stack / DevOps / Product Engineers
     * Support Engineers
     * Implementation / Field Engineers
     * Success / Sales Engineers
 * **Prerequisites**:
-  * Basic working knowledge of Linux (Bash)
+  * Basic working knowledge of Linux and the `bash` shell
 * **Outcomes**:
   * You will be able to determine if the problem is in your application, in Kubernetes, or in the infrastructure environment
-  * You will reduce escalations and expedite time to remediate for such issues
+  * You will reduce escalations and expedite time to remediation for such issues
 
 # Configure the VM environment
 
