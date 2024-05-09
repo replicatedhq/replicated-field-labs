@@ -191,7 +191,7 @@ used for your existing customers.
 
 We have three customers defined for Slackernews. Right now they all have the
 default value set for the new field. But Geeglo's contract is for 1000 members
-in it's team. Let's update their license.
+in its team. Let's update their license.
 
 Click on "Customers" then "Geeglo" to bring up Geeglo. Bring up "Manage
 Customer" to edit their license details, including your new field. The custom
