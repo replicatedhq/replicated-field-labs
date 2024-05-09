@@ -183,7 +183,7 @@ openssl pkeyutl -verify -in member_count_max.md5 -sigfile signature.bin -pubin -
 
 The result `Signature Verified Successfully` confirms that the value matches
 the one you set on the Vendor Portal. For your own application, you can use the
-appropriate HTTP/REST client and cryptographic libraries to perform the smae
+appropriate HTTP/REST client and cryptographic libraries to perform the same
 validation before trusting an entitlement value.
 
 You should also be cautious with your public key (even though it's a public
