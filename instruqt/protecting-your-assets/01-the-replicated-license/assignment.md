@@ -21,7 +21,7 @@ timelimit: 400
 
 The Replicated Platform provides a license that identifies each of your
 customers and entitles them to install your software. These customer licenses
-provide several default entitlements such as the type of licesnse and whether
+provide several default entitlements such as the type of license and whether
 (and when) it expries. Replicated provides the license file to you as a
 downloadable asset and embeds it into your Helm chart when you include the
 Replicated SDK. A digital signature confirms it hasn't been tampered with.
