@@ -48,7 +48,7 @@ lab.
 Interacting with the SDK
 ========================
 
-Since we're going to shell commands to call the SDK, let's use the "Netshoot"
+Since we're going to use shell commands to call the SDK, let's use the "Netshoot"
 image from Nicola Kabar. This image contains a lot of network troubleshooting
 tools and tools you need to work with them. That means it has `curl`, `jq`, and
 other commands that make it easier to work with APIs from the command line.
