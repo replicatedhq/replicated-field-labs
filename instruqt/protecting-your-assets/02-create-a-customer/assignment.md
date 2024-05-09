@@ -93,7 +93,7 @@ view the values for the Helm chart using `helm show values`:
 this will show you the default vales from the Helm chart. As you scroll through
 the values, you'll see license information injected in two places. The entire
 license file is injected as the `license` value for the `replicated` subchart,
-and a few details from it are injected under `.globals.replicated`.
+and a few details from it are injected under `.global.replicated`.
 
 One of the global fields is particularly important. The value
 `global.replicated.dockerconfigjson` has the required Docker configuration to
