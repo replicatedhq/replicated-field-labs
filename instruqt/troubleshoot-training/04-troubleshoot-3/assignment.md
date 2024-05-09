@@ -49,7 +49,7 @@ Troubleshooting Procedure
 =================
 
 #### Understand the limits of the problem
-Let's enumerate all the hops in our system.  We know there is a Pod, and a Service, and potentially an IngressController pod, and perhaps an outgoing proxy; so begin by figuring out the network path from the client to the Pod.  At each step, we can check our connection with something like `netcat` or `curl` depending on what kind of protocol we are using.  Perhaps the web frontend is not working, or perhaps a backend API is not working; start to understand the limits of the problem, and work backwards from Pods that are no longer responding to the client.
+Let's consider all the hops in our system.  We know there is a Pod, and a Service, and potentially an IngressController pod, and perhaps an outgoing proxy; so begin by figuring out the network path from the client to the Pod.  At each step, we can check our connection with something like `netcat` or `curl` depending on what kind of protocol we are using.  Perhaps the web frontend is not working, or perhaps a backend API is not working; start to understand the limits of the problem, and work backwards from Pods that are no longer responding to the client.
 
 List all the pods and check for any that are not `Running` with `kubectl get pods -n <namespace> -o wide`.  If there are any Pods that are not `Running`, check the logs with `kubectl logs -n <namespace> <pod-name>`.  If the Pod is `Running`, check the logs with `kubectl logs -n <namespace> <pod-name>`.  Note the IP address of any affected Pods.
 
@@ -154,12 +154,32 @@ Reference:
 ✔️ Solution
 =================
 
-A random Service's `targetPort` has been patched to be something in the 30k range.  Any pod in the cluster that tries to connect to this pod's Service name (which is what gets programmed in to DNS in the cluster) will fail to connect, because the pod is not listening on the the same port that the Service is trying to connect to.
+The problem in this challenge is that a Service is not correctly forwarding connections to a Pod in a Deployment.  The Service is forwarding connections to a port where the Pod is not listening.  We can see from Pod logs that other microservices expect to use port 7070 to communicate with the `cartservice`, and `cartservice` should forward connections to port 7070 on the Pod.  The Service's `targetPort` should match the Pod's `containerPort`.
+
+Remember that you can think of a Service like a traditional "load balancer" or "reverse proxy" that forwards connections to the correct Pod.  The Service listens on a `port` and forwards connections to a `targetPort` on the Pod with a matching selector.  The `targetPort` in a Service should be set to the `containerPort` in the Pod spec:
 
 
+```plaintext
+# kubectl describe service cartservice
+Name:              cartservice
+Namespace:         default
+Selector:          app=cartservice
+...
+Port:              grpc  7070/TCP
+TargetPort:        30000/TCP
+
+# kubectl describe deployment cartservice
+Name:                   cartservice
+Namespace:              default
+Pod Template:
+  Labels:           app=cartservice
+  Containers:
+   server:
+    Image:      gcr.io/google-samples/microservices-demo/cartservice:v0.9.0
+    Port:       7070/TCP
+```
 
 Remediation
 =================
 
 Patch or edit the affected service to correct the port number. You may have to refer to the other resources in the cluster to identify the correct port number.
-
