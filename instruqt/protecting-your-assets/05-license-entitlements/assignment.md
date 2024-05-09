@@ -34,7 +34,7 @@ represents the entitlement, you may see the terms use almost interchangeably.
 
 We learned a little bit about license fields in the previous sections of this
 lab. We know they can be one of a handful of types and that they are included
-in the Helm values the Replicated registry injects. We also know that the are
+in the Helm values the Replicated registry injects. We also know that they are
 digitally signed to identify tampering. Let's learn a bit more about them
 before we create new fields for the Slackernews license.
 
