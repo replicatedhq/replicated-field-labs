@@ -26,7 +26,7 @@ provide several default entitlements such as the type of license and whether
 downloadable asset and embeds it into your Helm chart when you include the
 Replicated SDK. A digital signature confirms it hasn't been tampered with.
 
-How License Work
+How Licenses Work
 ================
 
 Each customer you create for your application in the Replicated Vendor Portal
