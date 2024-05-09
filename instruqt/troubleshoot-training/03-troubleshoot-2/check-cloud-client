@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [[ ! -f /root/solution.yaml ]]; then
+  fail-message "solution.yaml not found in /root/, please create the file and try again"
+  exit 1
+fi
+
+kind=$(yq -r '.kind' /root/solution.yaml)
+
+if [[ ! "$kind" = "Deployment" ]]; then
+  fail-message "your solution doesn't look correct, you appear to have saved a resource that we weren't expecting"
+  exit 1
+fi
+
+limits=$(yq '.spec.template.spec.containers[0].resources.limits.memory' solution.yaml -r)
+
+if [[ "$limits" = "5M" ]]; then
+  fail-message "it looks like your solution is incorrect"
+  echo "limits = 5M"
+  exit 1
+fi
+
+rawSize=$(humanfriendly --parse-size "$limits")
+
+if [[ ! "$rawSize" -gt "5000000" ]];then 
+  fail-message "it looks like your solution is incorrect"
+  echo "limits < 5M"
+  exit 1
+fi

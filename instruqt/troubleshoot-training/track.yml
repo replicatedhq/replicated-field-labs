@@ -4,7 +4,7 @@ title: Troubleshoot Training (EC)
 teaser: Get hands-on, practical application at debugging problems on Replicated embedded
   clusters (aka kURL)
 description: |+
-  In this track, we invite you to bring your own cloud app and learn how to triage, diagnose, and solve problems with the replicated platform and your app.
+  In this track, we invite you to learn how to triage, diagnose, and solve problems with the replicated platform and support tooling.
 
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
 level: intermediate
@@ -19,4 +19,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "6938190227202077789"
+checksum: "7057512636369105364"

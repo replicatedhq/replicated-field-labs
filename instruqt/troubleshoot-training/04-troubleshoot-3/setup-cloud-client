@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm /root/solution* || true
+rm /root/support-bundle* || true
+
+curl https://spooky.academy/support_bundles/troubleshoot_3_support_bundle.tar.gz -o support-bundle.tar.gz

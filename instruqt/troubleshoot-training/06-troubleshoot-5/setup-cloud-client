@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+#
+
+rm -rf /root/support-bundle*
+rm -rf /root/solution*
+
+curl https://spooky.academy/support_bundles/troubleshoot_5_support_bundle.tar.gz -o support-bundle.tar.gz
+
+cd /opt/
+tee quiz.go << EOF
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println("Which of the following do you think is the cause of the problem:")
+	fmt.Println("A) localhost does not resolve")
+	fmt.Println("B) There is no internet connection")
+	fmt.Println("C) The disk on the node is full")
+	fmt.Println("D) Coredns is misconfigured")
+  fmt.Println("E) Bogon particles in the mainframes spline array")
+
+	fmt.Printf("%s: ", "Type a letter")
+	var answer string
+	_, err := fmt.Scanln(&answer)
+	if err != nil {
+		fmt.Println("oops, something seems to have gone wrong, try re-running me")
+		fmt.Println(err)
+	}
+	if answer == "d" || answer == "D" {
+		fmt.Println("congratulations!")
+		os.Create("/tmp/challenge_ok")
+	} else {
+		fmt.Println("oops! that doesn't appear to be the correct answer!")
+	}
+}
+EOF
+go build ./quiz.go
+rm /usr/bin/quiz
+mv quiz /usr/bin/
+rm quiz.go
+rm /tmp/challenge_ok
