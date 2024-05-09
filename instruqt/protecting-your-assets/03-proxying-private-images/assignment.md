@@ -25,7 +25,7 @@ difficulty: basic
 timelimit: 600
 ---
 
-One of the core features of the Replicated Platform is it's proxy registry. The
+One of the core features of the Replicated Platform is its proxy registry. The
 proxy registry controls access to your images using the Replicated license.
 This relieves you of the burden of managing authentication and authorization
 for the private images your application depends on. You provide Replicated with
