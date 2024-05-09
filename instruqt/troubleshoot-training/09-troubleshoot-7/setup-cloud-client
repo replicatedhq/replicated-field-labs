@@ -1,0 +1,23 @@
+#!/bin/bash
+# break Rook Ceph mons
+
+# if Rook-Ceph is not installed, skip challenge
+if ! kubectl get ns rook-ceph; then
+  debug-message "Rook-Ceph is not installed, skipping challenge"
+  exit 0
+fi
+
+mon=$(kubectl get deployments -n rook-ceph -l app=rook-ceph-mon --no-headers | awk '{print $1}')
+
+kubectl get deployment -n rook-ceph "${mon}" -o json \
+| jq 'del(.status,.metadata.managedFields,.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",.metadata.generation,.metadata.uid,.metadata.resourceVersion,.metadata.annotations."deployment.kubernetes.io/revision",.metadata.creationTimestamp)' \
+| tee /opt/backups/t7.json
+
+# if the mon deployment has a priorityClass, replace it, otherwise add it
+if kubectl get deployment -n rook-ceph "${mon}" -o json | jq '.spec.template.spec.priorityClassName // empty'; then
+  op=add
+else
+  op=replace
+fi
+
+kubectl patch deployment -n rook-ceph "${mon}" --type='json' -p='[{"op": '"$op"', "path": "/spec/template/spec/priorityClassName", "value": "rook-ceph-critical"}]'
