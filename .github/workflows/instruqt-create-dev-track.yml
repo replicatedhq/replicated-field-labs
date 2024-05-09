@@ -9,19 +9,19 @@ name: instruqt-create-dev
 env:
   INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
   TRACK_DIR: instruqt
-  
+
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       slug:
         description: Track Slug
         required: true
         type: string
-    branches:    
+    branches:
       - '!main'
       - '!master'
 
@@ -31,7 +31,7 @@ jobs:
     steps:
 
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Create dev track
         uses: ./.github/actions/track-dev
