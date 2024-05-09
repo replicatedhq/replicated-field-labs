@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y jq yq golang bash-completion
+pip install humanfriendly
+
+# install krew
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+
+export PATH=$PATH:$HOME/.krew/bin
+echo "export PATH=$PATH:$HOME/.krew/bin" | tee -a /root/.bashrc
+echo "export SHELL=bash" | tee -a /root/.bashrc
+
+kubectl krew install preflight
+kubectl krew install support-bundle
+
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+chmod a+r /etc/bash_completion.d/kubectl
+
+# install sbctl
+curl -LO https://github.com/replicatedhq/sbctl/releases/latest/download/sbctl_linux_amd64.tar.gz \
+  && tar -xzvf sbctl_linux_amd64.tar.gz  -C /tmp sbctl \
+  && cp /tmp/sbctl /usr/local/bin/sbctl \
+  && rm sbctl_linux_amd64.tar.gz
+
+mkdir /opt/backups

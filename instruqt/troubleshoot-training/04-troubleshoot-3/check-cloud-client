@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [[ ! -f /root/solution.yaml ]]; then
+  fail-message "solution.yaml not found in /root/, please create the file and try again"
+  exit 1
+fi
+
+kind=$(yq -r '.kind' /root/solution.yaml)
+
+if [[ ! "$kind" = "Service" ]]; then
+  fail-message "your solution doesn't look correct, you appear to have saved a resource that we weren't expecting"
+  exit 1
+fi
+
+targetPort=$(yq '.spec.ports[0].targetPort' solution.yaml)
+
+if [[ "$targetPort" != "7070" ]]; then
+  fail-message "it looks like your solution is incorrect"
+  exit 1
+fi

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -rf /root/support-bundle*
+rm -rf /root/solution*
