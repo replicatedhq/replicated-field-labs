@@ -24,7 +24,7 @@ validate entitlements as part of your application.
 Everything we're doing in this lab you would generally do as part of your
 application code. We're using shell commands here since Replicated customers
 work with many different programming languages, but everyone knows `curl` and
-it's friends.
+its friends.
 
 The Replicated SDK
 ==================
