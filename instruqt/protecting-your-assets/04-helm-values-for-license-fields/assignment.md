@@ -144,7 +144,7 @@ the install. Let's use that value to limit the functionality of a Slackernews
 trial.
 
 Using the editor in the "Slackernews Chart" tab, open the file
-`slackernews/templates/slackernews-deployment`.
+`slackernews/templates/slackernews-deployment.yaml`.
 
 ![Editing the Slackernews Deployment](../assets/editing-the-deployment.png)
 
