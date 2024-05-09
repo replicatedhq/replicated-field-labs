@@ -81,14 +81,12 @@ Navigate to the "Customers" page and select the single instance for your
 Nitflex customer. When you pull up the instances details you'll see the metrics
 you sent above the stream of telemetry events from your instance.
 
-![Daily and monthly active user metrics in Instance
-Insights](../assets/user-metrics-for-instance.png)
+![Daily and monthly active user metrics in Instance Insights](../assets/user-metrics-for-instance.png)
 
 You should also see the events for each metric near the top of the event
 stream.
 
-![Daily and monthly user events in the event
-stream](../assets/user-metrics-events.png)
+![Daily and monthly user events in the event stream](../assets/user-metrics-events.png)
 
 Accessing Metrics Programmatically
 ==================================
