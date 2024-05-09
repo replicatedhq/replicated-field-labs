@@ -32,7 +32,7 @@ How Licenses Work
 Each customer you create for your application in the Replicated Vendor Portal
 has a license associated with it. The main purpose of the license is to
 identify which software the user is entitled to. The entitlement is determined
-by two attribute of the license: the application and the release channel. The
+by two attributes of the license: the application and the release channel. The
 platform knows the application the customer was created for, and you specify
 the release channel when you create the customer. You can change the channel at
 any time. We'll discuss release channels shortly.
