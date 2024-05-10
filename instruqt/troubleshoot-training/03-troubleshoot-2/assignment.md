@@ -16,12 +16,24 @@ timelimit: 3600
 ---
 The customer opens another issue, but this time pods seem to be crashing.
 
-Let's investigate our app and see if we can identify the issue. Use `sbctl` to interact with the support bundle.
+Let's investigate our app and see if we can identify the issue. Again, we'll use `sbctl` to explore the support bundle.
 
-To pass this challenge, save the broken resource to solution.yaml, edit it to be correct, then click "next"
+To pass this challenge, find the faulty resource, save the YAML spec for that resource to `~/solution.yaml`, correct the problem in the resource, then click "Next" to check your work.
+
+💡 Using `sbctl`
+=================
+
+- Remember that you can use the interactive shell prompt with `sbctl shell -s <path-to-support-bundle>`
+
+💡 Using `kubectl`
+=================
+
+- How do you make `kubectl` print output in YAML format?
+  -- What if you wanted to save that output to a file?
 
 💡 Hints
 =================
+
 - How do you list pods?
 
 - How do you describe pods?
@@ -34,15 +46,14 @@ To pass this challenge, save the broken resource to solution.yaml, edit it to be
 
 - Review the [Kubernetes documentation on debugging Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
 
-to save a resource yaml, first start the sbctl shell `sbctl shell -s ./support-bundle...`
-
-then `kubectl get <resource> -o yaml > solution.yaml`
-
 💡 More Hints
 =================
+
 - How do you find the exit code of a Pod?
 
 - What could it mean if a Pod is exiting before it has a chance to emit any logs?
+
+- Review the Linux exit code conventions: `0` means the process exited normally, `1`-`127` generally mean that the process exited because of a crash or error, and >`128` generally means that the process was killed by a signal (think Ctrl-C or the `kill` command).
 
 Troubleshooting Procedure
 =================
@@ -50,11 +61,12 @@ Troubleshooting Procedure
 Identify the problematic Pod from `kubectl get pods -n <namespace>`.  Notice any pods that are not in the Running state.
 
 Describe the current state of the Pod with `kubectl describe pod -n <namespace> <pod-name>`.  Here are some things to look out for:
-  - each Container's current State and Reason
-  - each Container's Last State and Reason
-    - the Last State's Exit Code
-  - each Container's Ready status
-  - the Events table
+
+- each Container's current **State** and **Reason**
+- each Container's **Last State** and **Reason**
+- the Last State's **Exit Code**
+- each Container's **Ready** status
+- the **Events** table
 
 For a Pod that is crashing, expect that the current state will be `Waiting`, `Terminated` or `Error`, and the last state will probably also be `Terminated`.  Notice the reason for the termination, and especially notice the exit code.  There are standards for the exit code originally set by the `chroot` standards, but they are not strictly enforced since applications can always set their own exit codes.
 
@@ -64,7 +76,7 @@ If the exit code is <128, then the application crashed or exited abnormally.  If
 
 Look for any Events that may indicate a problem.  Events by default last 1 hour, unless they occur repeatedly.  Events in a repetition loop are especially noteworthy:
 
-```
+```plaintext
 Events:
   Type     Reason                  Age                      From     Message
   ----     ------                  ----                     ----     -------
@@ -73,15 +85,16 @@ Events:
 
 Another way to get even more information about a pod is to use the `-o yaml` option with `kubectl get pods`.  This will output the entire pod definition in YAML format.  This is useful for debugging issues with the pod definition itself.  Here you will see some info that isn't present in `describe pods`, such as Annotations, Tolerations, restart policy, ports, and volumes.
 
-
 ✔️  Solution
 =================
-A random deployment has been selected and the memory limit reduced to 5M, which will cause the pods to crash.
+
+One of the deployments has a memory limit that is too low for the Pod to run successfully.
 
 🛠️ Remediation
 =================
 
-edit a saved copy of the affected deployment to increase the memory limit to a reasonable amount.
+Write the YAML spec for the affected deployment into a file at `~/solution.yaml`, then increase the memory limit for the Pod to a reasonable amount.  You may have to make an educated guess about what the correct memory limit should be.
 
 To think about:
+
 - How can we make sure that this doesn't happen again?
