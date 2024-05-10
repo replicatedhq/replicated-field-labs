@@ -40,7 +40,7 @@ The environment is prepped for an *embedded cluster* installation.
 
 ### Configure your editor
 
-Before we begin, select the text editor you're most comfortable with by running
+Before we begin, let's choose an editor.  The default editor is `nano`, but if you'd like to use `vim` instead, you can switch to it by running the following command and selecting option `2`:
 
 ```bash
 update-alternatives --config editor
