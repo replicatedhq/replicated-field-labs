@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+app_slug=${REPLICATED_APP}
+api_token=${REPLICATED_API_TOKEN}
+
+# we know there's only one app, so just grab the first one
+app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
+
+# get the customer id for Nitflex
+customer_id=$(replicated api get /v3/app/${app_id}/customers | jq -r '.customers[] | select(.name == "Nitflex") | .id')
+
+# daily user value
+daily_users=$(replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=dailyUsers | jq '.[0].newValue')
+monthly_users=$(replicated api get /v3/app/${app_id}/events\?customerIDs=${customer_id}\&eventTypes=monthlyUsers | jq '.[0].newValue')
+
+# if both custom metrics columns weren't sent, let the student know
+if [[ $daily_users == "null" || $monthly_users == "null" ]]; then
+  fail-message 'Please send the custom metrics for Daily Active Users and Monthly Active Users'
+  exit 1
+fi
+
+exit 0

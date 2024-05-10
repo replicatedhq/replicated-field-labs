@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+# get the customer id, since it's the password for the Helm installation
+# and users like to copy/paste
+api_token=$(get_api_token)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+
+# email for the customer the user will create
+new_customer_email=${INSTRUQT_PARTICIPANT_ID}@nitflex.tv
+# help the user out by telling them the expiration date for a 30-day trial
+license_expiry=$(date -d "+2 months" "+%B %d, %Y")
+
+agent variable set LICENSE_EXPIRY "${license_expiry}"
+agent variable set CUSTOMER_EMAIL "${new_customer_email}"

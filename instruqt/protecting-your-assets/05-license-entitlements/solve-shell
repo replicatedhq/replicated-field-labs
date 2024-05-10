@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+app_slug=${REPLICATED_APP}
+api_token=${REPLICATED_API_TOKEN}
+
+# we know there's only one app, so just grab the first one
+app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
+
+field_def=$(jq -n '{
+  "name": "member_count_max",
+  "type": "Integer",
+  "title": "Max Member Count",
+  "hidden": false,
+  "default": "100",
+  "required": true
+}')
+
+replicated api post /v3/app/${app_id}/license-field --body "${field_def}"
+
+exit 0

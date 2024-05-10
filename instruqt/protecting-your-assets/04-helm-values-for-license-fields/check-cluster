@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+# use the default k3s kubeconfig to check the value of the DB_URI
+# environment variable for the slackernews pod 
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl get pod -n slackernews -l app=slackernews -o jsonpath='{.items[0].spec.containers[0].env}'
+db_uri=$(kubectl get pod -n slackernews -l app=slackernews -o jsonpath='{.items[0].spec.containers[0].env[?(@.name=="DB_URI")].value}')
+
+if [[ "${db_uri}" != "sqlite:./slackernews.db" ]] ; then
+  fail-message 'Please update the slackernews chart to use the slackernews.db database'
+  exit 1
+fi

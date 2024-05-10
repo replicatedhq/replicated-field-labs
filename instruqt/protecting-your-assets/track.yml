@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-slug: protecting-your-assets-dev
-id: 03z3ygfnof3l
-title: DEV - Protecting Your Assets
+slug: protecting-your-assets
+id: zvnn71s6vwuk
+title: Protecting Your Assets
 teaser: |-
   Assure your customers have the right access to your application artifacts and
   features using the Replicated license
@@ -18,14 +17,18 @@ description: |-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/licensing.png
 level: beginner
 tags:
+- builders-plan
+- helm
 - template
 owner: replicated
 developers:
 - chuck@replicated.com
+idle_timeout: 300
+timelimit: 3700
 lab_config:
   overlay: false
   width: 25
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "4545083085478404636"
+checksum: "17501729648192825378"

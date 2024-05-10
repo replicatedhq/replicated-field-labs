@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+set -euxo pipefail
+HOME_DIR=/home/replicant
+
+# remove the proxy from the Slackernews chart so the learner can set it
+web_image=$(yq .images.slackernews.repository ${HOME_DIR}/slackernews/values.yaml)
+rewritten_web_image=${web_image//proxy.replicated.com\/proxy\/$(agent variable get REPLICATED_APP)\/}
+yq -i ".images.slackernews.repository = \"${rewritten_web_image}\"" ${HOME_DIR}/slackernews/values.yaml
+
+nginx_image=$(yq .images.nginx.repository ${HOME_DIR}/slackernews/values.yaml)
+rewritten_nginx_image=${nginx_image//proxy.replicated.com\/proxy\/$(agent variable get REPLICATED_APP)\/}
+yq -i ".images.nginx.repository = \"${rewritten_nginx_image}\"" ${HOME_DIR}/slackernews/values.yaml
+
+rm ${HOME_DIR}/slackernews/templates/imagepullsecret.yaml
+exit 0

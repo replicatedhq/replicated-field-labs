@@ -2,6 +2,7 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euxo pipefail
+HOME_DIR=/home/replicant
 
 # simple SSH client setup so we can SSH to/from the shell
 
@@ -14,6 +15,448 @@ EOF
 # assure an RSA key for Dropbear
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
+# TODO: this needs to get switch back to main when #322 is merged
+# use our shared libary in setup scripts
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+source /etc/profile.d/header.sh
+
 # change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
-chown -R replicant /home/replicant/.kube
+yq -i '.clusters[0].cluster.server = "https://cluster:6443"' ${HOME_DIR}/.kube/config
+chown -R replicant ${HOME_DIR}/.kube
+
+## setup for Vendor Portal access
+
+# there's only one app created by the automation, so just grab the first in the list
+api_token=$(get_api_token)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+export REPLICATED_API_TOKEN=${api_token}
+export REPLICATED_APP=${app_slug}
+
+## release the application with the Replicated SDK
+cd ${HOME_DIR}
+mkdir ${HOME_DIR}/release
+
+get_slackernews
+yq -i '.version = "0.2.0"' slackernews/Chart.yaml
+replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+yq -i ".dependencies = []" slackernews/Chart.yaml
+yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
+
+# update dependencies
+helm dependency update slackernews
+
+# re-package the chart
+helm package slackernews --destination release
+
+## release and promote the app with the SDK added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.2.0.tgz --version 0.2.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 0.2.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 0.2.0 \
+  --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
+  --app ${app_slug} --token ${api_token}
+
+# create LTS channel from the "distributing" lab so things look consistent
+replicated channel create --name LTS --description "Releases with long-term support available" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm ${HOME_DIR}/release/slackernews-0.2.0.tgz
+
+# add preflight checks to the Helm chart
+mkdir ${HOME_DIR}/slackernews/templates/troubleshoot
+cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "slackernews.name" . }}-preflight
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
+    app.kubernetes.io/component: preflight
+    troubleshoot.sh/kind: preflight
+type: Opaque
+stringData:
+  preflight.yaml: | 
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: Preflight
+    metadata:
+      name: slackernews-preflight-checks
+    spec:
+      analyzers:
+        - clusterVersion:
+            outcomes:
+              - fail:
+                  when: "<= 1.26.x"
+                  message: |-
+                    Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                    community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                    that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                    If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
+              - warn:
+                  when: "< 1.27.0"
+                  message: |-
+                    Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                    less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                    your Slackernews implementation.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+        - nodeResources:
+            checkName: Cluster CPU resources are sufficient to install and run Slackernews
+            outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                    Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
+                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                    Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    than 4 CPU cores available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
+        - nodeResources:
+            checkName: Cluster memory is sufficient to install and run Slackernews
+            outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                    Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
+                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                    Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    than 8 GB of memory available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient memory available to run Slackernews
+SLACKERNEWS_PREFLIGHTS
+
+# bump the version
+yq -i '.version = "0.3.0"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
+
+## release and promote the preflight checks added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.3.0.tgz --version 0.3.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 0.3.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 0.3.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm ${HOME_DIR}/release/slackernews-0.3.0.tgz
+
+## create the customer from the preflights lab
+
+# provide an email address for the new customer
+customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
+
+# create the new customer and keep track of the ID
+customer_id=$(replicated customer create --name "Geeglo" --email ${customer_email} --channel Stable --expires-in 720h --kots-install=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
+
+# make sure the customer has a trial license
+updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  jq -c --arg appId "${app_id}" '.customer | {"app_id": $appId, "name": .name, "email": .email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "trial", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
+
+## add the initial support bundle
+
+cat <<SLACKERNEWS_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubleshoot/support-bundle.yaml
+apiVersion: v1                                                                                                                                                              
+kind: Secret                                                                                                                                                                
+metadata:                                                                                                                                                                   
+  name: {{ include "slackernews.name" . }}-support-bundle                                                                                                                        
+  namespace: {{ .Release.Namespace | quote }}                                                                                                                               
+  labels: {{- include "slackernews.labels" . | nindent 4 }}                                                                                                                 
+    app.kubernetes.io/component: troubleshoot                                                                                                                               
+    troubleshoot.sh/kind: support-bundle                                                                                                                                    
+type: Opaque                                                                                                                                                                
+stringData:                                                                                                                                                                 
+  support-bundle-spec: |                                                                                                                                                    
+    apiVersion: troubleshoot.sh/v1beta2                                                                                                                                     
+    kind: SupportBundle                                                                                                                                                     
+    metadata:                                                                                                                                                               
+      name: slackernews-support-bundle                                                                                                                                        
+    spec:                                                                                                                                                                   
+      collectors:                                                                                                                                                             
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selector:                                                                                                                                                       
+              - app=slackernews                                                                                                                                               
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app=slackernews-nginx                                                                                                                                         
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app=postgres                                                                                                                                                  
+          - logs:                                                                                                                                                             
+              name: /app/slackernews/logs                                                                                                                                     
+              selectors:                                                                                                                                                      
+              - app.kubernetes.io/name=replicated                                                                                                                             
+          - configMap:                                                                                                                                                        
+              name: slackernews-nginx                                                                                                                                         
+              namespace: slackernews                                                                                                                                          
+              key: default.conf                                                                                                                                               
+              includeValue: true                                                                                                                                              
+          - secret:                                                                                                                                                           
+              name: slackernews-nginx                                                                                                                                         
+              namespace: slackernews                                                                                                                                          
+              key: tls.crt                                                                                                                                                    
+              includeValue: true
+          - secret:
+              name: slackernews-nginx
+              key: tls.key
+              includeVale: true
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: password
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: uri
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientId
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientSecret
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: botToken
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: userToken
+      analyzers:
+          - clusterVersion:
+              outcomes:
+              - fail:
+                  when: "<= 1.26.x"
+                  message: |-
+                      Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                      community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                      that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                      cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                      If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                      this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
+              - warn:
+                  when: "< 1.27.0"
+                  message: |-
+                      Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                      less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                      your Slackernews implementation.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
+          - nodeResources:
+              checkName: Cluster CPU resources are sufficient to install and run Slackernews
+              outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                      Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
+                      at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                      Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
+                      than 4 CPU cores available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
+          - nodeResources:
+              checkName: Cluster memory is sufficient to install and run Slackernews
+              outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                      Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
+                      at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                      Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
+                      than 8 GB of memory available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient memory available to run Slackernews
+          - deploymentStatus:
+              name: slackernews-frontend
+              namespace: slackernews
+              outcomes: 
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
+                      application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews application is not currently running on this cluster. Please review the logs in this support
+                      bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews application is running on this cluster and ready for use.
+          - deploymentStatus:
+              name: slackernews-nginx
+              namespace: slackernews
+              outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews web server is running on this cluster and ready for use.
+          - statefulsetStatus:
+              name: postgres
+              namespace: slackernews
+              outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews database is running on this cluster and ready for use.
+SLACKERNEWS_SUPPORT_BUNDLE
+
+## release and promote with support bundle added
+# bump the version
+yq -i '.version = "0.4.0"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
+
+## release and promote with support bundle added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.4.0.tgz --version 0.4.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 0.4.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 0.4.0 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm ${HOME_DIR}/release/slackernews-0.4.0.tgz
+
+## update the support bundle with the URI field
+sed -i '17i\      uri: https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/slackernews/support-bundle.yaml' /home/replicant/slackernews/templates/troubleshoot/support-bundle.yaml
+
+## release and promote with support bundle with URI field
+# bump the version
+yq -i '.version = "0.4.1"' ${HOME_DIR}/slackernews/Chart.yaml
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
+
+## release and promote the preflight checks added
+
+# release to the `Unstable` channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.4.1.tgz --version 0.4.1 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# get the sequence number for the release to promote
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the `Beta` channel
+replicated release promote ${release_sequence} Beta --version 0.4.1 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+ 
+# promote to the `Stable` channel
+replicated release promote ${release_sequence} Stable --version 0.4.1 \
+  --release-notes "Adds preflight checks to enable customers to validate cluster prerequisites before installing" \
+  --app ${app_slug} --token ${api_token}
+
+# remove the helm chart we used to create the release
+rm ${HOME_DIR}/release/slackernews-0.4.1.tgz
+
+## installs the latest version so we start with the cluster in the expected state
+# these commands are about cluster state so they should probably be in `setup-cluster`,
+# but they also affect the state of the shell (with the registry login) so we do them
+# here
+
+# log into the registry as the new customer
+
+# get the registry password (which is the license id)
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
+ 
+## install the release so we have something to support
+
+# login to the registry
+helm registry login registry.replicated.com \
+  --username ${customer_email} \
+  --password ${registry_password}
+# assure that the `replicant` user is also logged in
+mkdir -p ${HOME_DIR}/.config
+cp -R ${HOME}/.config/helm ${HOME_DIR}/.config/helm
+
+# make sure permissions are good
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release ${HOME_DIR}/.config/helm
