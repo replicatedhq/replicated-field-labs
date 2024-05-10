@@ -14,29 +14,48 @@ tabs:
 difficulty: advanced
 timelimit: 3600
 ---
-You get another report from a customer saying that the application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
+You get another report from a customer saying that their application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
+
+Here are some prompts to get you thinking in the right direction:
 
 - What cluster component handles communication between Pods?
 - What cluster component handles load balancing for Pods and exposes Pods to connections from outside the cluster?
 
-To pass this challenge, save the broken resource to solution.yaml, edit it to be correct, then click "next"
+To pass this challenge, save the broken resource to `~/solution.yaml`, edit it to be correct, then click "Next" to check your work.
+
+💡 Using `sbctl`
+=================
+
+- Remember that you can use the interactive shell prompt with `sbctl shell -s <path-to-support-bundle>`
+
+💡 Using `kubectl`
+=================
+
+- Remember that you can get a resource in YAML format by doing `kubectl get <resource> -o yaml`
+- Also remember that you can save the output of a command to a file with the `>` operator: `kubectl get <resource> -o yaml > ~/resource.yaml`
+
 
 💡 Hints
 =================
 
 - The Kubernetes documentation has a [great manual on debugging Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
 
-- Think about the traffic flow to your application
-  - There are multiple *hops* in the network path, and any of them _could_ be a potential break in the path.  - Which hops can you identify?
+- Think about the traffic flow to a typical application:
+  - There are multiple **hops** in the network path, and any of them _could_ be a potential break in the path.
+  - Which hops can you identify?
 
 - How does traffic get to workloads inside kubernetes
 - How does Kubernetes handle DNS resolution and load balancing for Pods?
 
-to save a resource yaml, first start the sbctl shell `sbctl shell -s ./support-bundle...`
-
-then `kubectl get <resource> -o yaml > solution.yaml`
-
 💡 More Hints
+=================
+
+- A typical app usually has at least a frontend and a backend, and maybe some middle services.  The frontend is usually expected to handle incoming requests.  The backend is usually expected to handle requests *only* from the frontend or other services.
+
+- Some apps do not always crash if they can't connect to an API they depend on.  It may not be obvious just by looking at the Pod states that there is a problem.  Make sure to examine Pod logs in the app for any errors or warnings.
+
+
+💡 More Hints about Services
 =================
 
 - Kubernetes Services act as load balancers to Pods
