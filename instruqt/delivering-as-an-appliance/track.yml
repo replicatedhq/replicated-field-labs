@@ -33,7 +33,6 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-maintenance: true
 idle_timeout: 300
 timelimit: 1200
 lab_config:
@@ -42,4 +41,4 @@ lab_config:
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "15749947422028595666"
+checksum: "3761629999190261422"

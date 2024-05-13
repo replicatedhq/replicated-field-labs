@@ -10,10 +10,10 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: shell
+  hostname: node
 - title: Release Editor
   type: code
-  hostname: shell
+  hostname: node
   path: /home/replicant
 difficulty: basic
 timelimit: 300
