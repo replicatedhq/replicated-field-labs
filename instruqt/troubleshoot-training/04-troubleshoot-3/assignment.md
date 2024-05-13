@@ -34,6 +34,12 @@ To pass this challenge, save the broken resource to `~/solution.yaml`, edit it t
 - Remember that you can get a resource in YAML format by doing `kubectl get <resource> -o yaml`
 - Also remember that you can save the output of a command to a file with the `>` operator: `kubectl get <resource> -o yaml > ~/resource.yaml`
 
+- Remember that you can ask for more than one kind of resource at a time by listing them with commas: `kubectl get pods,services,deployments`
+
+- Remember that you can ask for resources from all namespaces with the `--all-namespaces, -A` flag: `kubectl get pods -A`
+
+- Remember that you can show extra information, like IP addresses and which node a resource is scheduled on, with the `-o wide` flag: `kubectl get pods -A -o wide`
+
 
 💡 Hints
 =================
@@ -59,7 +65,7 @@ To pass this challenge, save the broken resource to `~/solution.yaml`, edit it t
 =================
 
 - Kubernetes Services act as load balancers to Pods
-  - Pods advertise a `containerPort` that they are listening on, but we don't want to keep track of their IP addresses since they change all the time.  Services are a way to abstract away the IP addresses of the Pods, and instead use a DNS name to connect to the Pods.
+  - Pods advertise a `containerPort` that they are listening on, but we don't want to keep track of their IP addresses since they change all the time.  Services are a way to abstract away the IP addresses of the Pods, and instead use a DNS name to connect to the Pods.  A Service's name is recorded as a DNS record in the cluster.
   - Services advertise a listening `port` and forward connections to a `targetPort`.
 
   ![Services at a glance](../assets/services-explained.png)
@@ -67,108 +73,46 @@ To pass this challenge, save the broken resource to `~/solution.yaml`, edit it t
 Troubleshooting Procedure
 =================
 
+First, let's consider what's deployed in the cluster and outline some assumptions.  Use `kubectl get pods,deployments,services,ingresses -A -o wide` to list the resources involved in our problem.  We want to include all namespaces because there could be components like an Ingress Controller in a different namespace than our application.  We can see that Deployments are running, Services exist, and we can match Service names to Deployment names and make some assumptions about the network paths.  Notice, also, that there is a single Ingress route that matches all hostnames, and an Ingress class called `contour` and an associated `projectcontour` Namespace with Pods.  We need to consider that the Contour Ingress Controller is a potential hop in the network path.  This is a common pattern for a Replicated Embedded Cluster installation.
+
+
+
+
 #### Understand the limits of the problem
-Let's consider all the hops in our system.  We know there is a Pod, and a Service, and potentially an IngressController pod, and perhaps an outgoing proxy; so begin by figuring out the network path from the client to the Pod.  At each step, we can check our connection with something like `netcat` or `curl` depending on what kind of protocol we are using.  Perhaps the web frontend is not working, or perhaps a backend API is not working; start to understand the limits of the problem, and work backwards from Pods that are no longer responding to the client.
+Let's consider all the hops in our system.  We know there is a Pod, and a Service, and potentially an IngressController pod; troubleshooting any networking problem begins by figuring out the network path from the client to the server,.  At each step, we can check our connection with something like `netcat` or `curl` depending on what kind of protocol we are using.  Perhaps the web frontend is not working, or perhaps a backend API is not working; start to understand the limits of the problem, and work backwards from Pods that are no longer responding to the client.
 
-List all the pods and check for any that are not `Running` with `kubectl get pods -n <namespace> -o wide`.  If there are any Pods that are not `Running`, check the logs with `kubectl logs -n <namespace> <pod-name>`.  If the Pod is `Running`, check the logs with `kubectl logs -n <namespace> <pod-name>`.  Note the IP address of any affected Pods.
+List all the pods and check for any that are not `Running` with `kubectl get pods -n <namespace> -o wide`.  If there are any Pods that are not `Running`, check the logs with `kubectl logs -n <namespace> <pod-name>`.  If all the Pods are healthy, we'll check logs anyway because not every application will crash on a broken connection - many will continue to run, but emit errors.
 
-Check to make sure that Services exist with `kubectl get svc -n <namespace>`.  We can see the Type of the service which tells us how we can expect to connect to this service; for example, a `ClusterIP` service is only accessible from within the cluster, and a `NodePort` service is accessible from outside the cluster too.  Describe the Service with `kubectl describe svc`, and check that the `targetPort` is correctly set to the `containerPort` in your Pod spec.
+As you explore the app's logs, you should notice some error messages with patterns like "connection error" and "transport: Error while dialing:".  These should stand out as red flags.  Note the IP address and port number involved in the failed connection.
 
-#### Peel the onion
+Return to the list of resources involved in networking by doing `kubectl get pods,deployments,services,ingresses -A -o wide`.  Cross-reference the failed connection IP address and port with the resources in the cluster.  What do you find that matches?
 
-We will start to debug the problem from the inside out.  # TODO: insert onion model diagram here , Container -> Pod -> Service -> Ingress -> Load Balancer -> Client
+You can make this a little bit easier by using `grep`: `kubectl get pods,deployments,services,ingresses -A -o wide | grep <ip-address>`.  This will show you only the resources that match the IP address you are looking for.
 
-First, we want to ensure the the application in the Pod itself is running and responding.  This may not be necessary if your pod is configured with HealthChecks that will restart the pod if it is not responding correctly.  If you have a pod that is not responding, but is not restarting, you may need to troubleshoot the problem.  Try `kubectl exec` to enter the Pod and run a shell.  From here we can use tools like `ps`, `netstat` or `ss`, `curl` to make sure the application is up and responding correctly.
+Since this application has some clearly defined roles and names for each microservice, it should be easy to identify the Deployment and Pods that are not responding.  Not all applications may be so clear, so let's also learn to use the Service's `selector` since, that's [how the Kubernetes model works](https://kubernetes.io/docs/tutorials/services/connect-applications-service/#the-kubernetes-model-for-connecting-containers).
 
-```
-kubectl exec -n <namespace> -it <pod-name> -- /bin/sh
-```
+Use `kubectl describe svc` and `kubectl describe deployment` and note the `selector` and `labels` of the Service and Deployment.  The `selector` of the Service should match the `labels` of the Pod spec inside the Deployment.  If the `selector` does not match the `labels`, the Service will not forward connections to the Pod correctly.  Example with only the relevant fields shown:
 
-If the image you're using doesn't have a shell or package manager to install command line tools, that's OK - versions of Kubernetes above 1.25 support ephemeral debug containers - you can use `kubectl debug` to create a debug container in the Pod based on a more permissive image like `alpine` or `busybox` or [`netshoot`](https://github.com/nicolaka/netshoot)
+```plaintext
+root@cloud-client:~# kubectl describe deployment kotsadm
+Name:                   kotsadm
+Namespace:              default
+Pod Template:
+  Labels:           app=kotsadm
 
-```
-kubectl debug -n <namespace> -it <pod-name> --image=nicolaka/netshoot --share-processes
-```
-
-Once you can confirm that the application is responding, let's move on to the next hop in the network path, which would be across the CNI.
-
-If you have another working Pod in the cluster with tools like `curl` or `netcat` in the base image, or has a package manager that can install these tools, we can use `kubectl exec` to exec into another Pod and test connections the affected Pod.  If not, we can use an image that has these tools installed, like `busybox` `ubuntu` or `netshoot`.  We can use `kubectl run` to create a throwaway Pod:
-
-```
-kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot
-kubectl run tmp-shell --rm -i --tty --image busybox
-kubectl run tmp-shell --rm -i --tty --image ubuntu
+root@cloud-client:~# kubectl describe service kotsadm
+Name:              kotsadm
+Namespace:         default
+Selector:          app=kotsadm
 ```
 
-From the Pod shell, use `curl` or `netcat` to test the connection to the affected Pod IP.  If the connection fails here, we have a problem with the CNI.  If the connection succeeds, we can move on to the next hop in the network path, the Service.
+You should be able to identify the faulty Service now.  If you can't, remember that in a typical application, the frontend or "web tier" is usually expected to route connections between microservices.  Review the logs of the frontend to see if it is handling connections correctly.
 
-```
-# For applications that speak HTTP
-#
-curl -vvvv -sSL <pod-ip>:<container-port>
-#
-# -vvvv is verbose output
-# -sSL is silent, show errors, follow redirects
+Now that you can identify the faulty Service, we need to understand what went wrong and how to fix it.
 
-# For applications that expect a TCP connection (like MySQL)
-#
-nc -vz <pod-ip> <container-port>
-#
-# -v is verbose output
-# -z is zero I/O mode, just check if the port is open
-```
+We can see the Service's **Type**, which tells us how the service is exposed; a `ClusterIP` service is only accessible within the cluster by other Pods.
 
-From the same Pod shell, first let's check that cluster DNS is working by resolving the Service name:
-
-```
-dig <service-name>
-dig <service-name>.<namespace>.svc.cluster.local
-
-# or
-nslookup <service-name>
-nslookup <service-name>.<namespace>.svc.cluster.local
-```
-
-Expect both the short name and the FQDN of the service to resolve to the same IP address.  If not, there is a problem with DNS resolution.
-
-Next, let's check that the Service is working by connecting to the Service name:
-
-```
-# For applications that speak HTTP
-#
-curl -vvvv -sSL <service-name>:<service-port>
-curl -vvvv -sSL <service-name>.<namespace>.svc.cluster.local:<service-port>
-#
-
-# For applications that expect a TCP connection (like MySQL)
-#
-nc -vz <service-name> <service-port>
-nc -vz <service-name>.<namespace>.svc.cluster.local <service-port>
-#
-```
-
-Expect both connections to the short name and the FQDN of the service to succeed.  If not, there is a problem with the Service configuration or the `kube-proxy` component of the cluster.
-
-I expect that the problem in this challenge is visible now, but the same technique can be applied to any network path in the cluster.  As long as you are able to make a connection to the next hop in the network path, you can move on to testing access through an IngressController Pod, an infrastructure loadbalancer, etc.
-
-Some `curl` examples that may be useful, particularly for testing IngressControllers and other layer 7 loadbalancers:
-
-```
-# connect to a server and send a "Host:" header
-curl -vvvv -SsL -H "Host: service.domain.com" http://<ingress-ip>:80
-
-
-
-# connect to a server that expects a TLS connection and override DNS resolution for SNI
-# useful to fake a connection through an IngressController or other layer 7 loadbalancer since the "Host:" header cannot be inspected
-curl -vvvv -kSsL --resolve <service-fqdn>:<service-port>:<ingress-ip> https://<service-fqdn>:<service-port>
-```
-
-Reference:
-[Debugging Kubernetes Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
-[curl name resolution tricks](https://everything.curl.dev/usingcurl/connections/name)
-
-
+Describe the Service with `kubectl describe svc`, and note the its listening `port` and the `targetPort` it forwards connections to.  The `targetPort` should match the `containerPort` of associated Pods.  If the Service's `targetPort` does not match a Pod's `containerPort`, the Service will not forward connections to the Pod correctly.
 
 ✔️ Solution
 =================
