@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
-HOME_DIR=/home/replicant
-source /etc/profile.d/header.sh
-
-# show the variable in the shell
-tmux send-keys -t shell echo SPACE '$THIS' ENTER
