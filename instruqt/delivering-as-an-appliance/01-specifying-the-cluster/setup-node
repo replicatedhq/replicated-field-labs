@@ -22,3 +22,7 @@ do
   echo "Waiting for Instruqt to finish booting the VM"
   sleep 1
 done
+
+mkdir -p ${HOME_DIR}/release
+chown replicant:replicant ${HOME_DIR}/release
+chmod 755 ${HOME_DIR}/release
