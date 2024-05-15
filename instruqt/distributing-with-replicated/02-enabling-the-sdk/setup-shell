@@ -9,5 +9,5 @@ chown replicant:replicant /home/replicant/release
 chmod 755 /home/replicant/release
 
 # get the current SDK version
-sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
-agent variable set REPLICATED_SDK_VERSION ${sdk_version#?}
+replicated_sdk_version=$(get_replicated_sdk_version)
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version#?}
