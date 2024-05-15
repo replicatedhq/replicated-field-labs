@@ -19,27 +19,37 @@ get_password () {
 }
 
 get_api_token () {
-  password=$(get_password)
-  login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
-  set +e pipefail
-  token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
-  set -e pipefail
-  
-  i=0
-  while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]
-  do
-      sleep 2
-      set +e pipefail
-      token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
-      set -e pipefail
-      i=$((i+1))
-      sleep i*3
-  done
+  set +e
+  access_token=$(agent variable get REPLICATED_API_TOKEN)
+  set -e
 
-  UUID=$(cat /proc/sys/kernel/random/uuid)
-  apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
-  access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+  # if we don't already have a token, fetch one
+  if [[ -z "$token" ]]; then
+    token=$(fetch_api_token)
 
+    password=$(get_password)
+    login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
+    set +e pipefail
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+    set -e pipefail
+    
+    i=0
+    while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]
+    do
+        sleep 2
+        set +e pipefail
+        token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+        set -e pipefail
+        i=$((i+1))
+        sleep i*3
+    done
+
+    UUID=$(cat /proc/sys/kernel/random/uuid)
+    apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
+    access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+    agent variable set REPLICATED_API_TOKEN $access_token
+  fi
   echo ${access_token}
 }
 
