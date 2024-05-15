@@ -6,7 +6,8 @@ title: Introduction
 teaser: Practical Application of Support Bundles and Analyzers
 notes:
 - type: text
-  contents: In this track, we'll work together to apply some practical methods for troubleshooting some Kubernetes problems using Replicated tooling.
+  contents: In this track, we'll work together to apply some practical methods for
+    troubleshooting some Kubernetes problems using Replicated tooling.
 tabs:
 - title: Workstation
   type: terminal
