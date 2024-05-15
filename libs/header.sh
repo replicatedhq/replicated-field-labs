@@ -21,10 +21,10 @@ get_password () {
 get_api_token () {
   set +eu
   access_token=$(agent variable get REPLICATED_API_TOKEN)
-  set -eu
 
   # if we don't already have a token, fetch one
   if [[ -z "$access_token" ]]; then
+    set -eu
     sleep 5
     password=$(get_password)
     login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
@@ -49,6 +49,7 @@ get_api_token () {
 
     agent variable set REPLICATED_API_TOKEN $access_token
   fi
+  set -eu
   echo ${access_token}
 }
 
