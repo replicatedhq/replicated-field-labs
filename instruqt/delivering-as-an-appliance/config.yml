@@ -2,6 +2,9 @@ version: "3"
 containers:
 - name: shell
   image: gcr.io/kots-field-labs/shell
+virtualmachines:
+- name: node
+  image: kots-field-labs/future-cluster-node
   shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
 - name: cluster

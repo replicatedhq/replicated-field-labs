@@ -1,4 +1,4 @@
-name: Build Jumpbox Image
+name: Build Image for VMs to Use as EC Nodes
 on:
   schedule:
   - cron: '0 10 * * *' # everyday at 10am
@@ -6,23 +6,25 @@ on:
     branches:
     - main
     paths:
-    - 'packer/jumpbox/**'
-    - .github/workflows/build-jumpbox-image.yaml
+    - 'packer/future-node/**'
+    - .github/workflows/build-future-node-image.yaml
   pull_request:
     branches:
     - main
     paths:
-    - 'packer/jumpbox/**'
-    - .github/workflows/build-jumpbox-image.yaml
+    - 'packer/future-node/**'
+    - .github/workflows/build-future-node-image.yaml
+    workflow_dispatch:
+ 
 jobs:
-  build_and_push_jumpbox:
+  build_and_push_future-node:
     name: Build Jumpbox GCP Compute Image
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Authenicate to Google Cloud
       uses: google-github-actions/auth@v0
@@ -41,7 +43,7 @@ jobs:
       with:
         command: init
         working_directory: ./packer
-        target: jumpbox
+        target: future-node
       env:
         PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -52,42 +54,42 @@ jobs:
         command: validate
         arguments: -syntax-only
         working_directory: ./packer
-        target: jumpbox
+        target: future-node
       env:
         PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # build artifact for push/merge (use default name)
     - name: Build VM Image
       uses: hashicorp/packer-github-actions@master
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }} 
       with:
         command: build
         arguments: "-force"
         working_directory: ./packer
-        target: jumpbox
+        target: future-node
       env:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
         PKR_VAR_zone: europe-west1-b
         PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
     # build artifact for PRs (need to assign image name)
     - name: Build VM Image
       uses: hashicorp/packer-github-actions@master
-      if: ${{ github.event_name == 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request' }} 
       with:
         command: build
         arguments: "-force"
         working_directory: ./packer
-        target: jumpbox
+        target: future-node
       env:
         PACKER_LOG: 1
         PKR_VAR_service_account_key: ${{secrets.GCP_SERVICE_ACCOUNT_KEY}}
-        PKR_VAR_image_name: airgap-jumpbox-${{github.sha}}
+        PKR_VAR_image_name: airgap-future-node-${{github.sha}}
         PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      
     # delete built artifact for PRs (save storage costs)
     - name: Delete VM Image
-      if: ${{ github.event_name == 'pull_request' }}
-      run: gcloud compute images delete --quiet airgap-jumpbox-${{github.sha}}
+      if: ${{ github.event_name == 'pull_request' }} 
+      run: gcloud compute images delete --quiet airgap-future-node-${{github.sha}}
       shell: bash
