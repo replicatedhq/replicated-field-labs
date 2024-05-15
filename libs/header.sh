@@ -31,6 +31,7 @@ get_api_token () {
   do
       sleep 2
       set +e pipefail
+      curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login
       token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
       set -e pipefail
       i=$((i+1))
