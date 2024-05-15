@@ -13,6 +13,10 @@ get_replicated_sdk_version () {
   echo $(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
 }
 
+get_embedded_cluster_version () {
+  echo $(curl -qsfL https://api.github.com/repos/replicatedhq/embedded-cluster/tags | jq -r '.[0] | .name')
+}
+
 get_username () {
   echo ${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com
 }
