@@ -40,7 +40,7 @@ get_api_token () {
         token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
         set -eu pipefail
         i=$((i+1))
-        sleep i*5
+        sleep $((i*5))
     done
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
