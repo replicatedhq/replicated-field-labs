@@ -51,7 +51,7 @@ For the purpose of the lab, click the "+ Create Customer" button to create
 
 ![Creating a Customer](../assets/create-customer-button.png)
 
-Enter the name "NitFlex" and assign them to the `Stable` channel. They've
+Enter the name "NitFlex" and assign them to the `Stable` channel. They've been
 trying your software for two months, so let's make sure we capture the expiration
 date. We also need an email for them to login and install your Helm chart. Note
 that we never use that email, it's your customer, not ours.
@@ -73,14 +73,14 @@ The Vendor Portal generated a license for your Nitflex customer and also
 configured some credentials based on it. These credentials are for:
 
 * The Replicated registry for accessing the Slackernews Helm chart
-* Our proxy registry that protects your private images
+* The Replicated proxy registry that protects your private images
 
 Let's use the first set of credentials to look at how the license is embedded
 into your Helm chart.
 
 Click on "Helm install instructions" and you'll see a popup with a set of
 instructions for this customer to install Slackernews. The first command is the
-login command for the Helm registry.
+login command for the Replicated registry.
 
 ![Helm Login Command](../assets/helm-login-command.png)
 
@@ -90,7 +90,7 @@ view the values for the Helm chart using `helm show values`:
 
 `helm show values oci://registry.replicated.com/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews | less`
 
-this will show you the default vales from the Helm chart. As you scroll through
+This will show you the default vales from the Helm chart. As you scroll through
 the values, you'll see license information injected in two places. The entire
 license file is injected as the `license` value for the `replicated` subchart,
 and a few details from it are injected under `.global.replicated`.

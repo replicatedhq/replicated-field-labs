@@ -32,7 +32,7 @@ license into your Helm chart in two ways:
    your Helm templates.
 
 We're going to take advantage of the second option to update the Slackernews
-chart to only install when the license has not expired.
+chart to block installation if the license is expired.
 
 ### A Word of Caution
 
@@ -62,7 +62,7 @@ will only include the values injected by the Registry.
 helm show values oci://[[ Instruqt-Var key="REGISTRY_HOST" hostname="shell"]]/[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]/slackernews | yq -P .global
 ```
 
-You'll see something like (the encoded fields and expiration will probably be
+You'll see something like the following (the encoded fields and expiration will probably be
 different).
 
 ```

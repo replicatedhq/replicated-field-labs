@@ -58,10 +58,10 @@ Adding the Proxy to Your Chart
 
 The next step to securing your images with the Replicated Platform is to use
 the proxy to pull images. The Slackernews chart refers to its two images in
-it's default values. We'll change those to refer to the Replicated proxy
+its default values. We'll change those to refer to the Replicated proxy
 registry.
 
-Images tags in the proxy registry follow the following pattern:
+Image tags in the proxy registry follow the following pattern:
 
 ```
 $PROXY_REGISTRY_HOST/proxy/$APP_SLUG/$ORIGINAL_IMAGE_TAG
