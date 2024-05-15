@@ -85,8 +85,17 @@ get_slackernews() {
  
   # remove the Replicated SDK dependency, if we add more dependencies to
   # Slackernews this will need to be revised
+  whoami
+  ls -l slackernews/Chart.yaml
   stat slackernews/Chart.yaml
+  set +e
+  whoami
   yq -i 'del(.dependencies)' slackernews/Chart.yaml
+  set -e
+  stat slackernews/Chart.yaml
+  ls -l slackernews/Chart.yaml
+  whoami
+  tail -20 /var/log/kern.log
 
   # start version numbers over to simplify the lab text
   yq -i '.version = "0.1.0"' slackernews/Chart.yaml
