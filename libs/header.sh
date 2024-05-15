@@ -14,7 +14,7 @@ get_replicated_sdk_version () {
 }
 
 get_embedded_cluster_version () {
-  echo $(curl -qsfL https://api.github.com/repos/replicatedhq/embedded-cluster/tags | jq -r '.[0] | .name')
+  echo $(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
 }
 
 get_username () {
@@ -43,12 +43,11 @@ get_api_token () {
     i=0
     while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]
     do
-        sleep 2
+        sleep $((i*5))
         set +eu pipefail
         token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
         set -eu pipefail
         i=$((i+1))
-        sleep $((i*5))
     done
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
