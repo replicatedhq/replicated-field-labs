@@ -39,13 +39,14 @@ packages:
 # install snaps on first boot
 snap:
   commands:
-  - snap install yq
   - snap install git-ubuntu --classic
   - snap install kubectl --classic
   - snap install helm --classic
   - snap install google-cloud-cli --classic
 
 runcmd:
+- wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && \
+    chmod +x /usr/bin/yq
 - chsh -s /usr/bin/bash replicant
 - curl https://kots.io/install | bash
 - |
