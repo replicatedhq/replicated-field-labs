@@ -5,4 +5,54 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
-exit 0
+# update the Helm chart minor version to match the Replicated release version
+yq -i '.version = "0.6.0"' ${HOME_DIR}/slackernews/Chart.yaml
+
+# Package the slackernews Helm chart into the release directory
+helm package ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
+
+# add the embedded cluster configuration file
+cat <<MANIFEST > ${HOME_DIR}/release/embedded-cluster.yaml
+apiVersion: embeddedcluster.replicated.com/v1beta1
+kind: Config
+spec:
+  version: $(agent variable get EMBEDDED_CLUSTER_VERSION)
+MANIFEST
+
+# add the Helm chart configuration file
+cat <<MANIFEST > ${HOME_DIR}/release/slackernews-chart.yaml
+apiVersion: kots.io/v1beta2
+kind: HelmChart
+metadata:
+  name: slackernews
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: slackernews
+    chartVersion: 0.6.0
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values: {}
+MANIFEST
+
+# make sure all files in the release directory are owned by the replicant user
+chown -R replicant:replicant ${HOME_DIR}/release
+
+# configure the required environment variables for the Replicated CLI
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+
+# release the app to the Unstable channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.0.tgz --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
+# promote the release to the Beta and Stable channels
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
+replicated release promote ${release_sequence} Beta --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+replicated release promote ${release_sequence} Stable --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
