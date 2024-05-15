@@ -4,12 +4,16 @@
 set -euxo pipefail
 HOME_DIR=/home/replicant
 
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+    echo "Waiting for Instruqt to finish booting the virtual machine"
+    sleep 1
+done
+
 # use our shared libary in setup scripts
 # TO DO: Change to `main` when preparing to merge
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/delivering-as-an-appliance/libs/header.sh
 source /etc/profile.d/header.sh
-
-# set up some variables that are needed in most labs
 
 # there's only one app created by the automation, so just grab the first in the list
 api_token=$(get_api_token)
