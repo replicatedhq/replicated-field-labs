@@ -22,7 +22,6 @@ get_api_token () {
   password=$(get_password)
   login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
   set +e pipefail
-  curl -v -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login
   token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
   set -e pipefail
   
@@ -31,10 +30,10 @@ get_api_token () {
   do
       sleep 2
       set +e pipefail
-      curl -v -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login
       token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
       set -e pipefail
       i=$((i+1))
+      sleep i*3
   done
 
   UUID=$(cat /proc/sys/kernel/random/uuid)
