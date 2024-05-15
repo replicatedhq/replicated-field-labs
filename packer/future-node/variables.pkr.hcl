@@ -5,7 +5,7 @@ variable "project" {
 
 variable "image_name" {
   type    = string
-  default = "airgap-jumpbox"
+  default = "future-node"
 }
 
 variable "zone" {
