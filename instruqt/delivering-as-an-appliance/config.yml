@@ -1,5 +1,6 @@
 version: "3"
 virtualmachines:
 - name: node
-  image: kots-field-labs/future-cluster-node
+  image: kots-field-labs/future-node
   shell: tmux new-session -A -s shell su - replicant
+  machine_type: n1-standard-2

@@ -10,11 +10,30 @@ show_credentials () {
 }
 
 get_replicated_sdk_version () {
-  echo $(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+  set +eu pipefail
+  replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+
+  # if we don't already have a token, fetch one
+  if [[ -z "$replicated_sdk_version" ]]; then
+    set -eu pipefail
+    replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+  fi
+
+  set -eu
+  echo ${replicated_sdk_version}
 }
 
 get_embedded_cluster_version () {
-  echo $(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
+  set +eu pipefail
+  replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+
+  # if we don't already have a token, fetch one
+  if [[ -z "$replicated_sdk_version" ]]; then
+    embedded_cluster_version=$(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
+  fi
+
+  set -eu pipefail
+  echo ${embedded_cluster_version}
 }
 
 get_username () {
@@ -56,7 +75,7 @@ get_api_token () {
 
     agent variable set REPLICATED_API_TOKEN $access_token
   fi
-  set -eu
+  set +eu
   echo ${access_token}
 }
 
