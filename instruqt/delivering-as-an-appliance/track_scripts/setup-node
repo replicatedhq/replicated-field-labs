@@ -19,11 +19,15 @@ source /etc/profile.d/header.sh
 api_token=$(get_api_token)
 app_slug=$(get_app_slug)
 app_id=$(get_app_id)
+replicated_sdk_version=$(get_replicated_sdk_version)
+embedded_cluster_version=$(get_embedded_cluster_version)
 
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
 agent variable set REPLICATED_API_TOKEN ${api_token}
 agent variable set REPLICATED_APP ${app_slug}
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version#?}
+agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version#?}
 
 ## release the application with the Replicated SDK
 cd ${HOME_DIR}
@@ -31,7 +35,6 @@ mkdir ${HOME_DIR}/release
 
 get_slackernews
 yq -i '.version = "0.2.0"' slackernews/Chart.yaml
-replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
 yq -i ".dependencies = []" slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
 
