@@ -24,7 +24,7 @@ get_api_token () {
   set -eu
 
   # if we don't already have a token, fetch one
-  if [[ -z "$token" ]]; then
+  if [[ -z "$access_token" ]]; then
     sleep 5
     password=$(get_password)
     login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
