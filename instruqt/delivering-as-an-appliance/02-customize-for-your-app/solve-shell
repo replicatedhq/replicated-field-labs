@@ -5,4 +5,37 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
+cat <<APPLICATION > ${HOME_DIR}/release/replicated-app.yaml
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: slackernews
+spec:
+  title: SlackerNews
+  icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
+APPLICATION
+
+yq -i '.version = "0.6.1"' ${HOME_DIR}/slackernews/Chart.yaml
+yq -i '.spec.chart.chartVersion = "0.6.1"' ${HOME_DIR}/release/slackernews-chart.yaml
+
+helm package -u ${HOME_DIR}/slackernews -d ${HOME_DIR}/release
+
+# configure the required environment variables for the Replicated CLI
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+
+# release the app to the Unstable channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.1.tgz --version 0.6.1 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
+# promote the release to the Beta and Stable channels
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
+replicated release promote ${release_sequence} Beta --version 0.6.1 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+replicated release promote ${release_sequence} Stable --version 0.6.1 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
 exit 0
