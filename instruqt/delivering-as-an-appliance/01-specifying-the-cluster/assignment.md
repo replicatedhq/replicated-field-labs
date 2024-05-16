@@ -10,10 +10,10 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: node
+  hostname: shell
 - title: Release Editor
   type: code
-  hostname: node
+  hostname: shell
   path: /home/replicant
 difficulty: basic
 timelimit: 300
@@ -27,9 +27,9 @@ isntall and manage your application is called the Admin Console. Under the
 hood, the Admin Console uses Helm to install and upgrade your application.
 
 You release your application as a Kubernetes applicance by releasing a Helm
-chart and some additional configuration on the Replicated Vendor Portal. The
-moost important file is the configuration for the Embedded Cluster, which can
-very simple. All it requires is the version of the cluster to use.
+chart and some additional configuration on the Replicated Platform. The moost
+important file is the configuration for the Embedded Cluster, which can very
+simple. All it requires is the version of the cluster to use.
 
 ```
 apiVersion: embeddedcluster.replicated.com/v1beta1
@@ -51,14 +51,19 @@ this, it needs to know about your application, it's customers, and the files
 you're shipping to them. We talk about those files as a release.
 
 Every release is built around a Helm chart, and that's all it needs. If you've
-completed the [Distributing Your Software with
+completed the [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
 lab, you built a release around a Helm chart and installed it using Helm tools.
-In this lab, we'll add the cluster configuration and a few other files to the
-release to enable the appliance experience.
+To use other installation methods supported by the Reoplicated Platform, like
+the Kubernetes appliance model we're working on, you supplement the Helm chart
+with configuration files like the one we saw above.
 
-Your Initial Appliance
-======================
+We need a minimum of two configuration files: the Embedded Cluster
+configuration and a file that describes which Helm chart to install. We'll put
+those in a directroy with the Helm chart and create a release from those files.
+
+Our Initial Appliance
+=====================
 
 Let's create a simple Kubernetes appliance for Slackernews and release it with
 the Platform. We're going to add our Helm chart and two configuration files to
@@ -84,8 +89,7 @@ lab when we set up the configuration screen for our application.
 
 Go to the "Release Editor" tab to add a file to your release.
 
-![Creating a manifest file describing your Helm
-chart](../assets/creating-the-helmchart-object.png)
+![Creating a manifest file describing your Helm chart](../assets/creating-the-helmchart-object.png)
 
 The editor may not open your new file automatically. If it doesn't, click on it
 to open it. Add the following content to the file. Note that it looks like a
@@ -117,10 +121,10 @@ Slackernews, we have only a single chart.
 
 ### Including the Embedded Cluster
 
-We showed a simple Embedded Cluster configuration earlier in the lab. We're
-going to use that basic configuration for Slackernews. Create another file in
-the `release` folder named `embedded-cluster.yaml` and copy the contents of the
-configuration into it.
+We showed a simple Embedded Cluster configuration earlier in the lab. Let's use
+that basic configuration for Slackernews. Create another file in the `release`
+folder named `embedded-cluster.yaml` and copy the contents of the configuration
+into it.
 
 ```
 apiVersion: embeddedcluster.replicated.com/v1beta1
@@ -129,5 +133,70 @@ spec:
   version: [[ Instruqt-Var key="EMBEDDED_CLUSTER_VERSION" hostname="node" ]]
 ```
 
-Releasing Your Appliance
+Releasing the Appliance
 ========================
+
+With the three files we have, we can now release Slackernwes Kubernetes
+appliance. We're going to use the `replicated` command-line tool for to create
+the release. The first thing we'll do is set some environment variables to let
+the command know who we are what application we're working with. Use the
+"Shell" tab to set these variables:
+
+```
+export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname="shell" ]]"
+export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
+```
+
+We create a new release with the command `release create` subcommand for
+`replicated`. If you've completed some of our other labs you may notice a
+difference here, we're using a flag `--yaml-dir` instead of `--chart`. That's
+because this release requires the additional configuration files we've created.
+
+```
+replicated release create --promote Unstable --yaml-dir ./release --version 0.6.0  \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+```
+
+This creates a release for version `0.6.0` of your Slackernews appliance and
+publishes it to a release channel named `Unstable`. Release channels are used
+by the Replicated Platform to assure customers get access to the release you
+intend for them to get. The [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated) lab explains them in more detail.
+
+There are three default release channels: `Unstable` for internal builds,
+`Beta` for your beta programs, and `Stable` for generally available releases.
+We're going to use the `release promote` subcommand to make sure our release is
+available on all three of them.
+
+```
+replicated release promote 6 Beta --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
+```
+
+and then
+
+```
+replicated release promote 6 Stable --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
+```
+
+You can see the that your release is on all three channels by listing your
+available channels by running
+
+```
+replicated channel ls
+```
+
+which will show the current release and version on each channel.
+
+```
+ID                             NAME        RELEASE    VERSION
+2gWopn8RA2fQyMEXSoO0WdtwxX3    Stable      6          0.6.0
+2gWopkEwUauoDmR2FaU4SMuL9wz    Beta        6          0.6.0
+2gWopmvSXKiRRCDUXkAfP2p2Pcv    Unstable    6          0.6.0
+2gWotHQsBB4bR5duhVhpQIAYWKs    LTS
+```
+
+You'll notice there's an additional channel that doesn't have your release on
+it. That's an example of an additional channel you might want to add for
+"long-term support" releases, since some customers want to upgrade more slowly
+and get longer support guarantees.
