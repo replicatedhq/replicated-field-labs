@@ -35,13 +35,13 @@ simple. All it requires is the version of the cluster to use.
 apiVersion: embeddedcluster.replicated.com/v1beta1
 kind: Config
 spec:
-  version: [[ Instruqt-Var key="EMBEDDED_CLUSTER_VERSION" hostname="node" ]]
+  version: [[ Instruqt-Var key="EMBEDDED_CLUSTER_VERSION" hostname="shell" ]]
 ```
 
 That specification lets the Replicated Vendor Portal know which version of
-Kubernetes to embed. There are [more options for the configuration]
-(https://docs.replicated.com/reference/embedded-config), but that's all you
-need to get started.
+Kubernetes to embed. There are [more options for the
+configuration](https://docs.replicated.com/reference/embedded-config), but
+that's all you need to get started.
 
 The Replicated Release
 ======================
@@ -70,16 +70,28 @@ the Platform. We're going to add our Helm chart and two configuration files to
 the `release` directory. These are the bare minimum set of files we need to
 create the appliance.
 
+### Bumping the Chart Version
+
+Strictly speaking, we don't have to bump the version of our Helm chart since we
+haven't changed it. It's a good practice to increment it, though, since we want
+to have consistent versions between the Helm release and the Replicated
+release. That way, regardless of the install mechanism your uses choose the
+versions will be consistent.
+
+This lab uses the application [Slackernews](https://slackernews.io) and the
+Helm sources for it are in the `slackernews` directory. You can open
+`slackernews/Chart.yaml` in the "Release Editor" tab and update the `version`.
+
+![Updating the version of the Helm chart to 0.6.0](../assets/updating-the-chart-version.png)
+
 ### Adding a Helm Chart to a Release
 
 To prepare the release, we first need to make sure our Helm chart is configured
-as part of it. This lab uses the application
-[Slackernews](https://slackernews.io) and the Helm sources for it are in the
-`slackernews` directory. Let's package the chart and include it in the
+as part of it. Let's package the chart and include it in the
 `release` directory, where we'll also add the additional files we need.
 
 ```
-helm package -u slackernews -d release --version 0.6.0
+helm package -u slackernews -d release
 ```
 
 We're then going to add a file that lets the Admin Console know about the Helm
@@ -130,7 +142,7 @@ into it.
 apiVersion: embeddedcluster.replicated.com/v1beta1
 kind: Config
 spec:
-  version: [[ Instruqt-Var key="EMBEDDED_CLUSTER_VERSION" hostname="node" ]]
+  version: [[ Instruqt-Var key="EMBEDDED_CLUSTER_VERSION" hostname="shell" ]]
 ```
 
 Releasing the Appliance
@@ -154,7 +166,7 @@ because this release requires the additional configuration files we've created.
 
 ```
 replicated release create --promote Unstable --yaml-dir ./release --version 0.6.0  \
-  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
 ```
 
 This creates a release for version `0.6.0` of your Slackernews appliance and
@@ -168,14 +180,14 @@ We're going to use the `release promote` subcommand to make sure our release is
 available on all three of them.
 
 ```
-replicated release promote 6 Beta --version 0.6.0 \
+replicated release promote 7 Beta --version 0.6.0 \
   --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
 ```
 
 and then
 
 ```
-replicated release promote 6 Stable --version 0.6.0 \
+replicated release promote 7 Stable --version 0.6.0 \
   --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
 ```
 
@@ -190,9 +202,9 @@ which will show the current release and version on each channel.
 
 ```
 ID                             NAME        RELEASE    VERSION
-2gWopn8RA2fQyMEXSoO0WdtwxX3    Stable      6          0.6.0
-2gWopkEwUauoDmR2FaU4SMuL9wz    Beta        6          0.6.0
-2gWopmvSXKiRRCDUXkAfP2p2Pcv    Unstable    6          0.6.0
+2gWopn8RA2fQyMEXSoO0WdtwxX3    Stable      7          0.6.0
+2gWopkEwUauoDmR2FaU4SMuL9wz    Beta        7          0.6.0
+2gWopmvSXKiRRCDUXkAfP2p2Pcv    Unstable    7          0.6.0
 2gWotHQsBB4bR5duhVhpQIAYWKs    LTS
 ```
 
