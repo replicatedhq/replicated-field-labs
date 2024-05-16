@@ -10,6 +10,17 @@ do
     sleep 1
 done
 
+# simple SSH client setup so we can SSH to/from the shell
+
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+EOF
+
+# assure an RSA key for Dropbear
+ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
+
 # use our shared libary in setup scripts
 # TO DO: Change to `main` when preparing to merge
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/delivering-as-an-appliance/libs/header.sh
