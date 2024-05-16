@@ -47,15 +47,14 @@ one of the following types:
 * **Paid:** The Paid type identifies the customer as a paying customer for
   which additional information can be provided.
 * **Community:** The Community type is designed for a free or low cost version
-  of your application. For more details about this type, see Community
-  Licenses.
+  of your application.
 
 You can change the license type of an existing license. You'll most often do
 this when a customer who has been trying your software decides to make a
 purchase.
 
 The other common features of all licenses are an expiration date and flags for
-enabling several Replicated Platform features. License need not expire, and you
+enabling several Replicated Platform features. Licenses need not expire, and you
 have full control over the expiration date that you set. Replicated features
 may change over time and have sensible defaults based on your subscription.
 
@@ -102,5 +101,5 @@ In most installation scenarios, neither you nor your customer will need to
 interact directly with their license file. Instead, the platform embeds it into
 install artifacts like the your Helm chart and the Replicated Embedded Cluster
 binary. The exception is installing into an existing cluster using the
-Replicated Admin Console. The console will prompt for the customer to uploaed
-there license as one of the first steps to the install.
+Replicated Admin Console. The console will prompt for the customer to upload
+their license as one of the first steps to the install.
