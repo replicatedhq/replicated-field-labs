@@ -30,7 +30,7 @@ or have different editions, or license different services it provides
 independently. To capture these in the Replicated Platform we add them as new
 fields on the license. In other words, license fields are the mechanism for
 implementing your entitlements on the Replicated platform. Since the field
-represents the entitlement, you may see the terms use almost interchangeably.
+represents the entitlement, you may see the terms used almost interchangeably.
 
 We learned a little bit about license fields in the previous sections of this
 lab. We know they can be one of a handful of types and that they are included
@@ -121,7 +121,7 @@ The type field allows you to capture different types of entitlements:
       <td>
          Text types also capture qualitative information, but in a longer form.
          These are great longer configuration values that you set specifically
-         for the customer. We'll look at an intersting example below.
+         for the customer. We'll look at an interesting example below.
       </td>
     </tr>
     <tr>
@@ -141,8 +141,8 @@ The type field allows you to capture different types of entitlements:
 
 One interesting topic that often comes up is what to do when you already have a
 licensing model in place. The Replicated Platform license is required for the
-platform to function, but your existing license is required for you code to
-work. This is another great use for Replicated License fields. You can use a
+platform to function, but your existing license is required for your code to
+work. This is another great use for Replicated license fields. You can use a
 text field to provide your existing license key and use the resulting field to
 provide the license to your code.
 

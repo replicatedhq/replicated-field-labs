@@ -16,7 +16,7 @@ difficulty: basic
 timelimit: 900
 ---
 
-The Replicated SDK provides an in-cluster API for the Replicated platform. One
+The Replicated SDK provides an in-cluster API for the Replicated Platform. One
 of its core features is access to the complete customer license. We're going
 to run some simple shell commands against the SDK to show how your team can
 validate entitlements as part of your application.
