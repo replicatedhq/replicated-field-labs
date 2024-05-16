@@ -13,8 +13,8 @@ api_token=${REPLICATED_API_TOKEN}
 result=0
 
 # check the files in the release
-if [[ ! -f ${HOME_DIR}/release/slackernews-0.6.0.tgz ]]; then
-  fail-message 'Please add the Slackenrews Helm chart to the release'
+if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.0"  ]] ; then
+  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
   let "result = result + 1"
 fi
 
@@ -32,12 +32,6 @@ fi
 # check that the Helm chart has been packaged into the release directory
 if [[ ! -f ${HOME_DIR}/release/slackernews-0.6.0.tgz ]]; then
   fail-message 'Please be sure to build the Helm chart into the release directory:'
-  let "result = result + 1"
-fi
-
-# check for an updated version number
-if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.0"  ]] ; then
-  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
   let "result = result + 1"
 fi
 
