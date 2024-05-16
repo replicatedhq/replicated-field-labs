@@ -1,6 +1,9 @@
 version: "3"
+- name: shell
+  image: gcr.io/kots-field-labs/shell:main
+  shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
 - name: node
   image: kots-field-labs/future-node
-  shell: tmux new-session -A -s shell su - replicant
+  shell: /bin/bash
   machine_type: n1-standard-2
