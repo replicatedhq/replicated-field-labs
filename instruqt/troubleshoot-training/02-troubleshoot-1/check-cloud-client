@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails.
+
+if [[ ! -f "/root/solution.txt" ]]; then 
+  fail-message "solution.txt not found, please create it and write your answer within"
+  exit 1
+fi
+
+solution=$(head -n1 "/root/solution.txt" | sed 's/=/ /g' | sed -e 's/--namespace\ default//g' -e 's/-n\ default//g' | sed -re 's/^[[:blank:]]+|[[:blank:]]+$//g' -e 's/[[:blank:]]+/ /g' )
+
+echo "solution: $solution"
+echo "wanted  : kubectl scale deployment frontend --replicas 1"
+
+if [[ "$solution" = "kubectl scale deployment frontend --replicas 1" ]]; then
+  exit 0
+fi
+
+fail-message "oops, your solution doesn't quite look correct, try again!"
+exit 1

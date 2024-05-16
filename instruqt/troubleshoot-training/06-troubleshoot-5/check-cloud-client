@@ -1,0 +1,9 @@
+#!/bin/bash
+set -exuo pipefail
+
+if [[ -f /tmp/challenge_ok ]]; then
+  exit 0
+fi
+
+fail-message "you don't appear to have picked the correct answer"
+exit 1

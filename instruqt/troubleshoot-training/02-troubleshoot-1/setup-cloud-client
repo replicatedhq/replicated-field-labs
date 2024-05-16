@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl https://spooky.academy/support_bundles/troubleshoot_1_support_bundle.tar.gz -o support-bundle.tar.gz
