@@ -31,7 +31,7 @@ echo "export SHELL=bash" | tee -a /root/.bashrc
 kubectl krew install preflight
 kubectl krew install support-bundle
 
-kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 chmod a+r /etc/bash_completion.d/kubectl
 
 # install sbctl
