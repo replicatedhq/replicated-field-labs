@@ -13,10 +13,12 @@ tags:
 owner: replicated
 developers:
 - danj@replicated.com
+- ada@replicated.com
 lab_config:
   overlay: false
   width: 33
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "2772022616982256640"
+  hideStopButton: false
+checksum: "10084089043640894063"
