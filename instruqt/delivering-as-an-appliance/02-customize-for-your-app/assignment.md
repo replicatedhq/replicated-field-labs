@@ -104,11 +104,11 @@ the resources configured as status informers.
 </tr><th>Status</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>Ready</td>><td>All of the resources are ready</td></tr>
-<tr><td>Unvailable</td>><td>One or more of the resources are unavailable</td></tr>
-<tr><td>Degraded</td>><td>One or more of the resources are in a degraded state</td></tr>
-<tr><td>Updating</td>><td>There are multiple versions of the some resource present</td></tr>
-<tr><td>Missing</td>><td>The resources have not yet been created</td></tr>
+<tr><td>Ready</td><td>All of the resources are ready</td></tr>
+<tr><td>Unvailable</td><td>One or more of the resources are unavailable</td></tr>
+<tr><td>Degraded</td><td>One or more of the resources are in a degraded state</td></tr>
+<tr><td>Updating</td><td>There are multiple versions of the some resource present</td></tr>
+<tr><td>Missing</td><td>The resources have not yet been created</td></tr>
 </tbody>
 </table>
 
@@ -125,42 +125,45 @@ Each status informer will be in one of the states above, as determined by the
 resource it references. Missing is the same for all resources: it has not yet
 been created.
 
-<dl>
-<dt>`Deployment`<br/>`StatefulSet`</dt><dd>Status is based on the number
+<table>
+<tbody>
+<tr><td><code>Deployment</code><br/><code>StatefulSet</code></td><td>Status is based on the number
 of replicas that are ready. A resources is ready if all replicas are
 available, degraded one but not all replicas are ready, and unavailable if
 none are ready. If there are replicas are from different versions then the
-resources is updating.</dd>
-<dt>`DaemonSet`</dt><dd>Similar to `Deployment` or `StatfulSet` but based on
-the daemon pods</dd>
-<dt>`Service`<br/>`Ingress`</dt><dd>Services are ready if all endpoints are ready and any
+resources is updating.</td></tr>
+<tr><td><code>DaemonSet</code></td><td>Similar to </code>Deployment</code> or </code>StatfulSet</code> but based on
+the daemon pods</td></tr>
+<tr><td><code>Service</code><br/><code>Ingress</code></td><td>Services are ready if all endpoints are ready and any
 needed load balancers have been assigned. They are degraded if at least one
 endpoint is ready when more are requests, and unavailable if none are ready
 and no load balancer(s) have been assigned. Ingress is based on the same
-criteria for it's backing service.</dd>
-<dt>`PersistentVolmeClaim`</td><td>A PVC is ready if the claim is bound and
-unavailable if it is either lost or pending. Those are the only two states.</dd>
-</dl>
+criteria for it's backing service.</td></tr>
+<tr><td><code>PersistentVolmeClaim</code></td><td>A PVC is ready if the claim is bound and
+unavailable if it is either lost or pending. Those are the only two states.</td></tr>
+</tbody>
+<table>
 
 Slackernews has three components in it's architecture: the application, and
 NGINX web server, and a Postgres database. It can optionally have an ingress
 as well, but will not in the virtual appliance. Let's add status informers for
 the application and the web server.
 
+
 In the "Release Editor" tab, add the following to the `spec` section of the
 manifest.
 
 ```
-    statusInformers:
-      - deployment/slacknerews-web
-      - deployment/slackernews-nginx
+  statusInformers:
+    - deployment/slacknerews-web
+    - deployment/slackernews-nginx
 ```
 
-For Postgres, the customer can choose to bring their own database. In that
-case, we're not able to provide a status informer for it. We can use a bit of
-templating to address this. We're going to leave Postgres out of the
-application status for now. We'll add it in when we work with the customer
-configuration in the next step of this lab.
+![Adding the application metadata manifest](../assets/adding-status-informers.png)
+
+We haven't provided a status informer For Postgres since the customer can
+choose to bring their own database. We'll add it in when we work with the
+customer configuration in the next step of this lab.
 
 ### Adding Links to the Admin Console
 
