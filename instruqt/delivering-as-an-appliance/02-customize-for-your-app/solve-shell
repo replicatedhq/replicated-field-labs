@@ -5,7 +5,7 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
-cat <<APPLICATION > ${HOME_DIR}/release/replicated-app.yaml
+cat <<REPLICATED_APP > ${HOME_DIR}/release/replicated-app.yaml
 apiVersion: kots.io/v1beta1
 kind: Application
 metadata:
@@ -13,7 +13,39 @@ metadata:
 spec:
   title: SlackerNews
   icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
-APPLICATION
+  statusInformers:
+    - deployment/slackernews-web
+    - deployment/slackernews-nginx
+REPLICATED_APP
+
+cat <<SIG_APP > ${HOME_DIR}/release/sig-application.yaml
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: slackernews
+  labels:
+    app.kubernetes.io/name: "slackernews"
+    app.kubernetes.io/version: "0.6.1"
+spec:
+  selector:
+    matchLabels:
+     app.kubernetes.io/name: "slackernews"
+  componentKinds:
+    - group: core
+      kind: Service
+    - group: apps
+      kind: Deployment
+  descriptor:
+    version: "0.6.1"
+    description: "SlackerNews"
+    icons:
+      - src: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
+        type: "image/png"
+    type: slackernews
+    links:
+      - description: 🔗 Open Slackernews
+        url: "http://slackernews"
+SIG_APP
 
 yq -i '.version = "0.6.1"' ${HOME_DIR}/slackernews/Chart.yaml
 yq -i '.spec.chart.chartVersion = "0.6.1"' ${HOME_DIR}/release/slackernews-chart.yaml
@@ -26,16 +58,8 @@ export REPLICATED_APP=$(agent variable get REPLICATED_APP)
 
 # release the app to the Unstable channel
 replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.1.tgz --version 0.6.1 \
-  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
+  --release-notes "Configures appliance branding, status, and dashboard links" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 
-# promote the release to the Beta and Stable channels
-release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
-replicated release promote ${release_sequence} Beta --version 0.6.1 \
-  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
-  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
-replicated release promote ${release_sequence} Stable --version 0.6.1 \
-  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
-  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 
 exit 0
