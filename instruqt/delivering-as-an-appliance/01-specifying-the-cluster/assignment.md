@@ -8,13 +8,13 @@ notes:
 - type: text
   contents: Let's build a Kubernetes appliance
 tabs:
-- title: Shell
-  type: terminal
-  hostname: shell
 - title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
+- title: Shell
+  type: terminal
+  hostname: shell
 difficulty: basic
 timelimit: 300
 ---
@@ -159,25 +159,34 @@ export REPLICATED_API_TOKEN="[[ Instruqt-Var key="REPLICATED_API_TOKEN" hostname
 export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
 ```
 
-We create a new release with the command `release create` subcommand for
-`replicated`. If you've completed some of our other labs you may notice a
-difference here, we're using a flag `--yaml-dir` instead of `--chart`. That's
-because this release requires the additional configuration files we've created.
+We create a new release with the `release create` subcommand for `replicated`.
+If you've completed some of our other labs you may notice a difference here,
+we're using a flag `--yaml-dir` instead of `--chart`. That's because this
+release requires the additional configuration files we've created.
 
 ```
-replicated release create --promote Unstable --yaml-dir ./release --version 0.6.0  \
-  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
+replicated release create --yaml-dir ./release
 ```
 
-This creates a release for version `0.6.0` of your Slackernews appliance and
-publishes it to a release channel named `Unstable`. Release channels are used
-by the Replicated Platform to assure customers get access to the release you
-intend for them to get. The [Distributing Your Application with Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated) lab explains them in more detail.
+This creates a release for version `0.6.0` of your Slackernews appliance on
+the vendor portal. To make it available to your customers, you need to publish
+it to a release channel. Release channels are used by the Replicated Platform
+to assure customers get access to the release you intend for them to get. The
+[Distributing Your Application with
+Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
+lab explains them in more detail.
 
 There are three default release channels: `Unstable` for internal builds,
 `Beta` for your beta programs, and `Stable` for generally available releases.
 We're going to use the `release promote` subcommand to make sure our release is
 available on all three of them.
+
+```
+replicated release promote 7 Unstable --version 0.6.0 \
+  --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience"
+```
+
+followed by
 
 ```
 replicated release promote 7 Beta --version 0.6.0 \

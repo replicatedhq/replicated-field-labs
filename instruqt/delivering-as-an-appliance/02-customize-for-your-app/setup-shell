@@ -7,7 +7,7 @@ source /etc/profile.d/header.sh
 
 ### Assure the tmux session exists
 #
-# In a test scenario Instuqt does not run the user shell for the
+# In a test scenario Instruqt does not run the user shell for the
 # challenge, which means the tmux session is never established. We
 # need to session for the solve scripts for other challenges to 
 # succeed, so let's create it here.

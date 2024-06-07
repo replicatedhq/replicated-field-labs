@@ -18,6 +18,16 @@ if [[ ! -f ${HOME_DIR}/release/replicated-app.yaml ]]; then
   let "result = result + 1"
 fi
 
+if [[ ! "$(yq '.spec | has("statusInfomers")' ${HOME_DIR}/release/replicated-app.yaml)" == "false"  ]] ; then
+  fail-message 'Please be sure to add the status informers to your application configuration'
+  let "result = result + 1"
+fi
+
+if [[ ! -f ${HOME_DIR}/release/sig-application.yaml ]]; then
+  fail-message 'Please add the SIG apps application object to the Slackernews release'
+  let "result = result + 1"
+fi
+
 if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.1"  ]] ; then
   fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
   let "result = result + 1"
@@ -38,20 +48,6 @@ fi
 unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
 if [[ ! "${unstable_version}" == "0.6.1"  ]] ; then
   fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`0.6.1\`'
-  let "result = result + 1"
-fi
-
-# check for promotion to Beta
-beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
-if [[ ! "${beta_version}" == "0.6.1"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`0.6.1\`'
-  let "result = result + 1"
-fi
-
-# check for promotion to Stable
-stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
-if [[ ! "${stable_version}" == "0.6.1"  ]] ; then
-  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`0.6.1\`'
   let "result = result + 1"
 fi
 
