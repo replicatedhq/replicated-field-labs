@@ -23,11 +23,6 @@ if [[ ! "$(yq '.spec | has("statusInfomers")' ${HOME_DIR}/release/replicated-app
   let "result = result + 1"
 fi
 
-if [[ ! -f ${HOME_DIR}/release/sig-application.yaml ]]; then
-  fail-message 'Please add the SIG apps application object to the Slackernews release'
-  let "result = result + 1"
-fi
-
 if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.1"  ]] ; then
   fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
   let "result = result + 1"

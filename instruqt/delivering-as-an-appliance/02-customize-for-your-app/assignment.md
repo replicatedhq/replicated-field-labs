@@ -82,11 +82,9 @@ the Admin Console.
 Enriching the Admin Console
 ===========================
 
-To improve the Slackernews appliance experience, we're going to take advantage
-of some additional features of the Admin Console. We'll configure an
-application status indicator and add a link to access the Slackernews app.
-These will help an administrator understand the running state of the
-application and quickly connect to it.
+To improve the Slackernews appliance experience, we'll configure an
+application status indicator. This will help an administrator understand the
+running state of the application and quickly connect to it.
 
 ### Reporting Status on the Admin Console
 
@@ -164,73 +162,6 @@ manifest.
 We haven't provided a status informer For Postgres since the customer can
 choose to bring their own database. We'll add it in when we work with the
 customer configuration in the next step of this lab.
-
-### Adding Links to the Admin Console
-
-Links in the Admin Console use information from both the Replicated
-application configuration and the SIG Application resource. Let's first
-specify a SIG Application resource and include a link in it. The link can be
-either a absolute URL or a reference to a service in the cluster.  For links
-to the application you should use a URL that points to a service. This will
-enable the Admin Console to provide a link that works even when port
-forwarding is required. Absolute URLs are useful for things like your
-documentation that are convenient for an administrator but not unique to this
-install.
-
-Create another new file in the `release` directory named
-`sig-application.yaml` with the following contents.
-
-```
-apiVersion: app.k8s.io/v1beta1
-kind: Application
-metadata:
-  name: slackernews
-  labels:
-    app.kubernetes.io/name: "slackernews"
-    app.kubernetes.io/version: "0.6.1"
-spec:
-  selector:
-    matchLabels:
-     app.kubernetes.io/name: "slackernews"
-  componentKinds:
-    - group: core
-      kind: Service
-    - group: apps
-      kind: Deployment
-  descriptor:
-    version: "0.6.1"
-    description: "SlackerNews"
-    icons:
-      - src: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
-        type: "image/png"
-    type: slackernews
-    links:
-      - description: 🔗 Open Slackernews
-        url: "http://slackernews"
-      - description: 📖 Read the Docs
-        url: "https://docs.slackernews.io"
-```
-
-You can see there's a bit of overlap between the two files, which is why we
-waited to define it until we needed it.
-
-Both links will appear in the Admin Console with this configuration, but we
-need to update the Replicated application configuration to make the relative
-link `🔗 Open Slackernews` work. We'll do that specifying the port in the
-Replictaed application object.
-
-Open the `replicated-app.yaml` file and update the spec with a `ports`
-section. You can specify whichever `localPort` you want, but the
-`applicatonUrl` needs to match the `url` above and the `servicePort` needs to
-be correct for the service you're linking to.
-
-```
-    ports:
-      - serviceName: slackernews
-        servicePort: 3000
-        localPort: 3000
-        applicationUrl: "http://slackernews"
-```
 
 Releasing Your Application
 ==========================

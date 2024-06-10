@@ -18,35 +18,6 @@ spec:
     - deployment/slackernews-nginx
 REPLICATED_APP
 
-cat <<SIG_APP > ${HOME_DIR}/release/sig-application.yaml
-apiVersion: app.k8s.io/v1beta1
-kind: Application
-metadata:
-  name: slackernews
-  labels:
-    app.kubernetes.io/name: "slackernews"
-    app.kubernetes.io/version: "0.6.1"
-spec:
-  selector:
-    matchLabels:
-     app.kubernetes.io/name: "slackernews"
-  componentKinds:
-    - group: core
-      kind: Service
-    - group: apps
-      kind: Deployment
-  descriptor:
-    version: "0.6.1"
-    description: "SlackerNews"
-    icons:
-      - src: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
-        type: "image/png"
-    type: slackernews
-    links:
-      - description: 🔗 Open Slackernews
-        url: "http://slackernews"
-SIG_APP
-
 yq -i '.version = "0.6.1"' ${HOME_DIR}/slackernews/Chart.yaml
 yq -i '.spec.chart.chartVersion = "0.6.1"' ${HOME_DIR}/release/slackernews-chart.yaml
 
@@ -60,6 +31,5 @@ export REPLICATED_APP=$(agent variable get REPLICATED_APP)
 replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.1.tgz --version 0.6.1 \
   --release-notes "Configures appliance branding, status, and dashboard links" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
-
 
 exit 0
