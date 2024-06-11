@@ -44,7 +44,7 @@ export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
 export REPLICATED_APP=$(agent variable get REPLICATED_APP)
 
 # release the app to the Unstable channel
-replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.0.tgz --version 0.6.0 \
+replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.0 \
   --release-notes "Adds an embedded cluster configuration to facilitate an appliance experience" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 
