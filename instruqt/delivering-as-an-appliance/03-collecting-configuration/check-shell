@@ -5,4 +5,69 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
-exit 0
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+app_slug=${REPLICATED_APP}
+api_token=${REPLICATED_API_TOKEN}
+
+result=0
+#
+# check the files in the release
+if [[ ! -f ${HOME_DIR}/release/config.yaml ]]; then
+  fail-message 'Please add the configuration manifest to the Slackernews release'
+  let "result = result + 1"
+fi
+
+if [[ "$(yq '.spec.groups[] | select( .name == "slackernews" ) | has("description")' ${HOME_DIR}/release/config.yaml)" == "false" || "$(yq '.spec.groups[] | select( .name == "slackernews" ) | .items[] | select( .name == "slackernews_domain" ) | has("help_text")' ${HOME_DIR}/release/config.yaml)" == "false" || "$(yq '.spec.groups[] | select( .name == "slackernews" ) | .items[] | select( .name == "slackernews_domain" ) | has("help_text")' ${HOME_DIR}/release/config.yaml)" == "false"  ]] ; then
+  fail-message 'Please be sure to update the description and help text for the `slackernews` configuration group'
+  let "result = result + 1"
+fi
+
+if [[ ! "$(yq '.spec.groups[] | select( .name == "slackernews" ) | .items[] | select( .name == "slackernews_domain" ) | .required' ${HOME_DIR}/release/config.yaml)" == "true" ]] ; then
+  fail-message 'Please be sure to set the "Ingress Hostname" option as required'
+  let "result = result + 1"
+fi
+
+if [[ "$(yq '.spec.groups[] | select( .name == "slackernews" ) | .items[] | select( .name == "slackernews_domain" ) | has("validation")' ${HOME_DIR}/release/config.yaml)" == "false" ]] ; then
+  fail-message 'Please be sure to add validation to the "Ingress Hostname" option'
+  let "result = result + 1"
+fi
+
+if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.2"  ]] ; then
+  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
+  let "result = result + 1"
+fi
+
+if [[ ! "$(yq .spec.chart.chartVersion ${HOME_DIR}/release/slackernews-chart.yaml)" == "0.6.2"  ]] ; then
+  fail-message 'Please update the Slackernews Helm chart configuration for your new version'
+  let "result = result + 1"
+fi
+
+# check that the Helm chart has been packaged into the release directory
+if [[ ! -f ${HOME_DIR}/release/slackernews-0.6.2.tgz ]]; then
+  fail-message 'Please be sure to build the Helm chart into the release directory:'
+  let "result = result + 1"
+fi
+
+# check for release to Unstable
+unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
+if [[ ! "${unstable_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Beta
+beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
+if [[ ! "${beta_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Stable
+stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
+if [[ ! "${stable_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
+exit ${result}
