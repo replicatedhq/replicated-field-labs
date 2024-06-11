@@ -310,3 +310,47 @@ conditional fields in the final configuration.
 
 ### Validating Input
 
+The last feature we'll look at is input validation. Validation makes sure the
+user sets a value in the correct format (unfortunately, we can't make sure
+it's the _right_ value, the customer has to handle that). Fields validation
+uses regular expressions, though the `Config` definition provides for
+Replicated adding more options in the future. 
+
+Let's return the "Ingress Hostname" field. It's important for this field to be
+a valid hostname. Though we can't check that it's a real domain here (that's
+the type of thing preflight checks are for), we can make sure it's a valid
+name.
+
+```yaml
+          validation:
+            regex: 
+              pattern: ^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$
+              message: Please enter a valid hostname
+ 
+```
+
+If your customer enters and invalid hostname they'll see the error message and
+won't be able to save their configuration until they correct it. Edit the
+config to include the validation. Keep in mind that the validation is a regular
+expression, so you'll want to test it to make sure it's correct. You can do
+that when you install the appliance, which we'll do a bit later.
+
+A More Robust Configuration
+============================
+
+All of the techniques we used to enrich our configuration can be applied to
+any configuration option. In the case of Slackernews, we have a few more
+changes we could make:
+
+* Explain the rest of the configuration groups and add help text to additional
+  options
+* Set sensible defaults where appropriate
+* Hide other conditional fields
+* Validate the input for fields with specific formats
+
+We're not going to go through all of those changes step-by-step, but instead
+we'll replace the configuration we've been working on with a more robust one.
+The full configuration is located in your home directory in the file
+`complete-configuration.yaml`. Please copy the contents of that file into your
+configuration in place of the one we've been working on.
+
