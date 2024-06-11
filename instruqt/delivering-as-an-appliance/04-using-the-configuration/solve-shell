@@ -5,4 +5,27 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
+yq -i '.version = "0.6.2"' ${HOME_DIR}/slackernews/Chart.yaml
+yq -i '.spec.chart.chartVersion = "0.6.2"' ${HOME_DIR}/release/slackernews-chart.yaml
+
+helm package -u ${HOME_DIR}/slackernews -d ${HOME_DIR}/release
+
+# configure the required environment variables for the Replicated CLI
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+
+# release the app to the Unstable channel
+replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the other channels
+replicated release promote ${release_sequence} Beta --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+replicated release promote ${release_sequence} Stable --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
 exit 0

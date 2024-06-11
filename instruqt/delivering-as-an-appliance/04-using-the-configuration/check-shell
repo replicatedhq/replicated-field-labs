@@ -5,4 +5,25 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
+# check for release to Unstable
+unstable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .currentVersion')
+if [[ ! "${unstable_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to release the applicaton to the \`Unstable\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Beta
+beta_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Beta" ) | .currentVersion')
+if [[ ! "${beta_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Beta\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
+# check for promotion to Stable
+stable_version=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Stable" ) | .currentVersion')
+if [[ ! "${stable_version}" == "0.6.2"  ]] ; then
+  fail-message $'Please be sure to promote the applicaton to the \`Stable\` channel with version \`0.6.2\`'
+  let "result = result + 1"
+fi
+
 exit 0
