@@ -22,8 +22,7 @@ timelimit: 300
 The Kubernetes appliance installation is one of the first things
 your customer will experience about your application. The way we've implemented
 it so far uses a lot of defaults. We didn't try to install it yet, but if we
-had, we'd notice it's not particularly clear that this is a Slackernews
-appliance.
+had, we'd land on a page like this:
 
 ![Appliance login page without branding](../assets/unbranded-admin-console.png)
 
@@ -33,8 +32,8 @@ Don't worry, Replicated provides a few options to customize the appliance
 installer. The first customizations we're going to look at will make it clear
 which application we're installing.
 
-Add a Name and Logo to the Appliance
-====================================
+Adding a Name and Logo to the Appliance
+=======================================
 
 We've already looked at two of the manifests we use for configuring the
 appliance experience: one for the embedded Kubernetes cluster and one for the
