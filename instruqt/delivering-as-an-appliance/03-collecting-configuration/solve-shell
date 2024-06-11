@@ -5,4 +5,181 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
+cat <<CONFIG > ${HOME_DIR}/release/config.yaml
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: slackernews-config
+spec:
+  groups:
+    - name: slackernews
+      title: Application Core
+      description: |
+        For this section, you can specify some core parameters for how
+        Slackernews operates, including the domain where users will access it
+        and the user who can administer it.
+
+        Users that you specify under **Admin Users** will be able to access the
+        Slackernews adminstrative console at `/admin`, allowing them to manage
+        content, users, and settings. Changes will take effect the next time
+        they are active in the Slackernews application.
+      items:
+        - name: slackernews_domain
+          title: Ingress Hostname
+          help_text: >
+            The domain name at which you'll access SlackerNews. Don't include
+            the `https://` or any path elements.
+          type: text
+          required: true
+          validation:
+            regex: 
+              pattern: ^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$
+              message: Please enter a valid hostname
+        - name: slackernews_admin_user_emails
+          title: Admin Users
+          type: text
+          help_text: >
+            Provide a comma-separated list of email addresses for the users you
+            want to grant admin access to.
+
+    - name: ingress
+      title: Application Access
+      description: |
+        You can customize how you will expose SlackerNews to the internet.
+        Note that the domain you use will need to be publicly addressable with certs signed by a public authority
+        so it can receive webhooks from Slack.
+
+        Common configurations include:
+
+        - **ClusterIP** Using a Cluster IP and configuring your existing ingress controller to route traffic to SlackerNews
+        - **NodePort** Using a NodePort and configuring an existing load balancer to route traffic to SlackerNews
+        - **LoadBalancer** Using a LoadBalancer service and letting Kubernetes provision a load balancer for you
+
+        If you're running in a supported cloud provider and want Kubernetes to provision a Load Balancer, use LoadBalancer.
+      items:
+        - name: service_type
+          title: Service Type
+          type: select_one
+          items:
+            - name: cluster_ip
+              title: ClusterIP
+            - name: node_port
+              title: NodePort
+            - name: load_balancer
+              title: LoadBalancer
+          default: cluster_ip
+        - name: node_port_port
+          title: Node Port
+          help_text: > 
+              (Optional) - The port to use for the NodePort service type. Leave this blank to have Kubernetes choose a port for you.
+          type: text
+          default: ""
+          when: repl{{ ConfigOptionEquals "service_type" "NodePort" }}
+
+    - name: tls
+      title: Certificates
+      description: |
+        You can secure the Slackernews application with certificates from a trusted certificate authority 
+        or we can generate them for you. We recommend that you upload your own certificates for production installations.
+      items:
+        - name: certificate_source
+          type: select_one
+          title: Certificate Source
+          default: generate_internal
+          items:
+            - name: generate_internal
+              title: Generate
+            - name: upload_existing
+              title: Upload
+        - name: tls_cert
+          title: Certificate
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+        - name: tls_key
+          title: Private Key
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+        - name: tls_ca
+          title: Signing Authority
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+
+    - name: slack
+      title: Slack Settings
+      description: |
+        If desired, you can preconfigure the slack settings for SlackerNews.
+        These are required for logging into SlackerNews and pulling/organizing content from your slack instance.
+        If you don't preconfigure these settings, you'll be prompted to configure them when you first access SlackerNews.
+
+        Instructions on how to configure your slack application and collect these values can be found in [the SlackerNews slack documentation](https://docs.slackernews.io/slack/).
+      items:
+        - name: slack_clientid
+          title: Slack Client ID
+          type: text
+        - name: slack_clientsecret
+          title: Slack Client Secret
+          type: password
+        - name: slack_user_token
+          title: User OAuth Token
+          type: password
+          validation:
+            regex: 
+              pattern: ^xoxp-.*$
+              message: Please enter the Slack user token for your instance of Slackernews
+        - name: slack_bot_token
+          title: Bot User OAuth Token
+          type: password
+          validation:
+            regex: 
+              pattern: ^xoxb-.*$
+              message: Please enter the Slack bot token for your instance of Slackernews
+
+    - name: postgres
+      description: >
+        This section can be used to configure the postgresql database required by SlackerNews. You
+        can either deploy postgresql as part of the installation or provide an external URI to an existing postgresql instance
+        that you will use for SlackerNews.
+      title: Postgresql
+      items:
+        - name: deploy_postgres
+          type: bool
+          title: Deploy Postgresql Database
+          default: "1"
+        - name: postgres_password
+          type: password
+          title: Postgresql Password
+          required: true
+          hidden: true
+          when: repl{{ ConfigOptionEquals "deploy_postgres" "1"}}
+          value: repl{{ RandomString 40}}
+        - name: postgres_external_uri
+          type: text
+          title: Postgresql URI
+          required: true
+          when: repl{{ ConfigOptionEquals "deploy_postgres" "0"}}
+CONFIG
+
+yq -i '.version = "0.6.2"' ${HOME_DIR}/slackernews/Chart.yaml
+yq -i '.spec.chart.chartVersion = "0.6.2"' ${HOME_DIR}/release/slackernews-chart.yaml
+
+helm package -u ${HOME_DIR}/slackernews -d ${HOME_DIR}/release
+
+# configure the required environment variables for the Replicated CLI
+export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
+export REPLICATED_APP=$(agent variable get REPLICATED_APP)
+
+# release the app to the Unstable channel
+replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the other channels
+replicated release promote ${release_sequence} Beta --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+replicated release promote ${release_sequence} Stable --version 0.6.2 \
+  --release-notes "Adds configuration screen for the appliance" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
 exit 0
