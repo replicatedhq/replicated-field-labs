@@ -21,20 +21,15 @@ timelimit: 300
 One of the benefits of building a Kubernetes appliance is providing a guided
 experience for your customer to have a successful installation. One key to
 success is assuring the application is correctly configured. The Replicated
-Embedded Cluster lets you offer a simple web form to help customers set
+Embedded Cluster lets you offer a simple web screen to help customers set
 critical values correctly.
 
 Configuring Your Application
 =============================
 
-Configuration in the Replicated Admin Console uses two different Replicated
-objects: `Config` and `HelmChart`. We saw the `HelmChart` when we initially
-prepared the cluster. In that section we specified a chart and version to
-install and didn't specify any Helm values. We're going to update that
-configuration to provide values that the Admin Console will pass to Helm when
-installing or updating the application.
-
-The `Config` object defines the form that your customer will use to configure
+Like other aspects of the appliance, the configuration screen is defined using
+a YAML manifest. The manifest defines a `Config` object that describes you
+configuration options and the screen that your customer will use to configure
 the application. Configurations is organized into groups, and each group can
 have a fields of different types. The type of field defines the widget used.
 The supported types account for all of the standard web form inputs.
@@ -270,7 +265,7 @@ self-signed certificate.
               title: Generate
             - name: upload_existing
               title: Upload
-``` 
+```
 
 Add those changes as well. We'll see a few default values in the final
 configuration.
@@ -314,7 +309,7 @@ The last feature we'll look at is input validation. Validation makes sure the
 user sets a value in the correct format (unfortunately, we can't make sure
 it's the _right_ value, the customer has to handle that). Fields validation
 uses regular expressions, though the `Config` definition provides for
-Replicated adding more options in the future. 
+Replicated adding more options in the future.
 
 Let's return the "Ingress Hostname" field. It's important for this field to be
 a valid hostname. Though we can't check that it's a real domain here (that's
@@ -323,10 +318,10 @@ name.
 
 ```yaml
           validation:
-            regex: 
+            regex:
               pattern: ^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$
               message: Please enter a valid hostname
- 
+
 ```
 
 If your customer enters and invalid hostname they'll see the error message and
@@ -354,3 +349,6 @@ The full configuration is located in your home directory in the file
 `complete-configuration.yaml`. Please copy the contents of that file into your
 configuration in place of the one we've been working on.
 
+![A look at the complete Slackernews configuration](../assets/complete-configuration.png)
+
+In the next section we'll see how the Admin Console uses this configuration.
