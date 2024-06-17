@@ -12,7 +12,6 @@ description: |-
    * Prepare customer entitlements
    * Understand your customer's application instance
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/appslug.png
-level: beginner
 tags:
 - builders-plan
 - helm
@@ -20,11 +19,13 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-timelimit: 600
+timelimit: 2100
 lab_config:
   overlay: false
   width: 33
   position: right
   feedback_recap_enabled: true
   loadingMessages: true
-checksum: "7911887612029781210"
+  lab_v2: false
+  hideStopButton: false
+checksum: "3447726368566940438"
