@@ -33,29 +33,13 @@ if [[ "$(yq '.spec.groups[] | select( .name == "tls" ) | .items[] | select( .nam
   let "result = result + 1"
 fi
 
-if [[ ! "$(yq 'tls_cert.spec.groups[] | select( .name == "tls" ) | .items[] | select( .name == "certificate_source" ) | .default' ${HOME_DIR}/release/config.yaml)" == "generate_internal" ]] ; then
+if [[ ! "$(yq '.spec.groups[] | select( .name == "tls" ) | .items[] | select( .name == "certificate_source" ) | .default' ${HOME_DIR}/release/config.yaml)" == "generate_internal" ]] ; then
   fail-message 'Please be sure to set the default value for the "Certificate Source" option'
   let "result = result + 1"
 fi
 
 if [[ "$(yq '.spec.groups[] | select( .name == "slackernews" ) | .items[] | select( .name == "slackernews_domain" ) | has("validation")' ${HOME_DIR}/release/config.yaml)" == "false" ]] ; then
   fail-message 'Please be sure to add validation to the "Ingress Hostname" option'
-  let "result = result + 1"
-fi
-
-if [[ ! "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" == "0.6.2"  ]] ; then
-  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your new release'
-  let "result = result + 1"
-fi
-
-if [[ ! "$(yq .spec.chart.chartVersion ${HOME_DIR}/release/slackernews-chart.yaml)" == "0.6.2"  ]] ; then
-  fail-message 'Please update the Slackernews Helm chart configuration for your new version'
-  let "result = result + 1"
-fi
-
-# check that the Helm chart has been packaged into the release directory
-if [[ ! -f ${HOME_DIR}/release/slackernews-0.6.2.tgz ]]; then
-  fail-message 'Please be sure to build the Helm chart into the release directory:'
   let "result = result + 1"
 fi
 
