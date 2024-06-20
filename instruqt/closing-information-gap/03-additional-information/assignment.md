@@ -158,7 +158,7 @@ bundle specification file.
 Analyzing Workloads
 ===================
 
-In your initial support bundle definition you added a `deplogymentStatus`
+In your initial support bundle definition you added a `deploymentStatus`
 analyzer that checked whether the Slackernews Core workload was running. Core is one
 of several workloads in the application. Some are Deployments, while others are
 Stateful Sets. There is a `statefulSetStatus` analyzer that works the same way
