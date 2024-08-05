@@ -9,9 +9,13 @@ notes:
   contents: |
     Provide the user configuration to your Helm chart
 tabs:
+- title: Release Editor
+  type: code
+  hostname: shell
+  path: /home/replicant
 - title: Shell
   type: terminal
-  hostname: node
+  hostname: shell
 difficulty: basic
 timelimit: 300
 ---
