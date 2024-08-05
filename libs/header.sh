@@ -93,6 +93,14 @@ get_app_id () {
   echo ${app_id}
 }
 
+get_license_id () {
+  customer=${1}
+  access_token=$(get_api_token)
+  app_id=$(get_app_id)
+  license_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name $customer '.customers[] | select ( .name == $name ) | .installationId')
+  echo ${license_id}
+}
+
 get_slackernews_domain() {
   echo cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com
 }
