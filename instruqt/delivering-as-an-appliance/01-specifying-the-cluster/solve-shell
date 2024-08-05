@@ -39,7 +39,12 @@ MANIFEST
 # make sure all files in the release directory are owned by the replicant user
 chown -R replicant:replicant ${HOME_DIR}/release
 
-# configure the required environment variables for the Replicated CLI
+# make sure the user has the CLI environment variables set up in their sehll
+tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
+tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+tmux send-keys -t shell clear ENTER
+
+# configure the required environment variables for the Replicated CLI here in the script
 export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
 export REPLICATED_APP=$(agent variable get REPLICATED_APP)
 
