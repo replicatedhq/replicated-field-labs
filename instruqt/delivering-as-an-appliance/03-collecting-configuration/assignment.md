@@ -346,8 +346,13 @@ changes we could make:
 We're not going to go through all of those changes step-by-step, but instead
 we'll replace the configuration we've been working on with a more robust one.
 The full configuration is located in your home directory in the file
-`complete-configuration.yaml`. Please copy the contents of that file into your
+`complete-configuration.yaml`. Please move or copy the contents of that file into your
 configuration in place of the one we've been working on.
+
+```
+mv ~/complete-configuration.yaml ~/release/config.yaml
+```
+
 
 ![A look at the complete Slackernews configuration](../assets/complete-configuration.png)
 
