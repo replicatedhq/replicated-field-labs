@@ -13,7 +13,7 @@ notes:
 tabs:
 - title: Shell
   type: terminal
-  hostname: node
+  hostname: shell
 difficulty: basic
 timelimit: 300
 ---
