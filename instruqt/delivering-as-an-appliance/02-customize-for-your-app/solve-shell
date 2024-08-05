@@ -18,10 +18,14 @@ spec:
     - deployment/slackernews-nginx
 REPLICATED_APP
 
+rm ${HOME_DIR}/release/slackernews-0.6.0.tgz
+
 yq -i '.version = "0.6.1"' ${HOME_DIR}/slackernews/Chart.yaml
 yq -i '.spec.chart.chartVersion = "0.6.1"' ${HOME_DIR}/release/slackernews-chart.yaml
 
 helm package -u ${HOME_DIR}/slackernews -d ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/release
+chmod -R 755 ${HOME_DIR}/release
 
 # configure the required environment variables for the Replicated CLI
 export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
