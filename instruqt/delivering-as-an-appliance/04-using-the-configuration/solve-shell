@@ -5,10 +5,14 @@ set -euxo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
+rm ${HOME_DIR}/release/slackernews-0.6.1.tgz 
+
 yq -i '.version = "0.6.2"' ${HOME_DIR}/slackernews/Chart.yaml
 yq -i '.spec.chart.chartVersion = "0.6.2"' ${HOME_DIR}/release/slackernews-chart.yaml
 
 helm package -u ${HOME_DIR}/slackernews -d ${HOME_DIR}/release
+chown -R replicant ${HOME_DIR}/release
+chmod -R 755 ${HOME_DIR}/release
 
 # configure the required environment variables for the Replicated CLI
 export REPLICATED_API_TOKEN=$(agent variable get REPLICATED_API_TOKEN)
@@ -124,7 +128,7 @@ CHART_MANIFEST
 
 # release the app to the Unstable channel
 replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.2 \
-  --release-notes "Adds configuration screen for the appliance" \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
 

@@ -185,8 +185,64 @@ Providing a Complete Set of Values
 Like with the last step of the lab, there's a more robust set of values needed
 than just he ones we went through. To include the complete set of values in
 your release, move the file `complete-helmchart.yaml` in your home directory
-into the `release` directory. 
+into the `release` directory.
 
 ```shell
 mv complete-helmchart.yaml release/slackernews-chart.yaml
 ```
+
+Releasing an Update
+===================
+
+We now have a complete release of the Slackernews application that a customer
+can install. Let's release our update and move it through the release process.
+
+Like our last release, we're going to bump the Helm chart version to keep the
+versions aligned across all our install methods. Remember this is optional, so
+if you feel funny bumping the chart version when you didn't change the chart
+itself you can skip that part. In practice you'll usually be making changes to
+both the chart and the Replicated Embedded Cluste configuration in parallel so
+this probably won't be an issue.
+
+Run the following commands to bump the chart version and add it to your
+release.
+
+```
+yq -i '.version = "0.6.2"' slackernews/Chart.yaml
+helm package -u slackernews -d release
+rm release/slackernews-0.6.1.tgz
+```
+
+The `HelmChart` object needs to refer to the new chart version, so we need to
+line up the version as well.
+
+```
+yq -i '.spec.chart.chartVersion = "0.6.2"' release/slackernews-chart.yaml
+```
+
+Now we can create our release and simulate a full release process by promoting
+across the `Unstable`, `Beta`, and `Stable` channels. First build the release
+and promote it directly to `Unstable`.
+
+```
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.2.tgz --version 0.6.2 \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+```
+
+Then you can promote to `Beta` using the release sequence from the output.
+
+```
+replicated release promote 7 Beta --version 0.6.2 \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+```
+
+And on to `Stable`
+
+```
+replicated release promote 7 Stable --version 0.6.2 \
+```
+
+Next, we'll see what your customer experiences when they install the
+application.
