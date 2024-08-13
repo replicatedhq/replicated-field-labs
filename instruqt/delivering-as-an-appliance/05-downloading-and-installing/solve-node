@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+source /etc/profile.d/header.sh
+
+app_slug=$(get_app_slug)
+app_id=$(get_app_id)
+api_token=$(agent variable get REPLICATED_API_TOKEN)
+customer_id=$(agent variable get CUSTOMER_ID)
+license_id=$(agent variable get LICENSE_ID)
+
+# enable embedded cluster installation for the customer Nitflex
+updated_customer=$(curl --header 'Accept: application/json' \
+        --header "Authorization: ${api_token}" \
+        "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" \
+  |  jq -c --arg appId "${app_id}" '.customer | {
+        "app_id": $appId, 
+        "channel_id": .channels[0].id, 
+        "custom_id": .customId,
+        "email": .email, 
+        "entitlementValues": .entitlements,
+        "expires_at": .expiresAt, 
+        "is_airgap_enabled": .airgap, 
+        "is_disaster_recovery_supported": true, 
+        "is_embedded_cluster_download_enabled": true, 
+        "is_geoaxis_supported": .isGeoaxisSupported, 
+        "is_gitops_supported": .isGitopsSupported, 
+        "is_identity_service_supported": .isIdentityServiceSupported, 
+        "is_kots_install_enabled": true, 
+        "is_snapshot_supported": .isSnapshotSupported, 
+        "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, 
+        "name": .name, 
+        "type": .type
+      }')
+
+set +euo pipefail
+curl --request PUT \
+  --url "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: ${api_token}" \
+  --data "${updated_customer}"
+
+# download and install the embedded cluster
+curl -f https://replicated.app/embedded/${app_slug}/stable \
+      -H "Authorization: ${license_id}" \
+      -o ${app_slug}-stable.tgz \
+  && tar -xzvf ${app_slug}-stable.tgz
+
+echo "The install command takes a long time and Instruqt can't handle its output..."
+
+./${app_slug} install --license license.yaml --no-prompt --skip-host-preflights > /dev/null
+
+export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
+export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+
+# set the admin console password
+echo "$(agent variable get ADMIN_CONSOLE_PASSWORD)\n" | kubectl kots reset-password --namespace kotsadm 
+
+exit 0

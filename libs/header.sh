@@ -109,6 +109,11 @@ get_license_id () {
   echo ${license_id}
 }
 
+get_admin_console_password() {
+  password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}:${INSTUQT_CHALLENGE_ID}" | sha256sum)
+  echo ${password::20}
+}
+
 get_slackernews_domain() {
   echo cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com
 }
