@@ -1,6 +1,6 @@
 ---
 slug: customize-for-your-app
-id: pit6xmw6mftl
+id: szb8s2syamdl
 type: challenge
 title: Customizing the Appliance for Your Application
 teaser: Make the Kubernetes appliance experience your own
@@ -194,7 +194,7 @@ rm release/slackernews-0.6.0.tgz
 Create a new release, and promote it directly to the "Unstable" channel.
 
 ```
-replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.1.tgz --version 0.6.1 \
+replicated release create --promote Unstable --yaml-dir ./release --version 0.6.1 \
   --release-notes "Configures appliance branding, status, and dashboard links" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 ```
