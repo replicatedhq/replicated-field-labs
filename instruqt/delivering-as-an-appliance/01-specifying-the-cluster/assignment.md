@@ -60,7 +60,7 @@ with configuration files like the one we saw above.
 
 We need a minimum of two configuration files: the Embedded Cluster
 configuration and a file that describes which Helm chart to install. We'll put
-those in a directroy with the Helm chart and create a release from those files.
+those in a directory with the Helm chart and create a release from those files.
 
 Our Initial Appliance
 =====================
