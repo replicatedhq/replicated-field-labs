@@ -1,6 +1,6 @@
-slug: delivering-as-an-appliance-dev
-id: mjcgvsqqbxud
-title: DEV - Delivering Your Application as a Kubernetes Appliance
+slug: delivering-as-an-appliance
+id: 
+title: Delivering Your Application as a Kubernetes Appliance
 teaser: |-
   Package your application as a Kubernetes appliance to simplify
   installation and operation.
@@ -27,7 +27,7 @@ description: |-
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
 tags:
 - premium-plans
-- dev
+- prod
 - embedded-cluster
 - install
 owner: replicated
