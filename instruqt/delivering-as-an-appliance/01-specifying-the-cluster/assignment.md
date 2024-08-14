@@ -27,7 +27,7 @@ install and manage your application is called the Admin Console. Under the
 hood, the Admin Console uses Helm to install and upgrade your application.
 
 You release your application as a Kubernetes applicance by releasing a Helm
-chart and some additional configuration on the Replicated Platform. The moost
+chart and some additional configuration on the Replicated Platform. The most
 important file is the configuration for the Embedded Cluster, which can very
 simple. All it requires is the version of the cluster to use.
 
