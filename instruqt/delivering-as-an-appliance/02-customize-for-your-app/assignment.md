@@ -166,7 +166,7 @@ Releasing Your Application
 ==========================
 
 We're still not going to install our appliance, but let's release these
-changes to get into the habit or releasing changes quickly.
+changes to get into the habit of releasing changes quickly.
 
 First we want to bump the version in our Helm chart. You could consider this
 part optional since we didn't update the chart. I recommend you do it, since
