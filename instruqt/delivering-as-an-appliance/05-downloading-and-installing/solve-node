@@ -55,6 +55,7 @@ export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
 export PATH="/var/lib/embedded-cluster/bin:${PATH}"
 
 # set the admin console password
-echo "$(agent variable get ADMIN_CONSOLE_PASSWORD)\n" | kubectl kots reset-password --namespace kotsadm 
+echo "Setting the admin console password... $(agent variable get ADMIN_CONSOLE_PASSWORD)"
+echo "$(agent variable get ADMIN_CONSOLE_PASSWORD)" | kubectl kots reset-password --namespace kotsadm 
 
 exit 0

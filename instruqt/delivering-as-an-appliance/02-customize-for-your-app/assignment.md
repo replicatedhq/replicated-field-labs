@@ -152,7 +152,7 @@ manifest.
 
 ```
   statusInformers:
-    - deployment/slacknerews-web
+    - deployment/slacknerews
     - deployment/slackernews-nginx
 ```
 

@@ -14,7 +14,7 @@ spec:
   title: SlackerNews
   icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
   statusInformers:
-    - deployment/slackernews-web
+    - deployment/slackernews
     - deployment/slackernews-nginx
 REPLICATED_APP
 

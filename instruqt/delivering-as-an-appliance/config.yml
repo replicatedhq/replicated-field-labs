@@ -7,4 +7,8 @@ virtualmachines:
 - name: node
   image: kots-field-labs/future-node
   shell: /bin/bash
-  machine_type: n1-standard-2
+  machine_type: n2d-standard-4
+  allow_external_ingress:
+  - http
+  - https
+  - high-ports

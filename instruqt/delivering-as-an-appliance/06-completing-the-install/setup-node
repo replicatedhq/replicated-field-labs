@@ -21,7 +21,7 @@ mkdir -p /var/lib/embedded-cluster/bin
 export REPL_INSTALL_PATH=/var/lib/embedded-cluster/bin
 curl https://kots.io/install | bash
 
-agent variable set SLACKERNEWS_DOMAIN get_slackernews_domain
+agent variable set SLACKERNEWS_DOMAIN $(get_slackernews_domain)
 agent variable set ADMIN_EMAIL "${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
 agent variable set CUSTOMER_ID $(get_customer_id Nitflex)
 agent variable set LICENSE_ID $(get_license_id Nitflex)

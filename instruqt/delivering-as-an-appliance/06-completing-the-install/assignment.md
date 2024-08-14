@@ -8,7 +8,7 @@ teaser: |
 notes:
 - type: text
   contents: |
-    How a customer installs with a Kubernetes appliance
+    Let's walk through the rest of the installation
 tabs:
 - title: Admin Console
   type: website
@@ -18,6 +18,9 @@ tabs:
   type: service
   hostname: node
   port: 30443
+- title: Debug
+  type: terminal
+  hostname: node
 difficulty: basic
 timelimit: 1200
 ---
@@ -39,8 +42,7 @@ roles:
 2. It offers a GUI for "Day Two" operations like checking for (and installing)
    updates, collecting support bundles, and managing cluster nodes.
 
-We're going to focus primarily on the first role for now. In the next step of
-the lab we'll also look at managing cluster nodes.
+We're going to focus primarily on the first role for now.
 
 Completing the Install
 =====================
@@ -79,26 +81,31 @@ Management screen. This is where you can add additional nodes to the
 Slackernews Embedded Cluster. Node management is the first step in the install
 process because not all applications can run on a single node. Slackernews is
 a fairly lightweight application and can run fairly easily on a single node.
-To simplify this lab, we're going to stick with a single node cluster.
+
+![Admin Console Node Managemet Interface](../assets/node-management.png)
+
+To simplify this lab, we're going to stick with a single node cluster. Click
+"Continue" to continue the installation on one node.
 
 ### Configuring Your Instance
 
-Once you've logged in, the Admin Console will guide you through a few more
-steps, starting with configuring Slackernews. You'll see the configuration
-form we defined earlier. Fill in the values for each entry.
+Next is the configuratiion screen that we defined earlier. Fill in the values
+for each entry.
+
+![Entering the Slackernews Configuration in the Admin Console](../assets/providing-configuration.png)
 
 The first two sections are fairly straightforward:
 
-* **Slackernews Domain**: `[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="cluster" ]]`
+* **Slackernews Domain**: `[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="node" ]]`
 * **Admin Users**: `[[ Instruqt-Var key="ADMIN_EMAIL" hostname="node" ]]`
 * **Service Type**: NodePort
 * **Node Port**: `30443`
 * **Certificate Source**: Generate
 
 The next section presents us with a bit of a challenge. We don't have a Slack
-team to connect to, so any values we enter will be invalid when we run our
-pre-flight checks. The values are required, though, so we need to enter
-something. Let's use the following dummy values:
+team to connect to, so any values we enter will be invalid. The values are
+required, though, so we need to enter something. Let's use the following dummy
+values:
 
 * **Slack Client ID**: `notavalidid`
 * **Slack Client Secret**: `notavalidsecret`
@@ -108,10 +115,107 @@ something. Let's use the following dummy values:
 Note that we prefixed the two tokens with the prefix used by actual Slack
 tokens. We needed to do this to pass the validation set set up for the form.
 
-Click "" to move to the next steps and run our preflight checks.
+Click "Continue" to move to the next steps and run our preflight checks.
+Preflight checks run after your customer specifies their configuration so that
+you can use it as part of your checks.
 
 ### Running Preflight Checks
 
+The Admin Console will run preflight checks it finds in the release. Preflight
+checks are YAML object processed by the Admin Console to assure that your
+customer has met the prerequisites to successfully install your application.
+They can be included as standard manifests within the Embeddded Cluster
+release or as secrets within your application's Helm chart. We strongly
+recommend including them in your Helm chart so that they can be used
+regardless of installation method. See [Avoiding Installation
+Pitfalls](https://play.instruqt.com/manage/replicated/tracks/avoiding-installation-pitfalls)
+for more details on writing preflight checks and including them in your
+application.
+
+We didn't add any preflight checks in this lab because the Slackernews Helm
+chart already includes them. They check for some basic prerequisites:
+
+1. The version of Kubernetes is one that the Slackernews team is prepared to
+   support. This is a less relevant check for an Embedded Cluster installation
+   since the version of Kubernetes is tightly coupled to the application
+   release, but it's critical when installing into an existing cluster.
+2. Access to the Slack API. This is probably the most critical check for the
+   Slackernews application. The application provides no value if it cannot
+   connect to Slack, and a lot of production servers are likely configured to
+   limit access to the internet. This check will fail if the server cannot
+   connect and will provide guidance on how to resolve the issue.
+3. The amount of memory available in the cluster. Slackernews is not terribly
+   resource intensive, but this is a good check for most applications and the
+   Slackernews team wants to make sure they have space to run.
+
+All of your checks should pass, and you should see a screen like the one
+below. Click "Deploy" to continue.
+
+![Successful Slackernews Preflight Checks](../assets/successful-preflight-checks.png)
+
+If one or more check had failed or provided a warning, you may still have had
+the option to continue the deployment. You can decide when writing your
+preflight checks whether a failure stops a deployment or allows it to
+continue.
+
 ### Validate the Installation is Running
 
-### Observing the Instance in Vendor Portal
+The Admin Console played a little trick on you. Since all of your preflight
+checks passed it continued the installation without waiting for you to click
+"Deploy". I note this because the instance is probably running successfully
+when you land on the main Admin Console screen.
+
+***IMAGE GOES HERE***
+
+While you're connected to the Admin Console, noticed some of it's other
+capabilities:
+
+* It automatically checks for updates to the application, which include
+  potential updates to the embedded Kubernetes cluster.
+* You can use the "Troubleshoot" tab to collect and analyze support bundles
+  defined as part of the application.
+* You can reconfigure the application using the "Config" tab.
+* Disaster recovery capabilities are available from the home page and can be
+  further configured in the "Disaster Recovery" tab.
+
+Each of these is beyond the scope of the current lab, but feel free to poke
+around at them before you move on.
+
+Your Perspective on the Install
+===============================
+
+You've just run through the customer experience of installing Slackernews with
+the Replicated Embedded Cluster. Before we wrap up the lab, let's take a
+moment to see the how this new instance looks on the Replicated Vendor portal.
+Knowing what happened when your customer installed is an important piece of
+information for you as as software vendor.
+
+Using the "Vendor Portal" tab log into the Replicated Vendor Portal. You may
+still be logged in from the previous step in the lab. If not, log in again
+with the following credentials:
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="node" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="node" ]]`
+
+Navigate to the "Customers" page in the left hand menu and you'll see that
+Nitflex has a new instance of the application running.
+
+***IMAGE OF CUSTOMER PAGE**
+
+Click in on the instance name to see details about the instance. You not only
+see information about what version of your application they are running, but
+also details about their preflight checks, the details of the cluster, even
+the cloud provider. This information can be useful to your support and product
+teams as the support the customer journey and evolve your product.
+
+***IMAGE OF INSTANCE DETAILS AND EVENTS***
+
+🏁 Finish
+=========
+
+You've now successfully build and installed a Kubernetes appliance with the
+Replicated Embedded Cluster. You've seen how the Admin Console guides the
+installation and had a look what features it supports. Your current
+installation of Slackernews runs on a single-node cluster, but you've seen how
+your customer could expand it to have additional nodes.
+
