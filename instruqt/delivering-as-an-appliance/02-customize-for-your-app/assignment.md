@@ -158,7 +158,7 @@ manifest.
 
 ![Adding the application metadata manifest](../assets/adding-status-informers.png)
 
-We haven't provided a status informer For Postgres since the customer can
+We haven't provided a status informer for Postgres since the customer can
 choose to bring their own database. We'll add it in when we work with the
 customer configuration in the next step of this lab.
 
