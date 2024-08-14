@@ -54,7 +54,7 @@ Every release is built around a Helm chart, and that's all it needs. If you've
 completed the [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
 lab, you built a release around a Helm chart and installed it using Helm tools.
-To use other installation methods supported by the Reoplicated Platform, like
+To use other installation methods supported by the Replicated Platform, like
 the Kubernetes appliance model we're working on, you supplement the Helm chart
 with configuration files like the one we saw above.
 
