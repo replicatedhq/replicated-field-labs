@@ -47,7 +47,7 @@ The Replicated Release
 ======================
 
 The Replicated Platform distributes your software to your customers. To do
-this, it needs to know about your application, it's customers, and the files
+this, it needs to know about your application, its customers, and the files
 you're shipping to them. We talk about those files as a release.
 
 Every release is built around a Helm chart, and that's all it needs. If you've
