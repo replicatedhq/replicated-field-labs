@@ -14,13 +14,10 @@ tabs:
   type: website
   url: http://node.${_SANDBOX_ID}.instruqt.io:30000
   new_window: true
-- title: Slackernews
-  type: service
-  hostname: node
-  port: 30443
-- title: Debug
-  type: terminal
-  hostname: node
+- title: Vendor Portal
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 difficulty: basic
 timelimit: 1200
 ---
@@ -162,10 +159,11 @@ continue.
 
 The Admin Console played a little trick on you. Since all of your preflight
 checks passed it continued the installation without waiting for you to click
-"Deploy". I note this because the instance is probably running successfully
-when you land on the main Admin Console screen.
+"Deploy". I note this because the instance it may be running successfully
+when you land on the main Admin Console screen. Otherwise, just wait until you
+see the status change to "Ready" underneath the title "Slackernews".
 
-***IMAGE GOES HERE***
+![Slackernews Admin Console with "Ready" Status](../assets/slackernews-admin-console-ready.png)
 
 While you're connected to the Admin Console, noticed some of it's other
 capabilities:
@@ -200,7 +198,7 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="node" ]]`
 Navigate to the "Customers" page in the left hand menu and you'll see that
 Nitflex has a new instance of the application running.
 
-***IMAGE OF CUSTOMER PAGE**
+![Customer Page Showing New Running Instance for Nitflex](../assets/new-nitflex-instance.png)
 
 Click in on the instance name to see details about the instance. You not only
 see information about what version of your application they are running, but
@@ -208,7 +206,7 @@ also details about their preflight checks, the details of the cluster, even
 the cloud provider. This information can be useful to your support and product
 teams as the support the customer journey and evolve your product.
 
-***IMAGE OF INSTANCE DETAILS AND EVENTS***
+![Instance Details for the New Nitflex Instance](../assets/new-nitflex-instance.png)
 
 🏁 Finish
 =========
