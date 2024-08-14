@@ -33,14 +33,16 @@ tags:
 owner: replicated
 developers:
 - chuck@replicated.com
-idle_timeout: 300
-timelimit: 1200
+idle_timeout: 700
+timelimit: 2400
 lab_config:
   overlay: false
   width: 25
   position: right
+  sidebar_enabled: true
   feedback_recap_enabled: true
+  feedback_tab_enabled: false
   loadingMessages: true
   lab_v2: false
   hideStopButton: false
-checksum: "14944176485947548547"
+checksum: "8468941751428625486"
