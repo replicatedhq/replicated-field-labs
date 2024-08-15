@@ -65,7 +65,7 @@ There are a few license options for Embedded Cluster installations:
    installation.
 2. **Allow Snapshot** Includes components for application-level [backup and
    restore](https://docs.replicated.com/vendor/snapshots-overview).
-2. **Embeded Cluster Enabled** Alows the customer to download the Embedded
+2. **Embeded Cluster Enabled** Allows the customer to download the Embedded
    Cluster installer and install an Embedded Cluster instance.
 4. **Allow Disaster Recovery** Provides disaster recovery functionality for
    the Embedded Cluster.
