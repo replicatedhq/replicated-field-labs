@@ -1,6 +1,6 @@
 ---
 slug: collecting-configuration
-id: bxwpxdlxpm2o
+id: l8kupp15c3qa
 type: challenge
 title: Collecting Application Configuration
 teaser: |
@@ -11,7 +11,8 @@ notes:
   contents: |
     Help your users configure your application with a simple form
 tabs:
-- title: Shell
+- id: tp13gzmtccok
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic

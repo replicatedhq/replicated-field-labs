@@ -1,6 +1,6 @@
 ---
 slug: using-the-configuration
-id: vda95jowxp3d
+id: s3vv3n9kkfln
 type: challenge
 title: Using the Configuration to Install and Upgrade
 teaser: Now we can customize the installation with the configuration
@@ -9,11 +9,13 @@ notes:
   contents: |
     Provide the user configuration to your Helm chart
 tabs:
-- title: Release Editor
+- id: zfxafvbyv3bw
+  title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
-- title: Shell
+- id: vm5gno6aoigl
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic
@@ -229,7 +231,7 @@ across the `Unstable`, `Beta`, and `Stable` channels. First build the release
 and promote it directly to `Unstable`.
 
 ```
-replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.6.2.tgz --version 0.6.2 \
+replicated release create --promote Unstable --chart ./release/slackernews-0.6.2.tgz --version 0.6.2 \
   --release-notes "Collects configuration from the user and provides it to Helm" \
   --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
 ```

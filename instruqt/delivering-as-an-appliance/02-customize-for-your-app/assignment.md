@@ -1,6 +1,6 @@
 ---
 slug: customize-for-your-app
-id: szb8s2syamdl
+id: sw8n24hke4xf
 type: challenge
 title: Customizing the Appliance for Your Application
 teaser: Make the Kubernetes appliance experience your own
@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Customize the Admin Console to represent your application
 tabs:
-- title: Release Editor
+- id: vnnikjbp4sxl
+  title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
-- title: Shell
+- id: 9shotpme9os1
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic
@@ -63,8 +65,8 @@ This `Application` resource is not unique to the Replicated Platform. It's
 also not required for the appliance installation experience.
 
 We'll start with adding the basic Replicated `Application` resource for basic
-branding, then we'll expand on it a bit. We'll create a SIG Application
-resource as part of that expansion.
+branding, then we'll expand on it a bit. We're going to skip the SIG
+`Application` for this lab.
 
 ### Add the Application Manifest
 

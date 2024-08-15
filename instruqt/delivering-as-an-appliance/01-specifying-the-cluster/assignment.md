@@ -1,6 +1,6 @@
 ---
 slug: specifying-the-cluster
-id: ckyntwqxhl6h
+id: oaea2ok9rooo
 type: challenge
 title: Starting Your Appliance Configuration
 teaser: Enable and configure the embedded cluster
@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Let's build a Kubernetes appliance
 tabs:
-- title: Release Editor
+- id: jnuuilez6kue
+  title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
-- title: Shell
+- id: lsjqr4tr3pbn
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic

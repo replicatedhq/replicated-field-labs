@@ -1,6 +1,6 @@
 ---
 slug: downloading-and-installing
-id: liqrxgxpgzsi
+id: e760us4buw2r
 type: challenge
 title: Downloading and Installing the Embedded Cluster
 teaser: |
@@ -10,10 +10,12 @@ notes:
   contents: |
     How a customer installs with a Kubernetes appliance
 tabs:
-- title: Shell
+- id: qgcigiv0i7p0
+  title: Shell
   type: terminal
   hostname: node
-- title: Vendor Portal
+- id: vz7owhgcpalp
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
@@ -98,15 +100,14 @@ curl -f https://replicated.app/embedded/[[ Instruqt-Var key="REPLICATED_APP" hos
 This will download a tarball including the installer binary and the license
 file for Nitflex. Extract the tarball to run the installer.
 
-``
+```bash
 tar -xzvf [[ Instruqt-Var key="REPLICATED_APP" hostname="node" ]]-stable.tgz
 ```
 
 Then run the installer:
 
 ```bash
-sudo ./[[ Instruqt-Var key="REPLICATED_APP" hostname="node" ]] install
---license license.yaml
+sudo ./[[ Instruqt-Var key="REPLICATED_APP" hostname="node" ]] install --license license.yaml
 ```
 
 The installer will prompt you for a password for the Admin Console. You can
