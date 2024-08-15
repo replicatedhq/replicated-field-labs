@@ -1,6 +1,6 @@
 ---
 slug: completing-the-install
-id: f0ae2ipcuup0
+id: nyldlxynq9yl
 type: challenge
 title: Completing the Slackernews Installation
 teaser: |

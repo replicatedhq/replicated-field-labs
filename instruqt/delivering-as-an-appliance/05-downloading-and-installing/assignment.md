@@ -1,6 +1,6 @@
 ---
 slug: downloading-and-installing
-id: nchvbvdhe1bn
+id: liqrxgxpgzsi
 type: challenge
 title: Downloading and Installing the Embedded Cluster
 teaser: |

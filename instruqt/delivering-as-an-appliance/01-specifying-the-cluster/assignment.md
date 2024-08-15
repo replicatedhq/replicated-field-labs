@@ -1,6 +1,6 @@
 ---
 slug: specifying-the-cluster
-id: rsxl9h79cen1
+id: ckyntwqxhl6h
 type: challenge
 title: Starting Your Appliance Configuration
 teaser: Enable and configure the embedded cluster

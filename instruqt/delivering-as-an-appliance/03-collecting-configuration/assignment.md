@@ -1,6 +1,6 @@
 ---
 slug: collecting-configuration
-id: gx0mrlxjywou
+id: bxwpxdlxpm2o
 type: challenge
 title: Collecting Application Configuration
 teaser: |

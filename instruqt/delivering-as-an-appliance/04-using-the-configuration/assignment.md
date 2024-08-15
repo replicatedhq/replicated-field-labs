@@ -1,6 +1,6 @@
 ---
 slug: using-the-configuration
-id: n8juiythxhxt
+id: vda95jowxp3d
 type: challenge
 title: Using the Configuration to Install and Upgrade
 teaser: Now we can customize the installation with the configuration
