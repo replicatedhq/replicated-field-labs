@@ -1,6 +1,6 @@
 ---
 slug: completing-the-install
-id: bwulig9suwap
+id: am2hqdznfpff
 type: challenge
 title: Completing the Slackernews Installation
 teaser: |
@@ -10,12 +10,12 @@ notes:
   contents: |
     Let's walk through the rest of the installation
 tabs:
-- id: clslsblygpga
+- id: i1b6db1hruhx
   title: Admin Console
   type: website
   url: http://node.${_SANDBOX_ID}.instruqt.io:30000
   new_window: true
-- id: gvyzwlwgwqf9
+- id: omi9odffx8es
   title: Vendor Portal
   type: website
   url: https://vendor.replicated.com

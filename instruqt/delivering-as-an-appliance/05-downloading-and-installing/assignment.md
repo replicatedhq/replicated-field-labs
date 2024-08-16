@@ -1,6 +1,6 @@
 ---
 slug: downloading-and-installing
-id: e760us4buw2r
+id: fyep0ya3ekfg
 type: challenge
 title: Downloading and Installing the Embedded Cluster
 teaser: |
@@ -10,11 +10,11 @@ notes:
   contents: |
     How a customer installs with a Kubernetes appliance
 tabs:
-- id: qgcigiv0i7p0
+- id: xcd7qgygxvse
   title: Shell
   type: terminal
   hostname: node
-- id: vz7owhgcpalp
+- id: txnaghgwr6xj
   title: Vendor Portal
   type: website
   url: https://vendor.replicated.com

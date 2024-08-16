@@ -1,6 +1,6 @@
 ---
 slug: using-the-configuration
-id: s3vv3n9kkfln
+id: okm0gdijgbav
 type: challenge
 title: Using the Configuration to Install and Upgrade
 teaser: Now we can customize the installation with the configuration
@@ -9,12 +9,12 @@ notes:
   contents: |
     Provide the user configuration to your Helm chart
 tabs:
-- id: zfxafvbyv3bw
+- id: 1nfbe9hpgfhw
   title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
-- id: vm5gno6aoigl
+- id: v1glcc2whytp
   title: Shell
   type: terminal
   hostname: shell

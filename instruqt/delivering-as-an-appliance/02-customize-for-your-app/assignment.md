@@ -1,6 +1,6 @@
 ---
 slug: customize-for-your-app
-id: sw8n24hke4xf
+id: 6003pttnmqok
 type: challenge
 title: Customizing the Appliance for Your Application
 teaser: Make the Kubernetes appliance experience your own
@@ -8,12 +8,12 @@ notes:
 - type: text
   contents: Customize the Admin Console to represent your application
 tabs:
-- id: vnnikjbp4sxl
+- id: ybi0oubv14zx
   title: Release Editor
   type: code
   hostname: shell
   path: /home/replicant
-- id: 9shotpme9os1
+- id: qgpmbdncfnse
   title: Shell
   type: terminal
   hostname: shell
