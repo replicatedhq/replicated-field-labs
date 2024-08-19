@@ -50,11 +50,11 @@ Username: `[[ Instruqt-Var key="USERNAME" hostname="node" ]]`<br/>
 Password: `[[ Instruqt-Var key="PASSWORD" hostname="node" ]]`
 
 Once you're logged in, navigate to the "Customers" page and find the customer
-"Nitflex." Click on the name "Nitflex" then sleect "Manage customer" to see
+"Nitflex." Click on the name "Nitflex" then select "Manage customer" to see
 the customer details and entitlements. We need to enable the Embedded Cluster
 for Nitflex to be able to use it.
 
-There are a few license options for Embedded Cluster installations:
+There are a few license options that affect Embedded Cluster installations:
 
 1. **KOTS Install Enabled** This option enables installing with Replicated's
    KOTS Admin Console, which is used by the Embedded Cluster installation.
@@ -98,7 +98,7 @@ curl -f https://replicated.app/embedded/[[ Instruqt-Var key="REPLICATED_APP" hos
 ```
 
 This will download a tarball including the installer binary and the license
-file for Nitflex. Extract the tarball to run the installer.
+file for Nitflex. Extract the tarball to access the installer.
 
 ```bash
 tar -xzvf [[ Instruqt-Var key="REPLICATED_APP" hostname="node" ]]-stable.tgz
@@ -112,7 +112,7 @@ sudo ./[[ Instruqt-Var key="REPLICATED_APP" hostname="node" ]] install --license
 
 The installer will prompt you for a password for the Admin Console. You can
 enter any password you'd like, but you'll need to remember it when you log in
-later. For easy copy/paste use the password below.
+later. You can copy/paste the password below if you aren't feeling inspired.
 
 ```
 [[ Instruqt-Var key="ADMIN_CONSOLE_PASSWORD" hostname="node" ]]
@@ -137,6 +137,7 @@ runs, replacing it with a checkmark when it completes.
 Visit the Admin Console to configure and install slackernews-rzx7ikjdtlno: http://10.5.1.34:30000
 ```
 
-Once the installer completes, you'll see a message that the Admin Console is
-read. You customer will copy/paste the URL from the output. We'll access it in
-the next step of the lab.
+Once the installer completes, you'll see a message telling you to acccess the
+Admin Console to configure and install Slackernews. You customer will
+copy/paste the URL from the output. You can access it directly in the next
+step of the lab.

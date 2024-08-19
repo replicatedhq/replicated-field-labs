@@ -47,7 +47,7 @@ Completing the Install
 =====================
 
 To help us complete our installation, the Admin Console will guide us a
-through a few steps, starting with configuring its certificates. Since it's
+through a few steps, starting with configuring its certificate. Since it's
 not possible to provide a "safe" certificate to the Admin Console out of the
 box, the process starts with a warning and instructions for the user to
 validate the self-signed certificate the installer created.
@@ -57,13 +57,13 @@ validate the self-signed certificate the installer created.
 The next step will ask your customer to configure the permanent certificate
 for the Admin Console. They can choose between a self-signed certificate or
 uploading one signed by a certificate authority. I recommend that they use a
-sign certificate, this is something you may also want to suggest in your
+signed certificate, this is something you may also want to suggest in your
 installation documentation.
 
-For the lab, though, we'll stick with the self-signed certificate. When you click the
-"Continue to Setup" button, you'll get a warning about the initial
-certificate. Assuming you accept the risk, you'll get a form that allows you
-to set up the Slackernews Admin Console certificate. Keep it set on
+For the lab, though, we'll stick with the self-signed certificate. When you
+click the "Continue to Setup" button, you'll get a warning about the initial
+self-signed certificate. Assuming you accept the risk, you'll get a form that
+allows you to set up the Slackernews Admin Console certificate. Keep it set on
 "self-signed" and click "Continue".
 
 ![Configuring the Admin Console Certificate](../assets/certificate-configuration.png)
@@ -78,13 +78,13 @@ from the lab text or skipped ahead to this step.
 The first thing you'll see when you log in to the Admin Console is the Node
 Management screen. This is where you can add additional nodes to the
 Slackernews Embedded Cluster. Node management is the first step in the install
-process because not all applications can run on a single node. Slackernews is
-a fairly lightweight application and can run fairly easily on a single node.
+process because not all applications can run on a single node. 
 
 ![Admin Console Node Managemet Interface](../assets/node-management.png)
 
 To simplify this lab, we're going to stick with a single node cluster. Click
-"Continue" to continue the installation on one node.
+"Continue" to continue the installation on one node. Slackernews is a fairly
+lightweight application and can run fairly easily on a single node.
 
 ### Configuring Your Instance
 
@@ -111,22 +111,23 @@ values:
 * **User OAuth Token**: `xoxp-notavalidtoken`
 * **Bot User Auth Token**: `xoxb-notavalidtoken`
 
-Note that we prefixed the two tokens with the prefix used by actual Slack
-tokens. We needed to do this to pass the validation set set up for the form.
+Note that we prefixed the two tokens. Those are the prefixes used by actual Slack
+tokens. We needed to do this to pass the validation on those fields.
 
 Click "Continue" to move to the next steps and run our preflight checks.
 Preflight checks run after your customer specifies their configuration so that
-you can use it as part of your checks.
+you can use the configuration values as part of your checks.
 
 ### Running Preflight Checks
 
 The Admin Console will run preflight checks it finds in the release. Preflight
-checks are YAML object processed by the Admin Console to ensure that your
+checks are resource processed by the Admin Console to ensure that your
 customer has met the prerequisites to successfully install your application.
 They can be included as standard manifests within the Embeddded Cluster
-release or as secrets within your application's Helm chart. We strongly
-recommend including them in your Helm chart so that they can be used
-regardless of installation method. See [Avoiding Installation
+release or as secrets within your application's Helm chart. 
+
+We strongly recommend including them in your Helm chart so that they can be
+used regardless of installation method. See [Avoiding Installation
 Pitfalls](https://play.instruqt.com/manage/replicated/tracks/avoiding-installation-pitfalls)
 for more details on writing preflight checks and including them in your
 application.
@@ -140,9 +141,9 @@ chart already includes them. They check for some basic prerequisites:
    release, but it's critical when installing into an existing cluster.
 2. Access to the Slack API. This is probably the most critical check for the
    Slackernews application. The application provides no value if it cannot
-   connect to Slack, and a lot of production servers are likely configured to
-   limit access to the internet. This check will fail if the server cannot
-   connect and will provide guidance on how to resolve the issue.
+   connect to Slack, and a lot of production servers are configured to limit
+   access to the internet. This check will fail if the server cannot connect
+   and will provide guidance on how to resolve the issue.
 3. The amount of memory available in the cluster. Slackernews is not terribly
    resource intensive, but this is a good check for most applications and the
    Slackernews team wants to make sure they have space to run.
@@ -167,16 +168,13 @@ see the status change to "Ready" underneath the title "Slackernews".
 
 ![Slackernews Admin Console with "Ready" Status](../assets/slackernews-admin-console-ready.png)
 
-While you're connected to the Admin Console, noticed some of it's other
+While you're connected to the Admin Console, notice some of it's other
 capabilities:
 
-* It automatically checks for updates to the application, which include
-  potential updates to the embedded Kubernetes cluster.
+* You can manage the cluster nodes using the "Cluster Management" tab.
 * You can use the "Troubleshoot" tab to collect and analyze support bundles
   defined as part of the application.
 * You can reconfigure the application using the "Config" tab.
-* Disaster recovery capabilities are available from the home page and can be
-  further configured in the "Disaster Recovery" tab.
 
 Each of these is beyond the scope of the current lab, but feel free to poke
 around at them before you move on.
@@ -190,8 +188,8 @@ moment to see the how this new instance looks on the Replicated Vendor portal.
 Knowing what happened when your customer installed is an important piece of
 information for you as as software vendor.
 
-Using the "Vendor Portal" tab log into the Replicated Vendor Portal. You may
-still be logged in from the previous step in the lab. If not, log in again
+Use the "Vendor Portal" tab to connect to the Replicated Vendor Portal. You may
+still be logged in from the previous step. If not, log in again
 with the following credentials:
 
 Username: `[[ Instruqt-Var key="USERNAME" hostname="node" ]]`<br/>
