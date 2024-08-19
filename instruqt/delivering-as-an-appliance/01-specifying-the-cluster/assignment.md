@@ -55,30 +55,26 @@ you're shipping to them. We talk about those files as a release.
 Every release is built around a Helm chart, and that's all it needs. If you've
 completed the [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
-lab, you built a release around a Helm chart and installed it using Helm tools.
-To use other installation methods supported by the Replicated Platform, like
-the Kubernetes appliance model we're working on, you supplement the Helm chart
-with configuration files like the one we saw above.
-
-We need a minimum of two configuration files: the Embedded Cluster
-configuration and a file that describes which Helm chart to install. We'll put
-those in a directory with the Helm chart and create a release from those files.
+lab, you built a release around a Helm chart and installed it using Helm
+tools. To use other installation methods supported by the Replicated Platform
+you supplement the Helm chart with additional configuration files. We need a
+minimum of two configuration files: the Embedded Cluster configuration and a
+file that describes which Helm chart to install.
 
 Our Initial Appliance
 =====================
 
-Let's create a simple Kubernetes appliance for Slackernews and release it with
-the Platform. We're going to add our Helm chart and two configuration files to
-the `release` directory. These are the bare minimum set of files we need to
-create the appliance.
+To create our initial appliance, we're going to add our Helm chart and two
+configuration files to the `release` directory. These are the bare minimum set
+of files we need to create the appliance.
 
 ### Bumping the Chart Version
 
-Strictly speaking, we don't have to bump the version of our Helm chart since we
-haven't changed it. It's a good practice to increment it, though, since we want
-to have consistent versions between the Helm release and the Replicated
-release. That way, regardless of the install mechanism your uses choose the
-versions will be consistent.
+Strictly speaking, we don't have to bump the version of our Helm chart since
+we haven't changed it. It's a good practice to increment it, though, since we
+want to have consistent versions between the Helm release and the Replicated
+release. That way your customer will see a consistent version regardless of
+the install mechanism they choose.
 
 This lab uses the application [Slackernews](https://slackernews.io) and the
 Helm sources for it are in the `slackernews` directory. You can open
@@ -101,15 +97,17 @@ chart. It uses this file to identify which chart to install and pass the
 appropriate values. We'll look at the passing values in a later section of the
 lab when we set up the configuration screen for our application.
 
-Go to the "Release Editor" tab to add a file to your release.
+Go to the "Release Editor" tab to add a file named `slackernews-chart.yaml` to
+your release.
 
 ![Creating a manifest file describing your Helm chart](../assets/creating-the-helmchart-object.png)
 
-The editor may not open your new file automatically. If it doesn't, click on it
-to open it. Add the following content to the file. Note that it looks like a
-Kubernetes custom resource, but it's really not. Instead, it's processed by the
-Admin Console to avoid the complexity of creating a CRD and the relevant
-controllers.
+The editor may not open your new file automatically. If it doesn't, click on
+it to open it. Add the following content to the file. Note that it looks like
+a Kubernetes custom resource, but it's really not. Instead, it's processed by
+the Admin Console to avoid the complexity of creating a CRD and the relevant
+controllers. The name and version in this file need to match the metadata for
+our Slackernews Helm chart to identify it correctly.
 
 ```
 apiVersion: kots.io/v1beta2
@@ -127,11 +125,9 @@ spec:
   values: {}
 ```
 
-The name and version in this file need to match the metadata for our
-Slackernews Helm chart to identify it correctly. You're not limited to only one
-Helm chart as part of your application. Including multiple `HelmChart` objects
-let's the Admin Console know it has to install multiple Helm charts. For
-Slackernews, we have only a single chart.
+You're not limited to only one Helm chart as part of your application.
+Including multiple `HelmChart` objects let's the Admin Console know it has to
+install multiple Helm charts. For Slackernews, we have only a single chart.
 
 ### Including the Embedded Cluster
 
@@ -162,7 +158,7 @@ export REPLICATED_APP="[[ Instruqt-Var key="REPLICATED_APP" hostname="shell" ]]"
 ```
 
 We create a new release with the `release create` subcommand for `replicated`.
-If you've completed some of our other labs you may notice a difference here,
+If you've completed some of our other labs you may notice a difference here:
 we're using a flag `--yaml-dir` instead of `--chart`. That's because this
 release requires the additional configuration files we've created.
 
@@ -220,6 +216,7 @@ ID                             NAME        RELEASE    VERSION
 ```
 
 You'll notice there's an additional channel that doesn't have your release on
-it. That's an example of an additional channel you might want to add for
-"long-term support" releases, since some customers want to upgrade more slowly
-and get longer support guarantees.
+it. That's an example of a release channel you could add when releasing your
+own application. Slackernews determined that some customere wanted "long-term
+support" releases since they upgrade more slowly and wanted longer support
+guarantees for the versions they installed.
