@@ -76,7 +76,7 @@ want to have consistent versions between the Helm release and the Replicated
 release. That way your customer will see a consistent version regardless of
 the install mechanism they choose.
 
-This lab uses the application [Slackernews](https://slackernews.io) and the
+This lab uses the application [SlackerNews](https://slackernews.io) and the
 Helm sources for it are in the `slackernews` directory. You can open
 `slackernews/Chart.yaml` in the "Release Editor" tab and update the `version`.
 
