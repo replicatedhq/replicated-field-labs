@@ -147,7 +147,7 @@ spec:
 Releasing the Appliance
 ========================
 
-With the three files we have, we can now release Slackernwes Kubernetes
+With the three files we have, we can now release SlackerNews Kubernetes
 appliance. We're going to use the `replicated` command-line tool for to create
 the release. The first thing we'll do is set some environment variables to let
 the command know who we are and what application we're working with. Use the
