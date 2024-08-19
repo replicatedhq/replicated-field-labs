@@ -40,22 +40,10 @@ Adding a Name and Logo to the Appliance
 We've already looked at two of the resources we use for configuring the
 appliance experience: one for the embedded Kubernetes cluster and one for the
 SlackerNews Helm chart. There are others as well. We're going to look at the
-`Application` resource, which describes the application being installed. The
-manifest for a basic `Application` resource looks like this:
-
-```
-apiVersion: kots.io/v1beta1
-kind: Application
-metadata:
-  name: slackernews
-spec:
-  title: SlackerNews
-  icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
-```
-
-There are other things we can configure in this file as well, but for this lab
-we'll focus just on the title and the icon. For other possible properties, take
-a look at the [reference
+`Application` resource, which describes the application being installed. There
+are several things we can configure in this file as well, but for this lab
+we'll focus n the title, icon, and how to determine application status.. For
+other possible properties, take a look at the [reference
 documentation](https://docs.replicated.com/reference/custom-resource-application).
 Not all of the possible values apply for the Kubernetes appliance experience.
 
@@ -73,13 +61,24 @@ branding, then we'll expand on it a bit. We're going to skip the SIG
 
 Let's go back to the "Release Editor" tab and add a new file for the
 application metadata. Create a new file in the `release` directory named
-`replicated-app.yaml` and copy/paste the contents from the example above into
+`replicated-app.yaml`
 it.
 
 ![Adding the application metadata manifest](../assets/adding-application-manifest.png)
 
-This will add the name and logo to the appliance installation experience and
-the Admin Console.
+Let's start with just the name and log fro the application. This will make
+sure that they're both available to the Admin Console for the appliance
+installation experience.
+
+```
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: slackernews
+spec:
+  title: SlackerNews
+  icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
+```
 
 Enriching the Admin Console
 ===========================
