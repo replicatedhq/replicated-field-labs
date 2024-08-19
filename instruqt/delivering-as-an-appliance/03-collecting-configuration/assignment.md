@@ -11,7 +11,12 @@ notes:
   contents: |
     Help your users configure your application with a simple form
 tabs:
-- id: zwikjmbcmpax
+- id: h7hyb0imphye
+  title: Release Editor
+  type: code
+  hostname: shell
+  path: /home/replicant
+- id: tvyvcofb2ocv
   title: Shell
   type: terminal
   hostname: shell
