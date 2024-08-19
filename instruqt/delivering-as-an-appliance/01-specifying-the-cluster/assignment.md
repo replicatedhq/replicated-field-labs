@@ -173,7 +173,7 @@ it to a release channel. Release channels are used by the Replicated Platform
 to ensure customers get access to the release you intend for them to get. The
 [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
-lab explains them in more detail.
+lab explains release channels in more detail.
 
 There are three default release channels: `Unstable` for internal builds,
 `Beta` for your beta programs, and `Stable` for generally available releases.
