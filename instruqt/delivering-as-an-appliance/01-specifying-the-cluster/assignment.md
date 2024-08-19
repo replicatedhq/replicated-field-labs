@@ -170,7 +170,7 @@ replicated release create --yaml-dir ./release
 This creates a release for version `0.6.0` of your SlackerNews appliance on
 the vendor portal. To make it available to your customers, you need to publish
 it to a release channel. Release channels are used by the Replicated Platform
-to assure customers get access to the release you intend for them to get. The
+to ensure customers get access to the release you intend for them to get. The
 [Distributing Your Application with
 Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
 lab explains them in more detail.
