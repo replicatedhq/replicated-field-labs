@@ -2,9 +2,9 @@
 slug: completing-the-install
 id: am2hqdznfpff
 type: challenge
-title: Completing the Slackernews Installation
+title: Completing the SlackerNews Installation
 teaser: |
-  Complete installing Slackernews with the Admin Console
+  Complete installing SlackerNews with the Admin Console
 notes:
 - type: text
   contents: |
@@ -24,8 +24,8 @@ difficulty: basic
 timelimit: 1200
 ---
 
-We're part way through the installation of Slackernews as a Kubernetes
-Appliance. We've run the Slackernews installer which has create a single-node
+We're part way through the installation of SlackerNews as a Kubernetes
+Appliance. We've run the SlackerNews installer which has create a single-node
 Kubernetes cluster running all of the infrastructure components of the
 Replicated Embedded Cluster. The next step is to complete the install using
 one of those components, the Admin Console.
@@ -63,7 +63,7 @@ installation documentation.
 For the lab, though, we'll stick with the self-signed certificate. When you
 click the "Continue to Setup" button, you'll get a warning about the initial
 self-signed certificate. Assuming you accept the risk, you'll get a form that
-allows you to set up the Slackernews Admin Console certificate. Keep it set on
+allows you to set up the SlackerNews Admin Console certificate. Keep it set on
 "self-signed" and click "Continue".
 
 ![Configuring the Admin Console Certificate](../assets/certificate-configuration.png)
@@ -77,13 +77,13 @@ from the lab text or skipped ahead to this step.
 
 The first thing you'll see when you log in to the Admin Console is the Node
 Management screen. This is where you can add additional nodes to the
-Slackernews Embedded Cluster. Node management is the first step in the install
+SlackerNews Embedded Cluster. Node management is the first step in the install
 process because not all applications can run on a single node.
 
 ![Admin Console Node Managemet Interface](../assets/node-management.png)
 
 To simplify this lab, we're going to stick with a single node cluster. Click
-"Continue" to continue the installation on one node. Slackernews is a fairly
+"Continue" to continue the installation on one node. SlackerNews is a fairly
 lightweight application and can run fairly easily on a single node.
 
 ### Configuring Your Instance
@@ -91,11 +91,11 @@ lightweight application and can run fairly easily on a single node.
 Next is the configuratiion screen that we defined earlier. Fill in the values
 for each entry.
 
-![Entering the Slackernews Configuration in the Admin Console](../assets/providing-configuration.png)
+![Entering the SlackerNews Configuration in the Admin Console](../assets/providing-configuration.png)
 
 The first two sections are fairly straightforward:
 
-* **Slackernews Domain**: `[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="node" ]]`
+* **SlackerNews Domain**: `[[ Instruqt-Var key="SLACKERNEWS_DOMAIN" hostname="node" ]]`
 * **Admin Users**: `[[ Instruqt-Var key="ADMIN_EMAIL" hostname="node" ]]`
 * **Service Type**: NodePort
 * **Node Port**: `30443`
@@ -132,26 +132,26 @@ Pitfalls](https://play.instruqt.com/manage/replicated/tracks/avoiding-installati
 for more details on writing preflight checks and including them in your
 application.
 
-We didn't add any preflight checks in this lab because the Slackernews Helm
+We didn't add any preflight checks in this lab because the SlackerNews Helm
 chart already includes them. They check for some basic prerequisites:
 
-1. The version of Kubernetes is one that the Slackernews team is prepared to
+1. The version of Kubernetes is one that the SlackerNews team is prepared to
    support. This is a less relevant check for an Embedded Cluster installation
    since the version of Kubernetes is tightly coupled to the application
    release, but it's critical when installing into an existing cluster.
 2. Access to the Slack API. This is probably the most critical check for the
-   Slackernews application. The application provides no value if it cannot
+   SlackerNews application. The application provides no value if it cannot
    connect to Slack, and a lot of production servers are configured to limit
    access to the internet. This check will fail if the server cannot connect
    and will provide guidance on how to resolve the issue.
-3. The amount of memory available in the cluster. Slackernews is not terribly
+3. The amount of memory available in the cluster. SlackerNews is not terribly
    resource intensive, but this is a good check for most applications and the
-   Slackernews team wants to make sure they have space to run.
+   SlackerNews team wants to make sure they have space to run.
 
 All of your checks should pass, and you should see a screen like the one
 below. Click "Deploy" to continue.
 
-![Successful Slackernews Preflight Checks](../assets/successful-preflight-checks.png)
+![Successful SlackerNews Preflight Checks](../assets/successful-preflight-checks.png)
 
 If one or more check had failed or provided a warning, you may still have had
 the option to continue the deployment. You can decide when writing your
@@ -164,9 +164,9 @@ The Admin Console played a little trick on you. Since all of your preflight
 checks passed it continued the installation without waiting for you to click
 "Deploy". I note this because the instance it may be running successfully
 when you land on the main Admin Console screen. Otherwise, just wait until you
-see the status change to "Ready" underneath the title "Slackernews".
+see the status change to "Ready" underneath the title "SlackerNews".
 
-![Slackernews Admin Console with "Ready" Status](../assets/slackernews-admin-console-ready.png)
+![SlackerNews Admin Console with "Ready" Status](../assets/slackernews-admin-console-ready.png)
 
 While you're connected to the Admin Console, notice some of it's other
 capabilities:
@@ -182,7 +182,7 @@ around at them before you move on.
 Your Perspective on the Install
 ===============================
 
-You've just run through the customer experience of installing Slackernews with
+You've just run through the customer experience of installing SlackerNews with
 the Replicated Embedded Cluster. Before we wrap up the lab, let's take a
 moment to see the how this new instance looks on the Replicated Vendor portal.
 Knowing what happened when your customer installed is an important piece of
@@ -214,6 +214,6 @@ teams as the support the customer journey and evolve your product.
 You've now successfully build and installed a Kubernetes appliance with the
 Replicated Embedded Cluster. You've seen how the Admin Console guides the
 installation and had a look what features it supports. Your current
-installation of Slackernews runs on a single-node cluster, but you've seen how
+installation of SlackerNews runs on a single-node cluster, but you've seen how
 your customer could expand it to have additional nodes.
 

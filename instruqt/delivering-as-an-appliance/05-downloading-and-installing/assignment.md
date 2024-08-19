@@ -23,7 +23,7 @@ difficulty: basic
 timelimit: 1200
 ---
 
-Now that we've prepared Slackernews for an Embedded Cluster installation,
+Now that we've prepared SlackerNews for an Embedded Cluster installation,
 let's go through the experience a customer has installing it. Installing with
 the Embedded Cluster happens in two parts:
 
@@ -88,7 +88,7 @@ Running the Installer
 =====================
 
 You can use the instructions from the Vendor Portal to download and install
-Slackernews using the Replicated Embedded Cluster. Select the "Shell" tab and
+SlackerNews using the Replicated Embedded Cluster. Select the "Shell" tab and
 enter the download command from the vendor portal.
 
 ```bash
@@ -138,6 +138,6 @@ Visit the Admin Console to configure and install slackernews-rzx7ikjdtlno: http:
 ```
 
 Once the installer completes, you'll see a message telling you to acccess the
-Admin Console to configure and install Slackernews. You customer will
+Admin Console to configure and install SlackerNews. You customer will
 copy/paste the URL from the output. You can access it directly in the next
 step of the lab.

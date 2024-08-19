@@ -77,8 +77,8 @@ release. That way your customer will see a consistent version regardless of
 the install mechanism they choose.
 
 This lab uses the application [SlackerNews](https://slackernews.io) and the
-Helm sources for it are in the `slackernews` directory. You can open
-`slackernews/Chart.yaml` in the "Release Editor" tab and update the `version`.
+Helm sources for it are in the `slackernews` directory. Open
+`slackernews/Chart.yaml` in the "Release Editor" tab and update the `version`
 to `0.6.0`.
 
 ![Updating the version of the Helm chart to 0.6.0](../assets/updating-the-chart-version.png)
@@ -108,7 +108,7 @@ it to open it. Add the following content to the file. Note that it looks like
 a Kubernetes custom resource, but it's really not. Instead, it's processed by
 the Admin Console to avoid the complexity of creating a CRD and the relevant
 controllers. The name and version in this file need to match the metadata for
-our Slackernews Helm chart to identify it correctly.
+our SlackerNews Helm chart to identify it correctly.
 
 ```
 apiVersion: kots.io/v1beta2
@@ -128,12 +128,12 @@ spec:
 
 You're not limited to only one Helm chart as part of your application.
 Including multiple `HelmChart` objects let's the Admin Console know it has to
-install multiple Helm charts. For Slackernews, we have only a single chart.
+install multiple Helm charts. For SlackerNews, we have only a single chart.
 
 ### Including the Embedded Cluster
 
 We showed a simple Embedded Cluster configuration earlier in the lab. Let's use
-that basic configuration for Slackernews. Create another file in the `release`
+that basic configuration for SlackerNews. Create another file in the `release`
 folder named `embedded-cluster.yaml` and copy the contents of the configuration
 into it.
 
@@ -167,7 +167,7 @@ release requires the additional configuration files we've created.
 replicated release create --yaml-dir ./release
 ```
 
-This creates a release for version `0.6.0` of your Slackernews appliance on
+This creates a release for version `0.6.0` of your SlackerNews appliance on
 the vendor portal. To make it available to your customers, you need to publish
 it to a release channel. Release channels are used by the Replicated Platform
 to assure customers get access to the release you intend for them to get. The
@@ -218,6 +218,6 @@ ID                             NAME        RELEASE    VERSION
 
 You'll notice there's an additional channel that doesn't have your release on
 it. That's an example of a release channel you could add when releasing your
-own application. Slackernews determined that some customere wanted "long-term
+own application. SlackerNews determined that some customere wanted "long-term
 support" releases since they upgrade more slowly and wanted longer support
 guarantees for the versions they installed.

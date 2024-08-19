@@ -63,12 +63,12 @@ properties is in the [item
 properties](https://replicated.zoom.us/my/crdant?pwd=NU5VVktueXV4QW0wcXFFRElHTkxudz09)
 section of the Replicated documentation.
 
-### Configuring Slackernews
+### Configuring SlackerNews
 
-The Slackernews Helm chart has several values that need to be set for it to
+The SlackerNews Helm chart has several values that need to be set for it to
 run as expected. Here's a first cut at the fields we want to collect: this
 shows all of the values someone might want to enter to get a start with using
-Slackernews.
+SlackerNews.
 
 ```yaml
 apiVersion: kots.io/v1beta1
@@ -197,13 +197,13 @@ by replacing the group named `slackernews`.
       title: Application Core
       description: |
         For this section, you can specify some core parameters for how
-        Slackernews operates, including the domain where users will access it
+        SlackerNews operates, including the domain where users will access it
         and the user who can administer it.
 
         Users that you specify under **Admin Users** will be able to access the
-        Slackernews adminstrative console at `/admin`, allowing them to manage
+        SlackerNews adminstrative console at `/admin`, allowing them to manage
         content, users, and settings. Changes will take effect the next time
-        they are active in the Slackernews application.
+        they are active in the SlackerNews application.
       items:
         - name: slackernews_domain
           title: Ingress Hostname
@@ -223,7 +223,7 @@ You can see we've used the `help_text` and `description` properties to provide
 more instruction and support to the user installing the application. You'll
 want to use these properties on most if not all of your configuration groups
 and options. We're not going to go through the entire configuration right now,
-but at the end of this section we'll take a look at a robust Slackernews
+but at the end of this section we'll take a look at a robust SlackerNews
 configuration.
 
 ### Requiring Options and Providing Defaults
@@ -256,7 +256,7 @@ save their configuration.
 
 ![Required field for the Ingress Hostname](../assets/required-ingress-hostname.png)
 
-There are no sensible default values for the options in the "Slackernews Core"
+There are no sensible default values for the options in the "SlackerNews Core"
 group, so let's move on temporarily to the "Certificates" group. The
 application will always run over TLS, but we can default to generating a
 self-signed certificate.
@@ -340,7 +340,7 @@ A More Robust Configuration
 ============================
 
 All of the techniques we used to enrich our configuration can be applied to
-any configuration option. In the case of Slackernews, we have a few more
+any configuration option. In the case of SlackerNews, we have a few more
 changes we could make:
 
 * Explain the rest of the configuration groups and add help text to additional
@@ -360,6 +360,6 @@ mv ~/complete-configuration.yaml ~/release/config.yaml
 ```
 
 
-![A look at the complete Slackernews configuration](../assets/complete-configuration.png)
+![A look at the complete SlackerNews configuration](../assets/complete-configuration.png)
 
 In the next section we'll see how the Admin Console uses this configuration.

@@ -39,7 +39,7 @@ Adding a Name and Logo to the Appliance
 
 We've already looked at two of the resources we use for configuring the
 appliance experience: one for the embedded Kubernetes cluster and one for the
-Slackernews Helm chart. There are others as well. We're going to look at the
+SlackerNews Helm chart. There are others as well. We're going to look at the
 `Application` resource, which describes the application being installed. The
 manifest for a basic `Application` resource looks like this:
 
@@ -84,7 +84,7 @@ the Admin Console.
 Enriching the Admin Console
 ===========================
 
-To improve the Slackernews appliance experience, we'll configure an
+To improve the SlackerNews appliance experience, we'll configure an
 application status indicator. This will help an administrator understand the
 running state of the application and quickly connect to it.
 
@@ -144,7 +144,7 @@ unavailable if it is either lost or pending. Those are the only two states.</td>
 </tbody>
 <table>
 
-Slackernews has three components in it's architecture: the application, and
+SlackerNews has three components in it's architecture: the application, and
 NGINX web server, and a Postgres database. It can optionally have an ingress
 as well, but will not in the virtual appliance. Let's add status informers for
 the application and the web server.

@@ -65,7 +65,7 @@ The `values` key is for values that will always be set the same way during an
 install or upgrade operation. These value can be templated, so they can change
 based on context like user configuration or license details. But they will
 always be passed to the `helm` command and will always be set using the same
-expression. The authentication information for Slackernews is a good example.
+expression. The authentication information for SlackerNews is a good example.
 It is always set using the four values the user provides.
 
 ```yaml
@@ -125,7 +125,7 @@ whereas if you have `recursiveMerge: true`, then the result will be
     mock: true
 ```
 
-For Slackernews, we use optional values to determine how to configure the
+For SlackerNews, we use optional values to determine how to configure the
 database. Since there are some database configurations that are always set in
 the same way, we specify a recursive merge.
 
@@ -170,7 +170,7 @@ into account).
 
 First, we set the `images.slackernewws.pullSecret` value to `repl{{ ImagePullSecretName }}`.
 This grabs the image pull secret created by the Admin Console and let's the
-chart know to use it when pulling the Slackernews image. In [Protecting You
+chart know to use it when pulling the SlackerNews image. In [Protecting You
 Assets](https://play.instruqt.com/manage/replicated/tracks/protecting-your-assets),
 you configured your own secret. In an online installation, the values in the
 secret will be identical. When your customer chooses and airgap installation,
@@ -199,7 +199,7 @@ mv complete-helmchart.yaml release/slackernews-chart.yaml
 Releasing an Update
 ===================
 
-We now have a complete release of the Slackernews application that a customer
+We now have a complete release of the SlackerNews application that a customer
 can install. Let's release our update and move it through the release process.
 
 Like our last release, we're going to bump the Helm chart version to keep the
