@@ -34,7 +34,7 @@ Configuring Your Application
 =============================
 
 Like other aspects of the appliance, the configuration screen is defined using
-a YAML manifest. The manifest defines a `Config` object that describes you
+a YAML manifest. The manifest defines a `Config` resource that describes you
 configuration options and the screen that your customer will use to configure
 the application. Configurations is organized into groups, and each group can
 have a fields of different types. The type of field defines the widget used.
@@ -45,21 +45,21 @@ The supported types account for all of the standard web form inputs.
 <tr><th>Type</th><th>Widget</th></tr>
 </thead>
 <tbody>
-<tr><td>`bool`</td><td>checkbox</td></tr>
-<tr><td>`file`</td><td>file upload</td></tr>
-<tr><td>`heading`</td><td>a subheading within a group</td></tr>
-<tr><td>`label`</td><td>an label supporting another field</td></tr>
-<tr><td>`password`</td><td>password field with obscured text and visibility
+<tr><td><code>bool></code></td><td>checkbox</td></tr>
+<tr><td><code>file></code></td><td>file upload</td></tr>
+<tr><td><code>heading></code></td><td>a subheading within a group</td></tr>
+<tr><td><code>label></code></td><td>an label supporting another field</td></tr>
+<tr><td><code>password></code></td><td>password field with obscured text and visibility
 toggle</td></tr>
-<tr><td>`select_one`</td><td>radio buttons</td></tr>
-<tr><td>`text`</td><td>a standard text field</td></tr>
-<tr><td>`textarea`</td><td>a larger text area</td></tr>
+<tr><td><code>select_one></code></td><td>radio buttons</td></tr>
+<tr><td><code>text></code></td><td>a standard text field</td></tr>
+<tr><td><code>textarea></code></td><td>a larger text area</td></tr>
 </tbody>
 </table>
 
-Each field has several other properties to specify it's behavior. You can
-define things like it's name, default value, and whether it's required, among
-other things. The full list of properties is in the [item
+Each field has several other properties to specify things like its name,
+default value, and whether it's required, among other things. The full list of
+properties is in the [item
 properties](https://replicated.zoom.us/my/crdant?pwd=NU5VVktueXV4QW0wcXFFRElHTkxudz09)
 section of the Replicated documentation.
 
@@ -109,7 +109,6 @@ spec:
         - name: certificate_source
           type: select_one
           title: Certificate Source
-          default: generate_internal
           items:
             - name: generate_internal
               title: Generate
@@ -157,7 +156,7 @@ spec:
 ```
 
 Let's add this configuration to the Replicated Platform release. Create a file
-in the `release` directory name `config.yaml` and paste the content above into
+in the `release` directory named `config.yaml` and paste the content above into
 it.
 
 Improving the Configuration Experience
@@ -184,7 +183,8 @@ above the widget to guide the user on what to enter.
 
 Each field can have help text, and you can add a description to each group of
 configuration items to provide context across fields. This can be especially
-helpful whether are dependencies across fields to explain how they interact.
+helpful to explain how fields interact when you have dependencies between
+them.
 
 ![Description of the "Application Access" configuration group](../assets/application-access-description.png)
 
@@ -230,10 +230,10 @@ configuration.
 
 The goal of the configuration screen is to guide the user through successfully
 deploying the appliance. The most important thing it can do is to distinguish
-the options that a customer likely needs to change from other Helm values. It
-does this through curating the values presented and explaining them to the
-installer. The next most important thing it can do is make sure that values that need to
-be configured get configured.
+the options that a customer needs to change from other Helm values. It does
+this through curating the values presented and explaining them to the user
+running the install. The next most important thing it can do is make sure that
+values that need to be configured get configured.
 
 There are two ways to do this: specifying an option as required and providing
 a default value. Let's continue to focus on the "Application Core" group. The

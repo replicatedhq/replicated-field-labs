@@ -37,10 +37,11 @@ which application we're installing.
 Adding a Name and Logo to the Appliance
 =======================================
 
-We've already looked at two of the manifests we use for configuring the
+We've already looked at two of the resources we use for configuring the
 appliance experience: one for the embedded Kubernetes cluster and one for the
-Slackernews Helm chart. There are other manifests as well. We're going to look
-at the `Application` manifest, which describes the application being installed.
+Slackernews Helm chart. There are others as well. We're going to look at the
+`Application` resource, which describes the application being installed. The
+manifest for a basic `Application` resource looks like this:
 
 ```
 apiVersion: kots.io/v1beta1
