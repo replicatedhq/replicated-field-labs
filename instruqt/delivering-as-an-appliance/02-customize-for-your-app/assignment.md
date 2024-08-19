@@ -60,7 +60,7 @@ documentation](https://docs.replicated.com/reference/custom-resource-application
 Not all of the possible values apply for the Kubernetes appliance experience.
 
 The appliance installation process also supports another resource that
-describes application metadata. The resource is based defined by the
+describes application metadata. The resource is defined by the
 Kubernetes Apps Special Interest Group (SIG) and is also called `Application`.
 This `Application` resource is not unique to the Replicated Platform. It's
 also not required for the appliance installation experience.
