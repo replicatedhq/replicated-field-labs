@@ -111,7 +111,7 @@ the resources configured as status informers.
 </tbody>
 </table>
 
-Status informers can reference on of several types of resource:
+Status informers can reference one of several types of resource:
 
 * Deployments
 * Stateful sets
