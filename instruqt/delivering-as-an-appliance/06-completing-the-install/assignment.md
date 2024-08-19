@@ -78,7 +78,7 @@ from the lab text or skipped ahead to this step.
 The first thing you'll see when you log in to the Admin Console is the Node
 Management screen. This is where you can add additional nodes to the
 Slackernews Embedded Cluster. Node management is the first step in the install
-process because not all applications can run on a single node. 
+process because not all applications can run on a single node.
 
 ![Admin Console Node Managemet Interface](../assets/node-management.png)
 
@@ -124,7 +124,7 @@ The Admin Console will run preflight checks it finds in the release. Preflight
 checks are resource processed by the Admin Console to ensure that your
 customer has met the prerequisites to successfully install your application.
 They can be included as standard manifests within the Embeddded Cluster
-release or as secrets within your application's Helm chart. 
+release or as secrets within your application's Helm chart.
 
 We strongly recommend including them in your Helm chart so that they can be
 used regardless of installation method. See [Avoiding Installation

@@ -24,7 +24,7 @@ timelimit: 300
 
 The configuration screen we built looks great, guides the customer through
 their configuration, and helps make sure they set their configuration is set
-up correctly. 
+up correctly.
 
 The next step is to configure the application using the options
 they provide. Values from the configuration are mapped to the Helm chart(s)
@@ -79,7 +79,7 @@ It is always set using the four values the user provides.
 
 We're using template functions to pull in the configuration options. For
 example, `repl{{ ConfigOption "slack_bot_token" | quote }}` will retrieve
-the value of the `slack_bot_token` configuration option and wrap it in quotes. 
+the value of the `slack_bot_token` configuration option and wrap it in quotes.
 
 ### Optional Values
 
@@ -175,7 +175,7 @@ Assets](https://play.instruqt.com/manage/replicated/tracks/protecting-your-asset
 you configured your own secret. In an online installation, the values in the
 secret will be identical. When your customer chooses and airgap installation,
 they'll be different. The secret you configured will contain credentials for
-the proxy, while the secret created by the Admin Console will contain credentials to the registry 
+the proxy, while the secret created by the Admin Console will contain credentials to the registry
 inside the airgap.
 
 Likewise, the `LocalRegistryHost` and `LocalRegistryNamespace` function refer
@@ -231,7 +231,7 @@ and promote it directly to `Unstable`.
 
 ```
 replicated release create --promote Unstable --chart ./release/slackernews-0.6.2.tgz --version 0.6.2 \
-  --release-notes "Collects configuration from the user and provides it to Helm" 
+  --release-notes "Collects configuration from the user and provides it to Helm"
 ```
 
 Then you can promote to `Beta` using the release sequence from the output.
