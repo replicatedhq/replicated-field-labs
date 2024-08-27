@@ -164,7 +164,7 @@ We haven't provided a status informer for Postgres since the customer can
 choose to bring their own database. We'll add it in when we work with the
 customer configuration in the next step of this lab.
 
-Releasing Your Application
+Releasing the Appliance
 ==========================
 
 We're still not going to install our appliance, but let's release these
