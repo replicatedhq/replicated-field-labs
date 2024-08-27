@@ -42,7 +42,7 @@ appliance experience: one for the embedded Kubernetes cluster and one for the
 SlackerNews Helm chart. There are others as well. We're going to look at the
 `Application` resource, which describes the application being installed. There
 are several things we can configure in this file as well, but for this lab
-we'll focus n the title, icon, and how to determine application status.. For
+we'll focus on the title, icon, and how to determine application status. For
 other possible properties, take a look at the [reference
 documentation](https://docs.replicated.com/reference/custom-resource-application).
 Not all of the possible values apply for the Kubernetes appliance experience.
