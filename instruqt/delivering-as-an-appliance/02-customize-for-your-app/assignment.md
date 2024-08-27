@@ -185,7 +185,7 @@ yq -i '.spec.chart.chartVersion = "0.6.1"' release/slackernews-chart.yaml
 ```
 
 You need to edit both files to ensure that the appliance refers to the current
-chart. You also need to repackage you're Helm chart and make sure your old
+chart. You also need to repackage your Helm chart and make sure your old
 package isn't still in the release directory.
 
 ```
