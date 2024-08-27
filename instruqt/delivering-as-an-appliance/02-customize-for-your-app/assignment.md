@@ -53,7 +53,7 @@ Kubernetes Apps Special Interest Group (SIG) and is also called `Application`.
 This `Application` resource is not unique to the Replicated Platform. It's
 also not required for the appliance installation experience.
 
-We'll start with adding the basic Replicated `Application` resource for basic
+We'll start with adding the Replicated `Application` resource for basic
 branding, then we'll expand on it a bit. We're going to skip the SIG
 `Application` for this lab.
 
