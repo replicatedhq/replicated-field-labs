@@ -66,7 +66,7 @@ it.
 
 ![Adding the application metadata manifest](../assets/adding-application-manifest.png)
 
-Let's start with just the name and log fro the application. This will make
+Let's start with just the name and log for the application. This will make
 sure that they're both available to the Admin Console for the appliance
 installation experience.
 
