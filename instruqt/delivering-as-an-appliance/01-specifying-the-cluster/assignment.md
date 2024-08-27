@@ -86,7 +86,7 @@ to `0.6.0`.
 ### Adding a Helm Chart to a Release
 
 To prepare the release, we first need to make sure our Helm chart is configured
-as part of it. Let's package the chart and include it in the
+as part of it. From the Shell tab, package the chart and include it in the
 `release` directory, where we'll also add the additional files we need.
 
 ```
