@@ -114,10 +114,10 @@ the resources configured as status informers.
 Status informers can reference one of several types of resource:
 
 * Deployments
-* Stateful sets
-* Daemon sets
+* StatefulSets
+* DaemonSets
 * Services
-* Persistent volume claims
+* PersistentVolumeClaims
 * Ingresses
 
 Each status informer will be in one of the states above, as determined by the
