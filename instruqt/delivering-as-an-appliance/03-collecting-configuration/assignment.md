@@ -26,7 +26,7 @@ timelimit: 300
 
 One of the benefits of building a Kubernetes appliance is providing a guided
 experience for your customer to have a successful installation. One key to
-success is assuring the application is correctly configured. The Replicated
+success is ensuring the application is correctly configured. Replicated
 Embedded Cluster lets you offer a simple web screen to help customers set
 critical values correctly.
 
