@@ -46,7 +46,7 @@ We're going to focus primarily on the first role for now.
 Completing the Install
 =====================
 
-To help us complete our installation, the Admin Console will guide us a
+To help us complete our installation, the Admin Console will guide us
 through a few steps, starting with configuring its certificate. Since it's
 not possible to provide a "safe" certificate to the Admin Console out of the
 box, the process starts with a warning and instructions for the user to
