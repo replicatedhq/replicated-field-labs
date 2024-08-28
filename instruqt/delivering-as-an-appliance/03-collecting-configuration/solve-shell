@@ -59,7 +59,7 @@ spec:
       items:
         - name: service_type
           title: Service Type
-          type: select_one
+          type: radio
           items:
             - name: cluster_ip
               title: ClusterIP
@@ -83,7 +83,7 @@ spec:
         or we can generate them for you. We recommend that you upload your own certificates for production installations.
       items:
         - name: certificate_source
-          type: select_one
+          type: radio
           title: Certificate Source
           default: generate_internal
           items:

@@ -52,6 +52,7 @@ The supported types account for all of the standard web form inputs.
 <tr><td><code>password</code></td><td>password field with obscured text and visibility
 toggle</td></tr>
 <tr><td><code>radio</code></td><td>radio buttons</td></tr>
+<tr><td><code>dropdown</code></td><td>a dropdown menu</td></tr>
 <tr><td><code>text</code></td><td>a standard text field</td></tr>
 <tr><td><code>textarea</code></td><td>a larger text area</td></tr>
 </tbody>
@@ -91,7 +92,7 @@ spec:
       items:
         - name: service_type
           title: Service Type
-          type: select_one
+          type: radio
           items:
             - name: cluster_ip
               title: ClusterIP
@@ -107,7 +108,7 @@ spec:
       title: Certificates
       items:
         - name: certificate_source
-          type: select_one
+          type: radio
           title: Certificate Source
           items:
             - name: generate_internal
@@ -263,7 +264,7 @@ self-signed certificate.
 
 ```yaml
         - name: certificate_source
-          type: select_one
+          type: radio
           title: Certificate Source
           default: generate_internal
           items:
