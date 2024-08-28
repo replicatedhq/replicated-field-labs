@@ -162,7 +162,7 @@ continue.
 
 The Admin Console played a little trick on you. Since all of your preflight
 checks passed it continued the installation without waiting for you to click
-"Deploy". I note this because the instance it may be running successfully
+"Deploy". This means that the instance might be running successfully
 when you land on the main Admin Console screen. Otherwise, just wait until you
 see the status change to "Ready" underneath the title "SlackerNews".
 
