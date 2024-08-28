@@ -47,7 +47,7 @@ The supported types account for all of the standard web form inputs.
 <tbody>
 <tr><td><code>bool></code></td><td>checkbox</td></tr>
 <tr><td><code>file></code></td><td>file upload</td></tr>
-<tr><td><code>heading></code></td><td>a subheading within a group</td></tr>
+<tr><td><code>heading</code></td><td>a subheading within a group</td></tr>
 <tr><td><code>label</code></td><td>an label supporting another field</td></tr>
 <tr><td><code>password</code></td><td>password field with obscured text and visibility
 toggle</td></tr>
