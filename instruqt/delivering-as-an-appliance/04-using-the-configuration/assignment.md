@@ -178,7 +178,7 @@ they'll be different. The secret you configured will contain credentials for
 the proxy, while the secret created by the Admin Console will contain credentials to the registry
 inside the airgap.
 
-Likewise, the `LocalRegistryHost` and `LocalRegistryNamespace` function refer
+Likewise, the `LocalRegistryHost` and `LocalRegistryNamespace` functions refer
 to the registry inside the airgapped environment. Using the `HasLocalRegistry`
 function, you can distinguish between the online scenario (where you provide
 the proxy service URI) and the airgapped scenario (where the Admin Console
