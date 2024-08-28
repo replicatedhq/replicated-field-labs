@@ -56,8 +56,9 @@ for Nitflex to be able to use it.
 
 There are a few license options that affect Embedded Cluster installations:
 
-1. **KOTS Install Enabled** This option enables installing with Replicated's
-   KOTS Admin Console, which is used by the Embedded Cluster installation.
+1. **KOTS Install Enabled** This option enables installing applications with
+   the Admin Console (powered by Replicated KOTS), which is used as part of
+   the Embedded Cluster installation.
 4. **Airgap Download Enabled** Allows the customer to download the air-gapped
    version of the Embedded Cluster installer.
 2. **Support Bundle Upload Enabled** Configures their license to allow
