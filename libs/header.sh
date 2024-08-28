@@ -17,7 +17,7 @@ get_replicated_sdk_version () {
   if [[ -z "$replicated_sdk_version" ]]; then
     set -eu pipefail
     token=$(curl --silent "https://registry.replicated.com/v2/token?scope=repository:library/replicated:pull&service=registry.replicated.com" | jq -r .token)
-    replicated_sdk_version=$(curl --silent -H "Authorization: Bearer ${TOKEN}" https://registry.replicated.com/v2/library/replicated/tags/list | jq -r '.tags[]' | awk -F '[.-]' '{
+    replicated_sdk_version=$(curl --silent -H "Authorization: Bearer ${token}" https://registry.replicated.com/v2/library/replicated/tags/list | jq -r '.tags[]' | awk -F '[.-]' '{
         # Extract version components
         major=$1;
         minor=$2;
