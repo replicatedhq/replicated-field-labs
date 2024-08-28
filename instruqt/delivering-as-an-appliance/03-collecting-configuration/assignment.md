@@ -169,7 +169,7 @@ This configuration works, but has a few weaknesses:
 3. Some values might have defaults that are good enough for most users.
 4. A few values have specific formats that the user might not enter correctly.
 
-We can improve the experience by adding a more detail to each configuration
+We can improve the experience by adding more detail to each configuration
 field in a few ares: help text, default values, and validation. We can also
 address the relationship between fields by hiding/showing fields based on the
 value of other options.
