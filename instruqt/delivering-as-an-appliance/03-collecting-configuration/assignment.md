@@ -51,7 +51,7 @@ The supported types account for all of the standard web form inputs.
 <tr><td><code>label</code></td><td>an label supporting another field</td></tr>
 <tr><td><code>password</code></td><td>password field with obscured text and visibility
 toggle</td></tr>
-<tr><td><code>select_one></code></td><td>radio buttons</td></tr>
+<tr><td><code>radio</code></td><td>radio buttons</td></tr>
 <tr><td><code>text</code></td><td>a standard text field</td></tr>
 <tr><td><code>textarea</code></td><td>a larger text area</td></tr>
 </tbody>
