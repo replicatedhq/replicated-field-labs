@@ -206,7 +206,7 @@ Like our last release, we're going to bump the Helm chart version to keep the
 versions aligned across all our install methods. Remember this is optional, so
 if you feel funny bumping the chart version when you didn't change the chart
 itself you can skip that part. In practice you'll usually be making changes to
-both the chart and the Replicated Embedded Cluste configuration in parallel so
+both the chart and the Embedded Cluster configuration in parallel so
 this probably won't be an issue.
 
 Run the following commands to bump the chart version and add it to your
