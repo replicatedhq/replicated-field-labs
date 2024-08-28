@@ -315,8 +315,7 @@ conditional fields in the final configuration.
 The last feature we'll look at is input validation. Validation makes sure the
 user sets a value in the correct format (unfortunately, we can't make sure
 it's the _right_ value, the customer has to handle that). Fields validation
-uses regular expressions, though the `Config` definition provides for
-Replicated adding more options in the future.
+uses regular expressions.
 
 Let's return the "Ingress Hostname" field. It's important for this field to be
 a valid hostname. Though we can't check that it's a real domain here (that's
