@@ -25,7 +25,7 @@ timelimit: 1200
 ---
 
 We're part way through the installation of SlackerNews as a Kubernetes
-Appliance. We've run the SlackerNews installer which has create a single-node
+appliance. We've run the SlackerNews installer which has create a single-node
 Kubernetes cluster running all of the infrastructure components of the
 Replicated Embedded Cluster. The next step is to complete the install using
 one of those components, the Admin Console.
