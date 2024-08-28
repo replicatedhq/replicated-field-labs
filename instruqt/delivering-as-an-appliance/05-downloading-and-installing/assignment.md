@@ -79,7 +79,7 @@ KOTS first.
 
 Once you've enabled the options, click "Save changes" and scroll back to the
 top of the page. You may have noticed a button that said "Helm Install
-Instructions" ealier. It's now change to a menu for "Install instructions".
+Instructions" earlier. It's now changed to a menu for "Install instructions".
 Select "Embedded Cluster" to see the instructions to download and install.
 
 ![Embedded Cluster Install Instructions](../assets/embedded-cluster-install-instructions.png)
