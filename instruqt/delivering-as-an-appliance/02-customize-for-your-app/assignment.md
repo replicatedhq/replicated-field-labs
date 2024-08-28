@@ -6,7 +6,7 @@ title: Customizing the Appliance for Your Application
 teaser: Make the Kubernetes appliance experience your own
 notes:
 - type: text
-  contents: Customize the Admin Console to represent your application
+  contents: Customize the appliance Admin Console to represent your application
 tabs:
 - id: ybi0oubv14zx
   title: Release Editor
@@ -31,7 +31,7 @@ had, we'd land on a page like this:
 This definitely violates our brand standards!
 
 Don't worry, Replicated provides a few options to customize the appliance
-installer. The first customizations we're going to look at will make it clear
+Admin Console. The first customizations we're going to look at will make it clear
 which application we're installing.
 
 Adding a Name and Logo to the Appliance
