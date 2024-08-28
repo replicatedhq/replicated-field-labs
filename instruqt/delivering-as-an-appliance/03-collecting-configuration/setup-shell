@@ -170,4 +170,6 @@ spec:
           when: repl{{ ConfigOptionEquals "deploy_postgres" "0"}}
 CONFIG
 
+chown replicant:replicant ${HOME_DIR}/complete-configuration.yaml
+chmod 644 ${HOME_DIR}/complete-configuration.yaml
 exit 0
