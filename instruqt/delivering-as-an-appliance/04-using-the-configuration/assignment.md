@@ -188,7 +188,7 @@ Providing a Complete Set of Values
 ==================================
 
 Like with the last step of the lab, there's a more robust set of values needed
-than just he ones we went through. To include the complete set of values in
+than just the ones we went through. To include the complete set of values in
 your release, move the file `complete-helmchart.yaml` in your home directory
 into the `release` directory.
 
