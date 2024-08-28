@@ -53,7 +53,7 @@ The supported types account for all of the standard web form inputs.
 toggle</td></tr>
 <tr><td><code>select_one></code></td><td>radio buttons</td></tr>
 <tr><td><code>text></code></td><td>a standard text field</td></tr>
-<tr><td><code>textarea></code></td><td>a larger text area</td></tr>
+<tr><td><code>textarea</code></td><td>a larger text area</td></tr>
 </tbody>
 </table>
 
