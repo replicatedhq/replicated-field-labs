@@ -168,7 +168,7 @@ see the status change to "Ready" underneath the title "SlackerNews".
 
 ![SlackerNews Admin Console with "Ready" Status](../assets/slackernews-admin-console-ready.png)
 
-While you're connected to the Admin Console, notice some of it's other
+While you're connected to the Admin Console, notice some of its other
 capabilities:
 
 * You can manage the cluster nodes using the "Cluster Management" tab.
