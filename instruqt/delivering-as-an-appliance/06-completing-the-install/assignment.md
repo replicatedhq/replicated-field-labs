@@ -213,7 +213,7 @@ teams as the support the customer journey and evolve your product.
 
 You've now successfully build and installed a Kubernetes appliance with the
 Replicated Embedded Cluster. You've seen how the Admin Console guides the
-installation and had a look what features it supports. Your current
+installation and had a look at what features it supports. Your current
 installation of SlackerNews runs on a single-node cluster, but you've seen how
 your customer could expand it to have additional nodes.
 
