@@ -121,7 +121,7 @@ later. You can copy/paste the password below if you aren't feeling inspired.
 The installer starts by converting the machine you're running on into a single
 node Kubernetes cluster. It will then install several components that support
 Embedded Cluster operation, including the Admin Console that you'll use
-to complete the installation. You'll see a message and a spinner as each step
+to configure and install the application. You'll see a message and a spinner as each step
 runs, replacing it with a checkmark when it completes.
 
 ```
