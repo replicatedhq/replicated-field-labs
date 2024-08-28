@@ -173,7 +173,7 @@ This grabs the image pull secret created by the Admin Console and let's the
 chart know to use it when pulling the SlackerNews image. In [Protecting You
 Assets](https://play.instruqt.com/manage/replicated/tracks/protecting-your-assets),
 you configured your own secret. In an online installation, the values in the
-secret will be identical. When your customer chooses and airgap installation,
+secret will be identical. When your customer chooses an airgap installation,
 they'll be different. The secret you configured will contain credentials for
 the proxy, while the secret created by the Admin Console will contain credentials to the registry
 inside the airgap.
