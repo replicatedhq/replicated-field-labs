@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+set -euo pipefail
 HOME_DIR=/home/replicant
 
 while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
@@ -37,7 +37,7 @@ agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
 agent variable set REPLICATED_API_TOKEN ${api_token}
 agent variable set REPLICATED_APP ${app_slug}
-agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version#?}
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
 agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
 
 ## release the application with the Replicated SDK
@@ -47,7 +47,7 @@ mkdir ${HOME_DIR}/release
 get_slackernews
 yq -i '.version = "0.2.0"' slackernews/Chart.yaml
 yq -i ".dependencies = []" slackernews/Chart.yaml
-yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version#?}\"}" slackernews/Chart.yaml
+yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version}\"}" slackernews/Chart.yaml
 
 # update dependencies
 helm dependency update slackernews

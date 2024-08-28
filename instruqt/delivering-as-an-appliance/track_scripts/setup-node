@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+set -euxo pipefail
 
 # simple SSH client setup so we can SSH to/from the shell
 
@@ -32,3 +32,5 @@ agent variable set PASSWORD $(get_password)
 agent variable set SLACKERNEWS_DOMAIN $(get_slackernews_domain)
 agent variable set REPLICATED_API_TOKEN ${api_token}
 agent variable set REPLICATED_APP ${app_slug}
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
+agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
