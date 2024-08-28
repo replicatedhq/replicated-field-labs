@@ -121,7 +121,7 @@ you can use the configuration values as part of your checks.
 ### Running Preflight Checks
 
 The Admin Console will run preflight checks it finds in the release. Preflight
-checks are resource processed by the Admin Console to ensure that your
+checks are resources processed by the Admin Console to ensure that your
 customer has met the prerequisites to successfully install your application.
 They can be included as standard manifests within the Embeddded Cluster
 release or as secrets within your application's Helm chart.
