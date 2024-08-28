@@ -44,7 +44,7 @@ provide values based on the configuration the Admin Console collected.
 
 [Templating in the Admin Console](https://docs.replicated.com/reference/template-functions-about)
 is a big topic and an in-depth treatment would take it's own lab (or three).
-I'm going to explain the basics that we need to use here, building on the
+We'll go over the basics that we need to use here, building on the
 glimpse we had when setting up conditional fields on the configuration screen.
 
 ### Setting Helm Chart Values
