@@ -103,7 +103,7 @@ The first two sections are fairly straightforward:
 
 The next section presents us with a bit of a challenge. We don't have a Slack
 team to connect to, so any values we enter will be invalid. The values are
-required, though, so we need to enter something. Let's use the following dummy
+required, though, so we need to enter something. Let's use the following placeholder
 values:
 
 * **Slack Client ID**: `notavalidid`
