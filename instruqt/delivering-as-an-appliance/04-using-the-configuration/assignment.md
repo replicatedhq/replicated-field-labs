@@ -150,7 +150,7 @@ Specifying Image Values
 If you completed the [Protecting Your
 Assets](https://play.instruqt.com/manage/replicated/tracks/protecting-your-assets)
 lab, you worked through the configuration for the Replicated Proxy Service to
-secure access to your private images. When deploying the embedded cluster, you
+secure access to your private images. When installing with Embedded Cluster, you
 need to consider the proxy as well as the possibility of an airgap
 installation. There are a few template functions to facilitate this. These
 functions are part of the [config
