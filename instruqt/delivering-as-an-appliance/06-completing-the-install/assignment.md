@@ -211,7 +211,7 @@ teams as the support the customer journey and evolve your product.
 🏁 Finish
 =========
 
-You've now successfully build and installed a Kubernetes appliance with the
+You've now successfully built and installed a Kubernetes appliance with
 Replicated Embedded Cluster. You've seen how the Admin Console guides the
 installation and had a look at what features it supports. Your current
 installation of SlackerNews runs on a single-node cluster, but you've seen how
