@@ -330,7 +330,7 @@ name.
 
 ```
 
-If your customer enters and invalid hostname they'll see the error message and
+If your customer enters an invalid hostname they'll see the error message and
 won't be able to save their configuration until they correct it. Edit the
 config to include the validation. Keep in mind that the validation is a regular
 expression, so you'll want to test it to make sure it's correct. You can do
