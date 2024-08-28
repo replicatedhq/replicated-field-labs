@@ -56,7 +56,7 @@ validate the self-signed certificate the installer created.
 
 The next step will ask your customer to configure the permanent certificate
 for the Admin Console. They can choose between a self-signed certificate or
-uploading one signed by a certificate authority. I recommend that they use a
+uploading one signed by a certificate authority. Replicated recommends that they use a
 signed certificate, this is something you may also want to suggest in your
 installation documentation.
 
