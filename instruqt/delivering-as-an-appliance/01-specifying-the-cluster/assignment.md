@@ -23,10 +23,11 @@ timelimit: 300
 
 A virtual Kubernetes appliance consists of your application, a Kubernetes
 cluster, and a console that your customer uses to install your application and
-manage the appliance. We refer to the Kubernetes cluster that's included as the
-Embedded Cluster since it's "embedded" with your application. The console to
-install and manage your application is called the Admin Console. Under the
-hood, the Admin Console uses Helm to install and upgrade your application.
+manage the appliance. We refer to the installer that deploys your application,
+the cluster, and the console as Embedded Cluster because it 'embeds'
+Kubernetes with your application. The console to install and manage your
+application is called the Admin Console. Under the hood, the Admin Console
+uses Helm to install and upgrade your application.
 
 You release your application as a Kubernetes applicance by releasing a Helm
 chart and some additional configuration on the Replicated Platform. The most
