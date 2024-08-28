@@ -34,7 +34,7 @@ Configuring Your Application
 =============================
 
 Like other aspects of the appliance, the configuration screen is defined using
-a YAML manifest. The manifest defines a `Config` resource that describes you
+a YAML manifest. The manifest defines a `Config` resource that describes your
 configuration options and the screen that your customer will use to configure
 the application. Configurations is organized into groups, and each group can
 have a fields of different types. The type of field defines the widget used.
