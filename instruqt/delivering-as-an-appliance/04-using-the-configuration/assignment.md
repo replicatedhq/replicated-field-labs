@@ -62,7 +62,7 @@ Admin Console installs or updates the application.
 ### Values
 
 The `values` key is for values that will always be set the same way during an
-install or upgrade operation. These value can be templated, so they can change
+install or upgrade operation. These values can be templated, so they can change
 based on context like user configuration or license details. But they will
 always be passed to the `helm` command and will always be set using the same
 expression. The authentication information for SlackerNews is a good example.
