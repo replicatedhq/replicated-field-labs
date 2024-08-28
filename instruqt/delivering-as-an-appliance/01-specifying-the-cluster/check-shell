@@ -25,7 +25,7 @@ fi
 
 # check that the embedded cluster and Helm configs are part of the release
 if [[ ! -f ${HOME_DIR}/release/embedded-cluster.yaml ]]; then
-  fail-message 'Please add the Embedded Cluster configuration to the Slackernews release'
+  fail-message 'Please add the Embedded Cluster installer configuration to the Slackernews release'
   let "result = result + 1"
 fi
 

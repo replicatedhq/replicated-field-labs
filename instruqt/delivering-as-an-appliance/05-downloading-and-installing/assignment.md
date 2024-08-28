@@ -2,7 +2,7 @@
 slug: downloading-and-installing
 id: fyep0ya3ekfg
 type: challenge
-title: Downloading and Installing the Embedded Cluster
+title: Downloading and Installing with the Embedded Cluster Installer
 teaser: |
   Install your application the way your customer will
 notes:
@@ -24,8 +24,8 @@ timelimit: 1200
 ---
 
 Now that we've prepared SlackerNews for an Embedded Cluster installation,
-let's go through the experience a customer has installing it. Installing with
-the Embedded Cluster happens in two parts:
+let's go through the experience a customer has installing it. Installation
+happens in two parts:
 
 1. A command-line download and install that creates a cluster
    running the Replicated Admin Console
@@ -38,8 +38,8 @@ section of the lab.
 Getting the Install Instructions
 ================================
 
-Each customer has their own unique download for the Embedded Cluster. The
-download includes the Embedded Cluster binary, their license, and, for airgap
+Each customer has their own unique download for the Embedded Cluster installer
+The download includes installer binary, their license, and, for airgap
 installs, the airgap bundle containing all required container images. Let's
 connect to the Replicated Vendor Portal and get the download instructions for
 our customer "Nitflex".
@@ -51,8 +51,8 @@ Password: `[[ Instruqt-Var key="PASSWORD" hostname="node" ]]`
 
 Once you're logged in, navigate to the "Customers" page and find the customer
 "Nitflex." Click on the name "Nitflex" then select "Manage customer" to see
-the customer details and entitlements. We need to enable the Embedded Cluster
-for Nitflex to be able to use it.
+the customer details and entitlements. We need to enable license options
+for Nitflex to be able to use the Embedded Cluster installer.
 
 There are a few license options that affect Embedded Cluster installations:
 
@@ -69,14 +69,14 @@ There are a few license options that affect Embedded Cluster installations:
 2. **Embeded Cluster Enabled** Allows the customer to download the Embedded
    Cluster installer and install an Embedded Cluster instance.
 4. **Allow Disaster Recovery** Provides disaster recovery functionality for
-   the Embedded Cluster.
+   the Embedded Cluster installation.
 
 We don't need all of these options for this lab. We'll just enable the two
 that we require: "KOTS Install Enabled" and "Embedded Cluster Enabled". Scroll
 down to "License options" make sure both are active. You'll need to enable
 KOTS first.
 
-![Setting license options for the Embedded Cluster](../assets/embedded-cluster-license-options.png)
+![Setting license options for the Embedded Cluster installation](../assets/embedded-cluster-license-options.png)
 
 Once you've enabled the options, click "Save changes" and scroll back to the
 top of the page. You may have noticed a button that said "Helm Install

@@ -130,7 +130,7 @@ You're not limited to only one Helm chart as part of your application.
 Including multiple `HelmChart` objects let's the Admin Console know it has to
 install multiple Helm charts. For SlackerNews, we have only a single chart.
 
-### Including the Embedded Cluster
+### Including the Embedded Cluster Installer
 
 We showed a simple Embedded Cluster configuration earlier in the lab. Let's use
 that basic configuration for SlackerNews. Create another file in the `release`

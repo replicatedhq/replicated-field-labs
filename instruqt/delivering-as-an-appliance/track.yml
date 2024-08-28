@@ -21,7 +21,7 @@ description: |-
       application
     * Simplify configuration with a form to collect essential
       values
-    * Specify which customer can use the Embedded Cluster
+    * Specify which customer can use the Embedded Cluster installer
     * Install the appliance to understand your customer's experience
     * Expand the installed cluster
 icon: https://storage.googleapis.com/shared-lab-assets/icons/red/server.png
@@ -46,4 +46,4 @@ lab_config:
   lab_v2: false
   override_challenge_layout: false
   hideStopButton: false
-checksum: "17454684588453025309"
+checksum: "16807421338098812824"
