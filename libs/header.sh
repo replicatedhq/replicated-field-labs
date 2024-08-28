@@ -16,7 +16,32 @@ get_replicated_sdk_version () {
   # if we don't already have a token, fetch one
   if [[ -z "$replicated_sdk_version" ]]; then
     set -eu pipefail
-    replicated_sdk_version=$(curl -qsfL https://api.github.com/repos/replicatedhq/replicated-sdk/tags | jq -r '.[0] | .name')
+    token=$(curl --silent "https://registry.replicated.com/v2/token?scope=repository:library/replicated:pull&service=registry.replicated.com" | jq -r .token)
+    replicated_sdk_version=$(curl --silent -H "Authorization: Bearer ${TOKEN}" https://registry.replicated.com/v2/library/replicated/tags/list | jq -r '.tags[]' | awk -F '[.-]' '{
+        # Extract version components
+        major=$1;
+        minor=$2;
+        patch=$3;
+        prerelease=$4;
+        prerelease_number=$5;
+
+        # Assign priority to pre-release versions
+        if (prerelease == "alpha") {
+          prerelease_priority = 1;
+        } else if (prerelease == "beta") {
+          prerelease_priority = 2;
+        } else {
+          prerelease_priority = 3;
+        }
+
+        # Handle missing pre-release number
+        if (prerelease_number == "") {
+          prerelease_number = 0;
+        }
+
+        # Format output to aid sorting
+        printf "%04d%04d%04d%02d%04d-%s\n", major, minor, patch, prerelease_priority, prerelease_number, $0
+      }' | sort -r | head -1 | sed 's/^[0-9]*-//')
   fi
 
   set -eu
