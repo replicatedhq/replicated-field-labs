@@ -165,7 +165,7 @@ within the Admin Console.
 ```
 
 Let's break down these two values to understand why we need all this template
-logic (especially since you're default Helm values may already take the proxy
+logic (especially since your default Helm values might already take the proxy
 into account).
 
 First, we set the `images.slackernewws.pullSecret` value to `repl{{ ImagePullSecretName }}`.
