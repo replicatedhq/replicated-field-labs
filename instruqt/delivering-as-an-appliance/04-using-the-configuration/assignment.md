@@ -169,7 +169,7 @@ logic (especially since you're default Helm values may already take the proxy
 into account).
 
 First, we set the `images.slackernewws.pullSecret` value to `repl{{ ImagePullSecretName }}`.
-This grabs the image pull secret created by the Admin Console and let's the
+This grabs the image pull secret created by the Admin Console and lets the
 chart know to use it when pulling the SlackerNews image. In [Protecting Your
 Assets](https://play.instruqt.com/manage/replicated/tracks/protecting-your-assets),
 you configured your own secret. In an online installation, the values in the
