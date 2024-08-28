@@ -77,7 +77,7 @@ from the lab text or skipped ahead to this step.
 
 The first thing you'll see when you log in to the Admin Console is the Node
 Management screen. This is where you can add additional nodes to the
-SlackerNews Embedded Cluster. Node management is the first step in the install
+cluster embedded with SlackerNews. Node management is the first step in the install
 process because not all applications can run on a single node.
 
 ![Admin Console Node Managemet Interface](../assets/node-management.png)
