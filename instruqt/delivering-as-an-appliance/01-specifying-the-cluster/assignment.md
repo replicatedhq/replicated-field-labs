@@ -100,7 +100,7 @@ appropriate values. We'll look at the passing values in a later section of the
 lab when we set up the configuration screen for our application.
 
 Go to the "Release Editor" tab to add a file named `slackernews-chart.yaml` to
-your release.
+the `release` directory.
 
 ![Creating a manifest file describing your Helm chart](../assets/creating-the-helmchart-object.png)
 
