@@ -230,7 +230,7 @@ across the `Unstable`, `Beta`, and `Stable` channels. First build the release
 and promote it directly to `Unstable`.
 
 ```
-replicated release create --promote Unstable --chart ./release/slackernews-0.6.2.tgz --version 0.6.2 \
+replicated release create --promote Unstable --yaml-dir ./release --version 0.6.2 \
   --release-notes "Collects configuration from the user and provides it to Helm"
 ```
 
