@@ -18,7 +18,7 @@ while ! ssh shell true; do
 done
 
 # use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/delivering-as-an-appliance/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
 source /etc/profile.d/header.sh
 
 api_token=$(get_api_token)
