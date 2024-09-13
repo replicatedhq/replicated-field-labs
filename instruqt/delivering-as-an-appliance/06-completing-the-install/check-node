@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+app_slug=$(get_app_slug)
+export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
+export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+
+result=0
+status=$(kubectl get deploy --namespace kotsadm slackernews --output json | jq -r '.status.conditions[] | select( .type == "Available" ) | .status')
+if [[ ! $status == "True" ]] ; then
+  fail-message $'Install Slackernews and wait for it to reach the "Ready" state'
+  let "result = result + 1"
+fi
+
+exit ${result}

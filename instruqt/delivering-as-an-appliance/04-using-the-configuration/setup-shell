@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+HOME_DIR=/home/replicant
+source /etc/profile.d/header.sh
+
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
+fi
+
+cat <<CHART_MANIFEST > ${HOME_DIR}/complete-helmchart.yaml
+apiVersion: kots.io/v1beta2
+kind: HelmChart
+metadata:
+  name: slackernews
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: slackernews
+    chartVersion: 0.6.2
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values:
+    postgres:
+      enabled: true
+      deploy_postgres: repl{{ ConfigOption "deploy_postgres" | ParseBool }}
+    slack:
+      botToken: repl{{ ConfigOption "slack_bot_token" | quote }}
+      userToken: repl{{ ConfigOption "slack_user_token" | quote }}
+      clientId: repl{{ ConfigOption "slack_clientid" | quote }}
+      clientSecret: repl{{ ConfigOption "slack_clientsecret" | quote }}
+    slackernews:
+      domain: repl{{ ConfigOption "slackernews_domain" }}
+      adminUserEmails: repl{{ ConfigOption "slackernews_admin_user_emails" | quote }}
+    admin-console:
+      enabled: false
+    replicated:
+      enabled: false
+      preflights: false
+      isKOTSManaged: true
+    service:
+      tls:
+        enabled: true
+    nginx:
+      enabled: true 
+      service:
+        type: repl{{ ConfigOption "service_type" }}
+    images:
+      pullSecrets:
+        replicated:
+          dockerconfigjson: ""
+      slackernews:
+        pullSecret: repl{{ ImagePullSecretName }}
+        repository: '{{repl HasLocalRegistry | ternary LocalRegistryHost "proxy.replicated.com" }}/{{repl HasLocalRegistry | ternary LocalRegistryNamespace (print "proxy/" (LicenseFieldValue "appSlug") "/ghcr.io/slackernews" ) }}/slackernews-web:1.0.17'
+      nginx:
+        pullSecret: repl{{ ImagePullSecretName }}
+        repository: '{{repl HasLocalRegistry | ternary LocalRegistryHost "proxy.replicated.com" }}/{{repl HasLocalRegistry | ternary LocalRegistryNamespace (print "proxy/" (LicenseFieldValue "appSlug") "/index.docker.io/library" ) }}/nginx:1.25.3'
+
+    metrics:
+      serviceMonitor:
+        enabled: true
+ 
+  optionalValues:
+    - when: '{{repl ConfigOptionEquals "deploy_postgres" "1"}}'
+      recursiveMerge: true
+      values:
+        postgres:
+          password: '{{repl ConfigOption "postgres_password" }}'
+        
+    - when: '{{repl ConfigOptionEquals "deploy_postgres" "0"}}'
+      recursiveMerge: true
+      values:
+        postgres:
+          uri: '{{repl ConfigOption "postgres_external_uri" }}'
+
+    - when: '{{repl ConfigOptionEquals "service_type" "load_balancer"}}'
+      recursiveMerge: true
+      values:
+        nginx:
+          service:
+            type: LoadBalancer
+
+    - when: '{{repl ConfigOptionEquals "service_type" "node_port"}}'
+      recursiveMerge: true
+      values:
+        nginx:
+          service:
+            type: NodePort
+            nodePort:
+              port: repl{{ ConfigOption "node_port_port" }}
+
+    - when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+      recursiveMerge: true
+      values:
+        service:
+          tls:
+            enabled: true
+            cert: repl{{ ConfigOptionData "tls_cert" | nindent 14 }}
+            key: repl{{ ConfigOptionData "tls_key" | nindent 14 }}
+            ca: repl{{ ConfigOptionData "tls_ca" | nindent 14 }}
+        
+    - when: '{{repl ConfigOptionEquals "certificate_source" "generate_internal"}}'
+      recursiveMerge: true
+      values:
+        service:
+          tls:
+            enabled: true
+            ca: |-
+              {{repl \$ca := genCA (LicenseFieldValue "customerName") 365 }}
+              {{repl \$ca.Cert | Base64Encode}}
+            cert: |-
+              {{repl \$cert := genSignedCert (ConfigOption "slackernews_domain") nil (list (ConfigOption "slackernews_domain")) 365 \$ca }}
+              {{repl \$cert.Cert | nindent 14 }}
+            key: |-
+              {{repl \$cert.Key | nindent 14 }}
+CHART_MANIFEST
+
+exit 0

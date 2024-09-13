@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+set -euo pipefail
 HOME_DIR=/home/replicant
 source /etc/profile.d/header.sh
 
@@ -22,3 +22,7 @@ do
   echo "Waiting for Instruqt to finish booting the VM"
   sleep 1
 done
+
+mkdir -p ${HOME_DIR}/release
+chown replicant:replicant ${HOME_DIR}/release
+chmod 755 ${HOME_DIR}/release

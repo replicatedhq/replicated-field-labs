@@ -9,6 +9,58 @@ show_credentials () {
     echo -e "${GREEN}Password: ${CYAN}${password}${NC}"
 }
 
+get_replicated_sdk_version () {
+  set +eu pipefail
+  replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+
+  # if we don't already have a token, fetch one
+  if [[ -z "$replicated_sdk_version" ]]; then
+    set -eu pipefail
+    token=$(curl --silent "https://registry.replicated.com/v2/token?scope=repository:library/replicated:pull&service=registry.replicated.com" | jq -r .token)
+    replicated_sdk_version=$(curl --silent -H "Authorization: Bearer ${token}" https://registry.replicated.com/v2/library/replicated/tags/list | jq -r '.tags[]' | awk -F '[.-]' '{
+        # Extract version components
+        major=$1;
+        minor=$2;
+        patch=$3;
+        prerelease=$4;
+        prerelease_number=$5;
+
+        # Assign priority to pre-release versions
+        if (prerelease == "alpha") {
+          prerelease_priority = 1;
+        } else if (prerelease == "beta") {
+          prerelease_priority = 2;
+        } else {
+          prerelease_priority = 3;
+        }
+
+        # Handle missing pre-release number
+        if (prerelease_number == "") {
+          prerelease_number = 0;
+        }
+
+        # Format output to aid sorting
+        printf "%04d%04d%04d%02d%04d-%s\n", major, minor, patch, prerelease_priority, prerelease_number, $0
+      }' | sort -r | head -1 | sed 's/^[0-9]*-//')
+  fi
+
+  set -eu
+  echo ${replicated_sdk_version}
+}
+
+get_embedded_cluster_version () {
+  set +eu pipefail
+  replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+
+  # if we don't already have a token, fetch one
+  if [[ -z "$replicated_sdk_version" ]]; then
+    embedded_cluster_version=$(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
+  fi
+
+  set -eu pipefail
+  echo ${embedded_cluster_version}
+}
+
 get_username () {
   echo ${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com
 }
@@ -19,27 +71,36 @@ get_password () {
 }
 
 get_api_token () {
-  password=$(get_password)
-  login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
-  set +e pipefail
-  token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
-  set -e pipefail
-  
+  set +eu
+  access_token=$(agent variable get REPLICATED_API_TOKEN)
 
-  i=0
-  while [[ "$token" == "null" && $i -lt 20 ]]
-  do
-      sleep 2
-      set +e pipefail
-      token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
-      set -e pipefail
-      i=$((i+1))
-  done
+  # if we don't already have a token, fetch one
+  if [[ -z "$access_token" ]]; then
+    set -eu
+    sleep 5
+    password=$(get_password)
+    login=$( jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named' )
+    set +eu pipefail
+    token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+    set -eu pipefail
+    
+    i=0
+    while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]
+    do
+        sleep $((i*5))
+        set +eu pipefail
+        token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://id.replicated.com/v1/login | jq -r ".token")
+        set -eu pipefail
+        i=$((i+1))
+    done
 
-  UUID=$(cat /proc/sys/kernel/random/uuid)
-  apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
-  access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+    UUID=$(cat /proc/sys/kernel/random/uuid)
+    apiToken=$( jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named' )
+    access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
 
+    agent variable set REPLICATED_API_TOKEN $access_token
+  fi
+  set +eu
   echo ${access_token}
 }
 
@@ -50,15 +111,41 @@ get_app_slug () {
   echo ${app_slug}
 }
 
+get_app_id () {
+  application=${1:-"Slackernews"}
+  access_token=$(get_api_token)
+  app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application ${application} '.apps[] | select( .name | startswith( $application )) | .id')
+  echo ${app_id}
+}
+
+get_customer_id () {
+  customer=${1}
+  access_token=$(get_api_token)
+  app_id=$(get_app_id)
+  customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name $customer '.customers[] | select ( .name == $name ) | .id')
+  echo ${customer_id}
+}
+
+get_license_id () {
+  customer=${1}
+  access_token=$(get_api_token)
+  app_id=$(get_app_id)
+  license_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name $customer '.customers[] | select ( .name == $name ) | .installationId')
+  echo ${license_id}
+}
+
+get_admin_console_password() {
+  password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}:${INSTUQT_CHALLENGE_ID}" | sha256sum)
+  echo ${password::20}
+}
+
 get_slackernews_domain() {
   echo cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com
 }
 
 get_slackernews() {
-  # get the access token to use for fetching the app slug
-  access_token=$(get_api_token)
   # get the app slug, since there's only one app created by the automation, just grab the first in the list
-  app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+  app_slug=$(get_app_slug)
 
   # grab the sources for the Helm chart using a community license
   helm registry login chart.slackernews.io --username marc@replicated.com --password 2ViYIi8SDFubA8XwQRhJtcrwn4C

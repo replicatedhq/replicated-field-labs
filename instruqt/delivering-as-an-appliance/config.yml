@@ -1,13 +1,14 @@
 version: "3"
 containers:
 - name: shell
-  image: gcr.io/kots-field-labs/shell
-virtualmachines:
-- name: node
-  image: kots-field-labs/future-cluster-node
+  image: gcr.io/kots-field-labs/shell:main
   shell: tmux new-session -A -s shell su - replicant
 virtualmachines:
-- name: cluster
-  image: instruqt/k3s-v1-29-0
+- name: node
+  image: kots-field-labs/future-node
   shell: /bin/bash
-  machine_type: n1-standard-1
+  machine_type: n2d-standard-4
+  allow_external_ingress:
+  - http
+  - https
+  - high-ports

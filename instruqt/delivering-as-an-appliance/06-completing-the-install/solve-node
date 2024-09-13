@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+
+app_slug=$(get_app_slug)
+app_id=$(get_app_id)
+api_token=$(agent variable get REPLICATED_API_TOKEN)
+customer_id=$(agent variable get CUSTOMER_ID)
+license_id=$(agent variable get LICENSE_ID)
+
+export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
+export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+
+# prepare values for installation
+cat <<CONFIG_VALUES > /tmp/config-values.yaml
+apiVersion: kots.io/v1beta1
+kind: ConfigValues
+spec:
+  values:
+    certificate_source:
+      default: generate_internal
+    deploy_postgres:
+      default: "1"
+    node_port_port:
+      value: "30443"
+    postgres_external_uri: {}
+    postgres_password:
+      valuePlaintext: reallynotsecure
+    service_type:
+      default: cluster_ip
+      value: NodePort
+    slack_bot_token:
+      valuePlaintext: xoxb-notavalidtoken
+    slack_clientid:
+      value: notavalidid
+    slack_clientsecret:
+      valuePlaintext: notavalidsecret
+    slack_user_token:
+      valuePlaintext: xoxp-notavalidtoken
+    slackernews_admin_user_emails:
+      value: crdant@shortrib.io
+    slackernews_domain:
+      value: news.shortrib.app
+    tls_ca: {}
+    tls_cert: {}
+    tls_key: {}
+CONFIG_VALUES
+
+kubectl kots set config --namespace kotsadm --config-file /tmp/config-values.yaml --deploy ${app_slug}
+
+# give things time to settle
+sleep 100
+
+exit 0

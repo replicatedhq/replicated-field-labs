@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
-# source /etc/profile.d/header.sh
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-
-exit 0

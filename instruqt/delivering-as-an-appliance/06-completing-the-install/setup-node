@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+source /etc/profile.d/header.sh
+
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+if ! tmux has-session -t shell ; then
+  tmux new-session -d -s shell su - replicant
+fi
+
+# download the Replicated KOTS CLI, which plugs into the `kubectl` command
+# and provides a subcommend to reset the password for the admin console
+mkdir -p /var/lib/embedded-cluster/bin
+export REPL_INSTALL_PATH=/var/lib/embedded-cluster/bin
+curl https://kots.io/install | bash
+
+agent variable set SLACKERNEWS_DOMAIN $(get_slackernews_domain)
+agent variable set ADMIN_EMAIL "${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
+agent variable set CUSTOMER_ID $(get_customer_id Nitflex)
+agent variable set LICENSE_ID $(get_license_id Nitflex)
+
+exit 0
