@@ -1,0 +1,43 @@
+slug: meet-the-platform
+id: bocfnxay34uj
+title: Meet the Replicated Platform
+teaser: |-
+  A template track for sharing the shell environment across
+  challenges
+description: |-
+  This track is a template track to build any lab that requires
+  maintaining the shell and it's environment between challenges.
+
+  To use it, run:
+
+  ```
+  instruqt track create --title [NEW TRACK TITLE] \
+    --from shared-env-template
+  ```
+
+  The track provides both a shell and a single-node cluster, and
+  the learner runs their commands as the user `replicant`.
+
+  Another advantage of this template is that you can check what
+  the learner has typed into their shell by capturing the `tmux`
+  pane content and running a grep against it, see the sample
+  check script in the first challenge for an example.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags:
+- template
+owner: replicated
+developers:
+- chuck@replicated.com
+maintenance: true
+idle_timeout: 300
+timelimit: 1200
+lab_config:
+  overlay: false
+  width: 25
+  position: right
+  sidebar_enabled: true
+  feedback_recap_enabled: true
+  feedback_tab_enabled: false
+  loadingMessages: true
+  hideStopButton: false
+checksum: "11533550873014008068"
