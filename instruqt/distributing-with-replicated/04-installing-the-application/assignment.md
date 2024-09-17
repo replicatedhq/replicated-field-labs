@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: Let's see how your customer installs an application
 tabs:
-- title: Shell
+- id: xxbcjeqccdhc
+  title: Shell
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: obpbspvxhqy8
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

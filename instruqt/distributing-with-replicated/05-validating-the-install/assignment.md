@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Gaining insight into your customer's instance
 tabs:
-- title: Vendor Portal
+- id: cvfdyilufsnl
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+set -euo pipefail
 
 # save the entire session to check user inputs and outputs
+set +e
 tmux capture-pane -t shell -S -
 SESSION=$(tmux save-buffer -)
 
