@@ -1,0 +1,684 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+HOME_DIR=/home/replicant
+
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+    echo "Waiting for Instruqt to finish booting the virtual machine"
+    sleep 1
+done
+
+# simple SSH client setup so we can SSH to/from the shell
+
+cat <<EOF >> "$HOME/.ssh/config"
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+EOF
+
+# assure an RSA key for Dropbear
+ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
+
+# use our shared libary in setup scripts
+# TO DO: Change to `main` when preparing to merge
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+source /etc/profile.d/header.sh
+
+# there's only one app created by the automation, so just grab the first in the list
+api_token=$(get_api_token)
+app_slug=$(get_app_slug)
+app_id=$(get_app_id)
+replicated_sdk_version=$(get_replicated_sdk_version)
+embedded_cluster_version=$(get_embedded_cluster_version)
+customer_id=$(get_customer_id Omozan)
+
+agent variable set USERNAME $(get_username)
+agent variable set PASSWORD $(get_password)
+agent variable set REPLICATED_API_TOKEN ${api_token}
+agent variable set REPLICATED_APP ${app_slug}
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
+agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
+agent variable set CUSTOMER_ID ${customer_id}
+
+## release the application with the Replicated SDK
+cd ${HOME_DIR}
+mkdir ${HOME_DIR}/release
+
+get_slackernews
+
+# add preflight checks and support bundle
+cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "slackernews.name" . }}-preflight
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
+    app.kubernetes.io/component: preflight
+    troubleshoot.sh/kind: preflight
+type: Opaque
+stringData:
+  preflight.yaml: |
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: Preflight
+    metadata:
+      name: slackernews-preflight-checks
+    spec:
+      analyzers:
+        - clusterVersion:
+            outcomes:
+              - fail:
+                  when: "<= 1.26.x"
+                  message: |-
+                    Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                    community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                    that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                    cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                    If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                    this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
+              - warn:
+                  when: "< 1.27.0"
+                  message: |-
+                    Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                    less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                    your Slackernews implementation.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by the Slackernews container registry.
+        - nodeResources:
+            checkName: Cluster CPU resources are sufficient to install and run Slackernews
+            outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                    Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
+                    at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                    Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
+                    than 4 CPU cores available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
+        - nodeResources:
+            checkName: Cluster memory is sufficient to install and run Slackernews
+            outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                    Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
+                    at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                    workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                    Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
+                    than 8 GB of memory available to run workloads. For the best experience, consider
+                    increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient memory available to run Slackernews
+SLACKERNEWS_PREFLIGHTS
+
+cat <<SLACKERNEWS_SUPPORT_BUNDLE > /home/replicant/slackernews/templates/troubleshoot/support-bundle.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "slackernews.name" . }}-support-bundle
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "slackernews.labels" . | nindent 4 }}
+    app.kubernetes.io/component: troubleshoot
+    troubleshoot.sh/kind: support-bundle
+type: Opaque
+stringData:
+  support-bundle-spec: |
+    apiVersion: troubleshoot.sh/v1beta2
+    kind: SupportBundle
+    metadata:
+      name: slackernews-support-bundle
+    spec:
+      collectors:
+          - logs:
+              name: /app/slackernews/logs
+              selector:
+              - app=slackernews
+          - logs:
+              name: /app/slackernews/logs
+              selectors:
+              - app=slackernews-nginx
+          - logs:
+              name: /app/slackernews/logs
+              selectors:
+              - app=postgres
+          - logs:
+              name: /app/slackernews/logs
+              selectors:
+              - app.kubernetes.io/name=replicated
+          - configMap:
+              name: slackernews-nginx
+              namespace: slackernews
+              key: default.conf
+              includeValue: true
+          - secret:
+              name: slackernews-nginx
+              namespace: slackernews
+              key: tls.crt
+              includeValue: true
+          - secret:
+              name: slackernews-nginx
+              key: tls.key
+              includeVale: true
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: password
+          - secret:
+              name: slackernews-postgres
+              namespace: slackernews
+              key: uri
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientId
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: clientSecret
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: botToken
+          - secret:
+              name: slackernews-slack
+              namespace: slackernews
+              key: userToken
+      analyzers:
+          - clusterVersion:
+              outcomes:
+              - fail:
+                  when: "<= 1.26.x"
+                  message: |-
+                      Your Kubernets cluster is running a version of Kubernetes that is no longer supported by the Kubernetes
+                      community and unable to be supported by Slackernews. Changes in Kubernetse since your current version mean
+                      that you installation will likely not succeed. Please upgrade your cluster or install to a different
+                      cluster running at least Kubernetes 1.26, ideally version 1.28.0 or later.
+
+                      If you are receiving extended support from your Kubernetes provider you may be able to ignore
+                      this warning. If not, we recomend that you upgrade your cluster to at least version 1.28.0.
+
+                  uri: https://kubernetes.io
+              - warn:
+                  when: "< 1.27.0"
+                  message: |-
+                      Your Kubernetes cluster is running a version of Kubernetes that will go out of support active support in
+                      less than six months. We recommend that you upgrade your Kubernetes cluster to assure continued success with
+                      your Slackernews implementation.
+                  uri: https://kubernetes.io
+              - pass:
+                  message: Your cluster is running a version of Kubernetes that is supported by Slackernews.
+          - nodeResources:
+              checkName: Cluster CPU resources are sufficient to install and run Slackernews
+              outcomes:
+              - fail:
+                  when: "sum(cpuAllocatable) < 2"
+                  message: |-
+                      Slackernews requires a minimum of 2 CPU cores in order to run, and runs best with
+                      at least 4 cores. Your current cluster has less than 2 CPU cores available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(cpuAllocatable) < 4"
+                  message: |-
+                      Slackernews runs best with a minimum of 4 CPU cores. Your current cluster has less
+                      than 4 CPU cores available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient CPU resources available to run Slackernews
+          - nodeResources:
+              checkName: Cluster memory is sufficient to install and run Slackernews
+              outcomes:
+              - fail:
+                  when: "sum(memoryAllocatable) < 4G"
+                  message: |-
+                      Slackernews requires a minimum of 4 GB of memory in order to run, and runs best with
+                      at least 8 GB. Your current cluster has less than 4 GB available to Kubernetes
+                      workloads. Please increase cluster capacity or install into a different cluster.
+              - warn:
+                  when: "sum(memoryAllocatable) < 8Gi"
+                  message: |-
+                      Slackernews runs best with a minimum of 8 GB of memory. Your current cluster has less
+                      than 8 GB of memory available to run workloads. For the best experience, consider
+                      increasing cluster capacity or installing into a different cluster.
+              - pass:
+                  message: Your cluster has sufficient memory available to run Slackernews
+          - deploymentStatus:
+              name: slackernews-frontend
+              namespace: slackernews
+              outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews core component has not been deployed to this cluster. Please be sure to install the Slackernews
+                      application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews application is not currently running on this cluster. Please review the logs in this support
+                      bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews application is running on this cluster and ready for use.
+          - deploymentStatus:
+              name: slackernews-nginx
+              namespace: slackernews
+              outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews web server has not been deployed to this cluster. Please sure to install the Slackernews g application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews web server is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews web server is running on this cluster and ready for use.
+          - statefulsetStatus:
+              name: postgres
+              namespace: slackernews
+              outcomes:
+              - fail:
+                  when: "absent"
+                  message: |
+                      The Slackernews database has not been deployed to this cluster. Please sure to install the Slackernews application using its Helm chart.
+              - fail:
+                  when: "< 1"
+                  message: |
+                      The Slackernews database is not currently running on this cluster. Please review the logs in this support bundle to locate any errors.
+              - pass:
+                  message: |
+                      Ther Slackernews database is running on this cluster and ready for use.
+SLACKERNEWS_SUPPORT_BUNDLE
+
+## update the support bundle with the URI field
+sed -i '17i\      uri: https://storage.googleapis.com/shared-lab-assets/closing-the-information-gap/slackernews/support-bundle.yaml' /home/replicant/slackernews/templates/troubleshoot/support-bundle.yaml
+
+# add license check that we can re-use in multiple templates if needed
+cat <<TEMPLATE >> ${HOME_DIR}/slackernews/templates/_helper.tpl
+{{- define "slackernews.persistence.enabled" -}}
+{{- \$licenseType := "prod" -}}
+{{- \$postgresEnabled := .Values.postgres.enabled -}}
+{{- if hasKey .Values "global" -}}
+  {{- if hasKey .Values.global "replicated" -}}
+    {{- if hasKey .Values.global.replicated "licenseType" -}}
+      {{- \$licenseType = .Values.global.replicated.licenseType -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- and (ne \$licenseType "trial") \$postgresEnabled -}}
+{{- end }}
+TEMPLATE
+
+# add the license check to the beginning of the Slackernews deployment template
+sed -i 's/{{ if eq \.Values\.postgres\.enabled true }}/{{- if eq (include "slackernews.persistence.enabled" .) "true" }}/g' ${HOME_DIR}/slackernews/templates/slackernews-deployment.yaml
+
+# re-package the chart
+helm package slackernews --destination release
+
+# add the custom license field
+field_def=$(jq -n '{
+  "name": "member_count_max",
+  "type": "Integer",
+  "title": "Max Member Count",
+  "hidden": false,
+  "default": "100",
+  "required": true
+}')
+
+replicated api post /v3/app/${app_id}/license-field --body "${field_def}" \
+  --app ${app_slug} --token ${api_token}
+
+# add the embedded cluster configuration file
+cat <<MANIFEST > ${HOME_DIR}/release/embedded-cluster.yaml
+apiVersion: embeddedcluster.replicated.com/v1beta1
+kind: Config
+spec:
+  version: $(agent variable get EMBEDDED_CLUSTER_VERSION)
+MANIFEST
+
+cat <<REPLICATED_APP > ${HOME_DIR}/release/replicated-app.yaml
+apiVersion: kots.io/v1beta1
+kind: Application
+metadata:
+  name: slackernews
+spec:
+  title: SlackerNews
+  icon: "https://uploads-ssl.webflow.com/6310ad0e6a18aa1620da6ae8/6330e04f42bc6a7ba03b4725_snicon.png"
+  statusInformers:
+    - deployment/slackernews
+    - deployment/slackernews-nginx
+REPLICATED_APP
+
+cat <<CONFIG > ${HOME_DIR}/release/config.yaml
+apiVersion: kots.io/v1beta1
+kind: Config
+metadata:
+  name: slackernews-config
+spec:
+  groups:
+    - name: slackernews
+      title: Application Core
+      description: |
+        For this section, you can specify some core parameters for how
+        Slackernews operates, including the domain where users will access it
+        and the user who can administer it.
+
+        Users that you specify under **Admin Users** will be able to access the
+        Slackernews adminstrative console at `/admin`, allowing them to manage
+        content, users, and settings. Changes will take effect the next time
+        they are active in the Slackernews application.
+      items:
+        - name: slackernews_domain
+          title: Ingress Hostname
+          help_text: >
+            The domain name at which you'll access SlackerNews. Don't include
+            the `https://` or any path elements.
+          type: text
+          required: true
+          validation:
+            regex: 
+              pattern: ^(([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)\.)+([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$
+              message: Please enter a valid hostname
+        - name: slackernews_admin_user_emails
+          title: Admin Users
+          type: text
+          help_text: >
+            Provide a comma-separated list of email addresses for the users you
+            want to grant admin access to.
+
+    - name: ingress
+      title: Application Access
+      description: |
+        You can customize how you will expose SlackerNews to the internet.
+        Note that the domain you use will need to be publicly addressable with certs signed by a public authority
+        so it can receive webhooks from Slack.
+
+        Common configurations include:
+
+        - **ClusterIP** Using a Cluster IP and configuring your existing ingress controller to route traffic to SlackerNews
+        - **NodePort** Using a NodePort and configuring an existing load balancer to route traffic to SlackerNews
+        - **LoadBalancer** Using a LoadBalancer service and letting Kubernetes provision a load balancer for you
+
+        If you're running in a supported cloud provider and want Kubernetes to provision a Load Balancer, use LoadBalancer.
+      items:
+        - name: service_type
+          title: Service Type
+          type: radio
+          items:
+            - name: cluster_ip
+              title: ClusterIP
+            - name: node_port
+              title: NodePort
+            - name: load_balancer
+              title: LoadBalancer
+          default: cluster_ip
+        - name: node_port_port
+          title: Node Port
+          help_text: > 
+              (Optional) - The port to use for the NodePort service type. Leave this blank to have Kubernetes choose a port for you.
+          type: text
+          default: ""
+          when: repl{{ ConfigOptionEquals "service_type" "node_port" }}
+
+    - name: tls
+      title: Certificates
+      description: |
+        You can secure the Slackernews application with certificates from a trusted certificate authority 
+        or we can generate them for you. We recommend that you upload your own certificates for production installations.
+      items:
+        - name: certificate_source
+          type: radio
+          title: Certificate Source
+          default: generate_internal
+          items:
+            - name: generate_internal
+              title: Generate
+            - name: upload_existing
+              title: Upload
+        - name: tls_cert
+          title: Certificate
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+        - name: tls_key
+          title: Private Key
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+        - name: tls_ca
+          title: Signing Authority
+          type: file
+          when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+
+    - name: slack
+      title: Slack Settings
+      description: |
+        If desired, you can preconfigure the slack settings for SlackerNews.
+        These are required for logging into SlackerNews and pulling/organizing content from your slack instance.
+        If you don't preconfigure these settings, you'll be prompted to configure them when you first access SlackerNews.
+
+        Instructions on how to configure your slack application and collect these values can be found in [the SlackerNews slack documentation](https://docs.slackernews.io/slack/).
+      items:
+        - name: slack_clientid
+          title: Slack Client ID
+          type: text
+        - name: slack_clientsecret
+          title: Slack Client Secret
+          type: password
+        - name: slack_user_token
+          title: User OAuth Token
+          type: password
+          validation:
+            regex: 
+              pattern: ^xoxp-.*$
+              message: Please enter the Slack user token for your instance of Slackernews
+        - name: slack_bot_token
+          title: Bot User OAuth Token
+          type: password
+          validation:
+            regex: 
+              pattern: ^xoxb-.*$
+              message: Please enter the Slack bot token for your instance of Slackernews
+
+    - name: postgres
+      description: >
+        This section can be used to configure the postgresql database required by SlackerNews. You
+        can either deploy postgresql as part of the installation or provide an external URI to an existing postgresql instance
+        that you will use for SlackerNews.
+      title: Postgresql
+      items:
+        - name: deploy_postgres
+          type: bool
+          title: Deploy Postgresql Database
+          default: "1"
+        - name: postgres_password
+          type: password
+          title: Postgresql Password
+          required: true
+          hidden: true
+          when: repl{{ ConfigOptionEquals "deploy_postgres" "1"}}
+          value: repl{{ RandomString 40}}
+        - name: postgres_external_uri
+          type: text
+          title: Postgresql URI
+          required: true
+          when: repl{{ ConfigOptionEquals "deploy_postgres" "0"}}
+CONFIG
+
+cat <<CHART_MANIFEST > ${HOME_DIR}/release/slackernews-chart.yaml
+apiVersion: kots.io/v1beta2
+kind: HelmChart
+metadata:
+  name: slackernews
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: slackernews
+    chartVersion: 0.6.2
+
+  # values are used in the customer environment, as a pre-render step
+  # these values will be supplied to helm template
+  values:
+    postgres:
+      enabled: true
+      deploy_postgres: repl{{ ConfigOption "deploy_postgres" | ParseBool }}
+    slack:
+      botToken: repl{{ ConfigOption "slack_bot_token" | quote }}
+      userToken: repl{{ ConfigOption "slack_user_token" | quote }}
+      clientId: repl{{ ConfigOption "slack_clientid" | quote }}
+      clientSecret: repl{{ ConfigOption "slack_clientsecret" | quote }}
+    slackernews:
+      domain: repl{{ ConfigOption "slackernews_domain" }}
+      adminUserEmails: repl{{ ConfigOption "slackernews_admin_user_emails" | quote }}
+    admin-console:
+      enabled: false
+    replicated:
+      enabled: false
+      preflights: false
+      isKOTSManaged: true
+    service:
+      tls:
+        enabled: true
+    nginx:
+      enabled: true 
+      service:
+        type: repl{{ ConfigOption "service_type" }}
+    images:
+      pullSecrets:
+        replicated:
+          dockerconfigjson: ""
+      slackernews:
+        pullSecret: repl{{ ImagePullSecretName }}
+        repository: '{{repl HasLocalRegistry | ternary LocalRegistryHost "proxy.replicated.com" }}/{{repl HasLocalRegistry | ternary LocalRegistryNamespace (print "proxy/" (LicenseFieldValue "appSlug") "/ghcr.io/slackernews" ) }}/slackernews-web:1.0.17'
+      nginx:
+        pullSecret: repl{{ ImagePullSecretName }}
+        repository: '{{repl HasLocalRegistry | ternary LocalRegistryHost "proxy.replicated.com" }}/{{repl HasLocalRegistry | ternary LocalRegistryNamespace (print "proxy/" (LicenseFieldValue "appSlug") "/index.docker.io/library" ) }}/nginx:1.25.3'
+
+    metrics:
+      serviceMonitor:
+        enabled: true
+ 
+  optionalValues:
+    - when: '{{repl ConfigOptionEquals "deploy_postgres" "1"}}'
+      recursiveMerge: true
+      values:
+        postgres:
+          password: '{{repl ConfigOption "postgres_password" }}'
+        
+    - when: '{{repl ConfigOptionEquals "deploy_postgres" "0"}}'
+      recursiveMerge: true
+      values:
+        postgres:
+          uri: '{{repl ConfigOption "postgres_external_uri" }}'
+
+    - when: '{{repl ConfigOptionEquals "service_type" "load_balancer"}}'
+      recursiveMerge: true
+      values:
+        nginx:
+          service:
+            type: LoadBalancer
+
+    - when: '{{repl ConfigOptionEquals "service_type" "node_port"}}'
+      recursiveMerge: true
+      values:
+        nginx:
+          service:
+            type: NodePort
+            nodePort:
+              port: repl{{ ConfigOption "node_port_port" }}
+
+    - when: '{{repl ConfigOptionEquals "certificate_source" "upload_existing"}}'
+      recursiveMerge: true
+      values:
+        service:
+          tls:
+            enabled: true
+            cert: repl{{ ConfigOptionData "tls_cert" | nindent 14 }}
+            key: repl{{ ConfigOptionData "tls_key" | nindent 14 }}
+            ca: repl{{ ConfigOptionData "tls_ca" | nindent 14 }}
+        
+    - when: '{{repl ConfigOptionEquals "certificate_source" "generate_internal"}}'
+      recursiveMerge: true
+      values:
+        service:
+          tls:
+            enabled: true
+            ca: |-
+              {{repl \$ca := genCA (LicenseFieldValue "customerName") 365 }}
+              {{repl \$ca.Cert | Base64Encode}}
+            cert: |-
+              {{repl \$cert := genSignedCert (ConfigOption "slackernews_domain") nil (list (ConfigOption "slackernews_domain")) 365 \$ca }}
+              {{repl \$cert.Cert | nindent 14 }}
+            key: |-
+              {{repl \$cert.Key | nindent 14 }}
+CHART_MANIFEST
+
+# update the Helm chart version and add the Replicated SDK
+yq -i '.version = "0.6.2"' slackernews/Chart.yaml
+yq -i ".dependencies = []" slackernews/Chart.yaml
+yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version}\"}" slackernews/Chart.yaml
+
+# update helm dependencies
+helm dependency update slackernews
+
+# release the app to the Unstable channel
+replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.2 \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${REPLICATED_API_TOKEN}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[] | select( .slug == "'${REPLICATED_APP}'" ) | .channels[] | select( .name == "Unstable" ) | .releaseSequence')
+
+# promote to the other channels
+replicated release promote ${release_sequence} Beta --version 0.6.2 \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+replicated release promote ${release_sequence} Stable --version 0.6.2 \
+  --release-notes "Collects configuration from the user and provides it to Helm" \
+  --app ${REPLICATED_APP} --token ${REPLICATED_API_TOKEN}
+
+# make sure all files in the release directory are owned by the replicant user
+chown -R replicant:replicant ${HOME_DIR}/release
+
+# enable embedded cluster installation for the customer
+updated_customer=$(curl --header 'Accept: application/json' \
+        --header "Authorization: ${api_token}" \
+        "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" \
+  |  jq -c --arg appId "${app_id}" '.customer | {
+        "app_id": $appId, 
+        "channel_id": .channels[0].id, 
+        "custom_id": .customId,
+        "email": .email, 
+        "entitlementValues": .entitlements,
+        "expires_at": .expiresAt, 
+        "is_airgap_enabled": .airgap, 
+        "is_disaster_recovery_supported": true, 
+        "is_embedded_cluster_download_enabled": true, 
+        "is_geoaxis_supported": .isGeoaxisSupported, 
+        "is_gitops_supported": .isGitopsSupported, 
+        "is_identity_service_supported": .isIdentityServiceSupported, 
+        "is_kots_install_enabled": true, 
+        "is_snapshot_supported": .isSnapshotSupported, 
+        "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, 
+        "name": .name, 
+        "type": .type
+      }')
+
+# update the customer
+curl --request PUT \
+  --url "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: ${api_token}" \
+  --data "${updated_customer}"
+
