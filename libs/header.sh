@@ -10,7 +10,7 @@ show_credentials () {
 }
 
 get_replicated_sdk_version () {
-  set +eu pipefail
+  set +eu
   replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
 
   # if we don't already have a token, fetch one
@@ -49,15 +49,15 @@ get_replicated_sdk_version () {
 }
 
 get_embedded_cluster_version () {
-  set +eu pipefail
-  replicated_sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+  set +eu
+  embedded_cluster_version=$(agent variable get EMBEDDED_CLUSTER_VERSION)
 
   # if we don't already have a token, fetch one
   if [[ -z "$replicated_sdk_version" ]]; then
     embedded_cluster_version=$(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
   fi
 
-  set -eu pipefail
+  set -eu 
   echo ${embedded_cluster_version}
 }
 
