@@ -53,7 +53,7 @@ get_embedded_cluster_version () {
   embedded_cluster_version=$(agent variable get EMBEDDED_CLUSTER_VERSION)
 
   # if we don't already have a token, fetch one
-  if [[ -z "$replicated_sdk_version" ]]; then
+  if [[ -z "$embedded_cluster_version" ]]; then
     embedded_cluster_version=$(curl -s "https://api.github.com/repos/replicatedhq/embedded-cluster/releases/latest" | jq -r .tag_name)
   fi
 
