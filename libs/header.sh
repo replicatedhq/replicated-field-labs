@@ -135,7 +135,7 @@ get_license_id () {
 }
 
 get_admin_console_password() {
-  password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}:${INSTUQT_CHALLENGE_ID}" | sha256sum)
+  password=$(echo -n "${INSTRUQT_PARTICIPANT_ID}:${INSTRUQT_CHALLENGE_ID}" | sha256sum)
   echo ${password::20}
 }
 
