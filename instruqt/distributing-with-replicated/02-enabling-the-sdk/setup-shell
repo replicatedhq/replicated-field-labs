@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+set -euo pipefail
+source /etc/profile.d/header.sh
 
 # make sure the release directory is there
 mkdir /home/replicant/release
@@ -10,4 +11,4 @@ chmod 755 /home/replicant/release
 
 # get the current SDK version
 replicated_sdk_version=$(get_replicated_sdk_version)
-agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version#?}
+agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}

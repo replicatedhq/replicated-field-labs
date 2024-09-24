@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+set -euo pipefail
 source /etc/profile.d/header.sh
 
 result=0
