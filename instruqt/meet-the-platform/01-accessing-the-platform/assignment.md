@@ -1,6 +1,6 @@
 ---
 slug: accessing-the-platform
-id: umt7hoxqedg2
+id: ltd8diz5rbjy
 type: challenge
 title: The Replicated Platform
 teaser: Learn abot and connect to the Replicated Platform
@@ -14,7 +14,7 @@ notes:
     will introduce you to the Platform and show you how to access the Vendor
     Portal.
 tabs:
-- id: kp9tdilwjwt0
+- id: 2xdp0igm86ve
   title: Shell
   type: terminal
   hostname: shell

@@ -1,6 +1,6 @@
-slug: meet-the-platform
-id: bocfnxay34uj
-title: Meet the Replicated Platform
+slug: meet-the-platform-dev
+id: mnxnf6jfjqvx
+title: DEV - Meet the Replicated Platform
 teaser: |-
   A template track for sharing the shell environment across
   challenges
@@ -24,6 +24,7 @@ description: |-
   check script in the first challenge for an example.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
+- dev
 - template
 owner: replicated
 developers:
@@ -40,4 +41,4 @@ lab_config:
   feedback_tab_enabled: false
   loadingMessages: true
   hideStopButton: false
-checksum: "11533550873014008068"
+checksum: "10677084401896373995"
