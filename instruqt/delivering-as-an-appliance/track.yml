@@ -1,6 +1,6 @@
 slug: delivering-as-an-appliance
 id: pbzwbwd3m2aw
-title: BETA - Delivering Your Application as a Kubernetes Appliance
+title: Delivering Your Application as a Kubernetes Appliance
 teaser: |-
   Package your application as a Kubernetes appliance to simplify
   installation and operation.
