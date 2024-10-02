@@ -15,9 +15,10 @@ notes:
     Portal.
 tabs:
 - id: 2xdp0igm86ve
-  title: Shell
-  type: terminal
-  hostname: shell
+  title: Vendor Portal
+  type: website
+  url: https://vendor.replicated.com
+  new_window: true
 difficulty: basic
 timelimit: 600
 ---
@@ -35,4 +36,17 @@ customer and install [SlackerNews](https://slackernews.io), an application
 distributed with Replicated. From there, we'll show you how you'll work with
 customers having a support issue, and how they'll install a fix.
 
+Connecting to the Vendor Portal
+===============================
 
+Select the "Vendor Portal" tab and log in with the following credentials:
+
+Username: `[[ Instruqt-Var key="USERNAME" hostname="shell" ]]`<br/>
+Password: `[[ Instruqt-Var key="PASSWORD" hostname="shell" ]]`
+
+You'll land on the "Channels" page that shows the default release channels for
+the Platform. Release channels connect releases of your software to the
+customers who can install them. There are three default channels, though you
+can create as many as you need. The [Distributing Your Application with
+Replicated](https://play.instruqt.com/replicated/tracks/distributing-with-replicated)
+lab for more details.
