@@ -26,20 +26,24 @@ ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
 source /etc/profile.d/header.sh
 
-# there's only one app created by the automation, so just grab the first in the list
-api_token=$(get_api_token)
-app_slug=$(get_app_slug)
-app_id=$(get_app_id)
-replicated_sdk_version=$(get_replicated_sdk_version)
-embedded_cluster_version=$(get_embedded_cluster_version)
-customer_id=$(get_customer_id Omozan)
-
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
+
+api_token=$(get_api_token)
 agent variable set REPLICATED_API_TOKEN ${api_token}
+export REPLICATED_API_TOKEN=${api_token}
+
+app_id=$(get_app_id)
+app_slug=$(get_app_slug)
 agent variable set REPLICATED_APP ${app_slug}
+export REPLICATED_APP=${app_slug}
+
+replicated_sdk_version=$(get_replicated_sdk_version)
 agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
+
+embedded_cluster_version=$(get_embedded_cluster_version)
 agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
+customer_id=$(get_customer_id Omozan)
 agent variable set CUSTOMER_ID ${customer_id}
 
 ## release the application with the Replicated SDK

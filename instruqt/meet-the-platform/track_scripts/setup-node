@@ -18,19 +18,26 @@ while ! ssh shell true; do
 done
 
 # use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+# TO DO: before merge switch to use `main`
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/meeting-the-replicated-platform/libs/header.sh
 source /etc/profile.d/header.sh
-
-api_token=$(get_api_token)
-app_slug=$(get_app_slug)
-app_id=$(get_app_id)
-replicated_sdk_version=$(get_replicated_sdk_version)
-embedded_cluster_version=$(get_embedded_cluster_version)
 
 agent variable set USERNAME $(get_username)
 agent variable set PASSWORD $(get_password)
-agent variable set SLACKERNEWS_DOMAIN $(get_slackernews_domain)
+
+api_token=$(get_api_token)
 agent variable set REPLICATED_API_TOKEN ${api_token}
+
+app_id=$(get_app_id)
+app_slug=$(get_app_slug)
 agent variable set REPLICATED_APP ${app_slug}
+
+replicated_sdk_version=$(get_replicated_sdk_version)
 agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
+
+embedded_cluster_version=$(get_embedded_cluster_version)
 agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
+
+customer_id=$(get_customer_id Omozan)
+agent variable set CUSTOMER_ID ${customer_id}
+
