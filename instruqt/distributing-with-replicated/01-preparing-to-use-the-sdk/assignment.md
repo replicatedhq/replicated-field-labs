@@ -8,7 +8,7 @@ notes:
 - type: text
   contents: Let's get ready to use the Replicated SDK
 tabs:
-- id: bzx3zxvqysjk
+- id: oaa7v3tv4y1k
   title: Shell
   type: terminal
   hostname: shell

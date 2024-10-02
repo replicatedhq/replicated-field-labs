@@ -8,11 +8,11 @@ notes:
 - type: text
   contents: Introducing the Replicated SDK into your application
 tabs:
-- id: rrfhqxfoycp1
+- id: lep5xpebtpkw
   title: Shell
   type: terminal
   hostname: shell
-- id: nm09u4jztosq
+- id: cnhzcdcy5ots
   title: Manifest Editor
   type: code
   hostname: shell
