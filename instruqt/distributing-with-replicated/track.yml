@@ -30,4 +30,6 @@ lab_config:
   loadingMessages: true
   lab_v2: false
   hideStopButton: false
-checksum: "4234431804584561082"
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 33
+checksum: "9648206013188099501"

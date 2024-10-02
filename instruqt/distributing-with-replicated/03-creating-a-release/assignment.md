@@ -8,7 +8,7 @@ notes:
 - type: text
   contents: It's time to distribute our application with Replicated
 tabs:
-- id: 5ftz4pxt99hc
+- id: y93opy8anppl
   title: Shell
   type: terminal
   hostname: shell
