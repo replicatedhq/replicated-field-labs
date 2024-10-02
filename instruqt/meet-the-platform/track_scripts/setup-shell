@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+set -euxo pipefail
 HOME_DIR=/home/replicant
 
 while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
@@ -23,7 +23,7 @@ ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # use our shared libary in setup scripts
 # TO DO: Change to `main` when preparing to merge
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/meeting-the-replicated-platform/libs/header.sh
 source /etc/profile.d/header.sh
 
 agent variable set USERNAME $(get_username)
@@ -46,12 +46,20 @@ agent variable set EMBEDDED_CLUSTER_VERSION ${embedded_cluster_version}
 customer_id=$(get_customer_id Omozan)
 agent variable set CUSTOMER_ID ${customer_id}
 
+customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
+agent variable set CUSTOMER_EMAIL ${customer_email}
+
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
+agent variable set REGISTRY_PASSWORD ${registry_password}
+
 ## release the application with the Replicated SDK
 cd ${HOME_DIR}
 mkdir ${HOME_DIR}/release
 
 get_slackernews
 
+mkdir -p ${HOME_DIR}/slackernews/templates/troubleshoot
 # add preflight checks and support bundle
 cat <<SLACKERNEWS_PREFLIGHTS > ${HOME_DIR}/slackernews/templates/troubleshoot/preflights.yaml
 apiVersion: v1
@@ -635,8 +643,9 @@ yq -i '.version = "0.6.2"' slackernews/Chart.yaml
 yq -i ".dependencies = []" slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version}\"}" slackernews/Chart.yaml
 
-# update helm dependencies
+# update helm dependencies and package the chart into the Replicated release
 helm dependency update slackernews
+helm package slackernews --destination release
 
 # release the app to the Unstable channel
 replicated release create --promote Unstable --yaml-dir ${HOME_DIR}/release --version 0.6.2 \
