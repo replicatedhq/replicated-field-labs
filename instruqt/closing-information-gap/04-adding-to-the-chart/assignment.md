@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: Time to add your support bundle definition to the Slackernews Helm chart
 tabs:
-- title: Shell
+- id: gvcfeq0xolb5
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: xs2tflck3nhu
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant

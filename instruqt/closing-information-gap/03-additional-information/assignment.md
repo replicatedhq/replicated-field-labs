@@ -11,10 +11,12 @@ notes:
   contents: |
     Gather and analyze additional information to get a more completed picture
 tabs:
-- title: Shell
+- id: cnpgj5jxyaew
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: vleuag7nhqbp
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant

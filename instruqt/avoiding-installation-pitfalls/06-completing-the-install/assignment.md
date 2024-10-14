@@ -8,14 +8,17 @@ notes:
 - type: text
   contents: Completing the installation when cluster capacity is increased
 tabs:
-- title: Shell
+- id: hvpbi534iipc
+  title: Shell
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: so6uwiwpvwam
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Slackernews
+- id: 8f7zxmrg2vcw
+  title: Slackernews
   type: service
   hostname: cluster
   port: 30443

@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Establish instant context when a support request comes in
 tabs:
-- title: Vendor Portal
+- id: njr2qrhr1amp
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

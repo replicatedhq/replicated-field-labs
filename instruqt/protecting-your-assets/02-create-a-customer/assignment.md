@@ -9,11 +9,13 @@ notes:
   contents: |
     Add a customer to your application and configure their license
 tabs:
-- title: Vendor Portal
+- id: x9hlwddp7jly
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Shell
+- id: gqxwmse9cfru
+  title: Shell
   type: terminal
   hostname: shell
   workdir: /home/replicant

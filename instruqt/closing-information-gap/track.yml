@@ -30,6 +30,11 @@ lab_config:
   overlay: false
   width: 33
   position: right
+  sidebar_enabled: true
   feedback_recap_enabled: true
+  feedback_tab_enabled: false
   loadingMessages: true
-checksum: "1869930288353195066"
+  hideStopButton: false
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 33
+checksum: "10403499794541694349"
