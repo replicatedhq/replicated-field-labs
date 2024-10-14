@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Troubleshooting the unavailable instance using the support bundle
 tabs:
-- title: Shell
+- id: 3empyvcmm8td
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic
