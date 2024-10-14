@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Understanding the Replicated license
 tabs:
-- title: License File
+- id: koeopqurczds
+  title: License File
   type: code
   hostname: shell
   path: /home/replicant

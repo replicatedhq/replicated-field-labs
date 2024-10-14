@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: Experience how your customer executes your preflight checks
 tabs:
-- title: Shell
+- id: rszt3nfzheah
+  title: Shell
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: 8hyv0jpufvyq
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

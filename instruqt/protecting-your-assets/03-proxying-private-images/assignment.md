@@ -9,15 +9,18 @@ notes:
   contents: |
     Share your private images without exposting your private registry to your customers
 tabs:
-- title: Vendor Portal
+- id: poakxpyplmkr
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Slackernews Chart
+- id: yxrpecqzosxy
+  title: Slackernews Chart
   type: code
   hostname: shell
   path: /home/replicant
-- title: Shell
+- id: 34ljfxan4eaw
+  title: Shell
   type: terminal
   hostname: shell
   workdir: /home/replicant

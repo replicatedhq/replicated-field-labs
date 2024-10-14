@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: How else can you distribute your support bundle
 tabs:
-- title: Shell
+- id: t7gxs2jowsje
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: e1zxlzigexon
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant

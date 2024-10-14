@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Let's create a release to distribute the support bundle
 tabs:
-- title: Shell
+- id: idcf1k25yddg
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic

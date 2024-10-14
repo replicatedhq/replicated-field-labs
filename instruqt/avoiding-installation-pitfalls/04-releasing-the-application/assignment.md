@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Time to release an update with our preflight checks
 tabs:
-- title: Shell
+- id: hue1wtnboudc
+  title: Shell
   type: terminal
   hostname: shell
 difficulty: basic

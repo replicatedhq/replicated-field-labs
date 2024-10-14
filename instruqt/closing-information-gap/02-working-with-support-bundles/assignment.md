@@ -10,10 +10,12 @@ notes:
 - type: text
   contents: Let's learn about Support Bundles
 tabs:
-- title: Shell
+- id: i3e2bpng3asx
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: lbfyllzhfkz6
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home

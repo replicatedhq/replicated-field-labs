@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: Time to add our preflight checks to the Slackernews Helm chart
 tabs:
-- title: Shell
+- id: 8jjygkef146j
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: bjyujpl2opc6
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant

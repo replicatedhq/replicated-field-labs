@@ -8,15 +8,18 @@ notes:
 - type: text
   contents: Let's limit how the capabilities of a trial license for our application
 tabs:
-- title: Shell
+- id: h86j4ktlvfyu
+  title: Shell
   type: terminal
   hostname: shell
   workdir: /home/replicant
-- title: Slackernews Chart
+- id: hh2yemo75vka
+  title: Slackernews Chart
   type: code
   hostname: shell
   path: /home/replicant
-- title: Vendor Portal
+- id: gcyi9rt0jaw7
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
