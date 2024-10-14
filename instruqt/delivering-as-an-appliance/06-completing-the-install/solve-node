@@ -4,14 +4,16 @@
 set -euxo pipefail
 source /etc/profile.d/header.sh
 
+ec_install_dir="/var/lib/embedded-cluster"
+
 app_slug=$(get_app_slug)
 app_id=$(get_app_id)
 api_token=$(agent variable get REPLICATED_API_TOKEN)
 customer_id=$(agent variable get CUSTOMER_ID)
 license_id=$(agent variable get LICENSE_ID)
 
-export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
-export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+export KUBECONFIG="${ec_install_dir}/k0s/pki/admin.conf"
+export PATH="${ec_install_dir}/bin:${PATH}"
 
 # prepare values for installation
 cat <<CONFIG_VALUES > /tmp/config-values.yaml

@@ -30,7 +30,9 @@ you need to work with the Platform from the web, the command-line, and
 anywhere you can invoke its APIs.
 
 This lab will introduce you to the Replicated Platform through the Vendor
-Portal. After getting to know the Vendor Portal, you'll take the role of the
-customers and install [SlackerNews](https://slackernews.io), an application
+Portal. After getting to know the Vendor Portal, you'll take the role of a
+customer and install [SlackerNews](https://slackernews.io), an application
 distributed with Replicated. From there, we'll show you how you'll work with
 customers having a support issue, and how they'll install a fix.
+
+
