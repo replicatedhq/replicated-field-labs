@@ -31,7 +31,7 @@ spec:
         and the user who can administer it.
 
         Users that you specify under **Admin Users** will be able to access the
-        Slackernews adminstrative console at `/admin`, allowing them to manage
+        Slackernews adminstrative console at \`/admin\`, allowing them to manage
         content, users, and settings. Changes will take effect the next time
         they are active in the Slackernews application.
       items:
@@ -39,7 +39,7 @@ spec:
           title: Ingress Hostname
           help_text: >
             The domain name at which you'll access SlackerNews. Don't include
-            the `https://` or any path elements.
+            the \`https://\` or any path elements.
           type: text
           required: true
           validation:
