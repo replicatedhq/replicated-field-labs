@@ -4,9 +4,10 @@
 set -euxo pipefail
 source /etc/profile.d/header.sh
 
+ec_install_dir="/var/lib/embedded-cluster"
 app_slug=$(get_app_slug)
-export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
-export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+export KUBECONFIG="${ec_install_dir}/k0s/pki/admin.conf"
+export PATH="${ec_install_dir}/bin:${PATH}"
 
 result=0
 status=$(kubectl get deploy --namespace kotsadm slackernews --output json | jq -r '.status.conditions[] | select( .type == "Available" ) | .status')

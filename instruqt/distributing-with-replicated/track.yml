@@ -28,8 +28,7 @@ lab_config:
   feedback_recap_enabled: true
   feedback_tab_enabled: false
   loadingMessages: true
-  lab_v2: false
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 33
-checksum: "9648206013188099501"
+checksum: "2082361330332165496"
