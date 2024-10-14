@@ -10,11 +10,13 @@ notes:
   contents: |
     Now we'll report the current license counts to the Vendor Portal
 tabs:
-- title: Shell
+- id: lzrwoz9dnvgx
+  title: Shell
   type: terminal
   hostname: shell
   workdir: /home/replicant
-- title: Vendor Portal
+- id: 6evm0inhnqdh
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

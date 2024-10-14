@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Expanding the license for your specific needs
 tabs:
-- title: Vendor Portal
+- id: 4vnaoq4icpw7
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

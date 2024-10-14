@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Learn how to validate the entitlements we just created
 tabs:
-- title: Shell
+- id: 9xsnahmfmble
+  title: Shell
   type: terminal
   hostname: shell
   workdir: /home/replicant
