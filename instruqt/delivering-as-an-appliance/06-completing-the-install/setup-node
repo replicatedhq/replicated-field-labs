@@ -17,8 +17,9 @@ fi
 
 # download the Replicated KOTS CLI, which plugs into the `kubectl` command
 # and provides a subcommend to reset the password for the admin console
-mkdir -p /var/lib/embedded-cluster/bin
-export REPL_INSTALL_PATH=/var/lib/embedded-cluster/bin
+ec_install_dir=/var/lib/embedded-cluster
+mkdir -p ${ec_install_dir}/bin
+export REPL_INSTALL_PATH=${ec_install_dir}/bin
 curl https://kots.io/install | bash
 
 agent variable set SLACKERNEWS_DOMAIN $(get_slackernews_domain)
