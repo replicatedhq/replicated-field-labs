@@ -8,10 +8,12 @@ notes:
 - type: text
   contents: Making sure a cluster has sufficient resources to run your application
 tabs:
-- title: Shell
+- id: tkmoixrrxpfp
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: qorzyzbpqu6g
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant

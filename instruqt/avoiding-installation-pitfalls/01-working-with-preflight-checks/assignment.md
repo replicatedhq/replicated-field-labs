@@ -10,10 +10,12 @@ notes:
 - type: text
   contents: Let's learn about Preflights
 tabs:
-- title: Shell
+- id: mrf6knj0wyfn
+  title: Shell
   type: terminal
   hostname: shell
-- title: Manifest Editor
+- id: xze3brnl78ss
+  title: Manifest Editor
   type: code
   hostname: shell
   path: /home
