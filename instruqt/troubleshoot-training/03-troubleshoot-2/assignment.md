@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Time to fix another problem...
 tabs:
-- title: Workstation
+- id: i8rejw22dqrt
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: intermediate
 timelimit: 3600
+enhanced_loading: null
 ---
 The customer opens another issue, but this time pods seem to be crashing.
 

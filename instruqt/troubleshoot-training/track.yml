@@ -7,18 +7,23 @@ description: |+
   In this track, we invite you to learn how to triage, diagnose, and solve problems with the replicated platform and support tooling.
 
 icon: https://cdn.instruqt.com/assets/templates/kubernetes.png
-level: intermediate
 tags:
-- instructor-led
+- troubleshoot
+- vendor
+- embedded-cluster
+- self-paced
 owner: replicated
 developers:
-- danj@replicated.com
 - ada@replicated.com
+- danj@replicated.com
 lab_config:
-  overlay: false
-  width: 33
-  position: right
+  sidebar_enabled: true
   feedback_recap_enabled: true
+  feedback_tab_enabled: false
   loadingMessages: true
+  override_challenge_layout: false
   hideStopButton: false
-checksum: "10084089043640894063"
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 33
+checksum: "9516183785189585985"
+enhanced_loading: false

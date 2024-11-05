@@ -5,7 +5,7 @@
 rm -rf /root/support-bundle*
 rm -rf /root/solution*
 
-curl https://spooky.academy/support_bundles/troubleshoot_5_support_bundle.tar.gz -o support-bundle.tar.gz
+curl https://cre-training-assets.s3.us-west-1.amazonaws.com/troubleshoot_5_support_bundle.tar.gz -o support-bundle.tar.gz
 
 cd /opt/
 tee quiz.go << EOF
