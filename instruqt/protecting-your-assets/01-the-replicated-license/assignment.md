@@ -15,6 +15,7 @@ tabs:
   path: /home/replicant
 difficulty: basic
 timelimit: 400
+enhanced_loading: null
 ---
 
 👋 Introduction

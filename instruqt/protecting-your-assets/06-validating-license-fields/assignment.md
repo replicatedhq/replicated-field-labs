@@ -15,6 +15,7 @@ tabs:
   workdir: /home/replicant
 difficulty: basic
 timelimit: 900
+enhanced_loading: null
 ---
 
 The Replicated SDK provides an in-cluster API for the Replicated Platform. One
