@@ -26,6 +26,7 @@ tabs:
   workdir: /home/replicant
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 One of the core features of the Replicated Platform is its proxy registry. The
