@@ -22,6 +22,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 Telemetry is a core feature of the Replicated SDK. The lab [Closing the Support
