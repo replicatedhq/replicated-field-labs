@@ -21,6 +21,7 @@ tabs:
   workdir: /home/replicant
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 
@@ -53,7 +54,7 @@ For the purpose of the lab, click the "+ Create Customer" button to create
 
 ![Creating a Customer](../assets/create-customer-button.png)
 
-Enter the name "NitFlex" and assign them to the `Stable` channel. They've been
+Enter the name "NitFlex" and assign them to the `Stable` channel. They'll be
 trying your software for two months, so let's make sure we capture the expiration
 date. We also need an email for them to login and install your Helm chart. Note
 that we never use that email, it's your customer, not ours.
@@ -67,6 +68,11 @@ You should also specify that they are a trial customer, so select the "Trial"
 option for the customer type and save your changes. The process will be
 the same for a new paid customer with a longer expiration date and a "Paid"
 license type.
+
+Lastly, be sure to specify the type of installations they are allowed to
+make. Choose "Existing Cluster (Helm CLI)" and save your changes.
+
+![Install Types](../assets/install-types.png)
 
 Using the License
 =================

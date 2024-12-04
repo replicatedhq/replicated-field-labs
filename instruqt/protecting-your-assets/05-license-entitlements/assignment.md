@@ -15,6 +15,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 Each customer license has a set of attributes that supports common licensing
@@ -177,11 +178,11 @@ license field" or "Create your first license field" to add a field.
 
 Fill in the form with the following details and click "Create".
 
-Field: `member_count_max`
-Title: `Member Count`
-Type: `Integer`
-Default: `100`
-Required: checked
+Field: `member_count_max`<br/>
+Title: `Member Count`<br/>
+Type: `Integer`<br/>
+Default: `100`<br/>
+Required: checked<br/>
 
 This adds our Slack team member count entitlement to the license and makes it
 required on all licenses. Providing a default simplifies setup if the

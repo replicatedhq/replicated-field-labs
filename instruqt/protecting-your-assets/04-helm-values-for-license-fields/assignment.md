@@ -25,6 +25,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 When you distribute your software with Replicated, Replicated injects the

@@ -68,7 +68,8 @@ as a "Trial" customer and set up the expiration date and customer
 email as follows:
 
 Expiration Date: `[[ Instruqt-Var key="LICENSE_EXPIRY" hostname="shell" ]]`<br/>
-Customer Email: `[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`
+Customer Email: `[[ Instruqt-Var key="CUSTOMER_EMAIL" hostname="shell" ]]`<br/>
+Install Type: "Existing Cluster (Helm CLI)"
 
 ![Customer Details](../assets/new-customer-details.png)
 
