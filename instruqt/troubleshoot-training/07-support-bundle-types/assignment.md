@@ -13,5 +13,6 @@ solution:
 - 1
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 If a customer's cluster is unresponsive, what is the easiest way to inspect the environment
