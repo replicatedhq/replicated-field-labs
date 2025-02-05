@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Time to fix the problem...
 tabs:
-- title: Workstation
+- id: g7eab4ov6vwd
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: advanced
 timelimit: 3600
+enhanced_loading: null
 ---
 A new issue has been reported saying that there are DNS resolution failures in some Pod logs.
 

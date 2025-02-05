@@ -13,6 +13,7 @@ solution:
 - 2
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 One of your customers is under strict governmental compliance. they have an issue in one of their clusters and inform you that they cannot send a support bundle because it would contain too much sensitive information.
 

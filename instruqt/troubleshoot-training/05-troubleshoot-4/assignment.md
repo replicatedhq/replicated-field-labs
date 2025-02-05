@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Time to fix the problem...
 tabs:
-- title: Workstation
+- id: npaysfojmcne
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: intermediate
 timelimit: 3600
+enhanced_loading: null
 ---
 You get a new report from a customer saying that many pods are failing; some may display Errors, while others may be Evicted or Pending, or even in an Unknown state.
 
