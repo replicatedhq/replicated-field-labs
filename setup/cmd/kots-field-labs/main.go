@@ -40,7 +40,7 @@ func HandleRequest(event fieldlabs.LambdaEvent) error {
 		APIOrigin:       "https://api.replicated.com/vendor",
 		GraphQLOrigin:   "https://g.replicated.com/graphql",
 		KURLSHOrigin:    "https://kurl.sh",
-		IDOrigin:        "https://id.replicated.com",
+		IDOrigin:        "https://api.replicated.com/vendor",
 	}
 
 	action, ok := actions[event.Action]
