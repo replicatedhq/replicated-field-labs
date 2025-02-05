@@ -60,7 +60,7 @@ func GetParams() (*fieldlabs.Params, error) {
 		params.KURLSHOrigin = "https://kurl.sh"
 	}
 	if params.IDOrigin == "" {
-		params.IDOrigin = "https://id.replicated.com"
+		params.IDOrigin = "https://api.replicated.com/vendor"
 	}
 
 	actionString := os.Getenv("REPLICATED_ACTION")
