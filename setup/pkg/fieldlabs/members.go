@@ -104,47 +104,36 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 }
 
 func (e *EnvironmentManager) addMember(members map[string]MemberList, policies map[string]string) error {
-	inviteEmail := e.Params.ParticipantId + "@replicated-labs.com"
-
-  e.Log.Verbose() 
-  e.Log.Debug("Inviting %s", inviteEmail)
+  inviteEmail := e.Params.ParticipantId + "@replicated-labs.com"
 	err := e.inviteMember(inviteEmail, members, policies)
 	if err != nil {
 		return err
 	}
 
 	// Signup
-  e.Log.Debug("Signing up %s", inviteEmail)
 	sr, err := e.signupMember(inviteEmail)
 	if err != nil {
 		return err
 	}
-  inviteId := sr.Token
 
 	// Verify
-  signupResponseJson, _ := json.Marshal(sr)
-  e.Log.Debug("Verfiying %s", signupResponseJson)
 	vr, err := e.verifyMember(sr)
 	if err != nil {
 		return err
 	}
 
 	// Capture Invite Id
-  verifyResponseJson, _ := json.Marshal(vr)
-  e.Log.Debug("Capturing %s with %s", inviteId, verifyResponseJson)
-	invite, err := e.captureInvite(inviteId, vr)
+	invite, err := e.captureInvite(vr)
 	if err != nil {
 		return err
 	}
 
 	// Accept Invite
-  e.Log.Debug("Accepting invite %s for participant %s", inviteId, e.Params.ParticipantId)
-	err = e.acceptInvite(invite.Invite.Id, e.Params.ParticipantId, vr)
+	err = e.acceptInvite(invite, e.Params.ParticipantId, vr)
 	if err != nil {
 		return err
 	}
 	return nil
-
 }
 
 type AcceptBody struct {
@@ -189,20 +178,15 @@ func (e *EnvironmentManager) acceptInvite(inviteId string, participantId string,
 	return nil
 }
 
-type Invite struct {
-  Invite struct {
-    Id           string `json:"id"`
-    Email        string `json:"email"`
-    HasConflict  string `json:"has_conflict"`
-  } `json:"invite"`
-	Team struct {
-		Id           string `json:"id"`
-		Name         string `json:"name"`
-		InviteId     string `json:"invite_id"`
-	} `json:"team"`
+type InvitedTeams struct {
+	Teams []struct {
+		Id       string `json:"id"`
+		Name     string `json:"name"`
+		InviteId string `json:"invite_id"`
+	} `json:"invited_teams"`
 }
 
-func (e *EnvironmentManager) captureInvite(inviteId string, vr *VerifyResponse) (*Invite, error) {
+func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*Invite, error) {
   e.Log.Verbose()
 	req, err := http.NewRequest(
 		"GET",
