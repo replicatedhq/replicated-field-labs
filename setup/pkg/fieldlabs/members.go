@@ -60,8 +60,14 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 		return nil, errors.Wrap(err, "get members")
 	}
 
+  membersJson, _ := json.Marshal(members)
+  fmt.Sprintf("members: %s", membersJson)
+
 	membersMap := make(map[string]MemberList)
 	for i := 0; i < len(members); i += 1 {
+  memberJson, _ := json.Marshal(members)
+    fmt.Sprintf("member: %s", memberJson)
+    fmt.Sprintf("member: %s", members[i].Email)
 		membersMap[members[i].Email] = members[i]
 	}
 	return membersMap, nil
@@ -69,7 +75,7 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 
 // Delete team members created with multi-player mode
 func (e *EnvironmentManager) DeleteMember(id string) error {
-	url := fmt.Sprintf("%s/v1/team/member?user_id=%s", e.Params.IDOrigin, id)
+	url := fmt.Sprintf("%s/v1/team/member/%s", e.Params.IDOrigin, id)
 	req, err := http.NewRequest(
 		"DELETE",
 		url,
@@ -77,7 +83,7 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 	)
 
 	if err != nil {
-		return err
+		return errors.Wrap(err, fmt.Sprintf("DELETE %s/v1/team/member?user_id=%s", e.Params.IDOrigin, id))
 	}
 	req.Header.Set("Authorization", e.Params.SessionToken)
 	req.Header.Set("Accept", "application/json")
@@ -92,38 +98,48 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 		panic(err.Error())
 	}
 	if resp.StatusCode != 204 {
-		return fmt.Errorf("GET /v1/team/member %d: %s", resp.StatusCode, body)
+		return fmt.Errorf("DELETE /v1/team/member/%s %d: %s", id, resp.StatusCode, body)
 	}
 	return nil
 }
 
 func (e *EnvironmentManager) addMember(members map[string]MemberList, policies map[string]string) error {
 	inviteEmail := e.Params.ParticipantId + "@replicated-labs.com"
+
+  e.Log.Verbose() 
+  e.Log.Debug("Inviting %s", inviteEmail)
 	err := e.inviteMember(inviteEmail, members, policies)
 	if err != nil {
 		return err
 	}
 
 	// Signup
+  e.Log.Debug("Signing up %s", inviteEmail)
 	sr, err := e.signupMember(inviteEmail)
 	if err != nil {
 		return err
 	}
+  inviteId := sr.Token
 
 	// Verify
+  signupResponseJson, _ := json.Marshal(sr)
+  e.Log.Debug("Verfiying %s", signupResponseJson)
 	vr, err := e.verifyMember(sr)
 	if err != nil {
 		return err
 	}
 
 	// Capture Invite Id
-	invite, err := e.captureInvite(vr)
+  verifyResponseJson, _ := json.Marshal(vr)
+  e.Log.Debug("Capturing %s with %s", inviteId, verifyResponseJson)
+	invite, err := e.captureInvite(inviteId, vr)
 	if err != nil {
 		return err
 	}
 
 	// Accept Invite
-	err = e.acceptInvite(invite, e.Params.ParticipantId, vr)
+  e.Log.Debug("Accepting invite %s for participant %s", inviteId, e.Params.ParticipantId)
+	err = e.acceptInvite(invite.Invite.Id, e.Params.ParticipantId, vr)
 	if err != nil {
 		return err
 	}
@@ -140,17 +156,18 @@ type AcceptBody struct {
 	FromTeamSelection bool   `json:"from_team_selection"`
 }
 
-func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
+func (e *EnvironmentManager) acceptInvite(inviteId string, participantId string, vr *VerifyResponse) error {
 	h := sha256.Sum256([]byte(participantId))
 	sum := fmt.Sprintf("%x", h)
-	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: string(sum[0:20]), ReplaceAccount: false, FromTeamSelection: true}
+
+	ab := AcceptBody{InviteId: inviteId, FirstName: "Repl", LastName: "Replicated", Password: string(sum[0:20]), ReplaceAccount: false, FromTeamSelection: true}
 	acceptBodyBytes, err := json.Marshal(ab)
 	if err != nil {
 		return errors.Wrap(err, "marshal accept body")
 	}
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/signup/accept-invite", e.Params.IDOrigin),
+		fmt.Sprintf("%s/vendor/v1/signup/accept-invite", e.Params.IDOrigin),
 		bytes.NewReader(acceptBodyBytes),
 	)
 	if err != nil {
@@ -172,18 +189,24 @@ func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId st
 	return nil
 }
 
-type InvitedTeams struct {
-	Teams []struct {
-		Id       string `json:"id"`
-		Name     string `json:"name"`
-		InviteId string `json:"invite_id"`
-	} `json:"invited_teams"`
+type Invite struct {
+  Invite struct {
+    Id           string `json:"id"`
+    Email        string `json:"email"`
+    HasConflict  string `json:"has_conflict"`
+  } `json:"invite"`
+	Team struct {
+		Id           string `json:"id"`
+		Name         string `json:"name"`
+		InviteId     string `json:"invite_id"`
+	} `json:"team"`
 }
 
-func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
+func (e *EnvironmentManager) captureInvite(inviteId string, vr *VerifyResponse) (*Invite, error) {
+  e.Log.Verbose()
 	req, err := http.NewRequest(
 		"GET",
-		fmt.Sprintf("%s/v1/signup/teams", e.Params.IDOrigin),
+		fmt.Sprintf("%s/vendor/v1/signup/teams", e.Params.IDOrigin, inviteId),
 		nil,
 	)
 	if err != nil {
@@ -194,19 +217,20 @@ func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, e
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, errors.Wrap(err, "send signup teams request")
+		return nil, errors.Wrap(err, "getting the invite")
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/teams %d: %s", resp.StatusCode, body)
+		return nil, fmt.Errorf("GET /v1/invite/%s %d: %s", inviteId, resp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
+  e.Log.Debug(fmt.Sprintf("GET /v1/invite/%s %d: %s", inviteId, resp.StatusCode, bodyBytes))
 	if err != nil {
 		return nil, errors.Wrap(err, "read body")
 	}
-	var body InvitedTeams
+	var body Invite
 	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
 		return nil, errors.Wrap(err, "decode body")
 	}
@@ -227,7 +251,7 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 	}
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/signup/verify", e.Params.IDOrigin),
+		fmt.Sprintf("%s/vendor/v1/signup/verify", e.Params.IDOrigin),
 		bytes.NewReader(verifyBodyBytes),
 	)
 	if err != nil {
@@ -244,7 +268,7 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 
 	if resp.StatusCode != 201 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/verify %d: %s", resp.StatusCode, body)
+		return nil, fmt.Errorf("POST /vendor/v1/signup/verify %d: %s", resp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -254,6 +278,7 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
 		return nil, errors.Wrap(err, "decode body")
 	}
+  e.Log.Debug(fmt.Sprintf("POST /vendor/v1/signup/verify %d: %s", resp.StatusCode, body))
 	return &body, nil
 }
 
@@ -271,7 +296,7 @@ func (e *EnvironmentManager) signupMember(inviteEmail string) (*SignupResponse, 
 	}
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/signup", e.Params.IDOrigin),
+		fmt.Sprintf("%s/vendor/v1/signup", e.Params.IDOrigin),
 		bytes.NewReader(signupBodyBytes),
 	)
 	if err != nil {
@@ -317,7 +342,7 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 	}
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
+		fmt.Sprintf("%s/vendor/v1/team/invite", e.Params.IDOrigin),
 		bytes.NewReader(inviteBodyBytes),
 	)
 	if err != nil {

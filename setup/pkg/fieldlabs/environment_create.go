@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"time"
+  "encoding/json"
 
 	"github.com/pkg/errors"
 	"github.com/replicatedhq/replicated/pkg/kotsclient"
@@ -103,6 +104,9 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 	if err != nil {
 		return errors.Wrap(err, "add member")
 	}
+  memberJson, _ := json.Marshal(members)
+  policyJson, _ := json.Marshal(policies)
+  e.Log.ActionWithSpinner("Added member: %s %s", memberJson, policyJson)
 
 	err = e.createVendorTrack(*app, *track)
 	if err != nil {
@@ -120,13 +124,16 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	e.Log.ActionWithSpinner("Provision track %s", appTrackSlug)
 
   // get the stable channel to assign for customer
+	e.Log.ActionWithSpinner("Get stable channel")
   channel, err := e.getChannel(track)
   if err != nil {
     return errors.Wrapf(err, "get Stable channel")
   }
   track.Status.Channel = channel
+  e.Log.ActionWithSpinner("Got channel: %s", channel)
 
   // Create customer
+  e.Log.ActionWithSpinner("Create customer")
   if trackSpec.Customer != "" {
     customer, err := e.getOrCreateCustomer(track)
     if err != nil {
@@ -162,6 +169,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 
     track.Status.Release = release
 
+    e.Log.ActionWithSpinner("Promote release")
     err = e.Client.PromoteRelease(app.ID, release.Sequence, "0.1.0", trackSpec.Slug, false, channel.ID)
     if err != nil {
       return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
@@ -198,6 +206,7 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
       }
     }
   }
+  e.Log.ActionWithSpinner("Provisioned")
 	return nil
 }
 
