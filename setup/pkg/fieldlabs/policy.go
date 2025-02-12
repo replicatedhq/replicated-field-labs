@@ -37,6 +37,10 @@ type PolicyResourcesV1 struct {
 	Denied  []string `json:"denied"`
 }
 
+type PolicyListResponse struct {
+	Policies []PolicyListItem `json:"policies"`
+}
+
 type PolicyListItem struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
@@ -47,9 +51,10 @@ type PolicyUpdate struct {
 }
 
 func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
+	requestUrl := fmt.Sprintf("%s/vendor/v1/policies", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"GET",
-		fmt.Sprintf("%s/v1/policies", e.Params.IDOrigin),
+		requestUrl,
 		nil,
 	)
 	if err != nil {
@@ -67,17 +72,17 @@ func (e *EnvironmentManager) getPolicies() (map[string]string, error) {
 		panic(err.Error())
 	}
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("GET /v1/policies %d: %s", resp.StatusCode, body)
+		return nil, fmt.Errorf("GET %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
-	var policies []PolicyListItem
+	var policies PolicyListResponse
 	err = json.Unmarshal([]byte(body), &policies)
 	if err != nil {
-		return nil, errors.Wrap(err, "list policies unmarshal")
+		return nil, errors.Wrap(err, fmt.Sprintf("list policies unmarshal %s", body))
 	}
 
 	policiesMap := make(map[string]string)
-	for i := 0; i < len(policies); i += 1 {
-		policiesMap[policies[i].Name] = policies[i].Id
+	for i := 0; i < len(policies.Policies); i += 1 {
+		policiesMap[policies.Policies[i].Name] = policies.Policies[i].Id
 	}
 	return policiesMap, nil
 }
@@ -111,9 +116,10 @@ func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]strin
 	if err != nil {
 		return errors.Wrap(err, "marshal rbac body")
 	}
+	requestUrl := fmt.Sprintf("%s/vendor/v1/policy", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/policy", e.Params.IDOrigin),
+		requestUrl,
 		bytes.NewReader(rbacBodyBytes),
 	)
 	if err != nil {
@@ -128,23 +134,62 @@ func (e *EnvironmentManager) createRBAC(app types.App, policies map[string]strin
 		return errors.Wrap(err, "send rbac request")
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 201 {
+	if resp.StatusCode != 201 && resp.StatusCode != 200 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/policy %d: %s", resp.StatusCode, body)
+		return fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 
 }
 
-// Delete policies create through multi-player mode
-func (e *EnvironmentManager) DeletePolicyId(id string) error {
-	url := fmt.Sprintf("%s/v1/policy/%s", e.Params.IDOrigin, id)
+// Get a single policy by id
+func (e *EnvironmentManager) GetPolicyId(id string) (*Policy, error) {
+	requestUrl := fmt.Sprintf("%s/vendor/v1/policy/%s", e.Params.IDOrigin, id)
+  e.Log.Debug(fmt.Sprintf("GET %s", requestUrl))
 	req, err := http.NewRequest(
-		"DELETE",
-		url,
+		"GET",
+		requestUrl,
 		nil,
 	)
 
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("GET %s", requestUrl))
+	}
+	req.Header.Set("Authorization", e.Params.SessionToken)
+	req.Header.Set("Accept", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("send get request: %s", requestUrl))
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("GET %s %d %s", requestUrl, resp.StatusCode, body)
+  }
+  var policy Policy
+  err = json.Unmarshal([]byte(body), &policy)
+  if err != nil {
+    return nil, errors.Wrap(err, fmt.Sprintf("unmarshal %s", body))
+  }
+  return &policy, nil
+} 
+
+// Delete policies create through multi-player mode
+func (e *EnvironmentManager) DeletePolicyId(id string) error {
+	requestUrl := fmt.Sprintf("%s/vendor/v1/policy/%s", e.Params.IDOrigin, id)
+  e.Log.Debug(fmt.Sprintf("DELETE %s", requestUrl))
+	req, err := http.NewRequest(
+		"DELETE",
+		requestUrl,
+		nil,
+	)
+
+  policy, _ := e.GetPolicyId(id)
+  policyJson, _ := json.Marshal(policy)
+  e.Log.Debug(fmt.Sprintf("policy %s contains %s", policy.Name, policyJson))
 	if err != nil {
 		return err
 	}
@@ -160,8 +205,8 @@ func (e *EnvironmentManager) DeletePolicyId(id string) error {
 	if err != nil {
 		panic(err.Error())
 	}
-	if resp.StatusCode != 204 {
-		return fmt.Errorf("GET /v1/policy %d: %s", resp.StatusCode, body)
+	if resp.StatusCode != 204 && resp.StatusCode != 200 {
+		return fmt.Errorf("DELETE %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 }

@@ -60,7 +60,7 @@ func GetParams() (*fieldlabs.Params, error) {
 		params.KURLSHOrigin = "https://kurl.sh"
 	}
 	if params.IDOrigin == "" {
-		params.IDOrigin = "https://api.replicated.com/vendor"
+		params.IDOrigin = "https://api.replicated.com"
 	}
 
 	actionString := os.Getenv("REPLICATED_ACTION")
@@ -119,7 +119,7 @@ func getLoginResponse(params *fieldlabs.Params) (*string, error) {
 		return nil, errors.Wrap(err, "marshal login params")
 	}
 
-	loginReq, err := http.NewRequest("POST", fmt.Sprintf("%s/v1/login", params.IDOrigin), bytes.NewBuffer(loginBody))
+	loginReq, err := http.NewRequest("POST", fmt.Sprintf("%s/vendor/v1/login", params.IDOrigin), bytes.NewBuffer(loginBody))
 	if err != nil {
 		return nil, errors.Wrap(err, "build login request")
 	}
@@ -131,9 +131,9 @@ func getLoginResponse(params *fieldlabs.Params) (*string, error) {
 	}
 
 	defer loginResp.Body.Close()
-	if loginResp.StatusCode != 201 {
+	if loginResp.StatusCode != 201 && loginResp.StatusCode != 200 {
 		body, _ := ioutil.ReadAll(loginResp.Body)
-		return nil, fmt.Errorf("GET /policies %d: %s", loginResp.StatusCode, body)
+		return nil, fmt.Errorf("Parsing login response `/vendor/v1/login` %d: %s", loginResp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(loginResp.Body)
 	if err != nil {
