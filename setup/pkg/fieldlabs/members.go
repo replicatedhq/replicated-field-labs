@@ -20,6 +20,7 @@ type MemberList struct {
 // Get list of team members created with multi-player mode
 func (e *EnvironmentManager) GetMembers() ([]MemberList, error) {
 	url := fmt.Sprintf("%s/v1/team/members", e.Params.IDOrigin)
+	e.Log.Debug(fmt.Sprintf("GET %s", url))
 	req, err := http.NewRequest(
 		"GET",
 		url,
@@ -42,9 +43,10 @@ func (e *EnvironmentManager) GetMembers() ([]MemberList, error) {
 		panic(err.Error())
 	}
 	if resp.StatusCode != 200 {
-		return []MemberList{}, fmt.Errorf("GET /v1/team/members %d: %s", resp.StatusCode, body)
+		return []MemberList{}, fmt.Errorf("GET %d: %s", url, resp.StatusCode, body)
 	}
 
+        e.Log.Debug(fmt.Sprintf("GET %s %d: %s", url, resp.StatusCode, body))
 	var members []MemberList
 	err = json.Unmarshal([]byte(body), &members)
 	if err != nil {
@@ -76,6 +78,7 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 // Delete team members created with multi-player mode
 func (e *EnvironmentManager) DeleteMember(id string) error {
 	requestUrl := fmt.Sprintf("%s/v1/team/member?id=%s", e.Params.IDOrigin, id)
+	e.Log.Debug(fmt.Sprintf("DELETE %s", requestUrl))
 	req, err := http.NewRequest(
 		"DELETE",
 		requestUrl,
@@ -97,8 +100,8 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 	if err != nil {
 		panic(err.Error())
 	}
-	if resp.StatusCode != 204 {
-    return fmt.Errorf("DELETE %s %d: %s", requestUrl, resp.StatusCode, body)
+	if resp.StatusCode != 204 && resp.StatusCode != 200 {
+		return fmt.Errorf("DELETE %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 }
@@ -136,7 +139,6 @@ func (e *EnvironmentManager) addMember(members map[string]MemberList, policies m
 	return nil
 }
 
-
 type VerifyResponse struct {
 	Token string `json:"token"`
 }
@@ -153,10 +155,10 @@ func (e *EnvironmentManager) signupMember(inviteEmail string) (*SignupResponse, 
 	if err != nil {
 		return nil, errors.Wrap(err, "marshal signup body")
 	}
-  requestUrl := fmt.Sprintf("%s/vendor/v1/signup", e.Params.IDOrigin)
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-    requestUrl,
+		requestUrl,
 		bytes.NewReader(signupBodyBytes),
 	)
 	if err != nil {
@@ -200,10 +202,10 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 	if err != nil {
 		return errors.Wrap(err, "marshal invite body")
 	}
-  requestUrl := fmt.Sprintf("%s/vendor/v1/team/invite", e.Params.IDOrigin)
+	requestUrl := fmt.Sprintf("%s/vendor/v1/team/invite", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-    requestUrl,
+		requestUrl,
 		bytes.NewReader(inviteBodyBytes),
 	)
 	if err != nil {
@@ -215,7 +217,7 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-    return errors.Wrap(err, fmt.Sprintf("send invite request: %s", requestUrl))
+		return errors.Wrap(err, fmt.Sprintf("send invite request: %s", requestUrl))
 	}
 	defer resp.Body.Close()
 	// rate limit returned when already invited
@@ -246,14 +248,14 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 	if err != nil {
 		return nil, errors.Wrap(err, "marshal verify body")
 	}
-  requestUrl := fmt.Sprintf("%s/vendor/v1/signup/verify", e.Params.IDOrigin)
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/verify", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-    requestUrl,
+		requestUrl,
 		bytes.NewReader(verifyBodyBytes),
 	)
 	if err != nil {
-    return nil, errors.Wrap(err, fmt.Sprintf("build verify request: %s", requestUrl))
+		return nil, errors.Wrap(err, fmt.Sprintf("build verify request: %s", requestUrl))
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
@@ -266,7 +268,7 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 
 	if resp.StatusCode != 201 {
 		body, _ := ioutil.ReadAll(resp.Body)
-    return nil, fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
+		return nil, fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -281,10 +283,10 @@ func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, 
 
 func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
 	e.Log.Verbose()
-  requestUrl := fmt.Sprintf("%s/vendor/v1/signup/teams", e.Params.IDOrigin)
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/teams", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"GET",
-    requestUrl,
+		requestUrl,
 		nil,
 	)
 	if err != nil {
@@ -301,7 +303,7 @@ func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, e
 
 	if resp.StatusCode != 200 {
 		body, _ := ioutil.ReadAll(resp.Body)
-    return nil, fmt.Errorf("GET %s %d: %s", requestUrl, resp.StatusCode, body)
+		return nil, fmt.Errorf("GET %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -332,10 +334,10 @@ func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId st
 		return errors.Wrap(err, "marshal accept body")
 	}
 
-  requestUrl := fmt.Sprintf("%s/vendor/v1/signup/accept-invite", e.Params.IDOrigin)
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/accept-invite", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-    requestUrl,
+		requestUrl,
 		bytes.NewReader(acceptBodyBytes),
 	)
 	if err != nil {
@@ -346,13 +348,13 @@ func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId st
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-    return errors.Wrap(err, fmt.Sprintf("send accept request: %s", requestUrl))
+		return errors.Wrap(err, fmt.Sprintf("send accept request: %s", requestUrl))
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 201 {
 		body, _ := ioutil.ReadAll(resp.Body)
-    return fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
+		return fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 }
