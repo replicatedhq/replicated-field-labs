@@ -33,12 +33,12 @@ maintenance: true
 idle_timeout: 300
 timelimit: 1200
 lab_config:
-  overlay: false
-  width: 25
-  position: right
   sidebar_enabled: true
   feedback_recap_enabled: true
   feedback_tab_enabled: false
   loadingMessages: true
   hideStopButton: false
-checksum: "664253054458727266"
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 25
+checksum: "17599517378959933642"
+enhanced_loading: false
