@@ -3,7 +3,7 @@ slug: accessing-the-platform
 id: ltd8diz5rbjy
 type: challenge
 title: The Replicated Platform
-teaser: Learn abot and connect to the Replicated Platform
+teaser: Learn about and connect to the Replicated Platform
 notes:
 - type: text
   contents: |
@@ -34,7 +34,7 @@ anywhere you can invoke its APIs.
 ![Commercial Software Distribution Lifecycle](../assets/lifecycle.png)
 
 This lab will introduce you to the Replicated Platform through the Vendor
-Portal. After getting to know the Vendor Portal, you'll take the role of a
+Portal. After briefly getting to know the Vendor Portal, you'll take the role of a
 customer and install [SlackerNews](https://slackernews.io), an application
 distributed with Replicated. From there, we'll show you how you'll work with
 customers having a support issue, and how they'll install a fix.
@@ -59,40 +59,41 @@ lab for more details.
 The channels you see are for your current application. Many of the features of
 the Replicated Platform are configured at the application level. Most software
 vendors ship one application with Replicated, but the Platform is designed for
-you toe distribute multiple applications. In this lab, you only have access to
-one application that's been configured for you, called "SlackerNews".
+you to distribute multiple applications. In this lab, you only have access to
+the SlackerNews application that's been configured for you.
 
 Getting to Know the Platform
 ============================
 
-Day to day, you're work with the Platform will most often involve working with
-Customers and releases. Release are the versions of your software that you're
-distributing to customers and are promoted to channels to make the available.
+Day to day, your work with the Platform will most often involve working with
+customers and releases. Releases are the versions of your software that you're
+distributing to customers and are promoted to channels to make them available.
 Click "Releases" to see the releases for SlackerNews.
 
 ![Releases Page](../assets/releases-page.png)
 
 Customers are, well, customers. They're the people who will be downloading and
-insallting your software. Each customer is assigned to a release channel and
+installing your software. Each customer is assigned to a release channel and
 entitled to the stream of releases that channel provides. Customers each have
 a license, and you can manage entitlements for each license when you
 configure the customer.
 
 ![Customers Page](../assets/customers-page.png)
 
-Click into the customer "Omozan" to see more details about the customer.
-Right now they have no running instances of SlackerNews. Later on when we do
-an install, you'll see information about the instance that was created.
+Click into the customer "Omozan" to see more details about them. Right now
+they haven't downloaded and installed SlackerNews, so there's not much
+information on that page. . Later on when we do an install, you'll see
+information about the instance that was created.
 
 ![Omozan Customer Page](../assets/omozan-customer-page.png)
 
 Click "Manage Customer" to see the various options that can be configured for
-a customer. We're not going to focus too much on those for now, but noticed
+Omozan. We're not going to focus too much on those for now, but notice
 that licenses can have different types, they can expire, and you can enable
 different platform features. You can also add custom entitlements like the
-"Team Members" entitlement for SlackerNews. You can learn more about license
+"Team Members" entitlement for SlackerNews. You can learn more about licenses
 in the [Protecting Your Assets with the Replicated](https://play.instruqt.com/replicated/tracks/protecting-your-assets) lab.
 
 ![Manage Customer Page](../assets/manage-customer-page.png)
 
-Will learn more about the Platform and the Vendor Portal as we move through the lab.
+We'll learn more about the Platform and the Vendor Portal as we move through the lab.
