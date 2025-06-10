@@ -68,7 +68,7 @@ Getting to Know the Platform
 Day to day, you're work with the Platform will most often involve working with
 Customers and releases. Release are the versions of your software that you're
 distributing to customers and are promoted to channels to make the available.
-Click "Releases" to see the releases for SlackerNews. 
+Click "Releases" to see the releases for SlackerNews.
 
 ![Releases Page](../assets/releases-page.png)
 
