@@ -339,9 +339,6 @@ TEMPLATE
 # add the license check to the beginning of the Slackernews deployment template
 sed -i 's/{{ if eq \.Values\.postgres\.enabled true }}/{{- if eq (include "slackernews.persistence.enabled" .) "true" }}/g' ${HOME_DIR}/slackernews/templates/slackernews-deployment.yaml
 
-# re-package the chart
-helm package slackernews --destination release
-
 # add the custom license field
 field_def=$(jq -n '{
   "name": "member_count_max",
