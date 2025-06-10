@@ -23,7 +23,7 @@ ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
 # use our shared libary in setup scripts
 # TO DO: Change to `main` when preparing to merge
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/feature/crdant/meeting-the-replicated-platform/libs/header.sh
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
 source /etc/profile.d/header.sh
 
 agent variable set USERNAME $(get_username)
