@@ -6,7 +6,7 @@ containers:
 virtualmachines:
 - name: node
   image: kots-field-labs/future-node
-  shell: /bin/bash
+  shell: tmux new-session -A -s node su - replicant
   machine_type: n2d-standard-4
   allow_external_ingress:
   - http
