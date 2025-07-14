@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
-HOME_DIR=/home/replicant
+
+# Initialize setup script with proper error handling
+init_setup_script
 
 
-### Assure the tmux session exists
+### Setup tmux session with environment variables
 #
-# In a test scenario Instuqt does not run the user shell for the
+# In a test scenario Instruqt does not run the user shell for the
 # challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to 
+# need the session for solve scripts in other challenges to 
 # succeed, so let's create it here.
 #
 
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
+setup_instruqt_tmux_session "shell" "replicant" true
 
 # make sure the user will be authenticated and using the right app
 tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
@@ -27,7 +27,7 @@ tmux send-keys -t shell clear ENTER
 api_token=$(get_api_token)
 
 # get the app slug in order to release the app
-app_slug=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+app_slug=$(get_app_slug "${api_token}")
 
 # release to the `Unstable` channel
 replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.3.0.tgz --version 0.3.0  \
