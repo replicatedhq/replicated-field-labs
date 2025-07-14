@@ -1,31 +1,23 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
-
-# simple SSH client setup so we can SSH to/from the shell
-
-cat <<EOF >> "$HOME/.ssh/config"
-Host *
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-    PubkeyAcceptedKeyTypes +ssh-rsa
-EOF
-
-while ! ssh shell true; do
-  echo "Waiting for container SSH to be available..."
-  sleep 1
-done
-
-ssh shell "mkdir /home/replicant/.kube"
-
-while ! [[ -f /etc/rancher/k3s/k3s.yaml ]]; do
-  echo "Waiting for Rancher kubernetes configuration to be available..."
-  sleep 1
-done
-
 # use our shared library with auto-download functionality
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
+# Initialize setup script with proper error handling
+init_setup_script
+
+# Setup SSH client configuration for connecting to shell
+setup_ssh_config
+
+# Wait for SSH connectivity to shell
+wait_for_ssh_connectivity "shell" 60
+
+# Create kube directory on shell
+ssh shell "mkdir -p /home/replicant/.kube"
+
+# Wait for Kubernetes configuration to be available
+wait_for_kubeconfig "/etc/rancher/k3s/k3s.yaml" 120
+
+# Copy Kubernetes configuration to shell
 scp /etc/rancher/k3s/k3s.yaml shell:/home/replicant/.kube/config
