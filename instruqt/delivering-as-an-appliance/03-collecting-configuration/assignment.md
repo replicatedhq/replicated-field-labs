@@ -22,6 +22,7 @@ tabs:
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 One of the benefits of building a Kubernetes appliance is providing a guided

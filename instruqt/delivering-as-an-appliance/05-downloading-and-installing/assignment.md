@@ -21,6 +21,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 1200
+enhanced_loading: null
 ---
 
 Now that we've prepared SlackerNews for an Embedded Cluster installation,

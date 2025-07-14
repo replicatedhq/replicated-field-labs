@@ -19,6 +19,7 @@ tabs:
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 The Kubernetes appliance installation is one of the first things

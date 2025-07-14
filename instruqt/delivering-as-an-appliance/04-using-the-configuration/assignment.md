@@ -20,6 +20,7 @@ tabs:
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 The configuration screen we built looks great, guides the customer through

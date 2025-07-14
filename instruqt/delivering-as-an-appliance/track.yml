@@ -36,9 +36,6 @@ developers:
 idle_timeout: 700
 timelimit: 2400
 lab_config:
-  overlay: false
-  width: 25
-  position: right
   sidebar_enabled: true
   feedback_recap_enabled: true
   feedback_tab_enabled: false
@@ -47,4 +44,5 @@ lab_config:
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: "10811747556592817534"
+checksum: "1997671224954465538"
+enhanced_loading: false
