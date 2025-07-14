@@ -7,10 +7,14 @@ source /etc/profile.d/header.sh
 # get the application slug for the chart URL
 api_token=$(get_api_token)
 app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+echo "DEBUG: app_slug is: $app_slug"
 
 # login to the registry  
 registry_password=$(agent variable get REGISTRY_PASSWORD)
 customer_email=$(agent variable get CUSTOMER_EMAIL)
+replicated_app=$(agent variable get REPLICATED_APP)
+echo "DEBUG: customer_email is: $customer_email"
+echo "DEBUG: replicated_app is: $replicated_app"
 echo "${registry_password}" | helm registry login registry.replicated.com \
   --username "${customer_email}" \
   --password-stdin 
