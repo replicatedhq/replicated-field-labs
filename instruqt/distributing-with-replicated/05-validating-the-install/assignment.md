@@ -1,6 +1,6 @@
 ---
 slug: validating-the-install
-id: gx3ctjxdgybf
+id: rth4krj1xx0x
 type: challenge
 title: Observing the Customer Instance
 teaser: Observing your customer install
@@ -8,13 +8,14 @@ notes:
 - type: text
   contents: Gaining insight into your customer's instance
 tabs:
-- id: 4dolm9ekmzcn
+- id: ria9oy8bi68u
   title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 Now that we've installed the application the way your customer

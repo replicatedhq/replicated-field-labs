@@ -1,6 +1,6 @@
 ---
 slug: enabling-the-sdk
-id: 9weportqrwy6
+id: 6wwn5yacxhzi
 type: challenge
 title: Enabling the Replicated SDK
 teaser: Incorporate the SDK into your application
@@ -8,17 +8,18 @@ notes:
 - type: text
   contents: Introducing the Replicated SDK into your application
 tabs:
-- id: lep5xpebtpkw
+- id: xzmvjbk8jchf
   title: Shell
   type: terminal
   hostname: shell
-- id: cnhzcdcy5ots
+- id: kd1kynkxrmyx
   title: Manifest Editor
   type: code
   hostname: shell
   path: /home/replicant
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 Now that we've got our environment set up, let's incorporate the

@@ -1,6 +1,6 @@
 ---
 slug: preparing-to-use-the-sdk
-id: ulkfmbpkhe3y
+id: nofnkyg8tdcy
 type: challenge
 title: Preparing to Use the SDK
 teaser: Getting ready to use the Replicated SDK
@@ -8,12 +8,13 @@ notes:
 - type: text
   contents: Let's get ready to use the Replicated SDK
 tabs:
-- id: oaa7v3tv4y1k
+- id: mpaqdpl54ch7
   title: Shell
   type: terminal
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 👋 Introduction

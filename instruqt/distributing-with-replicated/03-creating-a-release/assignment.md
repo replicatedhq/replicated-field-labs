@@ -1,6 +1,6 @@
 ---
 slug: creating-a-release
-id: vxnhm8nlkifh
+id: k3jbkjdxjuth
 type: challenge
 title: Releasing an Application
 teaser: Creating a release on the Replicated Platform
@@ -8,12 +8,13 @@ notes:
 - type: text
   contents: It's time to distribute our application with Replicated
 tabs:
-- id: y93opy8anppl
+- id: yknlaphqyxie
   title: Shell
   type: terminal
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 To take advantage of the Replicated Platform to distribute

@@ -1,6 +1,6 @@
 ---
 slug: installing-the-application
-id: 7tugkh1lkicg
+id: cdkokfuhh9wh
 type: challenge
 title: Installing the Application
 teaser: Let's install the application as your customer
@@ -8,17 +8,18 @@ notes:
 - type: text
   contents: Let's see how your customer installs an application
 tabs:
-- id: blzkxyy5ocbs
+- id: yznbutgps3e0
   title: Shell
   type: terminal
   hostname: shell
-- id: gkzlk56yrgvt
+- id: sleocx8cx43x
   title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
 difficulty: basic
 timelimit: 600
+enhanced_loading: null
 ---
 
 Now that we have a release in the Replicated Platform, you can
