@@ -1,37 +1,22 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
-
-HOME_DIR=/home/replicant
-
-# Wait for Instruqt bootstrap to be complete
-while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
-do
-  echo "Waiting for Instruqt to finish booting the VM"
-  sleep 1
-done
-
-# simple SSH client setup so we can SSH to/from the shell
-
-cat <<EOF >> "$HOME/.ssh/config"
-Host *
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-EOF
-
-# assure an RSA key for Dropbear
-ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
-
 # use our shared library with auto-download functionality
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-# change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' ${HOME_DIR}/.kube/config
-chown -R replicant ${HOME_DIR}/.kube
+# Initialize setup script with proper error handling and bootstrap waiting
+init_setup_script
 
-# grab the slackernews sources so the learner can make use of them
-cd ${HOME_DIR}
+# Setup SSH client configuration
+setup_ssh_config
+
+# Generate RSA key for Dropbear SSH server
+generate_dropbear_key
+
+# Setup Kubernetes configuration with proper cluster server and ownership
+setup_kubernetes_config "${HOME_DIR}" "https://cluster:6443"
+
+# Download slackernews sources for the learner
+cd "${HOME_DIR}"
 get_slackernews
-chown -R replicant ${HOME_DIR}/slackernews
+chown -R replicant "${HOME_DIR}/slackernews"
