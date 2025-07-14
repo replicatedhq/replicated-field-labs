@@ -1,74 +1,69 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
-
-# simple SSH client setup so we can SSH to/from the shell
-
-cat <<EOF >> "$HOME/.ssh/config"
-Host *
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-EOF
-
-# assure an RSA key for Dropbear
-ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
-
-# use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs/header.sh
+# use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-# change the cluster URI
-yq -i '.clusters[0].cluster.server = "https://cluster:6443"' /home/replicant/.kube/config
-chown -R replicant /home/replicant/.kube
+# Initialize setup script with proper error handling (debug mode for track script)
+init_setup_script true
 
-# setup for Vendor Portal access
-# there's only one app created by the automation, so just grab the first in the list
-api_token=$(get_api_token)
-app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
-export REPLICATED_API_TOKEN=${api_token}
-export REPLICATED_APP=${app_slug}
+# Setup SSH client configuration
+setup_ssh_config
 
-cd /home/replicant
-mkdir /home/replicant/release
+# Generate RSA key for Dropbear SSH server
+generate_dropbear_key
+
+# Setup Kubernetes configuration with proper cluster server and ownership
+setup_kubernetes_config "${HOME_DIR}" "https://cluster:6443"
+
+# Setup common environment variables and agent variables for Replicated
+setup_common_environment
+
+# Setup release directory
+setup_release_directory
+
+# Get slackernews sources for the lab
+cd "${HOME_DIR}"
 get_slackernews
+
+# Update chart version and add SDK dependency
 yq -i '.version = "0.2.0"' slackernews/Chart.yaml
 replicated_sdk_version=$(get_replicated_sdk_version)
 yq -i ".dependencies += []" slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"${replicated_sdk_version}\"}" slackernews/Chart.yaml
 
-# update dependencies
+# Update dependencies and package the chart
 helm dependency update slackernews
-
-# re-package the chart
 helm package slackernews --destination release
 
-# release and promote the app
+# Get API credentials for release operations
+api_token=$(get_api_token)
+app_slug=$(get_app_slug)
 
-# release to the `Unstable` channel
-replicated release create --promote Unstable --chart /home/replicant/release/slackernews-0.2.0.tgz --version 0.2.0 \
+# Release to the `Unstable` channel
+replicated release create --promote Unstable --chart ${HOME_DIR}/release/slackernews-0.2.0.tgz --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
-# get the sequence number for the release to promote
+# Get the sequence number for the release to promote
 release_sequence=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].channels[] | select( .name == "Unstable" ) | .releaseSequence')
 
-# promote to the `Beta` channel
+# Promote to the `Beta` channel
 replicated release promote ${release_sequence} Beta --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
  
-# promote to the `Stable` channel
+# Promote to the `Stable` channel
 replicated release promote ${release_sequence} Stable --version 0.2.0 \
   --release-notes "Prepares for distribution with Replicated by incorporating the Replicated SDK" \
   --app ${app_slug} --token ${api_token}
 
-# create LTS channel from the "distributing" lab so things look consistent
+# Create LTS channel for consistency with other labs
 replicated channel create --name LTS --description "Releases with long-term support available" \
   --app ${app_slug} --token ${api_token}
 
-# remove the helm chart we used to create the release
-rm /home/replicant/release/slackernews-0.2.0.tgz
+# Remove the helm chart we used to create the release
+rm ${HOME_DIR}/release/slackernews-0.2.0.tgz
 
-# make sure permissions are good
-chown -R replicant /home/replicant/slackernews /home/replicant/release
+# Ensure proper permissions
+chown -R replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release
