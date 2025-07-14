@@ -167,6 +167,82 @@ attach_tmux_session() {
     tmux attach-session -t "$session_name"
 }
 
+# Send environment variable export to tmux session
+export_to_tmux_session() {
+    local session_name=${1:-"shell"}
+    local var_name=$2
+    local var_value=$3
+    
+    if [[ -z "$var_name" ]]; then
+        echo "ERROR: Variable name not specified"
+        return 1
+    fi
+    
+    if [[ -z "$var_value" ]]; then
+        echo "ERROR: Variable value not specified"
+        return 1
+    fi
+    
+    echo "Exporting $var_name to tmux session '$session_name'"
+    
+    # Send export command with proper spacing
+    send_to_tmux_session "$session_name" "export ${var_name}='${var_value}'" true
+    
+    return 0
+}
+
+# Send multiple environment variables from agent to tmux session
+export_agent_vars_to_tmux() {
+    local session_name=${1:-"shell"}
+    shift
+    local var_names=("$@")
+    
+    if [[ ${#var_names[@]} -eq 0 ]]; then
+        # Default common variables if none specified
+        var_names=("REPLICATED_API_TOKEN" "REPLICATED_APP" "USERNAME" "PASSWORD")
+    fi
+    
+    echo "Exporting agent variables to tmux session '$session_name': ${var_names[*]}"
+    
+    # Ensure session exists first
+    ensure_tmux_session "$session_name" "replicant"
+    
+    # Export each variable from agent
+    for var_name in "${var_names[@]}"; do
+        local var_value
+        var_value=$(agent variable get "$var_name" 2>/dev/null || echo "")
+        
+        if [[ -n "$var_value" ]]; then
+            export_to_tmux_session "$session_name" "$var_name" "$var_value"
+        else
+            echo "WARNING: Agent variable '$var_name' not found or empty"
+        fi
+    done
+    
+    echo "Agent variable export to tmux completed"
+    return 0
+}
+
+# Comprehensive tmux session setup for Instruqt challenges
+setup_instruqt_tmux_session() {
+    local session_name=${1:-"shell"}
+    local user=${2:-"replicant"}
+    local export_vars=${3:-true}
+    
+    echo "Setting up Instruqt tmux session '$session_name'..."
+    
+    # Ensure session exists
+    ensure_tmux_session "$session_name" "$user"
+    
+    # Export common environment variables if requested
+    if [[ "$export_vars" == "true" ]]; then
+        export_agent_vars_to_tmux "$session_name"
+    fi
+    
+    echo "Instruqt tmux session '$session_name' setup completed"
+    return 0
+}
+
 # Display session management status
 sessions_info() {
     echo "Instruqt Sessions Library v${INSTRUQT_SESSIONS_VERSION}"
