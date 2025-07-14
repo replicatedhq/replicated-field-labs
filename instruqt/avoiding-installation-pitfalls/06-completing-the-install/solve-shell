@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-set -euxo pipefail
-HOME_DIR=/home/replicant
+
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
+
+# Initialize setup script with proper error handling
+init_setup_script
 
 app_slug=$(agent variable get REPLICATED_APP)
 

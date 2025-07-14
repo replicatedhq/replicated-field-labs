@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
+
+# Initialize setup script with proper error handling
+init_setup_script
  
 systemctl restart k3s.service
 

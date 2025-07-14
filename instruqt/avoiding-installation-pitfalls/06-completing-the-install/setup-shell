@@ -6,8 +6,12 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-set -euxo pipefail
-HOME_DIR=/home/replicant
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
+
+# Initialize setup script with proper error handling
+init_setup_script
 
 # get the helm login and install commands so we can use `helm show values` in
 # the challenge
@@ -19,7 +23,7 @@ api_token=${REPLICATED_API_TOKEN}
 registry_default=registry.replicated.com
 
 # get the needed info for the app, we know there's only one so grab the first
-app_id=$(replicated app ls --output json | jq -r '.[0].app.id')
+app_id=$(get_app_id "${api_token}")
 
 set +u
 # get the registry hostname
@@ -34,6 +38,6 @@ set -u
 
 agent variable set REGISTRY_USERNAME $(echo "${customer}" | jq -r '.login')
 agent variable set REGISTRY_PASSWORD $(echo "${customer}" | jq -r '.password')
-agent variable set REGISTRY_HOST "${registry_override:-${registry_host:-${registry_default}}}"
+agent variable set REGISTRY_HOST "${registry_override:-${registry_custom:-${registry_default}}}"
 
 exit 0
