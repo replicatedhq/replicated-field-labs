@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+
+HOME_DIR=/home/replicant
+
+# convenience library for Replicated lab lifecycle scripts
+source /etc/profile.d/header.sh
+
+# Wait for Instruqt bootstrap to be complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]
+do
+  echo "Waiting for Instruqt to finish booting the VM"
+  sleep 1
+done
+
+## re-create the outage for Geeglo
+kubectl rollout pause deployment --namespace slackernews slackernews --kubeconfig ${HOME_DIR}/.kube/config
+kubectl delete replicaset --namespace slackernews -l app=slackernews --kubeconfig ${HOME_DIR}/.kube/config
+
+## prepare for upgrade
+api_token=$(get_api_token)
+customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
+
+# get the registry password (which is the license id)
+app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+customer_id=$(replicated customer ls --output json --app "${app_slug}" --token "${api_token}" | jq -r '.[] | select ( .name == "Geeglo" ) | .id')
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
+
+agent variable set CUSTOMER_EMAIL ${customer_email}
+agent variable set REGISTRY_PASSWORD ${registry_password}

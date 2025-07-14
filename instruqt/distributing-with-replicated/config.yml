@@ -7,7 +7,9 @@ virtualmachines:
 - name: cluster
   image: instruqt/k3s-v1-28-5
   shell: /bin/bash
-  machine_type: n1-standard-1
+  machine_type: n1-standard-2
+  environment:
+    K3S_TOKEN: cccccbeuretcrjjbrdgvklfgelvelltcftfujlrctlku
   allow_external_ingress:
   - http
   - https

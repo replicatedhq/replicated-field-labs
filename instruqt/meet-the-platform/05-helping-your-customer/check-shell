@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
+
+result=0
+
+exit ${result}

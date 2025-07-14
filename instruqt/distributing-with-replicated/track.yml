@@ -21,7 +21,7 @@ owner: replicated
 developers:
 - chuck@replicated.com
 maintenance: true
-timelimit: 2100
+timelimit: 3600
 lab_config:
   sidebar_enabled: true
   feedback_recap_enabled: true
@@ -30,5 +30,5 @@ lab_config:
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 33
-checksum: "8282219125652111262"
+checksum: "6845600538165723566"
 enhanced_loading: false

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
+
+app_slug=$(get_app_slug)
+app_id=$(get_app_id)
+api_token=$(agent variable get REPLICATED_API_TOKEN)
+customer_id=$(agent variable get CUSTOMER_ID)
+license_id=$(agent variable get LICENSE_ID)
+
+# download and install the embedded cluster
+if [[ ! -f ${app_slug}-stable.tgz ]] ; then
+  curl -f https://replicated.app/embedded/${app_slug}/stable \
+        -H "Authorization: ${license_id}" \
+        -o ${app_slug}-stable.tgz \
+    && tar -C ${HOME_DIR} -xzvf ${app_slug}-stable.tgz
+fi
+
+if [[ ! -f ${app_slug}-stable.tgz ]] ; then
+  echo "The install command takes a long time and Instruqt can't handle its output..."
+  curl -f https://replicated.app/embedded/${app_slug}/stable \
+        -H "Authorization: ${license_id}" \
+        -o ${app_slug}-stable.tgz \
+    && tar -C ${HOME_DIR} -xzvf ${app_slug}-stable.tgz
+fi
+
+
+exit 0

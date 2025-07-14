@@ -5,7 +5,7 @@ curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicated
 source /etc/profile.d/header.sh
 
 # Initialize setup script with proper error handling
-init_setup_script
+init_setup_script true
 
 # Setup SSH client configuration for connecting to shell
 setup_ssh_config
@@ -15,6 +15,9 @@ wait_for_ssh_connectivity "shell" 60
 
 # Create kube directory on shell
 ssh shell "mkdir -p /home/replicant/.kube"
+
+# Wait for Kubernetes API server to be available
+wait_for_http_endpoint "http://localhost:8001/api" 200 120
 
 # Wait for Kubernetes configuration to be available
 wait_for_kubeconfig "/etc/rancher/k3s/k3s.yaml" 120

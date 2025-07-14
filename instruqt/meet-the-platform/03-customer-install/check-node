@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euo pipefail
+source /etc/profile.d/header.sh
+
+app_slug=$(get_app_slug)
+app_id=$(get_app_id)
+api_token=$(agent variable get REPLICATED_API_TOKEN)
+customer_id=$(agent variable get CUSTOMER_ID)
+
+export KUBECONFIG="/var/lib/k0s/pki/admin.conf"
+export PATH="/var/lib/embedded-cluster/bin:${PATH}"
+
+result=0
+options=$(curl --header 'Accept: application/json' \
+      --header "Authorization: ${api_token}" \
+      "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" \
+  | jq '.customer | { isEmbeddedClusterDownloadEnabled, isKotsInstallEnabled }')
+
+kots_enabled=$(echo $options | jq '.isKotsInstallEnabled')
+embedded_enabled=$(echo $options | jq '.isEmbeddedClusterDownloadEnabled')
+
+if [[ ! ${kots_enabled} == true || ! ${embedded_enabled} == true ]] ; then
+  fail-message $'Configure the license options for "Nitflex" to allow for Embedded Cluster installation'
+  let "result = result + 1"
+fi
+
+if [[ ! -f ${app_slug}-stable.tgz ]] ; then
+  fail-message $'Please be sure to download the installer for SlackerNews'
+  let "result = result + 1"
+fi
+
+exit ${result}

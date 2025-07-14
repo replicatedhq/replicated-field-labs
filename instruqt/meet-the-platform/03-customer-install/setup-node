@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# This set line ensures that all failures will cause the script to error and exit
+set -euxo pipefail
+source /etc/profile.d/header.sh
+HOME_DIR=/home/replicant
+
+### Assure the tmux session exists
+#
+# In a test scenario Instuqt does not run the user shell for the
+# challenge, which means the tmux session is never established. We
+# need to session for the solve scripts for other challenges to 
+# succeed, so let's create it here.
+#
+if ! tmux has-session -t node ; then
+  tmux new-session -d -s node su - replicant
+fi
+
+agent variable set ADMIN_CONSOLE_PASSWORD "$(get_admin_console_password)"
+agent variable set SLACKERNEWS_DOMAIN get_slackernews_domain
+agent variable set ADMIN_EMAIL "${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
+agent variable set CUSTOMER_ID $(get_customer_id Omozan)
+agent variable set LICENSE_ID $(get_license_id Omozan)
+
+customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
+agent variable set CUSTOMER_EMAIL ${customer_email}
+
+registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+  yq .customer.installationId) 
+agent variable set REGISTRY_PASSWORD ${registry_password}
+
+-- download the installer tarball
+curl -f https://replicated.app/embedded/${app_slug}/stable \
+      -H "Authorization: ${license_id}" \
+      -o ${HOME_DIR}${app_slug}-stable.tgz \
+  && tar -C ${HOME_DIR} -xzvf ${app_slug}-stable.tgz
+
+tmux send-keys -t node "cd ${HOME_DIR}" ENTER
+tmux send-keys -t node "sudo ./${app_slug} install --license license.yaml --admin-console-password $(agent variable get ADMIN_CONSOLE_PASSWORD) --no-prompt --ignore-host-preflights" ENTER
+
+exit 0
