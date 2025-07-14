@@ -5,7 +5,7 @@ curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicated
 source /etc/profile.d/header.sh
 
 # Initialize setup script with proper error handling
-init_setup_script
+init_setup_script true
 
 # Get the application slug using library function
 app_slug=$(get_app_slug)
