@@ -7,21 +7,17 @@ source /etc/profile.d/header.sh
 # get the application slug for the chart URL
 api_token=$(get_api_token)
 app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
-echo "DEBUG: app_slug is: $app_slug"
 
-# login to the registry  
-registry_password=$(agent variable get REGISTRY_PASSWORD)
-customer_email=$(agent variable get CUSTOMER_EMAIL)
-replicated_app=$(agent variable get REPLICATED_APP)
-echo "DEBUG: customer_email is: $customer_email"
-echo "DEBUG: replicated_app is: $replicated_app"
+# login to the registry
+customer_email=$(get_username)
+registry_password=$(get_password)
 echo "${registry_password}" | helm registry login registry.replicated.com \
   --username "${customer_email}" \
-  --password-stdin 
+  --password-stdin
 
 # install the application
 helm install --namespace slackernews --create-namespace slackernews \
-  oci://registry.replicated.com/${app_slug}/slackernews \
+  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/slackernews \
   --set slackernews.domain=$(get_slackernews_domain) \
   --set service.type=NodePort \
   --kubeconfig /home/replicant/.kube/config
