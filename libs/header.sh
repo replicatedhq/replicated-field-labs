@@ -8,6 +8,7 @@
 # Library metadata
 HEADER_VERSION="2.0.0"
 HEADER_LOADED=true
+HEADER_FALLBACK_MODE=false
 
 # Get the directory where this script is located
 LIBS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
