@@ -1,30 +1,31 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
-export HOME_DIR=/home/replicant
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
 
-### Assure the tmux session exists
+# Initialize setup script with proper error handling
+init_setup_script
+
+### Setup tmux session for Instruqt challenge
 #
-# In a test scenario Instuqt does not run the user shell for the
+# In a test scenario Instruqt does not run the user shell for the
 # challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to 
+# need the session for solve scripts in other challenges to 
 # succeed, so let's create it here.
 #
 
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
+ensure_tmux_session "shell" "replicant"
 
-# update the chart version
+# Update the chart version
 yq -i '.version = "0.2.0"' ${HOME_DIR}/slackernews/Chart.yaml
 
-# add the SDK dependency
+# Add the SDK dependency
 yq -i '.dependencies = []' ${HOME_DIR}/slackernews/Chart.yaml
 yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"$(agent variable get REPLICATED_SDK_VERSION)\"}" ${HOME_DIR}/slackernews/Chart.yaml
 
-# re-package the chart
+# Re-package the chart
 helm package --dependency-update ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
 
-# make sure perms are good
+# Ensure proper permissions
 chown -R replicant:replicant ${HOME_DIR}/slackernews ${HOME_DIR}/release

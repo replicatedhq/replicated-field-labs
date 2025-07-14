@@ -1,32 +1,21 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
-export HOME_DIR=/home/replicant
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
 
-result=0
-# check for an updated version number
-if [[ "$(yq .version ${HOME_DIR}/slackernews/Chart.yaml)" != "0.2.0"  ]] ; then
-  fail-message 'Please be sure to update the version of the Slackernews Helm chart to reflect your changes'
-  let "result = result + 1"
-fi
+# Initialize check script
+init_check_script
 
-# check for the Replicated SDK dependency
-if [[ "$(yq  '.dependencies[] | select ( .name == "replicated" ) | .name' ${HOME_DIR}/slackernews/Chart.yaml )" != "replicated" ]] ; then
-  fail-message 'Please be sure to include the Replicated SDK dependency in the Slackernews Helm chart'
-  let "result = result + 1"
-fi
+# Use our composite function for complete chart update workflow validation
+sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+check_chart_update_workflow \
+    "${HOME_DIR}/slackernews/Chart.yaml" \
+    "0.2.0" \
+    "replicated" \
+    "${sdk_version}" \
+    "${HOME_DIR}/release" \
+    "slackernews"
 
-# check for dependency updates 
-if [[ ! -f "${HOME_DIR}/slackernews/charts/replicated-$(agent variable get REPLICATED_SDK_VERSION).tgz" ]] ; then
-  fail-message 'Please be sure to update the Slackernews Helm chart''s dependencies to include the Replicated SDK'
-  let "result = result + 1"
-fi
-
-# check for the repackaged Helm chart
-if [[ ! -f ${HOME_DIR}/release/slackernews-0.2.0.tgz ]] ; then
-  fail-message 'Please be sure to update and repackage the Slackernews Helm chart' 
-  let "result = result + 1"
-fi
-
-exit ${result}
+# Finish check and exit with result
+finish_check_script
