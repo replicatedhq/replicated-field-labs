@@ -16,9 +16,6 @@ wait_for_ssh_connectivity "shell" 60
 # Create kube directory on shell
 ssh shell "mkdir -p /home/replicant/.kube"
 
-# Wait for Kubernetes API server to be available
-wait_for_http_endpoint "http://localhost:8001/api" 200 120
-
 # Wait for Kubernetes configuration to be available
 wait_for_kubeconfig "/etc/rancher/k3s/k3s.yaml" 120
 
