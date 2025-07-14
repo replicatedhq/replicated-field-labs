@@ -30,6 +30,7 @@ download_libraries() {
         "instruqt-config.sh"
         "instruqt-services.sh"
         "instruqt-apps.sh"
+        "instruqt-checks.sh"
         "instruqt-all.sh"
     )
     
@@ -143,6 +144,7 @@ else
     source "$LIBS_DIR/instruqt-config.sh"       # Environment and credentials
     source "$LIBS_DIR/instruqt-services.sh"     # Service and API management
     source "$LIBS_DIR/instruqt-apps.sh"         # Application and release management
+    source "$LIBS_DIR/instruqt-checks.sh"       # Check script validation functions
 fi
 
 # Verify all libraries loaded successfully (skip in fallback mode)
@@ -158,6 +160,7 @@ if [[ "$HEADER_FALLBACK_MODE" != "true" ]]; then
         [[ "$INSTRUQT_CONFIG_LOADED" != "true" ]] && missing_libraries+=("instruqt-config")
         [[ "$INSTRUQT_SERVICES_LOADED" != "true" ]] && missing_libraries+=("instruqt-services")
         [[ "$INSTRUQT_APPS_LOADED" != "true" ]] && missing_libraries+=("instruqt-apps")
+        [[ "$INSTRUQT_CHECKS_LOADED" != "true" ]] && missing_libraries+=("instruqt-checks")
         
         if [[ ${#missing_libraries[@]} -gt 0 ]]; then
             echo "ERROR: Failed to load libraries: ${missing_libraries[*]}"
@@ -279,5 +282,6 @@ header_info() {
     echo "Config: v${INSTRUQT_CONFIG_VERSION}"
     echo "Services: v${INSTRUQT_SERVICES_VERSION}"
     echo "Apps: v${INSTRUQT_APPS_VERSION}"
+    echo "Checks: v${INSTRUQT_CHECKS_VERSION}"
     echo "================================================="
 }
