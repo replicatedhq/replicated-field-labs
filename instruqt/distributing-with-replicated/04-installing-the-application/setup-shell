@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
 # download and use our shared library with auto-download functionality
 curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-# get the customer id, since it's the password for the Helm installation
-# and users like to copy/paste
-api_token=$(get_api_token)
-app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
-customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customers" | jq -r '.customers[0].id')
+# Initialize setup script with proper error handling
+init_setup_script
 
-# set the customer email so the user doesn't have to do it, also make it a paid license for the optics
+# Get app and customer information using library functions
+api_token=$(get_api_token)
+app_id=$(get_app_id)
+customer_id=$(get_customer_id)
+
+# Set the customer email so the user doesn't have to do it, also make it a paid license for the optics
 customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
 updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
   jq -c --arg appId "${app_id}" --arg email "${customer_email}" '.customer | {"app_id": $appId, "name": .name, "email": $email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
@@ -22,10 +22,10 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
   --header "Content-Type: application/json" \
   --data "${updated_customer}"
  
-# get the registry password (which is the license id)
-registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
-  yq .customer.installationId) 
+# Get the registry password (which is the license id)
+registry_password=$(get_license_id)
 
+# Set agent variables for the installation
 agent variable set APP_ID ${app_id}
 agent variable set CUSTOMER_ID ${customer_id}
 agent variable set CUSTOMER_EMAIL ${customer_email}

@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-result=0
+# Initialize check script
+init_check_script
 
-# check for release to Unstable
-installed_chart=$(helm list -n slackernews -o yaml --kubeconfig /home/replicant/.kube/config | yq '.[0].chart')
-if [[ ! "${installed_chart}" == "slackernews-0.2.0"  ]] ; then
-  fail-message 'Please be sure to install the Slackernews Helm chart'
-  let "result = result + 1"
-fi
+# Check that the Slackernews Helm chart is installed
+check_helm_release "slackernews" "slackernews-0.2.0" \
+    'Please be sure to install the Slackernews Helm chart'
 
-exit ${result}
+# Finish check and exit with result
+finish_check_script

@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-# get the application slug for the chart URL
-api_token=$(get_api_token)
-app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+# Initialize setup script with proper error handling
+init_setup_script
 
-# login to the registry
+# Get the application slug using library function
+app_slug=$(get_app_slug)
+
+# Login to the registry
 helm registry login registry.replicated.com \
   --username $(agent variable get CUSTOMER_EMAIL) \
   --password $(agent variable get REGISTRY_PASSWORD) 
 
-# install the application
+# Install the application
 helm install --namespace slackernews --create-namespace slackernews \
   oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/slackernews \
   --set slackernews.domain=$(get_slackernews_domain) \
