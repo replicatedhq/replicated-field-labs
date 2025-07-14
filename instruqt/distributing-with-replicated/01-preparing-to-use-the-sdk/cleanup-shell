@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
 
-# clear the tmux pane and scrollback to look like a fresh shell
-tmux clear-history -t shell 
-tmux send-keys -t shell clear ENTER
+# Initialize setup script with proper error handling
+init_setup_script
+
+# Clear the tmux pane and scrollback to look like a fresh shell
+cleanup_tmux_session "shell"
 
 exit 0

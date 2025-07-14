@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
 
-### Assure the tmux session exists
+# Initialize setup script with proper error handling
+init_setup_script
+
+### Setup tmux session for Instruqt challenge
 #
-# In a test scenario Instuqt does not run the user shell for the
+# In a test scenario Instruqt does not run the user shell for the
 # challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to 
-# succeed, so let's create it here.
+# need the session for solve scripts in other challenges to 
+# succeed, so let's create it here and export environment variables.
 #
 
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
-
-tmux send-keys -t shell export SPACE 'REPLICATED_API_TOKEN=' "$(agent variable get REPLICATED_API_TOKEN)" ENTER
-tmux send-keys -t shell export SPACE 'REPLICATED_APP=' "$(agent variable get REPLICATED_APP)" ENTER
+setup_instruqt_tmux_session "shell" "replicant" true
