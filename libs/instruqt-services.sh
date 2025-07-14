@@ -221,14 +221,23 @@ wait_for_kubeconfig() {
         return 1
     fi
     
-    # Verify kubeconfig is valid
-    if ! kubectl --kubeconfig="$kubeconfig_path" cluster-info > /dev/null 2>&1; then
-        echo "ERROR: Kubernetes configuration is not valid"
-        return 1
-    fi
+    # Wait for k3s service to be ready
+    echo "Waiting for k3s service to be ready..."
+    local start_time=$(date +%s)
+    local end_time=$((start_time + timeout))
     
-    echo "Kubernetes configuration is ready"
-    return 0
+    while [ $(date +%s) -lt $end_time ]; do
+        if kubectl --kubeconfig="$kubeconfig_path" cluster-info > /dev/null 2>&1; then
+            echo "Kubernetes configuration is ready"
+            return 0
+        fi
+        
+        echo "Kubernetes cluster not ready yet, waiting..."
+        sleep 5
+    done
+    
+    echo "ERROR: Kubernetes configuration is not valid after $timeout seconds"
+    return 1
 }
 
 # Health check for multiple services
