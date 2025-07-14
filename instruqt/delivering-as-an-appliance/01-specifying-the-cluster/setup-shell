@@ -26,3 +26,4 @@ done
 mkdir -p ${HOME_DIR}/release
 chown replicant:replicant ${HOME_DIR}/release
 chmod 755 ${HOME_DIR}/release
+
