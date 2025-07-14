@@ -444,7 +444,7 @@ rm ${HOME_DIR}/release/slackernews-0.4.1.tgz
 customer_email="${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
 
 # create the new customer and keep track of the ID
-customer_id=$(replicated customer create --name "Nitflex" --email ${customer_email} --channel Stable --default-channel Stable --expires-in 1460h --type trial --kots-install=true --embedded-cluster-download=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
+customer_id=$(replicated customer create --name "Nitflex" --email ${customer_email} --channel Stable --default-channel Stable --expires-in 1460h --type trial --kots-install=false --output json --app ${app_slug} --token ${api_token} | jq -r .id)
 
 # this section is just to match the deployment history from the "Protecting..." lab
 yq -i '.version = "0.5.0"' ${HOME_DIR}/slackernews/Chart.yaml
