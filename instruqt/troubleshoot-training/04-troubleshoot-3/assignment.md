@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: Time to fix the problem...
 tabs:
-- title: Workstation
+- id: shecujhilhdj
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: advanced
 timelimit: 3600
+enhanced_loading: null
 ---
 You get another report from a customer saying that their application isn't working, as if **a Pod is not responding and connections time out**.  How would you begin to solve the problem?
 
