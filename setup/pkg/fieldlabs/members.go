@@ -20,6 +20,7 @@ type MemberList struct {
 // Get list of team members created with multi-player mode
 func (e *EnvironmentManager) GetMembers() ([]MemberList, error) {
 	url := fmt.Sprintf("%s/v1/team/members", e.Params.IDOrigin)
+	e.Log.Debug(fmt.Sprintf("GET %s", url))
 	req, err := http.NewRequest(
 		"GET",
 		url,
@@ -42,9 +43,10 @@ func (e *EnvironmentManager) GetMembers() ([]MemberList, error) {
 		panic(err.Error())
 	}
 	if resp.StatusCode != 200 {
-		return []MemberList{}, fmt.Errorf("GET /v1/team/members %d: %s", resp.StatusCode, body)
+		return []MemberList{}, fmt.Errorf("GET %d: %s", url, resp.StatusCode, body)
 	}
 
+        e.Log.Debug(fmt.Sprintf("GET %s %d: %s", url, resp.StatusCode, body))
 	var members []MemberList
 	err = json.Unmarshal([]byte(body), &members)
 	if err != nil {
@@ -60,8 +62,14 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 		return nil, errors.Wrap(err, "get members")
 	}
 
+	membersJson, _ := json.Marshal(members)
+	fmt.Sprintf("members: %s", membersJson)
+
 	membersMap := make(map[string]MemberList)
 	for i := 0; i < len(members); i += 1 {
+		memberJson, _ := json.Marshal(members)
+		fmt.Sprintf("member: %s", memberJson)
+		fmt.Sprintf("member: %s", members[i].Email)
 		membersMap[members[i].Email] = members[i]
 	}
 	return membersMap, nil
@@ -69,15 +77,16 @@ func (e *EnvironmentManager) getMembersMap() (map[string]MemberList, error) {
 
 // Delete team members created with multi-player mode
 func (e *EnvironmentManager) DeleteMember(id string) error {
-	url := fmt.Sprintf("%s/v1/team/member?user_id=%s", e.Params.IDOrigin, id)
+	requestUrl := fmt.Sprintf("%s/v1/team/member?id=%s", e.Params.IDOrigin, id)
+	e.Log.Debug(fmt.Sprintf("DELETE %s", requestUrl))
 	req, err := http.NewRequest(
 		"DELETE",
-		url,
+		requestUrl,
 		nil,
 	)
 
 	if err != nil {
-		return err
+		return errors.Wrap(err, fmt.Sprintf("DELETE %s", requestUrl))
 	}
 	req.Header.Set("Authorization", e.Params.SessionToken)
 	req.Header.Set("Accept", "application/json")
@@ -91,8 +100,8 @@ func (e *EnvironmentManager) DeleteMember(id string) error {
 	if err != nil {
 		panic(err.Error())
 	}
-	if resp.StatusCode != 204 {
-		return fmt.Errorf("GET /v1/team/member %d: %s", resp.StatusCode, body)
+	if resp.StatusCode != 204 && resp.StatusCode != 200 {
+		return fmt.Errorf("DELETE %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 }
@@ -128,133 +137,10 @@ func (e *EnvironmentManager) addMember(members map[string]MemberList, policies m
 		return err
 	}
 	return nil
-
-}
-
-type AcceptBody struct {
-	InviteId          string `json:"invite_id"`
-	FirstName         string `json:"first_name"`
-	LastName          string `json:"last_name"`
-	Password          string `json:"password"`
-	ReplaceAccount    bool   `json:"replace_account"`
-	FromTeamSelection bool   `json:"from_team_selection"`
-}
-
-func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
-	h := sha256.Sum256([]byte(participantId))
-	sum := fmt.Sprintf("%x", h)
-	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Repl", LastName: "Replicated", Password: string(sum[0:20]), ReplaceAccount: false, FromTeamSelection: true}
-	acceptBodyBytes, err := json.Marshal(ab)
-	if err != nil {
-		return errors.Wrap(err, "marshal accept body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/signup/accept-invite", e.Params.IDOrigin),
-		bytes.NewReader(acceptBodyBytes),
-	)
-	if err != nil {
-		return errors.Wrap(err, "build accept request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrap(err, "send accept request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /v1/signup/accept-invite %d: %s", resp.StatusCode, body)
-	}
-	return nil
-}
-
-type InvitedTeams struct {
-	Teams []struct {
-		Id       string `json:"id"`
-		Name     string `json:"name"`
-		InviteId string `json:"invite_id"`
-	} `json:"invited_teams"`
-}
-
-func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
-	req, err := http.NewRequest(
-		"GET",
-		fmt.Sprintf("%s/v1/signup/teams", e.Params.IDOrigin),
-		nil,
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build signup teams request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", vr.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send signup teams request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/teams %d: %s", resp.StatusCode, body)
-	}
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.Wrap(err, "read body")
-	}
-	var body InvitedTeams
-	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
-		return nil, errors.Wrap(err, "decode body")
-	}
-	return &body, nil
 }
 
 type VerifyResponse struct {
 	Token string `json:"token"`
-}
-
-func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, error) {
-	verifyBody := map[string]string{
-		"token": sr.Token,
-	}
-	verifyBodyBytes, err := json.Marshal(verifyBody)
-	if err != nil {
-		return nil, errors.Wrap(err, "marshal verify body")
-	}
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf("%s/v1/signup/verify", e.Params.IDOrigin),
-		bytes.NewReader(verifyBodyBytes),
-	)
-	if err != nil {
-		return nil, errors.Wrap(err, "build verify request")
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, errors.Wrap(err, "send verify request")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup/verify %d: %s", resp.StatusCode, body)
-	}
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.Wrap(err, "read body")
-	}
-	var body VerifyResponse
-	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
-		return nil, errors.Wrap(err, "decode body")
-	}
-	return &body, nil
 }
 
 type SignupResponse struct {
@@ -269,9 +155,10 @@ func (e *EnvironmentManager) signupMember(inviteEmail string) (*SignupResponse, 
 	if err != nil {
 		return nil, errors.Wrap(err, "marshal signup body")
 	}
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/signup", e.Params.IDOrigin),
+		requestUrl,
 		bytes.NewReader(signupBodyBytes),
 	)
 	if err != nil {
@@ -288,7 +175,7 @@ func (e *EnvironmentManager) signupMember(inviteEmail string) (*SignupResponse, 
 
 	if resp.StatusCode != 201 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return nil, fmt.Errorf("POST /v1/signup %d: %s", resp.StatusCode, body)
+		return nil, fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -315,9 +202,10 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 	if err != nil {
 		return errors.Wrap(err, "marshal invite body")
 	}
+	requestUrl := fmt.Sprintf("%s/vendor/v1/team/invite", e.Params.IDOrigin)
 	req, err := http.NewRequest(
 		"POST",
-		fmt.Sprintf("%s/v1/team/invite", e.Params.IDOrigin),
+		requestUrl,
 		bytes.NewReader(inviteBodyBytes),
 	)
 	if err != nil {
@@ -329,7 +217,7 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return errors.Wrap(err, "send invite request")
+		return errors.Wrap(err, fmt.Sprintf("send invite request: %s", requestUrl))
 	}
 	defer resp.Body.Close()
 	// rate limit returned when already invited
@@ -339,7 +227,134 @@ func (e *EnvironmentManager) inviteMember(inviteEmail string, members map[string
 	}
 	if resp.StatusCode != 204 {
 		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("POST /team/invite %d: %s", resp.StatusCode, body)
+		return fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
+	}
+	return nil
+}
+
+type InvitedTeams struct {
+	Teams []struct {
+		Id       string `json:"id"`
+		Name     string `json:"name"`
+		InviteId string `json:"invite_id"`
+	} `json:"invited_teams"`
+}
+
+func (e *EnvironmentManager) verifyMember(sr *SignupResponse) (*VerifyResponse, error) {
+	verifyBody := map[string]string{
+		"token": sr.Token,
+	}
+	verifyBodyBytes, err := json.Marshal(verifyBody)
+	if err != nil {
+		return nil, errors.Wrap(err, "marshal verify body")
+	}
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/verify", e.Params.IDOrigin)
+	req, err := http.NewRequest(
+		"POST",
+		requestUrl,
+		bytes.NewReader(verifyBodyBytes),
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("build verify request: %s", requestUrl))
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "send verify request")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "read body")
+	}
+	var body VerifyResponse
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
+		return nil, errors.Wrap(err, "decode body")
+	}
+	return &body, nil
+}
+
+func (e *EnvironmentManager) captureInvite(vr *VerifyResponse) (*InvitedTeams, error) {
+	e.Log.Verbose()
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/teams", e.Params.IDOrigin)
+	req, err := http.NewRequest(
+		"GET",
+		requestUrl,
+		nil,
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "build signup teams request")
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", vr.Token)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "getting the invite")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("GET %s %d: %s", requestUrl, resp.StatusCode, body)
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "read body")
+	}
+	var body InvitedTeams
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&body); err != nil {
+		return nil, errors.Wrap(err, "decode body")
+	}
+	return &body, nil
+}
+
+type AcceptBody struct {
+	InviteId          string `json:"invite_id"`
+	FirstName         string `json:"first_name"`
+	LastName          string `json:"last_name"`
+	Password          string `json:"password"`
+	ReplaceAccount    bool   `json:"replace_account"`
+	FromTeamSelection bool   `json:"from_team_selection"`
+}
+
+func (e *EnvironmentManager) acceptInvite(invite *InvitedTeams, participantId string, vr *VerifyResponse) error {
+	h := sha256.Sum256([]byte(participantId))
+	sum := fmt.Sprintf("%x", h)
+	ab := AcceptBody{InviteId: (*invite).Teams[0].InviteId, FirstName: "Instruqt", LastName: "Participant", Password: string(sum[0:20]), ReplaceAccount: false, FromTeamSelection: true}
+	acceptBodyBytes, err := json.Marshal(ab)
+	if err != nil {
+		return errors.Wrap(err, "marshal accept body")
+	}
+
+	requestUrl := fmt.Sprintf("%s/vendor/v1/signup/accept-invite", e.Params.IDOrigin)
+	req, err := http.NewRequest(
+		"POST",
+		requestUrl,
+		bytes.NewReader(acceptBodyBytes),
+	)
+	if err != nil {
+		return errors.Wrap(err, "build accept request")
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("send accept request: %s", requestUrl))
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 201 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("POST %s %d: %s", requestUrl, resp.StatusCode, body)
 	}
 	return nil
 }

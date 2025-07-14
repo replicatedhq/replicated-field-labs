@@ -1,6 +1,7 @@
 package fieldlabs
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -103,6 +104,9 @@ func (e *EnvironmentManager) Ensure(track *TrackSpec) error {
 	if err != nil {
 		return errors.Wrap(err, "add member")
 	}
+	memberJson, _ := json.Marshal(members)
+	policyJson, _ := json.Marshal(policies)
+	e.Log.ActionWithSpinner("Added member: %s %s", memberJson, policyJson)
 
 	err = e.createVendorTrack(*app, *track)
 	if err != nil {
@@ -119,85 +123,90 @@ func (e *EnvironmentManager) createVendorTrack(app types.App, trackSpec TrackSpe
 	appTrackSlug := fmt.Sprintf("%s-%s", app.Slug, track.Spec.Slug)
 	e.Log.ActionWithSpinner("Provision track %s", appTrackSlug)
 
-  // get the stable channel to assign for customer
-  channel, err := e.getChannel(track)
-  if err != nil {
-    return errors.Wrapf(err, "get Stable channel")
-  }
-  track.Status.Channel = channel
+	// get the stable channel to assign for customer
+	e.Log.ActionWithSpinner("Get stable channel")
+	channel, err := e.getChannel(track)
+	if err != nil {
+		return errors.Wrapf(err, "get Stable channel")
+	}
+	track.Status.Channel = channel
+	e.Log.ActionWithSpinner("Got channel: %s", channel)
 
-  // Create customer
-  if trackSpec.Customer != "" {
-    customer, err := e.getOrCreateCustomer(track)
-    if err != nil {
-      return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
-    }
-    track.Status.Customer = customer
-  }
+	// Create customer
+	e.Log.ActionWithSpinner("Create customer")
+	if trackSpec.Customer != "" {
+		customer, err := e.getOrCreateCustomer(track)
+		if err != nil {
+			return errors.Wrapf(err, "create customer for track %q app %q", trackSpec.Slug, app.Slug)
+		}
+		track.Status.Customer = customer
+	}
 
 	// load yaml for releases first to ensure directories exist
-  if trackSpec.YAMLDir != "" { 
-    kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
+	if trackSpec.YAMLDir != "" {
+		kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
 
-    if err != nil {
-      return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
-    }
+		if err != nil {
+			return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
+		}
 
-    for _, extraRelease := range track.Spec.ExtraReleases {
-      kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.YAMLDir))
-      if err != nil {
-        return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
-      }
-      track.Status.ExtraReleases = append(track.Status.ExtraReleases, ExtraReleaseStatus{
-        Spec: extraRelease,
-        YAML: kotsYAML,
-      })
+		for _, extraRelease := range track.Spec.ExtraReleases {
+			kotsYAML, err := readYAMLDir(fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.YAMLDir))
+			if err != nil {
+				return errors.Wrapf(err, "read yaml dir %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
+			}
+			track.Status.ExtraReleases = append(track.Status.ExtraReleases, ExtraReleaseStatus{
+				Spec: extraRelease,
+				YAML: kotsYAML,
+			})
 
-    }
+		}
 
-    release, err := e.Client.CreateRelease(app.ID, kotsYAML)
-    if err != nil {
-      return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
-    }
+		release, err := e.Client.CreateRelease(app.ID, kotsYAML)
+		if err != nil {
+			return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.YAMLDir))
+		}
 
-    track.Status.Release = release
+		track.Status.Release = release
 
-    err = e.Client.PromoteRelease(app.ID, release.Sequence, "0.1.0", trackSpec.Slug, false, channel.ID)
-    if err != nil {
-      return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
-    }
+		e.Log.ActionWithSpinner("Promote release")
+		err = e.Client.PromoteRelease(app.ID, release.Sequence, "0.1.0", trackSpec.Slug, false, channel.ID)
+		if err != nil {
+			return errors.Wrapf(err, "promote release %d to channel %q", release.Sequence, channel.Slug)
+		}
 
-    for _, extraRelease := range track.Status.ExtraReleases {
-      releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
-      if err != nil {
-        return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.Spec.YAMLDir))
-      }
-      extraRelease.Release = releaseInfo
+		for _, extraRelease := range track.Status.ExtraReleases {
+			releaseInfo, err := e.Client.CreateRelease(app.ID, extraRelease.YAML)
+			if err != nil {
+				return errors.Wrapf(err, "create release for %q", fmt.Sprintf("%s/%s", e.VendorLoc, extraRelease.Spec.YAMLDir))
+			}
+			extraRelease.Release = releaseInfo
 
-      if extraRelease.Spec.PromoteChannel != "" {
+			if extraRelease.Spec.PromoteChannel != "" {
 
-        continue
-      }
-    }
+				continue
+			}
+		}
 
-    if trackSpec.K8sInstallerYAMLPath != "" {
-      kurlYAML, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-      if err != nil {
-        return errors.Wrapf(err, "read installer yaml %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-      }
+		if trackSpec.K8sInstallerYAMLPath != "" {
+			kurlYAML, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+			if err != nil {
+				return errors.Wrapf(err, "read installer yaml %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+			}
 
-      installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
-      if err != nil {
-        return errors.Wrapf(err, "create installer from %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
-      }
-      track.Status.Installer = installer
+			installer, err := e.Client.CreateInstaller(app.ID, string(kurlYAML))
+			if err != nil {
+				return errors.Wrapf(err, "create installer from %q", fmt.Sprintf("%s/%s", e.VendorLoc, trackSpec.K8sInstallerYAMLPath))
+			}
+			track.Status.Installer = installer
 
-      err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, trackSpec.Slug)
-      if err != nil {
-        return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
-      }
-    }
-  }
+			err = e.Client.PromoteInstaller(app.ID, installer.Sequence, channel.ID, trackSpec.Slug)
+			if err != nil {
+				return errors.Wrapf(err, "promote installer %d to channel %q", installer.Sequence, channel.Slug)
+			}
+		}
+	}
+	e.Log.ActionWithSpinner("Provisioned")
 	return nil
 }
 
@@ -242,8 +251,8 @@ func (e *EnvironmentManager) getOrCreateCustomer(track Track) (*types.Customer, 
 		}
 	}
 
-  var createOpts = kotsclient.CreateCustomerOpts{ Name: track.Spec.Customer, AppID: track.Status.App.ID, Email: track.Spec.Customer + "@replicated-labs.com", ChannelID: track.Status.Channel.ID, ExpiresAt: OneWeek }
-	customer, err := e.Client.CreateCustomer(createOpts) 
+	var createOpts = kotsclient.CreateCustomerOpts{Name: track.Spec.Customer, AppID: track.Status.App.ID, Email: track.Spec.Customer + "@replicated-labs.com", ChannelID: track.Status.Channel.ID, ExpiresAt: OneWeek}
+	customer, err := e.Client.CreateCustomer(createOpts)
 	if err != nil {
 		return nil, errors.Wrapf(err, "create customer for track %q app %q", track.Spec.Slug, track.Status.App.Slug)
 	}
