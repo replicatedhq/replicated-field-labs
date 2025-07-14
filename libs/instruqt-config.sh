@@ -179,7 +179,7 @@ setup_customer_environment() {
     fi
     
     if command -v get_license_id &> /dev/null; then
-        license_id=$(get_license_id)
+        license_id=$(get_license_id "${INSTRUQT_PARTICIPANT_ID}")
     fi
     
     # Set customer variables
