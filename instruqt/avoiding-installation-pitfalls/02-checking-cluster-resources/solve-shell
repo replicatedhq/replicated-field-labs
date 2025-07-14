@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+source /etc/profile.d/header.sh
 
+# Initialize setup script with proper error handling
+init_setup_script
+
+# Add CPU resources preflight check
 export CPU_PREFLIGHT=$(cat <<CPU_PREFLIGHT
 nodeResources:
   checkName: Cluster CPU resources are sufficient to install and run Slackernews
@@ -23,8 +28,9 @@ nodeResources:
         message: Your cluster has sufficient CPU resources available to run Slackernews
 CPU_PREFLIGHT
 )
-yq -i ".spec.analyzers += env(CPU_PREFLIGHT)" /home/replicant/slackernews-preflights.yaml
+yq -i ".spec.analyzers += env(CPU_PREFLIGHT)" ${HOME_DIR}/slackernews-preflights.yaml
 
+# Add memory resources preflight check
 export MEMORY_PREFLIGHT=$(cat <<MEMORY_PREFLIGHT | yq
 nodeResources:
   checkName: Cluster memory is sufficient to install and run Slackernews
@@ -45,6 +51,6 @@ nodeResources:
         message: Your cluster has sufficient memory available to run Slackernews
 MEMORY_PREFLIGHT
 )
-yq -i ".spec.analyzers += env(MEMORY_PREFLIGHT)" /home/replicant/slackernews-preflights.yaml
+yq -i ".spec.analyzers += env(MEMORY_PREFLIGHT)" ${HOME_DIR}/slackernews-preflights.yaml
 
-chown replicant /home/replicant/slackernews-preflights.yaml
+chown replicant ${HOME_DIR}/slackernews-preflights.yaml
