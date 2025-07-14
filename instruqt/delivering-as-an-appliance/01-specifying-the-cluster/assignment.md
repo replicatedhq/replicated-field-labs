@@ -19,6 +19,7 @@ tabs:
   hostname: shell
 difficulty: basic
 timelimit: 300
+enhanced_loading: null
 ---
 
 A virtual Kubernetes appliance consists of your application, a Kubernetes

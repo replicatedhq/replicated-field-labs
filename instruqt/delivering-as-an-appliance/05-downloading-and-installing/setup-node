@@ -18,13 +18,13 @@ fi
 # download the Replicated KOTS CLI, which plugs into the `kubectl` command
 # and provides a subcommend to reset the password for the admin console
 mkdir -p /var/lib/embedded-cluster/bin
-export REPL_INSTALL_PATH=/var/lib/embedded-cluster/bin
-curl https://kots.io/install | bash
 
 agent variable set ADMIN_CONSOLE_PASSWORD "$(get_admin_console_password)"
 agent variable set SLACKERNEWS_DOMAIN get_slackernews_domain
 agent variable set ADMIN_EMAIL "${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
 agent variable set CUSTOMER_ID $(get_customer_id Nitflex)
 agent variable set LICENSE_ID $(get_license_id Nitflex)
+
+echo "export SKIP_HOST_PREFLIGHTS=true" >> /root/.bashrc
 
 exit 0

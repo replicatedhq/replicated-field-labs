@@ -22,6 +22,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 1200
+enhanced_loading: null
 ---
 
 We're part way through the installation of SlackerNews as a Kubernetes

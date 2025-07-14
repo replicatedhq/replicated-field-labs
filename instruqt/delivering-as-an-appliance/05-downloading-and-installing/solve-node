@@ -49,6 +49,6 @@ curl -f https://replicated.app/embedded/${app_slug}/stable \
 
 echo "The install command takes a long time and Instruqt can't handle its output..."
 
-./${app_slug} install --license license.yaml --no-prompt --skip-host-preflights --admin-console-password $(agent variable get ADMIN_CONSOLE_PASSWORD) > /dev/null
+./${app_slug} install --license license.yaml --no-prompt --admin-console-password $(agent variable get ADMIN_CONSOLE_PASSWORD) > /dev/null
 
 exit 0
