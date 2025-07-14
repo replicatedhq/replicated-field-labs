@@ -2,6 +2,8 @@
 
 # This set line ensures that all failures will cause the script to error and exit
 set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
  
 agent variable set SLACKERNEWS_DOMAIN get_slackernews_domain

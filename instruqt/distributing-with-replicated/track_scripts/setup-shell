@@ -23,8 +23,8 @@ EOF
 # assure an RSA key for Dropbear
 ssh-keygen -t rsa -f /etc/dropbear/dropbear_rsa_host_key -N ''
 
-# use our shared libary in setup scripts
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/kots-field-labs/main/libs/header.sh
+# use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
 # change the cluster URI

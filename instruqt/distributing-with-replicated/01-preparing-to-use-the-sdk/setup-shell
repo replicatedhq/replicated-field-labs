@@ -12,6 +12,8 @@ do
   sleep 1
 done
 
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
 # there's only one app created by the automation, so just grab the first in the list
