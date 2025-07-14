@@ -1,34 +1,32 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
 
-result=0
+# Initialize check script
+init_check_script
 
 # check for release to Unstable
 api_token=$(get_api_token)
 customer_email=${INSTRUQT_PARTICIPANT_ID}@geeglo.io
 #
 # get the app id in order to work with the customer
-app_id=$(curl --header "Accept: application/json" --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
+app_id=$(get_app_id "${api_token}")
 
 # create the new customer and keep track of the ID
 new_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customers" | jq -r '.customers[] | select( .name == "Geeglo" )')
-if [[ -z "${new_customer}" ]] ; then
-  fail-message $'Please remember to create the customer Geeglo'
-  let "result = result + 1"
-fi
+check_condition '[[ -n "${new_customer}" ]]' \
+    'Please remember to create the customer Geeglo'
+
+check_condition '[[ -f /home/replicant/.config/helm/registry/config.json ]]' \
+    'Please log into the Replicated registry as the customer you created'
 
 if [[ -f /home/replicant/.config/helm/registry/config.json ]] ; then
   registry_auth_username=$(jq -r '.auths."registry.replicated.com".auth | @base64d | split(":")[0]'  /home/replicant/.config/helm/registry/config.json)
-  if [[ ! "${registry_auth_username}" == "${customer_email}"  ]] ; then
-    fail-message $'Please log into the Replicated registry as the customer you created'
-    let "result = result + 1"
-  fi
-else
-  fail-message $'Please log into the Replicated registry as the customer you created'
-  let "result = result + 1"
+  check_condition '[[ "${registry_auth_username}" == "${customer_email}" ]]' \
+      'Please log into the Replicated registry as the customer you created'
 fi
 
-exit ${result}
+# Finish check and exit with result
+finish_check_script

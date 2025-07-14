@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euxo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
+
+# Initialize setup script with proper error handling
+init_setup_script
 
 # get the customer id, since it's the password for the Helm installation
 # and users like to copy/paste
 api_token=$(get_api_token)
-app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].id')
-app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+app_id=$(get_app_id "${api_token}")
+app_slug=$(get_app_slug "${api_token}")
 
 # provide an email address for the new customer
 customer_email="${INSTRUQT_PARTICIPANT_ID}@geeglo.io"
@@ -29,17 +32,15 @@ updated_customer=$(curl --header 'Accept: application/json' --header "Authorizat
 registry_password=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
   yq .customer.installationId) 
 
-### Assure the tmux session exists
+### Setup tmux session for registry login
 #
-# In a test scenario Instuqt does not run the user shell for the
+# In a test scenario Instruqt does not run the user shell for the
 # challenge, which means the tmux session is never established. We
-# need to session for the solve scripts for other challenges to 
+# need the session for solve scripts for other challenges to 
 # succeed, so let's create it here.
 #
 
-if ! tmux has-session -t shell ; then
-  tmux new-session -d -s shell su - replicant
-fi
+setup_instruqt_tmux_session "shell" "replicant" true
 
 # log in by sending the login sequence to the terminal, the clean up
 tmux send-keys -t shell helm SPACE registry SPACE login SPACE registry.replicated.com SPACE "--username ${customer_email}" SPACE "--password ${registry_password}" ENTER
