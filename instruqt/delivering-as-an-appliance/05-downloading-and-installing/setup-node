@@ -25,4 +25,6 @@ agent variable set ADMIN_EMAIL "${INSTRUQT_PARTICIPANT_ID}@nitflex.tv"
 agent variable set CUSTOMER_ID $(get_customer_id Nitflex)
 agent variable set LICENSE_ID $(get_license_id Nitflex)
 
+echo "export SKIP_HOST_PREFLIGHTS=true" >> /root/.bashrc
+
 exit 0
