@@ -311,39 +311,6 @@ get_password() {
     echo "${password::20}"
 }
 
-# Get or create Replicated API token
-get_api_token() {
-    set +eu
-    local access_token=$(agent variable get REPLICATED_API_TOKEN)
-
-    # if we don't already have a token, fetch one
-    if [[ -z "$access_token" ]]; then
-        set -eu
-        sleep 5
-        local password=$(get_password)
-        local login=$(jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named')
-        set +eu pipefail
-        local token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://api.replicated.com/vendor/v1/login | jq -r ".token")
-        set -eu pipefail
-        
-        local i=0
-        while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]; do
-            sleep $((i*5))
-            set +eu pipefail
-            token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://api.replicated.com/vendor/v1/login | jq -r ".token")
-            set -eu pipefail
-            i=$((i+1))
-        done
-
-        local UUID=$(cat /proc/sys/kernel/random/uuid)
-        local apiToken=$(jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named')
-        access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
-
-        agent variable set REPLICATED_API_TOKEN "$access_token"
-    fi
-    set +eu
-    echo "${access_token}"
-}
 
 # Generate admin console password
 get_admin_console_password() {
@@ -365,6 +332,87 @@ show_credentials() {
     echo -e "${GREEN}Credentials for ${CYAN}https://vendor.replicated.com"
     echo -e "${GREEN}Username: ${CYAN}${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com"
     echo -e "${GREEN}Password: ${CYAN}${password}${NC}"
+}
+
+# === CACHED CREDENTIAL FUNCTIONS ===
+# These functions use agent variables as cache and set initial values
+
+# Get customer email with caching
+get_customer_email() {
+    local customer_email=$(agent variable get CUSTOMER_EMAIL)
+    if [[ -z "$customer_email" ]]; then
+        customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
+        agent variable set CUSTOMER_EMAIL "$customer_email"
+    fi
+    echo "$customer_email"
+}
+
+# Get registry password with caching
+get_registry_password() {
+    local registry_password=$(agent variable get REGISTRY_PASSWORD)
+    if [[ -z "$registry_password" ]]; then
+        # Registry password is the license ID
+        local customer_id=$(get_customer_id)
+        if [[ -n "$customer_id" ]]; then
+            registry_password=$(get_license_id "${INSTRUQT_PARTICIPANT_ID}")
+            agent variable set REGISTRY_PASSWORD "$registry_password"
+        fi
+    fi
+    echo "$registry_password"
+}
+
+# Get API token with caching (improved version)
+get_api_token() {
+    local access_token=$(agent variable get REPLICATED_API_TOKEN)
+    if [[ -z "$access_token" ]]; then
+        set +eu
+        sleep 5
+        local password=$(get_password)
+        local login=$(jq -n -c --arg email "${INSTRUQT_PARTICIPANT_ID}@replicated-labs.com" --arg password "${password}" '$ARGS.named')
+        set +eu pipefail
+        local token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://api.replicated.com/vendor/v1/login | jq -r ".token")
+        set -eu pipefail
+        
+        local i=0
+        while [[ ( -z "$token" || "$token" == "null" ) && $i -lt 20 ]]; do
+            sleep $((i*5))
+            set +eu pipefail
+            token=$(curl -s -H "Content-Type: application/json" --request POST -d "$login" https://api.replicated.com/vendor/v1/login | jq -r ".token")
+            set -eu pipefail
+            i=$((i+1))
+        done
+
+        local UUID=$(cat /proc/sys/kernel/random/uuid)
+        local apiToken=$(jq -n -c --arg name "instruqt-${UUID}" --argjson read_only false '$ARGS.named')
+        access_token=$(curl -s -H "Content-Type: application/json" -H "Authorization: $token" --request POST -d "$apiToken" https://api.replicated.com/vendor/v1/user/token | jq -r ".access_token")
+
+        agent variable set REPLICATED_API_TOKEN "$access_token"
+        set +eu
+    fi
+    echo "$access_token"
+}
+
+# Get app ID with caching
+get_app_id() {
+    local app_id=$(agent variable get APP_ID)
+    if [[ -z "$app_id" ]]; then
+        local api_token=$(get_api_token)
+        app_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r --arg application "Slackernews" '.apps[] | select( .name | startswith( $application )) | .id')
+        agent variable set APP_ID "$app_id"
+    fi
+    echo "$app_id"
+}
+
+# Get customer ID with caching
+get_customer_id() {
+    local customer_id=$(agent variable get CUSTOMER_ID)
+    if [[ -z "$customer_id" ]]; then
+        local api_token=$(get_api_token)
+        local app_id=$(get_app_id)
+        customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name "${INSTRUQT_PARTICIPANT_ID}" '.customers[] | select( .name == $name ) | .id')
+        agent variable set CUSTOMER_ID "$customer_id"
+    fi
+    echo "$customer_id"
 }
 
 # Display configuration status

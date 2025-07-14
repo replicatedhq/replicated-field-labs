@@ -8,9 +8,9 @@ source /etc/profile.d/header.sh
 api_token=$(get_api_token)
 app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
 
-# login to the registry
-customer_email=$(get_username)
-registry_password=$(get_password)
+# login to the registry using cached functions
+customer_email=$(get_customer_email)
+registry_password=$(get_registry_password)
 echo "${registry_password}" | helm registry login registry.replicated.com \
   --username "${customer_email}" \
   --password-stdin

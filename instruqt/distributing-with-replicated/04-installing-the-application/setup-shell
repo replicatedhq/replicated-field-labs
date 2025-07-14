@@ -7,13 +7,13 @@ source /etc/profile.d/header.sh
 # Initialize setup script with proper error handling
 init_setup_script true
 
-# Get app and customer information using library functions
+# Get app and customer information using cached library functions
 api_token=$(get_api_token)
 app_id=$(get_app_id)
 customer_id=$(get_customer_id)
 
 # Set the customer email so the user doesn't have to do it, also make it a paid license for the optics
-customer_email="${INSTRUQT_PARTICIPANT_ID}@omozan.io"
+customer_email=$(get_customer_email)
 updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
   jq -c --arg appId "${app_id}" --arg email "${customer_email}" '.customer | {"app_id": $appId, "name": .name, "email": $email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
 
@@ -22,11 +22,5 @@ curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
   --header "Content-Type: application/json" \
   --data "${updated_customer}"
  
-# Get the registry password (which is the license id)
-registry_password=$(get_license_id)
-
-# Set agent variables for the installation
-agent variable set APP_ID ${app_id}
-agent variable set CUSTOMER_ID ${customer_id}
-agent variable set CUSTOMER_EMAIL ${customer_email}
-agent variable set REGISTRY_PASSWORD ${registry_password}
+# Get the registry password (which is the license id) - this will be cached
+registry_password=$(get_registry_password)
