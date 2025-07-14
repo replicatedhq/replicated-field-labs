@@ -7,7 +7,7 @@ source /etc/profile.d/header.sh
 init_check_script
 
 # Use our composite function for complete chart update workflow validation
-sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+sdk_version=$(get_replicated_sdk_version)
 check_chart_update_workflow \
     "${HOME_DIR}/slackernews/Chart.yaml" \
     "0.2.0" \

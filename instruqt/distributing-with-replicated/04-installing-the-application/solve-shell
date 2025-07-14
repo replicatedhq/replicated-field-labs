@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-# This set line ensures that all failures will cause the script to error and exit
-set -euo pipefail
+# download and use our shared library with auto-download functionality
+curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
 source /etc/profile.d/header.sh
+
+# Initialize setup script with proper error handling
+init_setup_script true
 
 # get the application slug for the chart URL
 api_token=$(get_api_token)
@@ -17,7 +20,7 @@ echo "${registry_password}" | helm registry login registry.replicated.com \
 
 # install the application
 helm install --namespace slackernews --create-namespace slackernews \
-  oci://registry.replicated.com/$(agent variable get REPLICATED_APP)/slackernews \
+  oci://registry.replicated.com/${app_slug}/slackernews \
   --set slackernews.domain=$(get_slackernews_domain) \
   --set service.type=NodePort \
   --kubeconfig /home/replicant/.kube/config

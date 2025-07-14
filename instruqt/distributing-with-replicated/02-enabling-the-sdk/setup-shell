@@ -10,6 +10,5 @@ init_setup_script true
 # Setup release directory with proper permissions
 setup_release_directory
 
-# Get current SDK version and set agent variable
-replicated_sdk_version=$(get_replicated_sdk_version)
-agent variable set REPLICATED_SDK_VERSION ${replicated_sdk_version}
+# Initialize SDK version (caching handled by get_replicated_sdk_version)
+get_replicated_sdk_version > /dev/null

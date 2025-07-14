@@ -7,7 +7,6 @@ source /etc/profile.d/header.sh
 # Initialize setup script with proper error handling
 init_setup_script true
 
-# Set the slackernews domain agent variable
-slackernews_domain=$(get_slackernews_domain)
-agent variable set SLACKERNEWS_DOMAIN "${slackernews_domain}"
+# Initialize slackernews domain (function call sets agent variable internally)
+get_slackernews_domain > /dev/null
 

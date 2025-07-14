@@ -403,13 +403,17 @@ get_app_id() {
     echo "${app_id}"
 }
 
-# Get customer ID from Replicated API
+# Get customer ID with caching - this function is now defined in instruqt-config.sh
+# but kept here for backwards compatibility
 get_customer_id() {
-    local customer=${1}
-    local access_token=$(get_api_token)
-    local app_id=$(get_app_id)
-    local customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${access_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name "${customer}" '.customers[] | select ( .name == $name ) | .id')
-    echo "${customer_id}"
+    local customer_id=$(agent variable get CUSTOMER_ID)
+    if [[ -z "$customer_id" ]]; then
+        local api_token=$(get_api_token)
+        local app_id=$(get_app_id)
+        customer_id=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/app/${app_id}/customers | jq -r --arg name "${INSTRUQT_PARTICIPANT_ID}" '.customers[] | select( .name == $name ) | .id')
+        agent variable set CUSTOMER_ID "$customer_id"
+    fi
+    echo "$customer_id"
 }
 
 # Get license ID from Replicated API

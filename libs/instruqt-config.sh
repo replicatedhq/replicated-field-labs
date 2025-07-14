@@ -318,9 +318,14 @@ get_admin_console_password() {
     echo "${password::20}"
 }
 
-# Get Slackernews domain for this Instruqt environment
+# Get Slackernews domain for this Instruqt environment with caching
 get_slackernews_domain() {
-    echo "cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com"
+    local domain=$(agent variable get SLACKERNEWS_DOMAIN)
+    if [[ -z "$domain" ]]; then
+        domain="cluster-30443-${INSTRUQT_PARTICIPANT_ID}.env.play.instruqt.com"
+        agent variable set SLACKERNEWS_DOMAIN "$domain"
+    fi
+    echo "$domain"
 }
 
 # Display login credentials with formatting
@@ -413,6 +418,53 @@ get_customer_id() {
         agent variable set CUSTOMER_ID "$customer_id"
     fi
     echo "$customer_id"
+}
+
+# Get app slug with caching
+get_replicated_app() {
+    local app_slug=$(agent variable get REPLICATED_APP)
+    if [[ -z "$app_slug" ]]; then
+        local api_token=$(get_api_token)
+        app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
+        agent variable set REPLICATED_APP "$app_slug"
+    fi
+    echo "$app_slug"
+}
+
+# Get Replicated SDK version with caching
+get_replicated_sdk_version() {
+    local sdk_version=$(agent variable get REPLICATED_SDK_VERSION)
+    if [[ -z "$sdk_version" ]]; then
+        # Get the latest SDK version from the registry
+        local token=$(curl --silent "https://registry.replicated.com/v2/token?scope=repository:library/replicated:pull&service=registry.replicated.com" | jq -r .token)
+        sdk_version=$(curl --silent -H "Authorization: Bearer $token" "https://registry.replicated.com/v2/library/replicated/tags/list" | jq -r '.tags[]' | sort -r | awk -F '[.-]' '{
+            # Extract version components
+            major=$1;
+            minor=$2;
+            patch=$3;
+            prerelease=$4;
+            prerelease_number=$5;
+
+            # Assign priority to pre-release versions
+            if (prerelease == "alpha") {
+              prerelease_priority = 1;
+            } else if (prerelease == "beta") {
+              prerelease_priority = 2;
+            } else {
+              prerelease_priority = 3;
+            }
+
+            # Handle missing pre-release number
+            if (prerelease_number == "") {
+              prerelease_number = 0;
+            }
+
+            # Format output to aid sorting
+            printf "%04d%04d%04d%02d%04d-%s\n", major, minor, patch, prerelease_priority, prerelease_number, $0
+          }' | sort -r | head -1 | sed 's/^[0-9]*-//')
+        agent variable set REPLICATED_SDK_VERSION "$sdk_version"
+    fi
+    echo "$sdk_version"
 }
 
 # Display configuration status

@@ -22,7 +22,7 @@ yq -i '.version = "0.2.0"' ${HOME_DIR}/slackernews/Chart.yaml
 
 # Add the SDK dependency
 yq -i '.dependencies = []' ${HOME_DIR}/slackernews/Chart.yaml
-yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"$(agent variable get REPLICATED_SDK_VERSION)\"}" ${HOME_DIR}/slackernews/Chart.yaml
+yq -i ".dependencies += { \"name\": \"replicated\", \"repository\": \"oci://registry.replicated.com/library\", \"version\": \"$(get_replicated_sdk_version)\"}" ${HOME_DIR}/slackernews/Chart.yaml
 
 # Re-package the chart
 helm package --dependency-update ${HOME_DIR}/slackernews --destination ${HOME_DIR}/release
