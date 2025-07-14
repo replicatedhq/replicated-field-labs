@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# download and use our shared library with auto-download functionality
-curl -s -o /etc/profile.d/header.sh https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs/header.sh
+# use our shared library (already downloaded by track setup)
 source /etc/profile.d/header.sh
 
 # Initialize setup script with proper error handling
