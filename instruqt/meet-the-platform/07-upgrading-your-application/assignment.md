@@ -1,5 +1,6 @@
 ---
 slug: upgrading-your-application
+id: wxwyjwtprxen
 type: challenge
 title: Upgrading Your Application
 teaser: A short description of the challenge.
@@ -7,14 +8,17 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Enterprise Portal
+- id: tmzzf1bd3xep
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Customer Terminal
+- id: hhhdwbiqnf9p
+  title: Customer Terminal
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: oitoko7o39y2
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

@@ -1,5 +1,6 @@
 ---
 slug: installing-with-helm
+id: ro8zwkdi6xkf
 type: challenge
 title: Installing Your Application with Helm
 teaser: A short description of the challenge.
@@ -7,14 +8,17 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Enterprise Portal
+- id: 4iyu4qrv8cex
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Customer Terminal
+- id: msk7zx7tdcl6
+  title: Customer Terminal
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: gt9bissltslu
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

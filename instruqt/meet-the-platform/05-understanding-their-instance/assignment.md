@@ -1,5 +1,6 @@
 ---
 slug: understanding-their-instance
+id: z2dxrhgqcpoa
 type: challenge
 title: Understanding Your Customer's Instance
 teaser: A short description of the challenge.
@@ -7,11 +8,13 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Vendor Portal
+- id: d6qc6waeu51d
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
-- title: Enterprise Portal
+- id: ktd32bk9gfsx
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true

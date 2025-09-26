@@ -14,11 +14,13 @@ notes:
     will introduce you to the Platform and show you how to access the Vendor
     Portal.
 tabs:
-- title: Enterprise Portal
+- id: r0s4f8nj0nbn
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Vendor Portal
+- id: nkukk5hhghcq
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

@@ -1,5 +1,6 @@
 ---
 slug: assessing-security-posture
+id: s4usd5fbyclk
 type: challenge
 title: Sharing Your Security Posture
 teaser: A short description of the challenge.
@@ -7,11 +8,13 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Enterprise Portal
+- id: bgdf3kfsw5xq
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Vendor Portal
+- id: xql6wrhjp2l8
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

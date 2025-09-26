@@ -1,5 +1,6 @@
 ---
 slug: sharing-understanding
+id: yod1u3o4xn68
 type: challenge
 title: Sharinng More Details for Troubleshooting
 teaser: A short description of the challenge.
@@ -7,14 +8,17 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Customer Terminal
+- id: 54o8pdlzguw3
+  title: Customer Terminal
   type: terminal
   hostname: shell
-- title: Enterprise Portal
+- id: 1yjw8bibrupy
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Vendor Portal
+- id: gnagj9cpljs9
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true

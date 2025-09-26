@@ -1,5 +1,6 @@
 ---
 slug: preparing-to-install
+id: ryxr5wgnv3hj
 type: challenge
 title: Preparing to Install
 teaser: A short description of the challenge.
@@ -7,14 +8,17 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: Enterprise Portal
+- id: qmuzrqocikev
+  title: Enterprise Portal
   type: website
   url: https://get.replicated.com
   new_window: true
-- title: Customer Terminal
+- id: olky1v18ckxf
+  title: Customer Terminal
   type: terminal
   hostname: shell
-- title: Vendor Portal
+- id: pnkxefesmeup
+  title: Vendor Portal
   type: website
   url: https://vendor.replicated.com
   new_window: true
