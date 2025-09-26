@@ -8,7 +8,7 @@ notes:
   contents: Replace this text with your own text
 tabs:
 - title: Customer Terminal
-  type: terminall
+  type: terminal
   hostname: shell
 - title: Enterprise Portal
   type: website

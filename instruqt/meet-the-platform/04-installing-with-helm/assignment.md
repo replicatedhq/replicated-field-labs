@@ -12,7 +12,7 @@ tabs:
   url: https://get.replicated.com
   new_window: true
 - title: Customer Terminal
-  type: terminall
+  type: terminal
   hostname: shell
 - title: Vendor Portal
   type: website
