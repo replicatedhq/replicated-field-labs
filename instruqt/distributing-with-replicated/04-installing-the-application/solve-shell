@@ -7,10 +7,6 @@ source /etc/profile.d/header.sh
 # Initialize setup script with proper error handling
 init_setup_script true
 
-# get the application slug for the chart URL
-api_token=$(get_api_token)
-app_slug=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" https://api.replicated.com/vendor/v3/apps | jq -r '.apps[0].slug')
-
 # login to the registry using cached functions
 customer_email=$(get_customer_email)
 registry_password=$(get_registry_password)
@@ -20,7 +16,7 @@ echo "${registry_password}" | helm registry login registry.replicated.com \
 
 # install the application
 helm install --namespace slackernews --create-namespace slackernews \
-  oci://registry.replicated.com/${app_slug}/slackernews \
+  oci://registry.replicated.com/$(get_replicated_app)/slackernews \
   --set slackernews.domain=$(get_slackernews_domain) \
   --set service.type=NodePort \
   --kubeconfig /home/replicant/.kube/config

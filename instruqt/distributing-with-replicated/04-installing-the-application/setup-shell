@@ -14,13 +14,19 @@ customer_id=$(get_customer_id)
 
 # Set the customer email so the user doesn't have to do it, also make it a paid license for the optics
 customer_email=$(get_customer_email)
-updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
-  jq -c --arg appId "${app_id}" --arg email "${customer_email}" '.customer | {"app_id": $appId, "name": .name, "email": $email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
 
-curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
-  --request PUT --header 'Accept: application/json' --header "Authorization: ${api_token}" \
-  --header "Content-Type: application/json" \
-  --data "${updated_customer}"
+# Only update customer if customer_id is not empty
+if [[ -n "$customer_id" ]]; then
+    updated_customer=$(curl --header 'Accept: application/json' --header "Authorization: ${api_token}" "https://api.replicated.com/vendor/v3/app/${app_id}/customer/${customer_id}" | \
+      jq -c --arg appId "${app_id}" --arg email "${customer_email}" '.customer | {"app_id": $appId, "name": .name, "email": $email, "channel_id": .channels[0].id, "expires_at": .expiresAt, "type": "prod", "is_airgap_enabled": .airgap, "is_gitops_supported": .isGitopsSupported, "is_identity_service_supported": .isIdentityServiceSupported, "is_geoaxis_supported": .isGeoaxisSupported, "is_snapshot_supported": .isSnapshotSupported, "is_support_bundle_upload_enabled": .isSupportBundleUploadEnabled, "entitlementValues":[]}')
+
+    curl --location "https://api.replicated.com/vendor/v3/customer/${customer_id}" \
+      --request PUT --header 'Accept: application/json' --header "Authorization: ${api_token}" \
+      --header "Content-Type: application/json" \
+      --data "${updated_customer}"
+else
+    echo "No existing customer found, skipping customer email update"
+fi
  
 # Get the registry password (which is the license id) - this will be cached
 registry_password=$(get_registry_password)

@@ -19,8 +19,8 @@ echo "Loading Replicated Field Labs libraries v${HEADER_VERSION}..."
 download_libraries() {
     # Try multiple sources for library files
     local base_urls=(
-        "https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs"
         "https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/refactor/crdant/builds-comprehensive-library/libs"
+        "https://raw.githubusercontent.com/replicatedhq/replicated-field-labs/main/libs"
     )
     
     local required_libraries=(
@@ -53,7 +53,7 @@ download_libraries() {
                 local max_attempts=2
                 
                 while [[ $attempts -lt $max_attempts ]]; do
-                    if curl -fsSL "$base_url/$lib" -o "$lib_path.tmp"; then
+                    if curl -fsSL "$base_url/$lib" -o "$lib_path.tmp" 2>/dev/null; then
                         # Verify download was successful and not empty
                         if [[ -s "$lib_path.tmp" ]]; then
                             mv "$lib_path.tmp" "$lib_path"
