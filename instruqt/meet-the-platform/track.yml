@@ -5,23 +5,8 @@ teaser: |-
   A template track for sharing the shell environment across
   challenges
 description: |-
-  This track is a template track to build any lab that requires
-  maintaining the shell and it's environment between challenges.
-
-  To use it, run:
-
-  ```
-  instruqt track create --title [NEW TRACK TITLE] \
-    --from shared-env-template
-  ```
-
-  The track provides both a shell and a single-node cluster, and
-  the learner runs their commands as the user `replicant`.
-
-  Another advantage of this template is that you can check what
-  the learner has typed into their shell by capturing the `tmux`
-  pane content and running a grep against it, see the sample
-  check script in the first challenge for an example.
+  The Replicated Platform enables software vendors to distribute, manage, and support their applications in customer-controlled environments. This guide provides solutions engineers with a complete framework for delivering demonstrations that showcase the platform's value proposition while addressing common customer concerns and questions.
+  This lab will walk you through a typical use case for the Replicated Platform. You will walk through the process of accessing and installing a sample application, [SlackerNews](https://slackernews.io). This will help you experience the Platform the way your customers will in the future. Along the way, we'll show you the information available to your team as they go through the process. We'll finish with a simple troubleshooting scenario, including installing a patch to fix the error. 
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
 - template
