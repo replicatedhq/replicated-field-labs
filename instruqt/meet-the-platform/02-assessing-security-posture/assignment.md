@@ -3,10 +3,13 @@ slug: assessing-security-posture
 id: s4usd5fbyclk
 type: challenge
 title: Sharing Your Security Posture
-teaser: A short description of the challenge.
+teaser: Build trust with your customer by sharing security reports up front
 notes:
 - type: text
-  contents: Replace this text with your own text
+  contents: |-
+    > Note: Let's put something here with a quick statement about how
+    > important security is to Replicated as a public-facing version of the
+    > "security throughline" video, ideally by Grant or Marc
 tabs:
 - id: bgdf3kfsw5xq
   title: Enterprise Portal
@@ -20,7 +23,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
-enhanced_loading: null
+enhanced_loading: false
 ---
 
 One of the most important aspects of the Replicated Platform is that is
