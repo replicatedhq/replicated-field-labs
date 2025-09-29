@@ -26,25 +26,41 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
-enhanced_loading: null
+enhanced_loading: true
 ---
+
+> Note: This lab has two tabs, the Enterprise Portal and the Vendor Portal.
+> The user will already be logged into the Enterprise Portal by the link that
+> we provide on the Vendor Portal that logs them in as a customer. They will
+> have to log into the Vendor Portal using the credentials that we will
+> provide in the text.
 
 The Replicated Platform is a unified platform bringing together everything you
 need to navigate your Commercial Software Distribution Lifecycle. Your
-customer will use the platform to get access to your application to install on
-thier own infratructure, review your security posture, and learn what updates
-are available for their deployed instances. You will use the platform to
+customers use the platform to get access to your application to install on
+their own infrastructure, review your security posture, and learn what updates
+are available for their deployed instances. You use the platform to
 efficiently manage, test, install, support, and measure the distribution of
-your app. The Replicated Vendor Portal provides the interfaces you need to
-work with the Platform from the web, the command-line, and anywhere you can
-invoke its APIs.
+your app.
 
-This lab will introduce you to the Replicated Platform through Enterprise
-Portal and the Vendor Portal. We'll start with how your customers will
-interact with the Enterprise Portal to install your application, and as we do
-that we'll show what you'll experience on the Vendor Portal as they do it.
-Additional labs are available that will show you how to package your
-application to get provide the same experience to your customers.
+There are two primary interfaces to the Replicated Platform:
+
+<dl>
+<dh>Replicated Enterprise Portal</dh>
+<dd>Offers your customer access to your software and helps them assess its
+    security posture.</dd>
+
+<dh>Replicated Vendor Portal</dh>
+<dd>Provides the interfaces you need to work with the Platform from the web, the
+    command-line, and anywhere you can invoke its APIs.</dd>
+</dl>
+
+This lab will introduce you to the Replicated Platform through the Enterprise
+Portal and the Vendor Portal. We'll start with how your customers interact
+with the Enterprise Portal to install your application, alongside their
+experience show how the Vendor Portal reflects their activity back to you as
+they do it. Additional labs are available that will show you how to package
+your application to get provide the same experience to your customers.
 
 The Commercial Software Distribution Lifecycle
 ==============================================
@@ -53,4 +69,19 @@ The Commercial Software Distribution Lifecycle
 
 The Commercial Software Distribution Lifecycle (CSDL) is a set of processes that
 support the distribution of your application to your customers.
+
+Replicated Enterprise Portal
+===========================
+
+> Note: This section will describe the Enterprise Portal in a bit more detail
+> than the earlier definition and tell them to take a look at it in the
+> appropriate lab tab
+
+Replicated Vendor Portal
+========================
+
+> Note: Similarly, this section will describe the Vendor Portal in a bit more
+> detail than the simple definition and have them log into the portal to take
+> a look.
+
 
