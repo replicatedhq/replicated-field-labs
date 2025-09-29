@@ -24,10 +24,10 @@ lab_config:
   feedback_tab_enabled: false
   loadingMessages: true
   theme:
-    name: modern-dark
+    name: original
   override_challenge_layout: false
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: "16764292062106593278"
+checksum: "16446896750086491291"
 enhanced_loading: false
