@@ -6,7 +6,7 @@ teaser: |-
   challenges
 description: |-
   The Replicated Platform enables software vendors to distribute, manage, and support their applications in customer-controlled environments. This guide provides solutions engineers with a complete framework for delivering demonstrations that showcase the platform's value proposition while addressing common customer concerns and questions.
-  This lab will walk you through a typical use case for the Replicated Platform. You will walk through the process of accessing and installing a sample application, [SlackerNews](https://slackernews.io). This will help you experience the Platform the way your customers will in the future. Along the way, we'll show you the information available to your team as they go through the process. We'll finish with a simple troubleshooting scenario, including installing a patch to fix the error. 
+  This lab will walk you through a typical use case for the Replicated Platform. You will walk through the process of accessing and installing a sample application, [SlackerNews](https://slackernews.io). This will help you experience the Platform the way your customers will in the future. Along the way, we'll show you the information available to your team as they go through the process. We'll finish with a simple troubleshooting scenario, including installing a patch to fix the error.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
 - template
@@ -23,9 +23,11 @@ lab_config:
   feedback_recap_enabled: true
   feedback_tab_enabled: false
   loadingMessages: true
+  theme:
+    name: modern-dark
   override_challenge_layout: false
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: "5011419760105886319"
-enhanced_loading: false
+checksum: "16764292062106593278"
+enhanced_loading: true
