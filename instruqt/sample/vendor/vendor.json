@@ -1,7 +1,0 @@
-{
-    "name": "Sample Track",
-    "slug": "sample",
-    "customer": "Sample Customer",
-    "yaml_dir": "./manifests",
-    "k8s_installer_yaml_path": "./kurl-installer.yaml"
-}

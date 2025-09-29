@@ -1,5 +1,0 @@
-#!/bin/bash
-
-kubectl get po -A || fail-message "I expected hello-world to be running"  
-
-
