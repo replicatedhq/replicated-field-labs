@@ -9,10 +9,15 @@ notes:
   contents: |
     The Replicated Platform supports your team throughout the [Commercial
     Software Distribution
-    Lifecycle](https://youtu.be/FtcnUKQuteU?feature=shared). Your primary
-    interface to the Platform is the Replicated Vendor Portal. This lab
-    will introduce you to the Platform and show you how to access the Vendor
-    Portal.
+    Lifecycle](https://www.replicated.com/commercial-software-distribution-lifecycle).
+
+    <span style="text-align: center;">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/FtcnUKQuteU?si=7cLQkf4F5qx1J9ti" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </span>
+
+    Your primary interface to the Platform is the Replicated Vendor Portal.
+    This lab will introduce you to the Platform and show you how to access the
+    Vendor Portal.
 tabs:
 - id: r0s4f8nj0nbn
   title: Enterprise Portal
@@ -26,7 +31,7 @@ tabs:
   new_window: true
 difficulty: basic
 timelimit: 600
-enhanced_loading: true
+enhanced_loading: false
 ---
 
 > Note: This lab has two tabs, the Enterprise Portal and the Vendor Portal.
@@ -75,7 +80,7 @@ Replicated Enterprise Portal
 
 > Note: This section will describe the Enterprise Portal in a bit more detail
 > than the earlier definition and tell them to take a look at it in the
-> appropriate lab tab
+> appropriate lab tab.
 
 Replicated Vendor Portal
 ========================
