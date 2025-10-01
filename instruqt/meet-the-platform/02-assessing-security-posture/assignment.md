@@ -35,3 +35,32 @@ of your released versions.
 > Note: During this step they'll review the Security Center as a customer and
 > we'll also have them discover that the same information is avialable about
 > the release in the Vendor Portal.
+
+Building Trust with Your Customer
+=================================
+
+> Note: Discuss the importance of security in the context of on-prem software
+> and the Commercil Software Distribution Lifecycle
+
+Reviewing Releases Before Installing
+====================================
+
+> Note: Bring the vendor to the Security Center in Enterprise Portal and walk
+> them through the experience their customer will have reviewing CVE reports,
+> checking SBOMs, etc. Point out that the information is specific to a given
+> release and have them toggle between two releases to see the scan results
+> change.
+>
+> N.B The best way to do this might be to show a pre-SecureBuild version and a
+> post-SecureBuild version of SlackerNews. Otherwise, SecureBuild could fix
+> the CVEs in both versions in the same way and the releases would show the
+> same reports.
+
+Security Center from Your Perspective
+=====================================
+
+> Note: After walking through the customer's experience with Security Center,
+> we'll bring them to the Vendor Portal and show them that the same
+> information is available to them per release, pointing out the different
+> ways we surface it and how they can dig in for more details on a release.
+
