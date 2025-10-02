@@ -8,6 +8,10 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
+- id: ezrywnattgeg
+  title: SlackerNews
+  type: website
+  url: https://slackernews.io
 - id: 54o8pdlzguw3
   title: Customer Terminal
   type: terminal
@@ -27,6 +31,11 @@ timelimit: 600
 enhanced_loading: null
 ---
 
+> Note: Before we start this step, we'll deliberately break something in the
+> running instance so we can show something real going wrong in the support
+> bundle and use that as a way to elaborate on what the support bundle is
+> doing.
+
 As much as we hate it, sometimes something goes wrong with our applications.
 This has been one of the main arguments against self-hosted software in the
 past. It's just so much easier to help when you have access to everything.
@@ -40,3 +49,8 @@ troubleshooting component to close the gap between you and your customers.
 > review all the files in the bundle in the Vendor Portal or download it for
 > use with `sbctl`. We won't have them use `sbctl` but instead instruct them
 > to the support bundle lab.
+
+When Something Goes Wrong
+=========================
+
+> Note: Have them try to access the application
