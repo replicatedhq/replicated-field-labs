@@ -4,4 +4,4 @@ set -euxo
 rm -rf /root/support-bundle* || true
 rm /root/solution.txt || true
 
-curl https://spooky.academy/support_bundles/troubleshoot_2_support_bundle.tar.gz -o support-bundle.tar.gz
+curl https://cre-training-assets.s3.us-west-1.amazonaws.com/troubleshoot_2_support_bundle.tar.gz -o support-bundle.tar.gz

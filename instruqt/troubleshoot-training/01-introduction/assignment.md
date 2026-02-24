@@ -9,11 +9,13 @@ notes:
   contents: In this track, we'll work together to apply some practical methods for
     troubleshooting some Kubernetes problems using Replicated tooling.
 tabs:
-- title: Workstation
+- id: vy80bd4zzksw
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: intermediate
 timelimit: 600
+enhanced_loading: null
 ---
 
 👋 Introduction

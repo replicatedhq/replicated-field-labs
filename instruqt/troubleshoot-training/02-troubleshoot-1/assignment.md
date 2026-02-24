@@ -8,11 +8,13 @@ notes:
 - type: text
   contents: The website is down
 tabs:
-- title: Workstation
+- id: veuyak3z63de
+  title: Workstation
   type: terminal
   hostname: cloud-client
 difficulty: basic
 timelimit: 3600
+enhanced_loading: null
 ---
 Let's imagine that our environment belongs to a customer, who are now experiencing an issue with their install.
 
