@@ -8,7 +8,8 @@ notes:
 - type: text
   contents: Replace this text with your own text
 tabs:
-- title: SlackerNews
+- id: ezrywnattgeg
+  title: SlackerNews
   type: website
   url: https://slackernews.io   # replace with generated URI
 - id: 54o8pdlzguw3
