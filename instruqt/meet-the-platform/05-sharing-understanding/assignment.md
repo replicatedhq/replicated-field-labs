@@ -52,4 +52,25 @@ troubleshooting component to close the gap between you and your customers.
 When Something Goes Wrong
 =========================
 
-> Note: Have them try to access the application 
+> Note: Have them try to access the application and see the error live, then
+> talk about what they can do about it. Take them to the Enterprise Portal
+> support tab for instructions on collecting a support bundle, then have them
+> collect it in the terminal. Discuss redaction.
+
+Sharing the Support Bundle
+==========================
+
+> Note: Show them how to upload the bundle in the Enterprise Portal and point
+> out how the can also delete it if they want to. Switch them over to their
+> perspective in the Vendor Portal and show them how they can see the bundle
+> attached to the customer and review the same checks the customer saw.
+> Point out how the analyzer tells the vendor what to do to fix the issue, but
+> also that there are things they could do in their application to avoid it in
+> the future.
+
+Releasing a Fix
+===============
+
+> Note: Briefly explain how the vendor is able to release a patch for the
+> customer and how that information will be surfaced in the Enterprise Portal.
+> We may want to talk a bit ahout releases and channels here, I'm not sure.
